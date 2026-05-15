@@ -1,0 +1,251 @@
+/* ========================================
+   VARIABLES GLOBALES RSI
+   ======================================== */
+
+:root {
+    /* Colores primarios institucionales - MODO CLARO */
+    --rsi-primary: #1c1948;
+    --rsi-primary-dark: #13103a;
+    --rsi-primary-light: #2a2670;
+    --rsi-accent: #8f94fb;
+    --rsi-accent-dark: #6c72e8;
+    --rsi-accent-light: #b2b6fc;
+    
+    /* Dorado para modo oscuro - Degradado metálico */
+    --rsi-gold-gradient: linear-gradient(135deg, 
+        #c9a03d 0%,      /* Oro antiguo */
+        #f2d06b 20%,     /* Oro medio claro */
+        #fff2a8 40%,     /* Oro muy brillante */
+        #e8c44c 60%,     /* Oro medio */
+        #d4af37 80%,     /* Oro estándar */
+        #c9a03d 100%     /* Oro antiguo */
+    );
+    
+    --rsi-gold-gradient-hover: linear-gradient(135deg, 
+        #d4af37 0%, 
+        #f2d06b 25%, 
+        #fff2a8 50%, 
+        #f2d06b 75%, 
+        #d4af37 100%
+    );
+    
+    --rsi-gold-gradient-horizontal: linear-gradient(90deg, 
+        #c9a03d 0%, 
+        #f2d06b 30%, 
+        #fff2a8 50%, 
+        #f2d06b 70%, 
+        #c9a03d 100%
+    );
+    
+    /* Colores neutros - MODO CLARO */
+    --rsi-white: #ffffff;
+    --rsi-gray-100: #f8f9fa;
+    --rsi-gray-200: #e9ecef;
+    --rsi-gray-300: #dee2e6;
+    --rsi-gray-400: #ced4da;
+    --rsi-gray-500: #adb5bd;
+    --rsi-gray-600: #6c757d;
+    --rsi-gray-700: #495057;
+    --rsi-gray-800: #343a40;
+    --rsi-gray-900: #212529;
+    --rsi-black: #0a0a1a;
+    
+    /* Colores de fondo - MODO CLARO */
+    --rsi-bg-primary: #ffffff;
+    --rsi-bg-secondary: #f8f9fa;
+    --rsi-bg-card: #ffffff;
+    
+    /* Estados */
+    --rsi-success: #28a745;
+    --rsi-warning: #ffc107;
+    --rsi-danger: #dc3545;
+    --rsi-info: #17a2b8;
+    
+    /* Sombras */
+    --rsi-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --rsi-shadow-md: 0 5px 15px rgba(0, 0, 0, 0.08);
+    --rsi-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
+    --rsi-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
+    --rsi-shadow-primary: 0 4px 12px rgba(28, 25, 72, 0.2);
+    --rsi-shadow-gold: 0 0 20px rgba(210, 175, 55, 0.3);
+    --rsi-shadow-gold-lg: 0 0 35px rgba(210, 175, 55, 0.4);
+    
+    /* Transiciones */
+    --rsi-transition-fast: 0.2s ease;
+    --rsi-transition-base: 0.3s ease;
+    --rsi-transition-slow: 0.5s ease;
+    
+    /* Bordes */
+    --rsi-radius-sm: 4px;
+    --rsi-radius-md: 8px;
+    --rsi-radius-lg: 12px;
+    --rsi-radius-xl: 16px;
+    --rsi-radius-full: 50px;
+    
+    /* Tipografía */
+    --rsi-font-primary: 'Poppins', sans-serif;
+    --rsi-font-secondary: 'Montserrat', sans-serif;
+    
+    /* Espaciados */
+    --rsi-spacing-xs: 4px;
+    --rsi-spacing-sm: 8px;
+    --rsi-spacing-md: 16px;
+    --rsi-spacing-lg: 24px;
+    --rsi-spacing-xl: 32px;
+    --rsi-spacing-2xl: 48px;
+    --rsi-spacing-3xl: 64px;
+    --rsi-spacing-4xl: 80px;
+    
+    /* Z-index */
+    --rsi-z-dropdown: 1000;
+    --rsi-z-sticky: 1020;
+    --rsi-z-fixed: 1030;
+    --rsi-z-modal: 1050;
+}
+
+/* ========== MODO OSCURO ========== */
+body.dark-mode {
+    /* Colores primarios cambian a gradiente dorado */
+    --rsi-primary: #d4af37;
+    --rsi-primary-dark: #b8960c;
+    --rsi-primary-light: #f2d06b;
+    --rsi-accent: #d4af37;
+    --rsi-accent-dark: #b8960c;
+    --rsi-accent-light: #f2d06b;
+    
+    /* Colores neutros - MODO OSCURO (grises elegantes, no negro puro) */
+    --rsi-white: #1e1e2a;
+    --rsi-gray-100: #2a2a35;
+    --rsi-gray-200: #343540;
+    --rsi-gray-300: #3d3e4a;
+    --rsi-gray-400: #4a4b58;
+    --rsi-gray-500: #6a6b78;
+    --rsi-gray-600: #8a8b98;
+    --rsi-gray-700: #b0b1bc;
+    --rsi-gray-800: #d0d1d8;
+    --rsi-gray-900: #e8e9f0;
+    --rsi-black: #ffffff;
+    
+    /* Colores de fondo - MODO OSCURO (grises oscuros) */
+    --rsi-bg-primary: #1a1a24;      /* Fondo principal gris oscuro */
+    --rsi-bg-secondary: #22222e;    /* Fondo secundario gris */
+    --rsi-bg-card: #2a2a35;         /* Fondo de tarjetas gris medio */
+    
+    /* Sombras en modo oscuro */
+    --rsi-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+    --rsi-shadow-md: 0 5px 15px rgba(0, 0, 0, 0.4);
+    --rsi-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
+    --rsi-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.6);
+    --rsi-shadow-primary: 0 4px 12px rgba(212, 175, 55, 0.15);
+}
+
+/* Transición suave entre modos */
+body,
+body * {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* ========== CLASES DE UTILIDAD PARA EFECTO DORADO ========== */
+
+/* Texto con gradiente dorado metálico */
+.rsi-text-gold {
+    background: var(--rsi-gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+/* Texto con gradiente dorado horizontal (efecto brillo) */
+.rsi-text-gold-shine {
+    background: var(--rsi-gold-gradient-horizontal);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+    background-size: 200% auto;
+    animation: goldShineHorizontal 3s linear infinite;
+}
+
+/* Borde con gradiente dorado */
+.rsi-border-gold {
+    border: 2px solid transparent;
+    border-image: var(--rsi-gold-gradient);
+    border-image-slice: 1;
+}
+
+/* Sombra dorada */
+.rsi-shadow-gold {
+    box-shadow: var(--rsi-shadow-gold);
+}
+
+.rsi-shadow-gold:hover {
+    box-shadow: var(--rsi-shadow-gold-lg);
+}
+
+/* Efecto brillo dorado al hover */
+.rsi-gold-hover {
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-gold-hover:hover {
+    background: var(--rsi-gold-gradient);
+    color: var(--rsi-black);
+    box-shadow: var(--rsi-shadow-gold-lg);
+    transform: translateY(-2px);
+}
+
+/* Animaciones doradas */
+@keyframes goldShineVertical {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 100% 100%;
+    }
+}
+
+@keyframes goldShineHorizontal {
+    0% {
+        background-position: -100% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+@keyframes goldPulse {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+    }
+}
+
+.rsi-gold-pulse {
+    animation: goldPulse 2s ease-in-out infinite;
+}
+
+/* Icono dorado */
+.rsi-icon-gold {
+    background: var(--rsi-gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Gradiente dorado para fondos */
+.rsi-bg-gold {
+    background: var(--rsi-gold-gradient);
+    background-size: 200% 200%;
+}
+
+.rsi-bg-gold-animated {
+    background: var(--rsi-gold-gradient);
+    background-size: 200% 200%;
+    animation: goldShineVertical 3s ease infinite;
+}

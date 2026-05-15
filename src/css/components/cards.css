@@ -1,0 +1,276 @@
+/* ========================================
+   cards.css - Estilos para tarjetas
+   ======================================== */
+
+/* Tarjeta base */
+.rsi-card {
+    background: var(--rsi-white);
+    border-radius: var(--rsi-radius-lg);
+    overflow: hidden;
+    transition: all var(--rsi-transition-base);
+    position: relative;
+}
+
+.rsi-card-shadow {
+    box-shadow: var(--rsi-shadow-md);
+}
+
+.rsi-card-shadow:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--rsi-shadow-hover);
+}
+
+.rsi-card-border {
+    border: 1px solid var(--rsi-gray-200);
+}
+
+.rsi-card-border:hover {
+    border-color: var(--rsi-primary-light);
+}
+
+/* Tarjeta con hover elegante */
+.rsi-card-elegant {
+    background: var(--rsi-white);
+    border-radius: var(--rsi-radius-lg);
+    padding: var(--rsi-spacing-xl);
+    text-align: center;
+    transition: all var(--rsi-transition-base);
+    position: relative;
+    overflow: hidden;
+}
+
+.rsi-card-elegant::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--rsi-primary), var(--rsi-accent));
+    transition: left var(--rsi-transition-base);
+}
+
+.rsi-card-elegant:hover::before {
+    left: 0;
+}
+
+.rsi-card-elegant:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--rsi-shadow-hover);
+}
+
+/* Tarjeta de servicio */
+.rsi-service-card {
+    background: var(--rsi-white);
+    border-radius: var(--rsi-radius-lg);
+    padding: var(--rsi-spacing-xl);
+    text-align: center;
+    transition: all var(--rsi-transition-base);
+    box-shadow: var(--rsi-shadow-md);
+}
+
+.rsi-service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--rsi-shadow-xl);
+}
+
+.rsi-service-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--rsi-primary), var(--rsi-accent));
+    border-radius: var(--rsi-radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--rsi-spacing-lg);
+}
+
+.rsi-service-icon i {
+    font-size: 2.5rem;
+    color: var(--rsi-white);
+}
+
+/* Tarjeta de producto */
+.rsi-product-card {
+    background: var(--rsi-white);
+    border-radius: var(--rsi-radius-lg);
+    overflow: hidden;
+    transition: all var(--rsi-transition-base);
+    box-shadow: var(--rsi-shadow-md);
+}
+
+.rsi-product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--rsi-shadow-xl);
+}
+
+.rsi-product-image {
+    position: relative;
+    overflow: hidden;
+    height: 250px;
+}
+
+.rsi-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--rsi-transition-slow);
+}
+
+.rsi-product-card:hover .rsi-product-image img {
+    transform: scale(1.1);
+}
+
+.rsi-product-badge {
+    position: absolute;
+    top: var(--rsi-spacing-md);
+    right: var(--rsi-spacing-md);
+    background: var(--rsi-danger);
+    color: var(--rsi-white);
+    padding: 4px 12px;
+    border-radius: var(--rsi-radius-full);
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.rsi-product-info {
+    padding: var(--rsi-spacing-lg);
+}
+
+.rsi-product-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: var(--rsi-spacing-sm);
+    color: var(--rsi-primary);
+}
+
+.rsi-product-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--rsi-accent);
+    margin: var(--rsi-spacing-sm) 0;
+}
+
+/* Tarjeta de equipo */
+.rsi-team-card {
+    background: var(--rsi-white);
+    border-radius: var(--rsi-radius-lg);
+    overflow: hidden;
+    text-align: center;
+    box-shadow: var(--rsi-shadow-md);
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-team-card:hover {
+    transform: translateY(-10px);
+}
+
+.rsi-team-image {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+}
+
+.rsi-team-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--rsi-transition-slow);
+}
+
+.rsi-team-card:hover .rsi-team-image img {
+    transform: scale(1.05);
+}
+
+.rsi-team-info {
+    padding: var(--rsi-spacing-lg);
+}
+
+.rsi-team-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--rsi-primary);
+    margin-bottom: var(--rsi-spacing-xs);
+}
+
+.rsi-team-role {
+    color: var(--rsi-accent);
+    font-weight: 500;
+    margin-bottom: var(--rsi-spacing-md);
+}
+
+/* Tarjeta de testimonio */
+.rsi-testimonial-card {
+    background: var(--rsi-white);
+    border-radius: var(--rsi-radius-lg);
+    padding: var(--rsi-spacing-xl);
+    box-shadow: var(--rsi-shadow-md);
+    position: relative;
+}
+
+.rsi-testimonial-card::before {
+    content: '"';
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 4rem;
+    color: var(--rsi-gray-200);
+    font-family: serif;
+}
+
+.rsi-testimonial-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--rsi-gray-700);
+    margin-bottom: var(--rsi-spacing-lg);
+    font-style: italic;
+}
+
+.rsi-testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-md);
+}
+
+.rsi-testimonial-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--rsi-radius-full);
+    object-fit: cover;
+}
+
+.rsi-testimonial-name {
+    font-weight: 700;
+    color: var(--rsi-primary);
+}
+
+/* Tarjeta stats */
+.rsi-stat-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: var(--rsi-spacing-xl);
+    border-radius: var(--rsi-radius-lg);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-stat-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.rsi-stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    display: block;
+    margin-bottom: var(--rsi-spacing-sm);
+}
+
+/* Grid de tarjetas */
+.rsi-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--rsi-spacing-xl);
+    margin-top: var(--rsi-spacing-2xl);
+}

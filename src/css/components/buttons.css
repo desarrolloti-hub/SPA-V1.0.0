@@ -1,0 +1,113 @@
+/* ========================================
+   BOTONES - Sistema completo
+   ======================================== */
+
+/* Base del botón */
+.rsi-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 28px;
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    text-decoration: none;
+    font-size: 0.9rem;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.rsi-btn i {
+    font-size: 1rem;
+    transition: transform var(--rsi-transition-fast);
+}
+
+.rsi-btn:hover i {
+    transform: translateX(4px);
+}
+
+/* Botón primario */
+.rsi-btn-primary {
+    background-color: var(--rsi-primary);
+    color: var(--rsi-white);
+}
+
+.rsi-btn-primary:hover {
+    background-color: var(--rsi-primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-primary);
+}
+
+/* Botón secundario */
+.rsi-btn-secondary {
+    background-color: var(--rsi-accent);
+    color: var(--rsi-primary);
+}
+
+.rsi-btn-secondary:hover {
+    background-color: var(--rsi-accent-dark);
+    color: var(--rsi-white);
+    transform: translateY(-2px);
+}
+
+/* Botón outline */
+.rsi-btn-outline {
+    background: transparent;
+    border: 2px solid var(--rsi-primary);
+    color: var(--rsi-primary);
+}
+
+.rsi-btn-outline:hover {
+    background-color: var(--rsi-primary);
+    color: var(--rsi-white);
+    transform: translateY(-2px);
+}
+
+/* Botón CTA */
+.rsi-primary-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #1c1948;
+    color: white !important;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.rsi-primary-btn:hover {
+    background-color: #2a2670;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(28, 25, 72, 0.2);
+}
+
+/* Botón CTA especial */
+.rsi-cta-button {
+    background-color: white;
+    color: #1c1948 !important;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 30px;
+}
+
+.rsi-cta-button:hover {
+    background-color: #8f94fb;
+    color: white !important;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}

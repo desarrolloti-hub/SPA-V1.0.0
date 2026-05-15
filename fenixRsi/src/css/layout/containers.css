@@ -1,0 +1,81 @@
+/* ========================================
+   CONTENEDORES
+   ======================================== */
+
+.rsi-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--rsi-spacing-lg);
+}
+
+.rsi-container-fluid {
+    width: 100%;
+    padding: 0 var(--rsi-spacing-lg);
+}
+
+.rsi-container-wide {
+    max-width: 1400px;
+}
+
+.rsi-container-narrow {
+    max-width: 900px;
+}
+
+/* Secciones */
+.rsi-section {
+    padding: var(--rsi-spacing-4xl) 0;
+}
+
+.rsi-section-sm {
+    padding: var(--rsi-spacing-2xl) 0;
+}
+
+.rsi-section-lg {
+    padding: 120px 0;
+}
+
+/* Fondos de sección */
+.rsi-section-dark {
+    background-color: var(--rsi-primary);
+    color: var(--rsi-white);
+}
+
+.rsi-section-light {
+    background-color: var(--rsi-gray-100);
+}
+
+.rsi-section-white {
+    background-color: var(--rsi-white);
+}
+
+.rsi-section-gradient {
+    background: linear-gradient(135deg, var(--rsi-primary) 0%, var(--rsi-primary-dark) 100%);
+    color: var(--rsi-white);
+}
+
+/* Layouts flex */
+.rsi-flex {
+    display: flex;
+}
+
+.rsi-flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rsi-flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rsi-flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.rsi-gap-sm { gap: var(--rsi-spacing-sm); }
+.rsi-gap-md { gap: var(--rsi-spacing-md); }
+.rsi-gap-lg { gap: var(--rsi-spacing-lg); }

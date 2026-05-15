@@ -1,0 +1,144 @@
+/* ========================================
+   RESPONSIVE - Breakpoints y utilidades
+   ======================================== */
+
+/* Breakpoints */
+/* 
+   xs: 0 - 575px
+   sm: 576px - 767px
+   md: 768px - 991px
+   lg: 992px - 1199px
+   xl: 1200px+
+*/
+
+/* Móviles pequeños */
+@media (max-width: 575px) {
+    .rsi-hide-xs {
+        display: none;
+    }
+    
+    .rsi-text-xs-center {
+        text-align: center;
+    }
+}
+
+/* Móviles */
+@media (max-width: 767px) {
+    .rsi-hide-sm {
+        display: none;
+    }
+    
+    .rsi-container {
+        padding: 0 var(--rsi-spacing-md);
+    }
+    
+    .rsi-section {
+        padding: var(--rsi-spacing-2xl) 0;
+    }
+}
+
+/* Tablets */
+@media (max-width: 991px) {
+    .rsi-hide-md {
+        display: none;
+    }
+    
+    .rsi-container {
+        padding: 0 var(--rsi-spacing-lg);
+    }
+}
+
+/* Desktop */
+@media (min-width: 992px) {
+    .rsi-show-md-only {
+        display: none;
+    }
+}
+
+/* Desktop grande */
+@media (min-width: 1200px) {
+    .rsi-container {
+        max-width: 1140px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .rsi-container {
+        max-width: 1320px;
+    }
+}
+
+/* Utilidades responsive */
+.rsi-responsive-img {
+    max-width: 100%;
+    height: auto;
+}
+
+.rsi-responsive-video {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    overflow: hidden;
+}
+
+.rsi-responsive-video iframe,
+.rsi-responsive-video video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Grid responsive */
+.rsi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--rsi-spacing-lg);
+}
+
+@media (min-width: 768px) {
+    .rsi-row-cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .rsi-row-cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .rsi-row-cols-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (min-width: 992px) {
+    .rsi-row-cols-lg-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .rsi-row-cols-lg-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .rsi-row-cols-lg-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Ocultar elementos por defecto */
+.rsi-hidden {
+    display: none;
+}
+
+/* Mostrar solo en ciertos breakpoints */
+@media (max-width: 767px) {
+    .rsi-visible-desktop {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .rsi-visible-mobile {
+        display: none;
+    }
+}

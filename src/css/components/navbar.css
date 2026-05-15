@@ -1,0 +1,341 @@
+/* ========================================
+   NAVBAR STYLES - RSI Enterprise
+   ======================================== */
+
+/* Navbar principal */
+.nan_navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: var(--rsi-white);
+    box-shadow: var(--rsi-shadow-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    z-index: var(--rsi-z-fixed);
+    transition: all var(--rsi-transition-base);
+}
+
+.nan_navbar.navbar-scrolled {
+    padding: 0.7rem 5%;
+    box-shadow: var(--rsi-shadow-lg);
+    background: var(--rsi-bg-primary);
+    backdrop-filter: blur(10px);
+}
+
+/* Logo */
+.nan_logo img {
+    height: 50px;
+    transition: transform var(--rsi-transition-base);
+}
+
+.nan_logo img:hover {
+    transform: scale(1.05);
+}
+
+/* Menú principal */
+.nan_menu {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+/* Enlaces del menú */
+.nan_menu li a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--rsi-gray-700);
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.5rem 0;
+    transition: all var(--rsi-transition-base);
+    position: relative;
+}
+
+/* Línea inferior animada */
+.nan_menu li a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--rsi-primary), var(--rsi-accent));
+    transition: width var(--rsi-transition-base);
+    border-radius: var(--rsi-radius-full);
+}
+
+.nan_menu li a:hover::after,
+.nan_menu li a.active::after {
+    width: 100%;
+}
+
+.nan_menu li a:hover {
+    color: var(--rsi-primary);
+}
+
+.nan_menu li a.active {
+    color: var(--rsi-primary);
+    font-weight: 600;
+}
+
+/* Efecto loading en enlaces */
+.nan_menu li a.loading {
+    opacity: 0.6;
+    pointer-events: none;
+    position: relative;
+}
+
+.nan_menu li a.loading::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--rsi-primary);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Botón de modo oscuro */
+.rsi-theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--rsi-radius-full);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--rsi-gray-700);
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-theme-toggle i {
+    font-size: 1rem;
+    transition: transform var(--rsi-transition-base);
+}
+
+.rsi-theme-toggle:hover {
+    background: var(--rsi-gray-200);
+    transform: translateY(-2px);
+}
+
+.rsi-theme-toggle:hover i {
+    transform: rotate(15deg);
+}
+
+/* Menú de usuario */
+.nan_user-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: var(--rsi-radius-full);
+    transition: background var(--rsi-transition-base);
+}
+
+.nan_user-menu:hover {
+    background: rgba(28, 25, 72, 0.05);
+}
+
+.nan_user-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--rsi-accent);
+}
+
+.nan_user-name {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--rsi-gray-700);
+}
+
+/* Logout button */
+.nan_logout-btn {
+    width: 100%;
+    text-align: left;
+    padding: 8px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--rsi-danger);
+    font-size: 0.9rem;
+}
+
+.nan_logout-btn:hover {
+    background: #f8d7da;
+}
+
+/* Dropdown */
+.nan_dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-lg);
+    box-shadow: var(--rsi-shadow-lg);
+    min-width: 200px;
+    padding: 8px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all var(--rsi-transition-base);
+    z-index: var(--rsi-z-dropdown);
+}
+
+.has-dropdown {
+    position: relative;
+}
+
+.has-dropdown:hover .nan_dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nan_dropdown li {
+    list-style: none;
+}
+
+.nan_dropdown li a {
+    display: block;
+    padding: 10px 20px;
+    color: var(--rsi-gray-700);
+    text-decoration: none;
+    transition: background var(--rsi-transition-base);
+}
+
+.nan_dropdown li a:hover {
+    background: var(--rsi-gray-200);
+    color: var(--rsi-primary);
+}
+
+/* Botones menú móvil */
+.nan_hamburger,
+.nan_close {
+    display: none;
+    font-size: 1.8rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--rsi-primary);
+    transition: all var(--rsi-transition-base);
+    z-index: calc(var(--rsi-z-modal) + 10);
+}
+
+.nan_hamburger:hover,
+.nan_close:hover {
+    color: var(--rsi-accent);
+    transform: scale(1.1);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 992px) {
+    .nan_hamburger {
+        display: block;
+    }
+    
+    .nan_menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 350px;
+        height: 100vh;
+        background: var(--rsi-bg-primary);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+        transition: right var(--rsi-transition-base);
+        box-shadow: var(--rsi-shadow-xl);
+        z-index: var(--rsi-z-modal);
+        margin: 0;
+        padding: 2rem;
+    }
+    
+    .nan_menu.active {
+        right: 0;
+    }
+    
+    .nan_menu li a {
+        font-size: 1.1rem;
+        padding: 0.8rem;
+    }
+    
+    .nan_menu li a::after {
+        bottom: -5px;
+    }
+    
+    .nan_close {
+        display: none;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+    }
+    
+    body.menu-open .nan_close {
+        display: block;
+    }
+    
+    body.menu-open .nan_hamburger {
+        display: none;
+    }
+    
+    body.menu-open {
+        overflow: hidden;
+    }
+    
+    .rsi-theme-toggle {
+        padding: 12px 20px;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .has-dropdown .nan_dropdown {
+        position: static;
+        box-shadow: none;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        display: none;
+    }
+    
+    .has-dropdown.active .nan_dropdown {
+        display: block;
+    }
+}
+
+@media (max-width: 480px) {
+    .nan_navbar {
+        padding: 0.8rem 4%;
+    }
+    
+    .nan_logo img {
+        height: 40px;
+    }
+    
+    .nan_menu {
+        width: 85%;
+    }
+}

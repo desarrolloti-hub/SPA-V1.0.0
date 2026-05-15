@@ -1,0 +1,222 @@
+/* ========================================
+   ANIMACIONES Y EFECTOS
+   ======================================== */
+
+/* Fade In */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.rsi-animate-fadeIn {
+    animation: fadeIn var(--rsi-transition-base);
+}
+
+/* Fade In Up */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.rsi-animate-fadeInUp {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Fade In Down */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Slide In Left */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.rsi-animate-slideLeft {
+    animation: slideInLeft 0.6s ease forwards;
+}
+
+/* Slide In Right */
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.rsi-animate-slideRight {
+    animation: slideInRight 0.6s ease forwards;
+}
+
+/* Zoom In */
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.rsi-animate-zoom {
+    animation: zoomIn 0.5s ease forwards;
+}
+
+/* Shake (para errores) */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.rsi-animate-shake {
+    animation: shake 0.5s ease;
+}
+
+/* Pulse (para botones) */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.rsi-animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Rotate */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.rsi-animate-rotate {
+    animation: rotate 1s linear infinite;
+}
+
+/* Hover Effects */
+.rsi-hover-grow {
+    transition: transform var(--rsi-transition-base);
+}
+
+.rsi-hover-grow:hover {
+    transform: scale(1.05);
+}
+
+.rsi-hover-shrink:hover {
+    transform: scale(0.98);
+}
+
+.rsi-hover-lift {
+    transition: transform var(--rsi-transition-base), box-shadow var(--rsi-transition-base);
+}
+
+.rsi-hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--rsi-shadow-xl);
+}
+
+.rsi-hover-glow {
+    transition: box-shadow var(--rsi-transition-base);
+}
+
+.rsi-hover-glow:hover {
+    box-shadow: 0 0 20px rgba(28, 25, 72, 0.3);
+}
+
+/* Loading spinner */
+.rsi-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--rsi-gray-200);
+    border-top-color: var(--rsi-primary);
+    border-radius: 50%;
+    animation: rotate 0.8s linear infinite;
+}
+
+.rsi-spinner-sm {
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+}
+
+/* Skeleton loading */
+.rsi-skeleton {
+    background: linear-gradient(90deg, var(--rsi-gray-200) 25%, var(--rsi-gray-300) 50%, var(--rsi-gray-200) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Scroll reveal */
+.rsi-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+.rsi-reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger children animations */
+.rsi-stagger > * {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.rsi-stagger > *:nth-child(1) { animation-delay: 0.1s; }
+.rsi-stagger > *:nth-child(2) { animation-delay: 0.2s; }
+.rsi-stagger > *:nth-child(3) { animation-delay: 0.3s; }
+.rsi-stagger > *:nth-child(4) { animation-delay: 0.4s; }
+.rsi-stagger > *:nth-child(5) { animation-delay: 0.5s; }
+.rsi-stagger > *:nth-child(6) { animation-delay: 0.6s; }

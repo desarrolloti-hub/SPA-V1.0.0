@@ -1,0 +1,200 @@
+/* ========================================
+   TABLAS - Sistema completo
+   ======================================== */
+
+/* Contenedor de tabla con scroll */
+.rsi-table-wrapper {
+    overflow-x: auto;
+    border-radius: var(--rsi-radius-lg);
+    box-shadow: var(--rsi-shadow-md);
+}
+
+/* Tabla base */
+.rsi-table {
+    width: 100%;
+    background: var(--rsi-white);
+    border-collapse: collapse;
+    border-radius: var(--rsi-radius-lg);
+    overflow: hidden;
+}
+
+/* Cabecera */
+.rsi-table thead {
+    background: linear-gradient(135deg, var(--rsi-primary), var(--rsi-primary-dark));
+    color: var(--rsi-white);
+}
+
+.rsi-table th {
+    padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Celdas */
+.rsi-table td {
+    padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
+    border-bottom: 1px solid var(--rsi-gray-200);
+    color: var(--rsi-gray-700);
+}
+
+/* Filas */
+.rsi-table tbody tr {
+    transition: background-color var(--rsi-transition-fast);
+}
+
+.rsi-table tbody tr:hover {
+    background-color: var(--rsi-gray-100);
+}
+
+/* Tabla zebra */
+.rsi-table-striped tbody tr:nth-child(even) {
+    background-color: var(--rsi-gray-100);
+}
+
+.rsi-table-striped tbody tr:hover {
+    background-color: var(--rsi-gray-200);
+}
+
+/* Tabla con bordes */
+.rsi-table-bordered {
+    border: 1px solid var(--rsi-gray-200);
+}
+
+.rsi-table-bordered th,
+.rsi-table-bordered td {
+    border: 1px solid var(--rsi-gray-200);
+}
+
+/* Tabla compacta */
+.rsi-table-compact th,
+.rsi-table-compact td {
+    padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+}
+
+/* Tabla grande */
+.rsi-table-large th,
+.rsi-table-large td {
+    padding: var(--rsi-spacing-lg) var(--rsi-spacing-xl);
+}
+
+/* Estados en tablas */
+.rsi-table-success {
+    background-color: var(--rsi-success-light);
+}
+
+.rsi-table-warning {
+    background-color: var(--rsi-warning-light);
+}
+
+.rsi-table-danger {
+    background-color: var(--rsi-danger-light);
+}
+
+.rsi-table-info {
+    background-color: var(--rsi-info-light);
+}
+
+/* Badges dentro de tablas */
+.rsi-table-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: var(--rsi-radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.rsi-table-badge-success {
+    background: var(--rsi-success-light);
+    color: var(--rsi-success);
+}
+
+.rsi-table-badge-warning {
+    background: var(--rsi-warning-light);
+    color: #856404;
+}
+
+.rsi-table-badge-danger {
+    background: var(--rsi-danger-light);
+    color: var(--rsi-danger);
+}
+
+/* Tabla responsive */
+@media (max-width: 768px) {
+    .risi-table-responsive {
+        display: block;
+        width: 100%;
+    }
+    
+    .rsi-table-responsive thead {
+        display: none;
+    }
+    
+    .rsi-table-responsive tbody tr {
+        display: block;
+        margin-bottom: var(--rsi-spacing-md);
+        border: 1px solid var(--rsi-gray-200);
+        border-radius: var(--rsi-radius-md);
+    }
+    
+    .rsi-table-responsive td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: right;
+        border-bottom: 1px solid var(--rsi-gray-200);
+    }
+    
+    .rsi-table-responsive td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        text-align: left;
+        color: var(--rsi-primary);
+    }
+    
+    .rsi-table-responsive td:last-child {
+        border-bottom: none;
+    }
+}
+
+/* Tabla con acciones */
+.rsi-table-actions {
+    display: flex;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-table-btn {
+    padding: 6px 12px;
+    border-radius: var(--rsi-radius-sm);
+    font-size: 0.8rem;
+    transition: all var(--rsi-transition-fast);
+}
+
+.rsi-table-btn-edit {
+    background: var(--rsi-info);
+    color: var(--rsi-white);
+}
+
+.rsi-table-btn-edit:hover {
+    background: #138496;
+}
+
+.rsi-table-btn-delete {
+    background: var(--rsi-danger);
+    color: var(--rsi-white);
+}
+
+.rsi-table-btn-delete:hover {
+    background: #c82333;
+}
+
+.rsi-table-btn-view {
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+}
+
+.rsi-table-btn-view:hover {
+    background: var(--rsi-primary-light);
+}

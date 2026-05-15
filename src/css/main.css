@@ -1,0 +1,47 @@
+/* ========================================
+   MAIN CSS - RSI Enterprise
+   Punto de entrada de todos los estilos
+   ======================================== */
+
+/* Base */
+@import url('./base/variables.css');
+@import url('./base/reset.css');
+/*@import url('base/typography.css');*/
+
+/* Layout */
+@import url('./layout/containers.css');
+@import url('./layout/grid.css');
+@import url('./layout/sections.css');
+
+/* Components */
+@import url('./components/buttons.css');
+@import url('./components/cards.css');
+@import url('./components/navbar.css');
+@import url('./components/footer.css');
+@import url('./components/forms.css');
+@import url('./components/tables.css');
+
+/* Pages */
+@import url('./pages/home.css');
+@import url('./pages/products.css');
+@import url('./pages/404.css');
+
+/* Utilidades (opcional) */
+@import url('utils/animations.css');
+/* @import url('utils/helpers.css'); */
+/* @import url('utils/responsive.css'); */
+
+/* Estilos base adicionales */
+body {
+    padding-top: 80px;
+}
+
+#app {
+    min-height: calc(100vh - 400px);
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 70px;
+    }
+}

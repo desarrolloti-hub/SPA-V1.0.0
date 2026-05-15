@@ -1,0 +1,380 @@
+/* ========================================
+   HOME PAGE STYLES
+   ======================================== */
+
+/* Sección Nosotros */
+.rsi-about-section {
+    padding: var(--rsi-spacing-4xl) 0;
+    background-color: var(--rsi-primary);
+    color: var(--rsi-white);
+}
+
+.rsi-about-section .rsi-section-title,
+.rsi-about-section .rsi-section-description {
+    color: var(--rsi-white);
+}
+
+.rsi-about-section .rsi-primary-btn {
+    background-color: var(--rsi-accent);
+    color: var(--rsi-primary) !important;
+}
+
+.rsi-about-section .rsi-primary-btn:hover {
+    background-color: var(--rsi-white);
+}
+
+/* Sección Valor */
+.rsi-value-section {
+    padding: var(--rsi-spacing-4xl) 0;
+    background-color: var(--rsi-gray-100);
+}
+
+.rsi-value-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--rsi-spacing-xl);
+    margin-top: var(--rsi-spacing-2xl);
+}
+
+/* Sección Productos */
+.rsi-products-section {
+    padding: var(--rsi-spacing-4xl) 0;
+    background-color: var(--rsi-white);
+}
+
+/* Sección Estadísticas */
+.rsi-stats-section {
+    padding: 100px 0;
+    background: linear-gradient(rgba(28, 25, 72, 0.9), rgba(28, 25, 72, 0.9));
+    text-align: center;
+    color: var(--rsi-white);
+}
+
+.rsi-stats-section .rsi-section-title,
+.rsi-stats-section .rsi-section-subtitle {
+    color: var(--rsi-white);
+}
+
+.rsi-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--rsi-spacing-xl);
+    max-width: 1000px;
+    margin: var(--rsi-spacing-2xl) auto;
+}
+
+/* Sección Servicios */
+.rsi-services-section {
+    padding: var(--rsi-spacing-4xl) 0;
+    background-color: var(--rsi-primary);
+    color: var(--rsi-white);
+}
+
+.rsi-services-section .rsi-section-title,
+.rsi-services-section .rsi-section-description {
+    color: var(--rsi-white);
+}
+
+.rsi-services-section .rsi-primary-btn {
+    background-color: var(--rsi-accent);
+    color: var(--rsi-primary) !important;
+}
+
+.rsi-services-section .rsi-primary-btn:hover {
+    background-color: var(--rsi-white);
+}
+
+/* Sección Blog */
+.rsi-blog-section {
+    padding: var(--rsi-spacing-4xl) 0;
+    background-color: var(--rsi-white);
+}
+
+/* Contenido flexible */
+.rsi-section-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--rsi-spacing-2xl);
+}
+
+.rsi-reverse {
+    flex-direction: row-reverse;
+}
+
+.rsi-text-content {
+    flex: 1;
+}
+
+.rsi-image-wrapper {
+    flex: 1;
+    border-radius: var(--rsi-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--rsi-shadow-md);
+}
+
+.rsi-image-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform var(--rsi-transition-slow);
+}
+
+.rsi-image-wrapper:hover img {
+    transform: scale(1.05);
+}
+
+/* Tipografía */
+.rsi-section-title {
+    font-family: var(--rsi-font-secondary);
+    font-weight: 700;
+    font-size: 2.2rem;
+    margin-bottom: var(--rsi-spacing-lg);
+    line-height: 1.2;
+}
+
+.rsi-section-subtitle {
+    font-size: 1.2rem;
+    color: var(--rsi-gray-600);
+    margin-bottom: var(--rsi-spacing-2xl);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.rsi-section-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: var(--rsi-spacing-xl);
+    color: var(--rsi-gray-600);
+}
+
+/* Tarjetas de valor */
+.rsi-value-card {
+    background: var(--rsi-white);
+    border-radius: var(--rsi-radius-lg);
+    padding: var(--rsi-spacing-xl);
+    text-align: center;
+    box-shadow: var(--rsi-shadow-md);
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-value-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--rsi-shadow-xl);
+}
+
+.rsi-value-icon {
+    font-size: 2.5rem;
+    color: var(--rsi-primary);
+    margin-bottom: var(--rsi-spacing-lg);
+}
+
+.rsi-card-title {
+    color: var(--rsi-primary);
+    font-size: 1.3rem;
+    margin-bottom: var(--rsi-spacing-md);
+}
+
+.rsi-card-text {
+    color: var(--rsi-gray-600);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Tarjetas de estadísticas */
+.rsi-stat-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: var(--rsi-spacing-xl);
+    border-radius: var(--rsi-radius-lg);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-stat-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.rsi-stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    display: block;
+    margin-bottom: var(--rsi-spacing-sm);
+}
+
+.rsi-stat-label {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+/* Botones */
+.rsi-primary-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: var(--rsi-primary);
+    color: var(--rsi-white) !important;
+    border: none;
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.rsi-primary-btn:hover {
+    background-color: var(--rsi-primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-primary);
+}
+
+.rsi-cta-button {
+    background-color: var(--rsi-white);
+    color: var(--rsi-primary) !important;
+    border: none;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: var(--rsi-radius-full);
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    margin-top: var(--rsi-spacing-xl);
+}
+
+.rsi-cta-button:hover {
+    background-color: var(--rsi-accent);
+    color: var(--rsi-white) !important;
+    transform: translateY(-3px);
+    box-shadow: var(--rsi-shadow-lg);
+}
+
+/* ========== MODO OSCURO ========== */
+body.dark-mode .rsi-about-section {
+    background-color: var(--rsi-primary-dark);
+}
+
+body.dark-mode .rsi-value-section {
+    background-color: var(--rsi-bg-secondary);
+}
+
+body.dark-mode .rsi-value-card {
+    background: var(--rsi-bg-card);
+    border: 1px solid var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-value-card .rsi-card-title {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-value-card .rsi-card-text {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-value-icon i {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-products-section {
+    background-color: var(--rsi-bg-primary);
+}
+
+body.dark-mode .rsi-stats-section {
+    background: linear-gradient(rgba(15, 15, 26, 0.95), rgba(15, 15, 26, 0.95));
+}
+
+body.dark-mode .rsi-services-section {
+    background-color: var(--rsi-primary-dark);
+}
+
+body.dark-mode .rsi-blog-section {
+    background-color: var(--rsi-bg-primary);
+}
+
+body.dark-mode .rsi-section-subtitle {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-section-description {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-primary-btn {
+    background-color: var(--rsi-primary);
+    color: var(--rsi-black) !important;
+}
+
+body.dark-mode .rsi-primary-btn:hover {
+    background-color: var(--rsi-primary-light);
+}
+
+body.dark-mode .rsi-cta-button {
+    background-color: var(--rsi-primary);
+    color: var(--rsi-black) !important;
+}
+
+body.dark-mode .rsi-cta-button:hover {
+    background-color: var(--rsi-primary-light);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .rsi-section-content {
+        flex-direction: column;
+    }
+    
+    .rsi-reverse {
+        flex-direction: column;
+    }
+    
+    .rsi-image-wrapper {
+        order: -1;
+        max-width: 50%;
+    }
+    
+    .rsi-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--rsi-spacing-lg);
+    }
+}
+
+@media (max-width: 768px) {
+    .rsi-section-title {
+        font-size: 1.8rem;
+    }
+    
+    .rsi-stats-section {
+        padding: var(--rsi-spacing-4xl) 0;
+    }
+    
+    .rsi-stat-number {
+        font-size: 2rem;
+    }
+    
+    .rsi-value-grid {
+        gap: var(--rsi-spacing-lg);
+    }
+}
+
+@media (max-width: 576px) {
+    .rsi-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .rsi-section-title {
+        font-size: 1.6rem;
+    }
+    
+    .rsi-section-content {
+        gap: var(--rsi-spacing-lg);
+    }
+    
+    .rsi-image-wrapper {
+        max-width: 80%;
+    }
+}
