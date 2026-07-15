@@ -10,11 +10,11 @@
 export async function loadLayout() {
     // Cargar navbar y footer en paralelo
     const [navbarHTML, footerHTML] = await Promise.all([
-        fetch('/modules/visitor/layout/navbar.html').then(r => {
+        fetch('/components/visitor/navbarVisitor.html').then(r => {
             if (!r.ok) throw new Error('Error cargando navbar');
             return r.text();
         }),
-        fetch('/modules/visitor/layout/footer.html').then(r => {
+        fetch('/components/visitor/footerVisitor.html').then(r => {
             if (!r.ok) throw new Error('Error cargando footer');
             return r.text();
         })

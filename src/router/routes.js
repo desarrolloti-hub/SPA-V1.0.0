@@ -3,40 +3,40 @@
    ======================================== */
 
 // Importar controllers de vistas
-import { homeController } from '../modules/visitor/home/homeController.js';
-import { init404Controller } from '../modules/shared/errors/404Controller.js';
+import { homeController } from '../pages/visitor/home/homeController.js';
+import { init404Controller } from '../pages/shared/errors/404Controller.js';
 
 export const routes = {
     "/": {
-        view: "/modules/visitor/home/home.html",
+        view: "/pages/visitor/home/home.html",
         controller: homeController
     },
     "/products": {
-        view: "/modules/visitor/products/products.html",
+        view: "/pages/visitor/products/products.html",
         controller: null
     },
     "/services": {
-        view: "/src/views/services.html",
+        view: "/pages/visitor/services/services.html",
         controller: null
     },
     "/nosotros": {
-        view: "/src/views/nosotros.html",
+        view: "/pages/visitor/nosotros/nosotros.html",
         controller: null
     },
     "/contacto": {
-        view: "/src/views/contacto.html",
+        view: "/pages/visitor/contacto/contacto.html",
         controller: null
     },
     "/blogs": {
-        view: "/src/views/blogs.html",
+        view: "/pages/visitor/blogs/blogs.html",
         controller: null
     },
     "/admin": {
-        view: "/src/views/admin.html",
+        view: "/pages/visitor/admin/admin.html",
         controller: null
     },
     '/404': {
-    view: '/modules/shared/errors/404.html',
+    view: '/pages/shared/errors/404.html',
     controller: init404Controller
     }
 };

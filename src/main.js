@@ -1,7 +1,7 @@
 
-import { loadLayout } from './modules/visitor/layout/loadLayout.js';
-import { initNavbarController } from './modules/visitor/layout/navbarController.js';
-import { initFooterController } from './modules/visitor/layout/footerController.js';
+import { loadLayout } from './components/shared/loadLayout.js';
+import { initNavbarController } from './components/visitor/navbarController.js';
+import { initFooterController } from './components/visitor/footerController.js';
 import { initRouter } from './router/router.js';
 
 function loadExternalScripts() {

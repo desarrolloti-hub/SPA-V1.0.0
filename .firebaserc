@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "rsienterprise",
+    "RSI": "rsienterprise"
+  },
+  "targets": {},
+  "etags": {}
+}
