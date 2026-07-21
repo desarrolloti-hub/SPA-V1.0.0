@@ -1,198 +1,535 @@
 /* ========================================
-   FORMULARIOS - Sistema completo
+   FORMS - Estilos genéricos reutilizables
    ======================================== */
 
-/* Grupo de formulario */
+/* ==========================================
+   CONTENEDOR DEL FORMULARIO
+   ========================================== */
+
+/* Tarjeta contenedora del formulario */
+.rsi-form-card {
+    max-width: 680px;
+    margin: 0 auto;
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-xl);
+    padding: var(--rsi-spacing-3xl);
+    box-shadow: var(--rsi-shadow-lg);
+    border: 1px solid var(--rsi-gray-200);
+    position: relative;
+    overflow: hidden;
+    transition: all var(--rsi-transition-base);
+}
+
+/* Línea superior decorativa con gradiente animado */
+.rsi-form-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(to right, var(--rsi-primary), var(--rsi-accent), var(--rsi-primary));
+    background-size: 200% auto;
+    animation: goldShineHorizontal 3s linear infinite;
+}
+
+/* ==========================================
+   HEADER DEL FORMULARIO
+   ========================================== */
+
+.rsi-form-header {
+    text-align: center;
+    margin-bottom: var(--rsi-spacing-xl);
+}
+
+/* Icono decorativo */
+.rsi-form-header .rsi-form-icon {
+    font-size: 3.5rem;
+    background: var(--rsi-gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: var(--rsi-spacing-sm);
+    display: inline-block;
+}
+
+/* Título */
+.rsi-form-header h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    margin-bottom: var(--rsi-spacing-sm);
+}
+
+/* Subtítulo */
+.rsi-form-header p {
+    color: var(--rsi-gray-600);
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* ==========================================
+   GRUPOS DE FORMULARIO
+   ========================================== */
+
 .rsi-form-group {
     margin-bottom: var(--rsi-spacing-lg);
+    position: relative;
 }
 
-.rsi-form-label {
+/* Etiquetas */
+.rsi-form-group label {
     display: block;
-    margin-bottom: var(--rsi-spacing-sm);
     font-weight: 600;
-    color: var(--rsi-gray-700);
+    font-size: 0.9rem;
+    color: var(--rsi-text-primary);
+    margin-bottom: var(--rsi-spacing-sm);
 }
 
-.rsi-form-label-required::after {
-    content: '*';
+/* Etiqueta con campo requerido */
+.rsi-form-group label .rsi-required {
     color: var(--rsi-danger);
     margin-left: var(--rsi-spacing-xs);
 }
 
-/* Inputs */
-.rsi-input {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid var(--rsi-gray-200);
-    border-radius: var(--rsi-radius-md);
-    transition: all var(--rsi-transition-base);
-    font-size: 1rem;
-}
+/* ==========================================
+   INPUTS CON ÍCONO
+   ========================================== */
 
-.rsi-input:focus {
-    border-color: var(--rsi-primary);
-    box-shadow: 0 0 0 3px rgba(28, 25, 72, 0.1);
-    outline: none;
-}
-
-.rsi-input-error {
-    border-color: var(--rsi-danger);
-}
-
-.rsi-input-error:focus {
-    border-color: var(--rsi-danger);
-    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
-}
-
-.rsi-input-success {
-    border-color: var(--rsi-success);
-}
-
-/* Textarea */
-.rsi-textarea {
-    min-height: 120px;
-    resize: vertical;
-}
-
-/* Select */
-.rsi-select {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid var(--rsi-gray-200);
-    border-radius: var(--rsi-radius-md);
-    background-color: var(--rsi-white);
-    cursor: pointer;
-    transition: all var(--rsi-transition-base);
-}
-
-.rsi-select:focus {
-    border-color: var(--rsi-primary);
-    outline: none;
-}
-
-/* Checkbox y Radio */
-.rsi-checkbox,
-.rsi-radio {
-    display: flex;
-    align-items: center;
-    gap: var(--rsi-spacing-sm);
-    cursor: pointer;
-}
-
-.rsi-checkbox input,
-.rsi-radio input {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-}
-
-.rsi-checkbox label,
-.rsi-radio label {
-    margin: 0;
-    cursor: pointer;
-    font-weight: normal;
-}
-
-/* Switch toggle */
-.rsi-switch {
+/* Contenedor del input con ícono */
+.rsi-input-wrapper {
     position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
+    width: 100%;
 }
 
-.rsi-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.rsi-switch-slider {
+/* Ícono dentro del input - IZQUIERDA */
+.rsi-input-icon {
     position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--rsi-gray-500);
+    font-size: 1.1rem;
+    transition: color var(--rsi-transition-base);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Ícono para textarea - alineado arriba a la izquierda */
+.rsi-input-wrapper textarea ~ .rsi-input-icon {
+    top: 18px;
+    transform: none;
+}
+
+/* Inputs, textarea y select */
+.rsi-form-group input,
+.rsi-form-group textarea,
+.rsi-form-group select {
+    width: 100%;
+    padding: 14px 16px 14px 48px;
+    border: 2px solid var(--rsi-gray-200);
+    border-radius: var(--rsi-radius-md);
+    font-size: 1rem;
+    font-family: var(--rsi-font-secondary);
+    background-color: var(--rsi-bg-input);
+    color: var(--rsi-text-primary);
+    transition: all var(--rsi-transition-base);
+    outline: none;
+    box-sizing: border-box;
+}
+
+/* Select específico (sin ícono a la izquierda) */
+.rsi-form-group select {
+    padding: 14px 40px 14px 16px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236c757d' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
     cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--rsi-gray-400);
-    transition: var(--rsi-transition-base);
-    border-radius: var(--rsi-radius-full);
 }
 
-.rsi-switch-slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: var(--rsi-transition-base);
-    border-radius: 50%;
+/* Select con ícono a la izquierda */
+.rsi-input-wrapper select {
+    padding: 14px 40px 14px 48px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236c757d' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    cursor: pointer;
 }
 
-input:checked + .rsi-switch-slider {
-    background-color: var(--rsi-primary);
+/* Textarea específico */
+.rsi-form-group textarea {
+    min-height: 140px;
+    resize: vertical;
+    line-height: 1.6;
+    padding-top: 16px;
 }
 
-input:checked + .rsi-switch-slider:before {
-    transform: translateX(26px);
+/* ==========================================
+   ESTADOS DE INPUTS
+   ========================================== */
+
+/* Placeholder */
+.rsi-form-group input::placeholder,
+.rsi-form-group textarea::placeholder {
+    color: var(--rsi-gray-400);
+    font-weight: 400;
 }
 
-/* Mensajes de error */
-.rsi-form-error {
+/* Hover */
+.rsi-form-group input:hover,
+.rsi-form-group textarea:hover,
+.rsi-form-group select:hover {
+    border-color: var(--rsi-gray-400);
+}
+
+/* Focus */
+.rsi-form-group input:focus,
+.rsi-form-group textarea:focus,
+.rsi-form-group select:focus {
+    border-color: var(--rsi-accent);
+    box-shadow: 0 0 0 4px rgba(143, 148, 251, 0.15);
+    background-color: var(--rsi-white);
+}
+
+/* Ícono cambia de color en focus */
+.rsi-form-group input:focus ~ .rsi-input-icon,
+.rsi-form-group textarea:focus ~ .rsi-input-icon,
+.rsi-form-group select:focus ~ .rsi-input-icon {
+    color: var(--rsi-accent);
+}
+
+/* ==========================================
+   ESTADO DE ERROR
+   ========================================== */
+
+.rsi-form-group.error input,
+.rsi-form-group.error textarea,
+.rsi-form-group.error select {
+    border-color: var(--rsi-danger);
+}
+
+.rsi-form-group.error .rsi-input-icon {
     color: var(--rsi-danger);
-    font-size: 0.8rem;
+}
+
+.rsi-form-group.error input:focus,
+.rsi-form-group.error textarea:focus,
+.rsi-form-group.error select:focus {
+    border-color: var(--rsi-danger);
+    box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.15);
+}
+
+.rsi-form-error-message {
+    color: var(--rsi-danger);
+    font-size: 0.85rem;
     margin-top: var(--rsi-spacing-xs);
+    display: none;
+}
+
+.rsi-form-group.error .rsi-form-error-message {
     display: block;
 }
 
-.rsi-form-hint {
-    color: var(--rsi-gray-500);
-    font-size: 0.8rem;
-    margin-top: var(--rsi-spacing-xs);
+/* ==========================================
+   ESTADO DE ÉXITO
+   ========================================== */
+
+.rsi-form-group.success input,
+.rsi-form-group.success textarea,
+.rsi-form-group.success select {
+    border-color: var(--rsi-success);
 }
 
-/* Layout de formularios */
+.rsi-form-group.success .rsi-input-icon {
+    color: var(--rsi-success);
+}
+
+.rsi-form-group.success input:focus,
+.rsi-form-group.success textarea:focus,
+.rsi-form-group.success select:focus {
+    border-color: var(--rsi-success);
+    box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.15);
+}
+
+/* ==========================================
+   BOTONES
+   ========================================== */
+
+/* Botón primario (submit) */
+.rsi-btn-submit {
+    width: 100%;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, var(--rsi-primary), var(--rsi-primary-dark));
+    color: var(--rsi-white);
+    border: none;
+    border-radius: var(--rsi-radius-md);
+    font-size: 1.05rem;
+    font-weight: 600;
+    font-family: var(--rsi-font-secondary);
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--rsi-spacing-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    margin-top: var(--rsi-spacing-sm);
+}
+
+/* Efecto shine en el botón */
+.rsi-btn-submit::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.05), transparent);
+    transform: rotate(45deg) translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.rsi-btn-submit:hover::after {
+    transform: rotate(45deg) translateX(100%);
+}
+
+.rsi-btn-submit:hover {
+    background: linear-gradient(135deg, var(--rsi-primary-dark), #0a0828);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(28, 25, 72, 0.35);
+}
+
+.rsi-btn-submit:active {
+    transform: translateY(0);
+}
+
+.rsi-btn-submit i {
+    font-size: 1.2rem;
+}
+
+/* Botón secundario */
+.rsi-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--rsi-spacing-sm);
+    padding: 14px 28px;
+    background: transparent;
+    color: var(--rsi-primary);
+    border: 2px solid var(--rsi-primary);
+    border-radius: var(--rsi-radius-md);
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: var(--rsi-font-secondary);
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    text-decoration: none;
+}
+
+.rsi-btn-secondary:hover {
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-primary);
+}
+
+/* ==========================================
+   LAYOUT DE FORMULARIOS
+   ========================================== */
+
+/* Dos columnas */
 .rsi-form-row {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: var(--rsi-spacing-lg);
 }
 
-.rsi-form-inline {
+/* Tres columnas */
+.rsi-form-row-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: var(--rsi-spacing-lg);
+}
+
+/* Checkbox y Radio */
+.rsi-checkbox-group,
+.rsi-radio-group {
     display: flex;
-    gap: var(--rsi-spacing-md);
-    align-items: flex-end;
-    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    margin-bottom: var(--rsi-spacing-sm);
 }
 
-/* Formulario con tarjeta */
-.rsi-form-card {
-    background: var(--rsi-white);
-    border-radius: var(--rsi-radius-lg);
-    padding: var(--rsi-spacing-xl);
-    box-shadow: var(--rsi-shadow-lg);
+.rsi-checkbox-group input,
+.rsi-radio-group input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--rsi-primary);
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
 }
 
-/* Contact form */
-.rsi-contact-form {
-    background: var(--rsi-white);
-    border-radius: var(--rsi-radius-lg);
-    padding: var(--rsi-spacing-xl);
-    box-shadow: var(--rsi-shadow-lg);
+.rsi-checkbox-group label,
+.rsi-radio-group label {
+    margin: 0;
+    font-weight: 400;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: var(--rsi-gray-700);
 }
 
-/* Responsive */
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
 @media (max-width: 768px) {
-    .rsi-form-row {
+    .rsi-form-card {
+        padding: var(--rsi-spacing-xl);
+    }
+    
+    .rsi-form-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .rsi-form-row,
+    .rsi-form-row-3 {
         grid-template-columns: 1fr;
         gap: var(--rsi-spacing-md);
     }
-    
-    .rsi-form-inline {
-        flex-direction: column;
-        align-items: stretch;
+}
+
+@media (max-width: 576px) {
+    .rsi-form-card {
+        padding: var(--rsi-spacing-lg);
+        border-radius: var(--rsi-radius-lg);
+        margin: 0 var(--rsi-spacing-sm);
     }
+    
+    .rsi-form-group input,
+    .rsi-form-group textarea,
+    .rsi-form-group select {
+        padding: 12px 14px 12px 44px;
+        font-size: 0.95rem;
+    }
+    
+    .rsi-input-icon {
+        left: 14px;
+        font-size: 1rem;
+    }
+    
+    .rsi-input-wrapper textarea ~ .rsi-input-icon {
+        top: 14px;
+    }
+    
+    .rsi-btn-submit {
+        padding: 14px 24px;
+        font-size: 0.95rem;
+    }
+    
+    .rsi-form-header .rsi-form-icon {
+        font-size: 2.8rem;
+    }
+    
+    .rsi-form-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .rsi-form-header p {
+        font-size: 0.9rem;
+    }
+}
+
+/* ==========================================
+   MODO OSCURO
+   ========================================== */
+
+body.dark-mode .rsi-form-card {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-form-header h2 {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-form-header p {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-form-group label {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-form-group input,
+body.dark-mode .rsi-form-group textarea,
+body.dark-mode .rsi-form-group select {
+    background: var(--rsi-bg-input);
+    border-color: var(--rsi-gray-300);
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-form-group input::placeholder,
+body.dark-mode .rsi-form-group textarea::placeholder {
+    color: var(--rsi-gray-500);
+}
+
+body.dark-mode .rsi-form-group input:hover,
+body.dark-mode .rsi-form-group textarea:hover,
+body.dark-mode .rsi-form-group select:hover {
+    border-color: var(--rsi-gray-400);
+}
+
+body.dark-mode .rsi-form-group input:focus,
+body.dark-mode .rsi-form-group textarea:focus,
+body.dark-mode .rsi-form-group select:focus {
+    border-color: var(--rsi-gold-base);
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+    background: var(--rsi-bg-input);
+}
+
+body.dark-mode .rsi-input-icon {
+    color: var(--rsi-gray-500);
+}
+
+body.dark-mode .rsi-form-group input:focus ~ .rsi-input-icon,
+body.dark-mode .rsi-form-group textarea:focus ~ .rsi-input-icon,
+body.dark-mode .rsi-form-group select:focus ~ .rsi-input-icon {
+    color: var(--rsi-gold-base);
+}
+
+body.dark-mode .rsi-btn-submit {
+    background: var(--rsi-gold-gradient);
+    color: var(--rsi-black);
+}
+
+body.dark-mode .rsi-btn-submit:hover {
+    background: var(--rsi-gold-gradient-hover);
+    box-shadow: var(--rsi-shadow-gold-lg);
+}
+
+body.dark-mode .rsi-btn-secondary {
+    border-color: var(--rsi-gold-base);
+    color: var(--rsi-gold-base);
+}
+
+body.dark-mode .rsi-btn-secondary:hover {
+    background: var(--rsi-gold-gradient);
+    color: var(--rsi-black);
+    border-color: transparent;
+}
+
+body.dark-mode .rsi-checkbox-group input,
+body.dark-mode .rsi-radio-group input {
+    accent-color: var(--rsi-gold-base);
+}
+
+body.dark-mode .rsi-checkbox-group label,
+body.dark-mode .rsi-radio-group label {
+    color: var(--rsi-gray-600);
 }

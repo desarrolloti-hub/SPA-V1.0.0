@@ -1,0 +1,617 @@
+/* ========================================
+   FORM STEPS - Estilos para formularios por pasos
+   ======================================== */
+
+/* ==========================================
+   CONTENEDOR PRINCIPAL
+   ========================================== */
+
+.rsi-form-steps {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--rsi-spacing-xl);
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-xl);
+    box-shadow: var(--rsi-shadow-lg);
+    border: 1px solid var(--rsi-gray-200);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Línea superior decorativa */
+.rsi-form-steps::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(to right, var(--rsi-primary), var(--rsi-accent), var(--rsi-primary));
+    background-size: 200% auto;
+    animation: goldShineHorizontal 3s linear infinite;
+}
+
+/* ==========================================
+   INDICADOR DE PASOS
+   ========================================== */
+
+.rsi-steps-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--rsi-spacing-md);
+    margin-bottom: var(--rsi-spacing-xl);
+    padding: 0 var(--rsi-spacing-lg);
+}
+
+.rsi-step-dot {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-step-number {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--rsi-white);
+    background: var(--rsi-gray-400);
+    transition: all var(--rsi-transition-base);
+    position: relative;
+    cursor: pointer;
+}
+
+.rsi-step-number.active {
+    background: var(--rsi-primary);
+    box-shadow: 0 0 0 4px rgba(28, 25, 72, 0.15);
+}
+
+.rsi-step-number.completed {
+    background: var(--rsi-success);
+}
+
+.rsi-step-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--rsi-gray-500);
+    transition: color var(--rsi-transition-base);
+}
+
+.rsi-step-label.active {
+    color: var(--rsi-primary);
+}
+
+.rsi-step-label.completed {
+    color: var(--rsi-success);
+}
+
+/* Línea conectora entre pasos */
+.rsi-step-line {
+    flex: 1;
+    max-width: 60px;
+    height: 3px;
+    background: var(--rsi-gray-300);
+    border-radius: var(--rsi-radius-full);
+    transition: background var(--rsi-transition-base);
+}
+
+.rsi-step-line.active {
+    background: var(--rsi-primary);
+}
+
+.rsi-step-line.completed {
+    background: var(--rsi-success);
+}
+
+/* ==========================================
+   CONTENEDOR DE PASOS
+   ========================================== */
+
+.rsi-steps-container {
+    position: relative;
+    overflow: hidden;
+}
+
+/* ==========================================
+   CADA PASO - DESKTOP OCUPA TODO EL ESPACIO
+   ========================================== */
+
+.rsi-step-panel {
+    display: none;
+    animation: slideIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.rsi-step-panel.active {
+    display: block;
+}
+
+/* Animación de entrada */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ==========================================
+   CABECERA DEL PASO
+   ========================================== */
+
+.rsi-step-header {
+    text-align: center;
+    margin-bottom: var(--rsi-spacing-lg);
+}
+
+.rsi-step-header .rsi-step-icon {
+    font-size: 2.5rem;
+    background: var(--rsi-gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: var(--rsi-spacing-xs);
+    display: inline-block;
+}
+
+.rsi-step-header h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    margin-bottom: var(--rsi-spacing-xs);
+}
+
+.rsi-step-header p {
+    color: var(--rsi-gray-600);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* ==========================================
+   CONTENIDO DEL FORMULARIO
+   ========================================== */
+
+.rsi-step-body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================
+   CONTADOR DE PROGRESO
+   ========================================== */
+
+.rsi-step-counter {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--rsi-gray-500);
+    margin-top: var(--rsi-spacing-md);
+    font-weight: 500;
+}
+
+.rsi-step-counter span {
+    color: var(--rsi-primary);
+    font-weight: 700;
+}
+
+/* ==========================================
+   BOTONES DE NAVEGACIÓN
+   ========================================== */
+
+.rsi-step-actions {
+    display: flex;
+    gap: var(--rsi-spacing-md);
+    margin-top: var(--rsi-spacing-xl);
+    justify-content: space-between;
+}
+
+.rsi-step-actions .rsi-btn-prev {
+    padding: 12px 28px;
+    background: transparent;
+    color: var(--rsi-gray-600);
+    border: 2px solid var(--rsi-gray-300);
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    font-family: var(--rsi-font-secondary);
+}
+
+.rsi-step-actions .rsi-btn-prev:hover {
+    border-color: var(--rsi-primary);
+    color: var(--rsi-primary);
+    transform: translateX(-3px);
+}
+
+.rsi-step-actions .rsi-btn-next {
+    padding: 12px 32px;
+    background: linear-gradient(135deg, var(--rsi-primary), var(--rsi-primary-dark));
+    color: var(--rsi-white);
+    border: none;
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    font-family: var(--rsi-font-secondary);
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-step-actions .rsi-btn-next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(28, 25, 72, 0.35);
+}
+
+.rsi-step-actions .rsi-btn-next:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.rsi-step-actions .rsi-btn-submit-step {
+    padding: 12px 40px;
+    background: var(--rsi-gold-gradient);
+    color: var(--rsi-black);
+    border: none;
+    border-radius: var(--rsi-radius-md);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    font-family: var(--rsi-font-secondary);
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-step-actions .rsi-btn-submit-step:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-gold-lg);
+}
+
+/* ==========================================
+   DESKTOP - OCUPA MÁS ESPACIO
+   ========================================== */
+
+@media (min-width: 992px) {
+    /* ✅ Formulario más ancho y con padding generoso */
+    .rsi-form-steps {
+        max-width: 1000px;
+        padding: var(--rsi-spacing-2xl) var(--rsi-spacing-3xl);
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* ✅ Indicador más espaciado */
+    .rsi-steps-indicator {
+        gap: var(--rsi-spacing-xl);
+        margin-bottom: var(--rsi-spacing-xl);
+    }
+
+    .rsi-step-line {
+        max-width: 80px;
+    }
+
+    /* ✅ Contenedor de pasos ocupa todo el espacio */
+    .rsi-steps-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 420px;
+    }
+
+    /* ✅ Cada paso ocupa toda la altura disponible */
+    .rsi-step-panel {
+        min-height: 380px;
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .rsi-step-panel.active {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* ✅ Header más compacto */
+    .rsi-step-header {
+        margin-bottom: var(--rsi-spacing-lg);
+    }
+
+    .rsi-step-header h3 {
+        font-size: 1.6rem;
+    }
+
+    /* ✅ Grid de 2 columnas con más espacio */
+    .rsi-form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--rsi-spacing-xl);
+    }
+
+    /* ✅ Campos más grandes y espaciosos */
+    .rsi-form-group {
+        margin-bottom: var(--rsi-spacing-lg);
+    }
+
+    .rsi-form-group input,
+    .rsi-form-group textarea,
+    .rsi-form-group select {
+        padding: 16px 18px 16px 52px;
+        font-size: 1rem;
+    }
+
+    .rsi-input-icon {
+        left: 18px;
+        font-size: 1.2rem;
+    }
+
+    /* ✅ Botones más grandes */
+    .rsi-step-actions .rsi-btn-next,
+    .rsi-step-actions .rsi-btn-prev,
+    .rsi-step-actions .rsi-btn-submit-step {
+        padding: 14px 40px;
+        font-size: 1rem;
+    }
+
+    /* ✅ Upload de foto más grande */
+    .rsi-upload-preview {
+        min-height: 140px;
+        padding: var(--rsi-spacing-xl);
+    }
+
+    .rsi-upload-preview i {
+        font-size: 3rem;
+    }
+
+    .rsi-upload-preview img {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* ==========================================
+   TABLET - Ajuste intermedio
+   ========================================== */
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .rsi-form-steps {
+        max-width: 750px;
+        padding: var(--rsi-spacing-xl);
+        min-height: 60vh;
+    }
+
+    .rsi-step-panel {
+        min-height: 350px;
+    }
+
+    .rsi-form-row {
+        gap: var(--rsi-spacing-lg);
+    }
+}
+
+/* ==========================================
+   MOBILE - Scroll normal
+   ========================================== */
+
+@media (max-width: 767px) {
+    .rsi-form-steps {
+        padding: var(--rsi-spacing-lg);
+        margin: 0 var(--rsi-spacing-sm);
+        max-width: 100%;
+        min-height: auto;
+        border-radius: var(--rsi-radius-lg);
+    }
+
+    .rsi-steps-indicator {
+        gap: var(--rsi-spacing-sm);
+        flex-wrap: wrap;
+        margin-bottom: var(--rsi-spacing-lg);
+    }
+
+    .rsi-step-number {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+    }
+
+    .rsi-step-label {
+        font-size: 0.7rem;
+    }
+
+    .rsi-step-line {
+        max-width: 25px;
+    }
+
+    .rsi-step-header h3 {
+        font-size: 1.2rem;
+    }
+
+    .rsi-step-actions {
+        flex-direction: column;
+        gap: var(--rsi-spacing-sm);
+    }
+
+    .rsi-step-actions .rsi-btn-prev,
+    .rsi-step-actions .rsi-btn-next,
+    .rsi-step-actions .rsi-btn-submit-step {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .rsi-step-panel {
+        min-height: auto;
+        padding: var(--rsi-spacing-sm) 0;
+    }
+
+    .rsi-step-panel.active {
+        display: block;
+    }
+
+    .rsi-steps-container {
+        min-height: auto;
+    }
+
+    .rsi-form-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--rsi-spacing-md);
+    }
+
+    .rsi-form-group input,
+    .rsi-form-group textarea,
+    .rsi-form-group select {
+        padding: 12px 14px 12px 44px;
+        font-size: 0.95rem;
+    }
+
+    .rsi-input-icon {
+        left: 14px;
+        font-size: 1rem;
+    }
+
+    .rsi-upload-preview {
+        min-height: 90px;
+        padding: var(--rsi-spacing-lg);
+    }
+
+    .rsi-upload-preview i {
+        font-size: 2rem;
+    }
+
+    .rsi-upload-preview img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .rsi-step-counter {
+        margin-top: var(--rsi-spacing-md);
+    }
+}
+
+@media (max-width: 576px) {
+    .rsi-form-steps {
+        padding: var(--rsi-spacing-md);
+        margin: 0 var(--rsi-spacing-xs);
+    }
+
+    .rsi-steps-indicator {
+        gap: var(--rsi-spacing-xs);
+    }
+
+    .rsi-step-number {
+        width: 26px;
+        height: 26px;
+        font-size: 0.7rem;
+    }
+
+    .rsi-step-label {
+        display: none;
+    }
+
+    .rsi-step-line {
+        max-width: 20px;
+    }
+
+    .rsi-step-header h3 {
+        font-size: 1rem;
+    }
+
+    .rsi-step-header p {
+        font-size: 0.85rem;
+    }
+}
+
+/* ==========================================
+   MODO OSCURO
+   ========================================== */
+
+body.dark-mode .rsi-form-steps {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-step-number {
+    background: var(--rsi-gray-500);
+}
+
+body.dark-mode .rsi-step-number.active {
+    background: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-step-number.completed {
+    background: var(--rsi-success);
+}
+
+body.dark-mode .rsi-step-label {
+    color: var(--rsi-gray-500);
+}
+
+body.dark-mode .rsi-step-label.active {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-step-line {
+    background: var(--rsi-gray-400);
+}
+
+body.dark-mode .rsi-step-line.active {
+    background: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-step-line.completed {
+    background: var(--rsi-success);
+}
+
+body.dark-mode .rsi-step-header h3 {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-step-header p {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-step-counter {
+    color: var(--rsi-gray-500);
+}
+
+body.dark-mode .rsi-step-counter span {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-step-actions .rsi-btn-prev {
+    border-color: var(--rsi-gray-400);
+    color: var(--rsi-gray-500);
+}
+
+body.dark-mode .rsi-step-actions .rsi-btn-prev:hover {
+    border-color: var(--rsi-gold-base);
+    color: var(--rsi-gold-base);
+}
+
+body.dark-mode .rsi-step-actions .rsi-btn-next {
+    background: var(--rsi-gold-gradient);
+    color: var(--rsi-black);
+}
+
+body.dark-mode .rsi-step-actions .rsi-btn-next:hover {
+    box-shadow: var(--rsi-shadow-gold-lg);
+}
+
+body.dark-mode .rsi-step-actions .rsi-btn-submit-step {
+    background: var(--rsi-gold-gradient);
+    color: var(--rsi-black);
+}

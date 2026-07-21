@@ -1,0 +1,322 @@
+/* ========================================
+   CONTACTO PAGE - Solo específico
+   ======================================== */
+
+.rsi-contact-section {
+    background-color: var(--rsi-bg-secondary);
+}
+
+/* ==========================================
+   TÍTULOS
+   ========================================== */
+
+.rsi-contact-title {
+    font-family: var(--rsi-font-secondary);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    text-align: center;
+    margin-bottom: var(--rsi-spacing-lg);
+    line-height: 1.3;
+}
+
+.rsi-contact-title .rsi-text-gold {
+    background: var(--rsi-gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+.rsi-contact-subtitle {
+    font-size: 1.15rem;
+    color: var(--rsi-gray-600);
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto var(--rsi-spacing-2xl);
+    line-height: 1.7;
+}
+
+/* ==========================================
+   UBICACIONES - GRID DE TARJETAS
+   ========================================== */
+
+.rsi-locations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: var(--rsi-spacing-xl);
+    margin-bottom: var(--rsi-spacing-4xl);
+}
+
+.rsi-location-card {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--rsi-shadow-md);
+    transition: all var(--rsi-transition-base);
+    border: 1px solid var(--rsi-gray-200);
+}
+
+.rsi-location-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--rsi-shadow-xl);
+    border-color: var(--rsi-primary);
+}
+
+.rsi-location-header {
+    background: linear-gradient(135deg, var(--rsi-primary), var(--rsi-primary-dark));
+    color: var(--rsi-white);
+    padding: var(--rsi-spacing-lg) var(--rsi-spacing-xl);
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-md);
+}
+
+.rsi-location-header i {
+    font-size: 1.8rem;
+    color: var(--rsi-gold-base);
+}
+
+.rsi-location-header h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.rsi-location-body {
+    padding: var(--rsi-spacing-xl);
+}
+
+.rsi-location-body p {
+    margin-bottom: var(--rsi-spacing-sm);
+    color: var(--rsi-gray-700);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-location-body p i {
+    width: 20px;
+    color: var(--rsi-primary);
+    font-size: 1rem;
+}
+
+.rsi-location-body a {
+    color: var(--rsi-primary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--rsi-transition-base);
+}
+
+.rsi-location-body a:hover {
+    color: var(--rsi-accent);
+    text-decoration: underline;
+}
+
+.rsi-location-map {
+    margin-top: var(--rsi-spacing-md);
+    border-radius: var(--rsi-radius-md);
+    overflow: hidden;
+    box-shadow: var(--rsi-shadow-sm);
+}
+
+.rsi-location-map iframe {
+    width: 100%;
+    height: 220px;
+    border: none;
+    display: block;
+}
+
+/* ==========================================
+   INFORMACIÓN DE CONTACTO
+   ========================================== */
+
+.rsi-contact-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--rsi-spacing-xl);
+    margin-top: var(--rsi-spacing-3xl);
+}
+
+.rsi-contact-info-item {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-lg);
+    padding: var(--rsi-spacing-xl);
+    text-align: center;
+    box-shadow: var(--rsi-shadow-sm);
+    border: 1px solid var(--rsi-gray-200);
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-contact-info-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--rsi-shadow-md);
+    border-color: var(--rsi-primary);
+}
+
+.rsi-contact-info-item .rsi-info-icon {
+    font-size: 2.5rem;
+    background: var(--rsi-gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: var(--rsi-spacing-md);
+    display: inline-block;
+}
+
+.rsi-contact-info-item h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+    margin-bottom: var(--rsi-spacing-sm);
+}
+
+.rsi-contact-info-item p {
+    color: var(--rsi-gray-700);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.rsi-contact-info-item a {
+    color: var(--rsi-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.rsi-contact-info-item a:hover {
+    color: var(--rsi-accent);
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 992px) {
+    .rsi-contact-title {
+        font-size: 2.2rem;
+    }
+    
+    .rsi-locations-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .rsi-contact-section {
+        padding: calc(var(--rsi-spacing-3xl) + 40px) 0 var(--rsi-spacing-3xl);
+    }
+    
+    .rsi-contact-title {
+        font-size: 1.8rem;
+    }
+    
+    .rsi-contact-subtitle {
+        font-size: 1rem;
+    }
+    
+    .rsi-locations-grid {
+        grid-template-columns: 1fr;
+        gap: var(--rsi-spacing-lg);
+    }
+    
+    .rsi-location-map iframe {
+        height: 180px;
+    }
+    
+    .rsi-contact-info-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .rsi-contact-title {
+        font-size: 1.5rem;
+    }
+    
+    .rsi-contact-subtitle {
+        font-size: 0.95rem;
+    }
+    
+    .rsi-contact-info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .rsi-location-header {
+        padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
+    }
+    
+    .rsi-location-header h3 {
+        font-size: 1rem;
+    }
+    
+    .rsi-location-body {
+        padding: var(--rsi-spacing-lg);
+    }
+    
+    .rsi-location-body p {
+        font-size: 0.9rem;
+    }
+    
+    .rsi-location-map iframe {
+        height: 160px;
+    }
+}
+
+/* ==========================================
+   MODO OSCURO
+   ========================================== */
+
+body.dark-mode .rsi-contact-section {
+    background-color: var(--rsi-bg-secondary);
+}
+
+body.dark-mode .rsi-contact-title {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-contact-subtitle {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-location-card {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-location-card:hover {
+    border-color: var(--rsi-gold-base);
+}
+
+body.dark-mode .rsi-location-header {
+    background: linear-gradient(135deg, var(--rsi-primary-dark), #0a0a1a);
+}
+
+body.dark-mode .rsi-location-body p {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-location-body a {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-contact-info-item {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-contact-info-item h4 {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-contact-info-item p {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-contact-info-item a {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-contact-info-item:hover {
+    border-color: var(--rsi-gold-base);
+}

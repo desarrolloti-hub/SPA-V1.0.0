@@ -1,18 +1,17 @@
-
 import { loadLayout } from './components/shared/loadLayout.js';
 import { initNavbarController } from './components/visitor/navbarController.js';
 import { initFooterController } from './components/visitor/footerController.js';
 import { initRouter } from './router/router.js';
+import { ThemeService } from './components/shared/themeService.js';
+// ⚠️ NO importamos lazy-loader aquí, lo maneja el router
 
 function loadExternalScripts() {
     return new Promise((resolve) => {
-        // Verificar si ya están cargados
         if (document.querySelector('script[src*="swiper"]')) {
             resolve();
             return;
         }
         
-        // Cargar AOS
         const aosLink = document.createElement('link');
         aosLink.rel = 'stylesheet';
         aosLink.href = 'https://unpkg.com/aos@2.3.1/dist/aos.css';
@@ -25,7 +24,6 @@ function loadExternalScripts() {
         };
         document.body.appendChild(aosScript);
         
-        // Cargar Swiper
         const swiperLink = document.createElement('link');
         swiperLink.rel = 'stylesheet';
         swiperLink.href = 'https://unpkg.com/swiper/swiper-bundle.min.css';
@@ -39,7 +37,6 @@ function loadExternalScripts() {
         };
         document.body.appendChild(swiperScript);
         
-        // Timeout por si fallan
         setTimeout(resolve, 3000);
     });
 }
@@ -49,7 +46,6 @@ function loadExternalScripts() {
  */
 async function initApp() {
     try {
-        // Cargar scripts externos
         await loadExternalScripts();
         
         // 1. Cargar layouts persistentes
@@ -59,7 +55,10 @@ async function initApp() {
         initNavbarController();
         initFooterController();
         
-        // 3. Inicializar router
+        // 3. Inicializar tema (modo oscuro/claro)
+        ThemeService.init();
+        
+        // 4. Inicializar router (él se encarga del lazy loader)
         initRouter();
         
         console.log('✅ Aplicación inicializada correctamente');

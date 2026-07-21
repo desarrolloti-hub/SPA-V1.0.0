@@ -1,0 +1,392 @@
+/* ========================================
+   components.css - Componentes compartidos
+   ======================================== */
+
+/* ==========================================
+   BOTONES
+   ========================================== */
+.rsi-primary-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    padding: 14px 32px;
+    background-color: var(--rsi-primary);
+    color: var(--rsi-white) !important;
+    border: none;
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.rsi-primary-btn:hover {
+    background-color: var(--rsi-primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-primary);
+    color: var(--rsi-white) !important;
+}
+
+.rsi-primary-btn i {
+    transition: transform var(--rsi-transition-base);
+}
+
+.rsi-primary-btn:hover i {
+    transform: translateX(5px);
+}
+
+.rsi-secondary-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: transparent;
+    color: var(--rsi-white) !important;
+    border: 2px solid var(--rsi-white);
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.rsi-secondary-btn:hover {
+    background: var(--rsi-white);
+    color: var(--rsi-primary) !important;
+    transform: translateY(-2px);
+}
+
+.rsi-cta-button {
+    background-color: var(--rsi-white);
+    color: var(--rsi-primary) !important;
+    border: none;
+    padding: 16px 48px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: var(--rsi-radius-full);
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    margin-top: var(--rsi-spacing-xl);
+    display: inline-block;
+}
+
+.rsi-cta-button:hover {
+    background-color: var(--rsi-accent);
+    color: var(--rsi-white) !important;
+    transform: translateY(-3px);
+    box-shadow: var(--rsi-shadow-lg);
+}
+
+/* ==========================================
+   TÍTULOS Y TEXTOS
+   ========================================== */
+.rsi-section-title {
+    font-family: var(--rsi-font-secondary);
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin-bottom: var(--rsi-spacing-lg);
+    line-height: 1.2;
+    color: var(--rsi-text-primary);
+    text-align: center;
+}
+
+.rsi-section-subtitle {
+    font-size: 1.2rem;
+    color: var(--rsi-gray-600);
+    margin-bottom: var(--rsi-spacing-2xl);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.rsi-section-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: var(--rsi-spacing-xl);
+    color: var(--rsi-gray-600);
+}
+
+/* ==========================================
+   CONTENEDOR
+   ========================================== */
+.rsi-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--rsi-spacing-xl);
+}
+
+/* ==========================================
+   SECCIÓN CONTENIDO FLEXIBLE
+   ========================================== */
+.rsi-section-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--rsi-spacing-2xl);
+}
+
+.rsi-reverse {
+    flex-direction: row-reverse;
+}
+
+.rsi-image-wrapper {
+    flex: 1;
+    border-radius: var(--rsi-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--rsi-shadow-md);
+    position: relative;
+}
+
+.rsi-image-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform var(--rsi-transition-slow);
+}
+
+.rsi-image-wrapper:hover img {
+    transform: scale(1.05);
+}
+
+/* ==========================================
+   HERO
+   ========================================== */
+.rsi-hero-section {
+    padding: calc(var(--rsi-spacing-4xl) + 40px) 0 var(--rsi-spacing-4xl);
+    background: linear-gradient(135deg, var(--rsi-primary) 0%, var(--rsi-primary-dark) 100%);
+    color: var(--rsi-white);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.rsi-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 var(--rsi-spacing-lg);
+}
+
+.rsi-hero-title {
+    font-family: var(--rsi-font-secondary);
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: var(--rsi-spacing-lg);
+}
+
+.rsi-hero-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: var(--rsi-spacing-xl);
+}
+
+/* ==========================================
+   TARJETAS DE VALORES
+   ========================================== */
+.rsi-value-card {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-lg);
+    padding: var(--rsi-spacing-xl);
+    text-align: center;
+    box-shadow: var(--rsi-shadow-md);
+    transition: all var(--rsi-transition-base);
+    position: relative;
+    overflow: hidden;
+}
+
+.rsi-value-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--rsi-primary);
+    transition: height var(--rsi-transition-base);
+}
+
+.rsi-value-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--rsi-shadow-xl);
+}
+
+.rsi-value-card:hover::before {
+    height: 6px;
+}
+
+.rsi-value-icon {
+    font-size: 2.8rem;
+    color: var(--rsi-primary);
+    margin-bottom: var(--rsi-spacing-lg);
+    display: inline-block;
+    transition: transform var(--rsi-transition-base);
+}
+
+.rsi-value-card:hover .rsi-value-icon {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.rsi-card-title {
+    color: var(--rsi-primary);
+    font-size: 1.3rem;
+    margin-bottom: var(--rsi-spacing-md);
+    font-weight: 600;
+}
+
+.rsi-card-text {
+    color: var(--rsi-gray-700);
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+/* ==========================================
+   ESTADÍSTICAS
+   ========================================== */
+.rsi-stats-section {
+    padding: 100px 0;
+    background: linear-gradient(135deg, rgba(28, 25, 72, 0.95), rgba(19, 16, 58, 0.95));
+    text-align: center;
+    color: var(--rsi-white);
+    position: relative;
+}
+
+.rsi-stats-section .rsi-section-title,
+.rsi-stats-section .rsi-section-subtitle {
+    color: var(--rsi-white);
+}
+
+.rsi-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--rsi-spacing-xl);
+    max-width: 1000px;
+    margin: var(--rsi-spacing-2xl) auto;
+}
+
+.rsi-stat-item {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: var(--rsi-radius-lg);
+    padding: var(--rsi-spacing-xl);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-stat-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+.rsi-stat-number {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: var(--rsi-spacing-sm);
+    display: block;
+    background: var(--rsi-gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.rsi-stat-label {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* ==========================================
+   MODO OSCURO - COMPONENTES COMPARTIDOS
+   ========================================== */
+body.dark-mode .rsi-primary-btn {
+    background: var(--rsi-gold-gradient);
+    color: var(--rsi-black) !important;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+}
+
+body.dark-mode .rsi-primary-btn:hover {
+    background: var(--rsi-gold-gradient-hover);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+    transform: translateY(-2px);
+}
+
+body.dark-mode .rsi-secondary-btn {
+    border-color: var(--rsi-gray-600);
+    color: var(--rsi-gray-700) !important;
+}
+
+body.dark-mode .rsi-secondary-btn:hover {
+    background: var(--rsi-gold-gradient);
+    border-color: transparent;
+    color: var(--rsi-black) !important;
+}
+
+body.dark-mode .rsi-cta-button {
+    background: var(--rsi-gold-gradient);
+    color: var(--rsi-black) !important;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+}
+
+body.dark-mode .rsi-cta-button:hover {
+    background: var(--rsi-gold-gradient-hover);
+    color: var(--rsi-black) !important;
+    box-shadow: 0 6px 30px rgba(212, 175, 55, 0.3);
+    transform: translateY(-3px);
+}
+
+body.dark-mode .rsi-section-title {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-section-subtitle {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-section-description {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-hero-section {
+    background: linear-gradient(135deg, #0a0a1a 0%, var(--rsi-primary-dark) 50%, #1a0f0a 100%);
+}
+
+body.dark-mode .rsi-hero-subtitle {
+    color: var(--rsi-gray-700);
+}
+
+body.dark-mode .rsi-value-card {
+    background: var(--rsi-bg-card);
+    border: 1px solid var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-value-card::before {
+    background: var(--rsi-gold-gradient);
+}
+
+body.dark-mode .rsi-value-card .rsi-card-title {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-value-card .rsi-card-text {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-value-card:hover {
+    border-color: rgba(212, 175, 55, 0.3);
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.1);
+}
+
+body.dark-mode .rsi-stat-item {
+    background: rgba(212, 175, 55, 0.05);
+    border-color: rgba(212, 175, 55, 0.15);
+    color: var(--rsi-gray-700);
+}
+
+body.dark-mode .rsi-stat-item:hover {
+    background: rgba(212, 175, 55, 0.08);
+    border-color: rgba(212, 175, 55, 0.25);
+}

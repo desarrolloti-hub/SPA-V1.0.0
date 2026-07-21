@@ -1,0 +1,165 @@
+/* ========================================
+   LAZY STYLES - Animaciones de entrada
+   ======================================== */
+
+/* ===== REVEAL AL HACER SCROLL ===== */
+
+/* Elementos ocultos inicialmente */
+.rsi-reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Cuando se activan (visibles) */
+.rsi-reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== VARIANTES DE REVEAL ===== */
+
+/* Desde la izquierda */
+.rsi-reveal-left {
+    opacity: 0;
+    transform: translateX(-60px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.rsi-reveal-left.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Desde la derecha */
+.rsi-reveal-right {
+    opacity: 0;
+    transform: translateX(60px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.rsi-reveal-right.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Zoom */
+.rsi-reveal-zoom {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.rsi-reveal-zoom.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ===== STAGGER REVEAL (grids) ===== */
+
+.rsi-stagger-reveal .rsi-value-card,
+.rsi-stagger-reveal .rsi-stat-card,
+.rsi-stagger-reveal .rsi-location-card,
+.rsi-stagger-reveal .rsi-cert-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.rsi-stagger-reveal.active .rsi-value-card:nth-child(1),
+.rsi-stagger-reveal.active .rsi-stat-card:nth-child(1),
+.rsi-stagger-reveal.active .rsi-location-card:nth-child(1),
+.rsi-stagger-reveal.active .rsi-cert-card:nth-child(1) {
+    transition-delay: 0.05s;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.rsi-stagger-reveal.active .rsi-value-card:nth-child(2),
+.rsi-stagger-reveal.active .rsi-stat-card:nth-child(2),
+.rsi-stagger-reveal.active .rsi-location-card:nth-child(2),
+.rsi-stagger-reveal.active .rsi-cert-card:nth-child(2) {
+    transition-delay: 0.10s;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.rsi-stagger-reveal.active .rsi-value-card:nth-child(3),
+.rsi-stagger-reveal.active .rsi-stat-card:nth-child(3),
+.rsi-stagger-reveal.active .rsi-location-card:nth-child(3),
+.rsi-stagger-reveal.active .rsi-cert-card:nth-child(3) {
+    transition-delay: 0.15s;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.rsi-stagger-reveal.active .rsi-value-card:nth-child(4),
+.rsi-stagger-reveal.active .rsi-stat-card:nth-child(4),
+.rsi-stagger-reveal.active .rsi-location-card:nth-child(4),
+.rsi-stagger-reveal.active .rsi-cert-card:nth-child(4) {
+    transition-delay: 0.20s;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.rsi-stagger-reveal.active .rsi-value-card:nth-child(5),
+.rsi-stagger-reveal.active .rsi-stat-card:nth-child(5),
+.rsi-stagger-reveal.active .rsi-location-card:nth-child(5),
+.rsi-stagger-reveal.active .rsi-cert-card:nth-child(5) {
+    transition-delay: 0.25s;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.rsi-stagger-reveal.active .rsi-value-card:nth-child(6),
+.rsi-stagger-reveal.active .rsi-stat-card:nth-child(6),
+.rsi-stagger-reveal.active .rsi-location-card:nth-child(6),
+.rsi-stagger-reveal.active .rsi-cert-card:nth-child(6) {
+    transition-delay: 0.30s;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== RETRASOS INDIVIDUALES ===== */
+
+.rsi-delay-1 { transition-delay: 0.05s; }
+.rsi-delay-2 { transition-delay: 0.10s; }
+.rsi-delay-3 { transition-delay: 0.15s; }
+.rsi-delay-4 { transition-delay: 0.20s; }
+.rsi-delay-5 { transition-delay: 0.25s; }
+.rsi-delay-6 { transition-delay: 0.30s; }
+.rsi-delay-7 { transition-delay: 0.35s; }
+.rsi-delay-8 { transition-delay: 0.40s; }
+.rsi-delay-9 { transition-delay: 0.45s; }
+.rsi-delay-10 { transition-delay: 0.50s; }
+
+/* ===== IMÁGENES REVEAL ===== */
+
+.rsi-image-reveal {
+    overflow: hidden;
+    position: relative;
+}
+
+.rsi-image-reveal img {
+    transform: scale(1.1);
+    transition: transform 0.8s ease, opacity 0.8s ease;
+    opacity: 0;
+}
+
+.rsi-image-reveal.active img {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* ===== EFECTO PARA SECCIONES COMPLETAS ===== */
+
+.rsi-section-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+.rsi-section-reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}

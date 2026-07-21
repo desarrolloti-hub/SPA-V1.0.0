@@ -1,17 +1,140 @@
 /* ========================================
-   HOME PAGE STYLES
+   HOME PAGE STYLES - RSI Enterprise
    ======================================== */
 
-/* Sección Nosotros */
+/* ==========================================
+   CONTENEDOR PRINCIPAL
+   ========================================== */
+.rsi-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--rsi-spacing-xl);
+}
+
+/* ==========================================
+   SECCIÓN HERO / BANNER PRINCIPAL
+   ========================================== */
+.rsi-hero-section {
+    padding: calc(var(--rsi-spacing-4xl) + 40px) 0 var(--rsi-spacing-4xl);
+    background: linear-gradient(135deg, var(--rsi-primary) 0%, var(--rsi-primary-dark) 100%);
+    color: var(--rsi-white);
+    position: relative;
+    overflow: hidden;
+}
+
+.rsi-hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 70%;
+    height: 200%;
+    background: radial-gradient(ellipse, rgba(143, 148, 251, 0.1) 0%, transparent 70%);
+    transform: rotate(15deg);
+}
+
+.rsi-hero-content {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-3xl);
+    position: relative;
+    z-index: 1;
+}
+
+.rsi-hero-text {
+    flex: 1;
+}
+
+.rsi-hero-title {
+    font-family: var(--rsi-font-secondary);
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: var(--rsi-spacing-lg);
+}
+
+.rsi-hero-title .rsi-text-gold {
+    background: var(--rsi-gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+.rsi-hero-description {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    opacity: 0.9;
+    margin-bottom: var(--rsi-spacing-xl);
+    max-width: 550px;
+}
+
+.rsi-hero-buttons {
+    display: flex;
+    gap: var(--rsi-spacing-md);
+    flex-wrap: wrap;
+}
+
+.rsi-secondary-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background: transparent;
+    color: var(--rsi-white) !important;
+    border: 2px solid var(--rsi-white);
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.rsi-secondary-btn:hover {
+    background: var(--rsi-white);
+    color: var(--rsi-primary) !important;
+    transform: translateY(-2px);
+}
+
+.rsi-hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.rsi-hero-image img {
+    max-width: 100%;
+    height: auto;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* ==========================================
+   SECCIÓN NOSOTROS
+   ========================================== */
 .rsi-about-section {
     padding: var(--rsi-spacing-4xl) 0;
     background-color: var(--rsi-primary);
     color: var(--rsi-white);
 }
 
-.rsi-about-section .rsi-section-title,
+.rsi-about-section .rsi-section-title {
+    color: var(--rsi-white);
+}
+
 .rsi-about-section .rsi-section-description {
     color: var(--rsi-white);
+    opacity: 0.9;
 }
 
 .rsi-about-section .rsi-primary-btn {
@@ -21,9 +144,12 @@
 
 .rsi-about-section .rsi-primary-btn:hover {
     background-color: var(--rsi-white);
+    color: var(--rsi-primary) !important;
 }
 
-/* Sección Valor */
+/* ==========================================
+   SECCIÓN VALORES
+   ========================================== */
 .rsi-value-section {
     padding: var(--rsi-spacing-4xl) 0;
     background-color: var(--rsi-gray-100);
@@ -36,18 +162,23 @@
     margin-top: var(--rsi-spacing-2xl);
 }
 
-/* Sección Productos */
+/* ==========================================
+   SECCIÓN PRODUCTOS
+   ========================================== */
 .rsi-products-section {
     padding: var(--rsi-spacing-4xl) 0;
     background-color: var(--rsi-white);
 }
 
-/* Sección Estadísticas */
+/* ==========================================
+   SECCIÓN ESTADÍSTICAS
+   ========================================== */
 .rsi-stats-section {
     padding: 100px 0;
-    background: linear-gradient(rgba(28, 25, 72, 0.9), rgba(28, 25, 72, 0.9));
+    background: linear-gradient(135deg, rgba(28, 25, 72, 0.95), rgba(19, 16, 58, 0.95));
     text-align: center;
     color: var(--rsi-white);
+    position: relative;
 }
 
 .rsi-stats-section .rsi-section-title,
@@ -63,16 +194,22 @@
     margin: var(--rsi-spacing-2xl) auto;
 }
 
-/* Sección Servicios */
+/* ==========================================
+   SECCIÓN SERVICIOS
+   ========================================== */
 .rsi-services-section {
     padding: var(--rsi-spacing-4xl) 0;
     background-color: var(--rsi-primary);
     color: var(--rsi-white);
 }
 
-.rsi-services-section .rsi-section-title,
+.rsi-services-section .rsi-section-title {
+    color: var(--rsi-white);
+}
+
 .rsi-services-section .rsi-section-description {
     color: var(--rsi-white);
+    opacity: 0.9;
 }
 
 .rsi-services-section .rsi-primary-btn {
@@ -82,15 +219,33 @@
 
 .rsi-services-section .rsi-primary-btn:hover {
     background-color: var(--rsi-white);
+    color: var(--rsi-primary) !important;
 }
 
-/* Sección Blog */
+/* ==========================================
+   SECCIÓN BLOG
+   ========================================== */
 .rsi-blog-section {
     padding: var(--rsi-spacing-4xl) 0;
     background-color: var(--rsi-white);
 }
 
-/* Contenido flexible */
+/* ==========================================
+   SECCIÓN RESEÑAS (Google Reviews)
+   ========================================== */
+.rsi-reviews-section {
+    padding: var(--rsi-spacing-4xl) 0;
+    background-color: var(--rsi-gray-50);
+    text-align: center;
+}
+
+.rsi-reviews-section .rsi-section-subtitle {
+    margin-bottom: var(--rsi-spacing-2xl);
+}
+
+/* ==========================================
+   CONTENIDO FLEXIBLE
+   ========================================== */
 .rsi-section-content {
     display: flex;
     align-items: center;
@@ -102,6 +257,11 @@
     flex-direction: row-reverse;
 }
 
+.rsi-section-header {
+    text-align: center;
+    margin-bottom: var(--rsi-spacing-2xl);
+}
+
 .rsi-text-content {
     flex: 1;
 }
@@ -111,6 +271,7 @@
     border-radius: var(--rsi-radius-lg);
     overflow: hidden;
     box-shadow: var(--rsi-shadow-md);
+    position: relative;
 }
 
 .rsi-image-wrapper img {
@@ -124,13 +285,16 @@
     transform: scale(1.05);
 }
 
-/* Tipografía */
+/* ==========================================
+   TIPOGRAFÍA
+   ========================================== */
 .rsi-section-title {
     font-family: var(--rsi-font-secondary);
     font-weight: 700;
-    font-size: 2.2rem;
+    font-size: 2.5rem;
     margin-bottom: var(--rsi-spacing-lg);
     line-height: 1.2;
+    color: var(--rsi-text-primary);
 }
 
 .rsi-section-subtitle {
@@ -144,12 +308,14 @@
 
 .rsi-section-description {
     font-size: 1.1rem;
-    line-height: 1.6;
+    line-height: 1.8;
     margin-bottom: var(--rsi-spacing-xl);
     color: var(--rsi-gray-600);
 }
 
-/* Tarjetas de valor */
+/* ==========================================
+   TARJETAS DE VALOR
+   ========================================== */
 .rsi-value-card {
     background: var(--rsi-white);
     border-radius: var(--rsi-radius-lg);
@@ -157,6 +323,19 @@
     text-align: center;
     box-shadow: var(--rsi-shadow-md);
     transition: all var(--rsi-transition-base);
+    position: relative;
+    overflow: hidden;
+}
+
+.rsi-value-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--rsi-primary);
+    transition: height var(--rsi-transition-base);
 }
 
 .rsi-value-card:hover {
@@ -164,30 +343,43 @@
     box-shadow: var(--rsi-shadow-xl);
 }
 
+.rsi-value-card:hover::before {
+    height: 6px;
+}
+
 .rsi-value-icon {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     color: var(--rsi-primary);
     margin-bottom: var(--rsi-spacing-lg);
+    display: inline-block;
+    transition: transform var(--rsi-transition-base);
+}
+
+.rsi-value-card:hover .rsi-value-icon {
+    transform: scale(1.1) rotate(-5deg);
 }
 
 .rsi-card-title {
     color: var(--rsi-primary);
     font-size: 1.3rem;
     margin-bottom: var(--rsi-spacing-md);
+    font-weight: 600;
 }
 
 .rsi-card-text {
-    color: var(--rsi-gray-600);
+    color: var(--rsi-gray-700);
     font-size: 0.95rem;
-    line-height: 1.6;
+    line-height: 1.7;
 }
 
-/* Tarjetas de estadísticas */
+/* ==========================================
+   TARJETAS DE ESTADÍSTICAS
+   ========================================== */
 .rsi-stat-card {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     padding: var(--rsi-spacing-xl);
     border-radius: var(--rsi-radius-lg);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
     transition: all var(--rsi-transition-base);
@@ -196,25 +388,34 @@
 .rsi-stat-card:hover {
     transform: translateY(-5px);
     background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .rsi-stat-number {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 700;
     display: block;
     margin-bottom: var(--rsi-spacing-sm);
+    background: var(--rsi-gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 .rsi-stat-label {
     font-size: 1rem;
-    opacity: 0.9;
+    opacity: 1;
     margin: 0;
 }
 
-/* Botones */
+/* ==========================================
+   BOTONES - CON BRILLO SUAVE
+   ========================================== */
 .rsi-primary-btn {
-    display: inline-block;
-    padding: 12px 30px;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    padding: 14px 32px;
     background-color: var(--rsi-primary);
     color: var(--rsi-white) !important;
     border: none;
@@ -225,26 +426,36 @@
     cursor: pointer;
     transition: all var(--rsi-transition-base);
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 0.95rem;
 }
 
 .rsi-primary-btn:hover {
     background-color: var(--rsi-primary-light);
     transform: translateY(-2px);
     box-shadow: var(--rsi-shadow-primary);
+    color: var(--rsi-white) !important;
+}
+
+.rsi-primary-btn i {
+    transition: transform var(--rsi-transition-base);
+}
+
+.rsi-primary-btn:hover i {
+    transform: translateX(5px);
 }
 
 .rsi-cta-button {
     background-color: var(--rsi-white);
     color: var(--rsi-primary) !important;
     border: none;
-    padding: 15px 40px;
+    padding: 16px 48px;
     font-size: 1.1rem;
     font-weight: 600;
     border-radius: var(--rsi-radius-full);
     cursor: pointer;
     transition: all var(--rsi-transition-base);
     margin-top: var(--rsi-spacing-xl);
+    display: inline-block;
 }
 
 .rsi-cta-button:hover {
@@ -254,18 +465,82 @@
     box-shadow: var(--rsi-shadow-lg);
 }
 
-/* ========== MODO OSCURO ========== */
-body.dark-mode .rsi-about-section {
-    background-color: var(--rsi-primary-dark);
+/* ==========================================
+   MODO OSCURO - CON FONDOS DORADOS
+   ========================================== */
+
+/* Hero Section - Degradado oscuro con toques dorados */
+body.dark-mode .rsi-hero-section {
+    background: linear-gradient(135deg, #0a0a1a 0%, var(--rsi-primary-dark) 50%, #1a0f0a 100%);
 }
 
+body.dark-mode .rsi-hero-section::before {
+    background: radial-gradient(ellipse, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+}
+
+body.dark-mode .rsi-hero-description {
+    color: var(--rsi-gray-700);
+}
+
+body.dark-mode .rsi-secondary-btn {
+    border-color: var(--rsi-gray-600);
+    color: var(--rsi-gray-700) !important;
+}
+
+body.dark-mode .rsi-secondary-btn:hover {
+    background: var(--rsi-gold-gradient);
+    border-color: transparent;
+    color: var(--rsi-black) !important;
+}
+
+/* Sección Nosotros - Fondo dorado oscuro */
+body.dark-mode .rsi-about-section {
+    background: linear-gradient(135deg, 
+        rgba(184, 150, 12, 0.3) 0%,
+        var(--rsi-primary-dark) 50%,
+        rgba(184, 150, 12, 0.2) 100%
+    );
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+body.dark-mode .rsi-about-section .rsi-section-title {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-about-section .rsi-section-description {
+    color: var(--rsi-gray-700);
+}
+
+body.dark-mode .rsi-about-section .rsi-primary-btn {
+    background: var(--rsi-gold-gradient);
+    color: var(--rsi-black) !important;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+}
+
+body.dark-mode .rsi-about-section .rsi-primary-btn:hover {
+    background: var(--rsi-gold-gradient-hover);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Sección Valores - Fondo oscuro con detalles dorados */
 body.dark-mode .rsi-value-section {
-    background-color: var(--rsi-bg-secondary);
+    background: var(--rsi-bg-secondary);
+}
+
+body.dark-mode .rsi-value-section .rsi-section-title {
+    color: var(--rsi-primary);
 }
 
 body.dark-mode .rsi-value-card {
     background: var(--rsi-bg-card);
     border: 1px solid var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-value-card::before {
+    background: var(--rsi-gold-gradient);
 }
 
 body.dark-mode .rsi-value-card .rsi-card-title {
@@ -280,52 +555,190 @@ body.dark-mode .rsi-value-icon i {
     color: var(--rsi-primary);
 }
 
+body.dark-mode .rsi-value-card:hover {
+    border-color: rgba(212, 175, 55, 0.3);
+    box-shadow: 0 8px 30px rgba(212, 175, 55, 0.1);
+}
+
+/* Sección Productos - Fondo con detalles dorados */
 body.dark-mode .rsi-products-section {
-    background-color: var(--rsi-bg-primary);
+    background: var(--rsi-bg-primary);
 }
 
-body.dark-mode .rsi-stats-section {
-    background: linear-gradient(rgba(15, 15, 26, 0.95), rgba(15, 15, 26, 0.95));
+body.dark-mode .rsi-products-section .rsi-section-title {
+    color: var(--rsi-primary);
 }
 
-body.dark-mode .rsi-services-section {
-    background-color: var(--rsi-primary-dark);
-}
-
-body.dark-mode .rsi-blog-section {
-    background-color: var(--rsi-bg-primary);
-}
-
-body.dark-mode .rsi-section-subtitle {
+body.dark-mode .rsi-products-section .rsi-section-description {
     color: var(--rsi-gray-600);
 }
 
-body.dark-mode .rsi-section-description {
-    color: var(--rsi-gray-600);
-}
-
-body.dark-mode .rsi-primary-btn {
-    background-color: var(--rsi-primary);
+body.dark-mode .rsi-products-section .rsi-primary-btn {
+    background: var(--rsi-gold-gradient);
     color: var(--rsi-black) !important;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
 }
 
-body.dark-mode .rsi-primary-btn:hover {
-    background-color: var(--rsi-primary-light);
+body.dark-mode .rsi-products-section .rsi-primary-btn:hover {
+    background: var(--rsi-gold-gradient-hover);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Sección Estadísticas - Fondo con gradiente dorado */
+body.dark-mode .rsi-stats-section {
+    background: linear-gradient(135deg, 
+        rgba(184, 150, 12, 0.15) 0%,
+        rgba(15, 15, 26, 0.95) 40%,
+        rgba(15, 15, 26, 0.95) 60%,
+        rgba(184, 150, 12, 0.15) 100%
+    );
+    border-top: 1px solid rgba(212, 175, 55, 0.15);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+body.dark-mode .rsi-stats-section .rsi-section-title {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-stats-section .rsi-section-subtitle {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-stat-card {
+    background: rgba(212, 175, 55, 0.05);
+    border-color: rgba(212, 175, 55, 0.15);
+    color: var(--rsi-gray-700);
+}
+
+body.dark-mode .rsi-stat-card:hover {
+    background: rgba(212, 175, 55, 0.08);
+    border-color: rgba(212, 175, 55, 0.25);
+}
+
+body.dark-mode .rsi-stat-number {
+    background: var(--rsi-gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 body.dark-mode .rsi-cta-button {
-    background-color: var(--rsi-primary);
+    background: var(--rsi-gold-gradient);
     color: var(--rsi-black) !important;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
 }
 
 body.dark-mode .rsi-cta-button:hover {
-    background-color: var(--rsi-primary-light);
+    background: var(--rsi-gold-gradient-hover);
+    color: var(--rsi-black) !important;
+    box-shadow: 0 6px 30px rgba(212, 175, 55, 0.3);
+    transform: translateY(-3px);
 }
 
-/* Responsive */
+/* Sección Servicios - Fondo dorado oscuro */
+body.dark-mode .rsi-services-section {
+    background: linear-gradient(135deg, 
+        var(--rsi-primary-dark) 0%,
+        rgba(184, 150, 12, 0.2) 50%,
+        var(--rsi-primary-dark) 100%
+    );
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+body.dark-mode .rsi-services-section .rsi-section-title {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-services-section .rsi-section-description {
+    color: var(--rsi-gray-700);
+}
+
+body.dark-mode .rsi-services-section .rsi-primary-btn {
+    background: var(--rsi-gold-gradient);
+    color: var(--rsi-black) !important;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+}
+
+body.dark-mode .rsi-services-section .rsi-primary-btn:hover {
+    background: var(--rsi-gold-gradient-hover);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Sección Blog - Detalles dorados */
+body.dark-mode .rsi-blog-section {
+    background: var(--rsi-bg-primary);
+}
+
+body.dark-mode .rsi-blog-section .rsi-section-title {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-blog-section .rsi-section-description {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-blog-section .rsi-primary-btn {
+    background: var(--rsi-gold-gradient);
+    color: var(--rsi-black) !important;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+}
+
+body.dark-mode .rsi-blog-section .rsi-primary-btn:hover {
+    background: var(--rsi-gold-gradient-hover);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Sección Reseñas */
+body.dark-mode .rsi-reviews-section {
+    background: var(--rsi-bg-secondary);
+}
+
+body.dark-mode .rsi-reviews-section .rsi-section-title {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-reviews-section .rsi-section-subtitle {
+    color: var(--rsi-gray-600);
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+@media (max-width: 1200px) {
+    .rsi-hero-title {
+        font-size: 3rem;
+    }
+}
+
 @media (max-width: 992px) {
+    .rsi-hero-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .rsi-hero-description {
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .rsi-hero-buttons {
+        justify-content: center;
+    }
+    
+    .rsi-hero-image {
+        order: -1;
+        max-width: 60%;
+        margin: 0 auto;
+    }
+    
     .rsi-section-content {
         flex-direction: column;
+        text-align: center;
     }
     
     .rsi-reverse {
@@ -334,7 +747,8 @@ body.dark-mode .rsi-cta-button:hover {
     
     .rsi-image-wrapper {
         order: -1;
-        max-width: 50%;
+        max-width: 60%;
+        margin: 0 auto;
     }
     
     .rsi-stats-grid {
@@ -344,8 +758,34 @@ body.dark-mode .rsi-cta-button:hover {
 }
 
 @media (max-width: 768px) {
+    .rsi-hero-section {
+        padding: calc(var(--rsi-spacing-3xl) + 40px) 0 var(--rsi-spacing-3xl);
+    }
+    
+    .rsi-hero-title {
+        font-size: 2.2rem;
+    }
+    
+    .rsi-hero-description {
+        font-size: 1rem;
+    }
+    
+    .rsi-hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .rsi-hero-buttons .rsi-primary-btn,
+    .rsi-hero-buttons .rsi-secondary-btn {
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+        justify-content: center;
+    }
+    
     .rsi-section-title {
-        font-size: 1.8rem;
+        font-size: 2rem;
     }
     
     .rsi-stats-section {
@@ -353,21 +793,34 @@ body.dark-mode .rsi-cta-button:hover {
     }
     
     .rsi-stat-number {
-        font-size: 2rem;
+        font-size: 2.5rem;
     }
     
     .rsi-value-grid {
         gap: var(--rsi-spacing-lg);
     }
+    
+    .rsi-image-wrapper {
+        max-width: 80%;
+    }
 }
 
 @media (max-width: 576px) {
-    .rsi-stats-grid {
-        grid-template-columns: 1fr;
+    .rsi-hero-title {
+        font-size: 1.8rem;
     }
     
     .rsi-section-title {
         font-size: 1.6rem;
+    }
+    
+    .rsi-stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--rsi-spacing-md);
+    }
+    
+    .rsi-stat-number {
+        font-size: 2rem;
     }
     
     .rsi-section-content {
@@ -375,6 +828,21 @@ body.dark-mode .rsi-cta-button:hover {
     }
     
     .rsi-image-wrapper {
+        max-width: 100%;
+    }
+    
+    .rsi-hero-image {
         max-width: 80%;
+    }
+    
+    .rsi-value-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .rsi-cta-button {
+        padding: 14px 32px;
+        font-size: 1rem;
+        width: 100%;
+        max-width: 280px;
     }
 }

@@ -3,7 +3,9 @@
    ======================================== */
 
 :root {
-    /* Colores primarios institucionales - MODO CLARO */
+    /* ==========================================
+       COLORES PRIMARIOS - MODO CLARO
+       ========================================== */
     --rsi-primary: #1c1948;
     --rsi-primary-dark: #13103a;
     --rsi-primary-light: #2a2670;
@@ -11,35 +13,56 @@
     --rsi-accent-dark: #6c72e8;
     --rsi-accent-light: #b2b6fc;
     
-    /* Dorado para modo oscuro - Degradado metálico */
+    /* ==========================================
+       COLORES DORADOS - Solo para modo oscuro
+       ========================================== */
+    --rsi-gold-base: #d4af37;           /* Dorado base */
+    --rsi-gold-light: #f2d06b;          /* Dorado claro */
+    --rsi-gold-bright: #fff2a8;         /* Dorado brillante */
+    --rsi-gold-dark: #b8960c;           /* Dorado oscuro */
+    --rsi-gold-old: #c9a03d;            /* Dorado antiguo */
+    --rsi-gold-medium: #e8c44c;         /* Dorado medio */
+    
+    /* Gradientes dorados - MODO OSCURO */
     --rsi-gold-gradient: linear-gradient(135deg, 
-        #c9a03d 0%,      /* Oro antiguo */
-        #f2d06b 20%,     /* Oro medio claro */
-        #fff2a8 40%,     /* Oro muy brillante */
-        #e8c44c 60%,     /* Oro medio */
-        #d4af37 80%,     /* Oro estándar */
-        #c9a03d 100%     /* Oro antiguo */
+        var(--rsi-gold-old) 0%,
+        var(--rsi-gold-light) 20%,
+        var(--rsi-gold-bright) 40%,
+        var(--rsi-gold-medium) 60%,
+        var(--rsi-gold-base) 80%,
+        var(--rsi-gold-old) 100%
     );
     
     --rsi-gold-gradient-hover: linear-gradient(135deg, 
-        #d4af37 0%, 
-        #f2d06b 25%, 
-        #fff2a8 50%, 
-        #f2d06b 75%, 
-        #d4af37 100%
+        var(--rsi-gold-base) 0%,
+        var(--rsi-gold-light) 25%,
+        var(--rsi-gold-bright) 50%,
+        var(--rsi-gold-light) 75%,
+        var(--rsi-gold-base) 100%
     );
     
     --rsi-gold-gradient-horizontal: linear-gradient(90deg, 
-        #c9a03d 0%, 
-        #f2d06b 30%, 
-        #fff2a8 50%, 
-        #f2d06b 70%, 
-        #c9a03d 100%
+        var(--rsi-gold-old) 0%,
+        var(--rsi-gold-light) 30%,
+        var(--rsi-gold-bright) 50%,
+        var(--rsi-gold-light) 70%,
+        var(--rsi-gold-old) 100%
     );
     
-    /* Colores neutros - MODO CLARO */
+    --rsi-gold-gradient-vertical: linear-gradient(180deg, 
+        var(--rsi-gold-old) 0%,
+        var(--rsi-gold-light) 25%,
+        var(--rsi-gold-bright) 50%,
+        var(--rsi-gold-light) 75%,
+        var(--rsi-gold-old) 100%
+    );
+    
+    /* ==========================================
+       COLORES NEUTROS - MODO CLARO
+       ========================================== */
     --rsi-white: #ffffff;
-    --rsi-gray-100: #f8f9fa;
+    --rsi-gray-50: #f8f9fa;
+    --rsi-gray-100: #f1f3f5;
     --rsi-gray-200: #e9ecef;
     --rsi-gray-300: #dee2e6;
     --rsi-gray-400: #ced4da;
@@ -54,32 +77,46 @@
     --rsi-bg-primary: #ffffff;
     --rsi-bg-secondary: #f8f9fa;
     --rsi-bg-card: #ffffff;
+    --rsi-bg-input: #ffffff;
+    
+    /* Colores de texto - MODO CLARO */
+    --rsi-text-primary: #1c1948;
+    --rsi-text-secondary: #495057;
+    --rsi-text-muted: #6c757d;
+    --rsi-text-light: #ffffff;
     
     /* Estados */
     --rsi-success: #28a745;
+    --rsi-success-light: #d4edda;
     --rsi-warning: #ffc107;
+    --rsi-warning-light: #fff3cd;
     --rsi-danger: #dc3545;
+    --rsi-danger-light: #f8d7da;
     --rsi-info: #17a2b8;
+    --rsi-info-light: #d1ecf1;
     
-    /* Sombras */
+    /* Sombras - MODO CLARO */
     --rsi-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
     --rsi-shadow-md: 0 5px 15px rgba(0, 0, 0, 0.08);
     --rsi-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
     --rsi-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.15);
     --rsi-shadow-primary: 0 4px 12px rgba(28, 25, 72, 0.2);
-    --rsi-shadow-gold: 0 0 20px rgba(210, 175, 55, 0.3);
-    --rsi-shadow-gold-lg: 0 0 35px rgba(210, 175, 55, 0.4);
+    --rsi-shadow-gold: 0 0 20px rgba(212, 175, 55, 0.3);
+    --rsi-shadow-gold-lg: 0 0 35px rgba(212, 175, 55, 0.4);
+    --rsi-shadow-gold-xl: 0 0 50px rgba(212, 175, 55, 0.5);
     
     /* Transiciones */
     --rsi-transition-fast: 0.2s ease;
     --rsi-transition-base: 0.3s ease;
     --rsi-transition-slow: 0.5s ease;
+    --rsi-transition-slower: 0.8s ease;
     
     /* Bordes */
     --rsi-radius-sm: 4px;
     --rsi-radius-md: 8px;
     --rsi-radius-lg: 12px;
     --rsi-radius-xl: 16px;
+    --rsi-radius-2xl: 24px;
     --rsi-radius-full: 50px;
     
     /* Tipografía */
@@ -101,54 +138,126 @@
     --rsi-z-sticky: 1020;
     --rsi-z-fixed: 1030;
     --rsi-z-modal: 1050;
+    --rsi-z-tooltip: 1060;
+    --rsi-z-toast: 1070;
 }
 
-/* ========== MODO OSCURO ========== */
+/* ==========================================
+   MODO OSCURO
+   ========================================== */
 body.dark-mode {
-    /* Colores primarios cambian a gradiente dorado */
-    --rsi-primary: #d4af37;
-    --rsi-primary-dark: #b8960c;
-    --rsi-primary-light: #f2d06b;
-    --rsi-accent: #d4af37;
-    --rsi-accent-dark: #b8960c;
-    --rsi-accent-light: #f2d06b;
+    /* ==========================================
+       COLORES PRIMARIOS - Modo Oscuro (Azules)
+       ========================================== */
+    --rsi-primary: #4a9eff;
+    --rsi-primary-dark: #1a7ad4;
+    --rsi-primary-light: #7bb8ff;
+    --rsi-accent: #4a9eff;
+    --rsi-accent-dark: #1a7ad4;
+    --rsi-accent-light: #7bb8ff;
     
-    /* Colores neutros - MODO OSCURO (grises elegantes, no negro puro) */
-    --rsi-white: #1e1e2a;
-    --rsi-gray-100: #2a2a35;
-    --rsi-gray-200: #343540;
-    --rsi-gray-300: #3d3e4a;
-    --rsi-gray-400: #4a4b58;
-    --rsi-gray-500: #6a6b78;
-    --rsi-gray-600: #8a8b98;
-    --rsi-gray-700: #b0b1bc;
-    --rsi-gray-800: #d0d1d8;
-    --rsi-gray-900: #e8e9f0;
-    --rsi-black: #ffffff;
+    /* ==========================================
+       COLORES DORADOS - Reemplazados por azules en modo oscuro
+       ========================================== */
+    --rsi-gold-base: #4a9eff;           /* Azul base */
+    --rsi-gold-light: #7bb8ff;          /* Azul claro */
+    --rsi-gold-bright: #b5d6ff;         /* Azul brillante */
+    --rsi-gold-dark: #1a7ad4;           /* Azul oscuro */
+    --rsi-gold-old: #0d4b8a;            /* Azul profundo */
+    --rsi-gold-medium: #5ca8ff;         /* Azul medio */
     
-    /* Colores de fondo - MODO OSCURO (grises oscuros) */
-    --rsi-bg-primary: #1a1a24;      /* Fondo principal gris oscuro */
-    --rsi-bg-secondary: #22222e;    /* Fondo secundario gris */
-    --rsi-bg-card: #2a2a35;         /* Fondo de tarjetas gris medio */
+    /* Gradientes azules - MODO OSCURO */
+    --rsi-gold-gradient: linear-gradient(135deg, 
+        var(--rsi-gold-old) 0%,
+        var(--rsi-gold-base) 20%,
+        var(--rsi-gold-bright) 40%,
+        var(--rsi-gold-light) 60%,
+        var(--rsi-gold-base) 80%,
+        var(--rsi-gold-old) 100%
+    );
     
-    /* Sombras en modo oscuro */
+    --rsi-gold-gradient-hover: linear-gradient(135deg, 
+        var(--rsi-gold-base) 0%,
+        var(--rsi-gold-light) 25%,
+        var(--rsi-gold-bright) 50%,
+        var(--rsi-gold-light) 75%,
+        var(--rsi-gold-base) 100%
+    );
+    
+    --rsi-gold-gradient-horizontal: linear-gradient(90deg, 
+        var(--rsi-gold-old) 0%,
+        var(--rsi-gold-base) 30%,
+        var(--rsi-gold-bright) 50%,
+        var(--rsi-gold-base) 70%,
+        var(--rsi-gold-old) 100%
+    );
+    
+    --rsi-gold-gradient-vertical: linear-gradient(180deg, 
+        var(--rsi-gold-old) 0%,
+        var(--rsi-gold-base) 25%,
+        var(--rsi-gold-bright) 50%,
+        var(--rsi-gold-base) 75%,
+        var(--rsi-gold-old) 100%
+    );
+    
+    /* ==========================================
+       COLORES NEUTROS - Modo Oscuro
+       ========================================== */
+    --rsi-white: #1a1a24;
+    --rsi-gray-50: #1e1e2a;
+    --rsi-gray-100: #22222e;
+    --rsi-gray-200: #2a2a35;
+    --rsi-gray-300: #343540;
+    --rsi-gray-400: #3d3e4a;
+    --rsi-gray-500: #4a4b58;
+    --rsi-gray-600: #6a6b78;
+    --rsi-gray-700: #e4e4e4;
+    --rsi-gray-800: #b0b1bc;
+    --rsi-gray-900: #d0d1d8;
+    --rsi-black: #e8e9f0;
+    
+    /* Colores de fondo - MODO OSCURO */
+    --rsi-bg-primary: #1a1a24;
+    --rsi-bg-secondary: #22222e;
+    --rsi-bg-card: #2a2a35;
+    --rsi-bg-input: #2a2a35;
+    
+    /* Colores de texto - MODO OSCURO */
+    --rsi-text-primary: #4a9eff;
+    --rsi-text-secondary: #b0b1bc;
+    --rsi-text-muted: #8a8b98;
+    --rsi-text-light: #e8e9f0;
+    
+    /* Sombras - MODO OSCURO */
     --rsi-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
     --rsi-shadow-md: 0 5px 15px rgba(0, 0, 0, 0.4);
     --rsi-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
     --rsi-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.6);
-    --rsi-shadow-primary: 0 4px 12px rgba(212, 175, 55, 0.15);
+    --rsi-shadow-primary: 0 4px 12px rgba(74, 158, 255, 0.15);
+    --rsi-shadow-gold: 0 0 20px rgba(74, 158, 255, 0.25);
+    --rsi-shadow-gold-lg: 0 0 35px rgba(74, 158, 255, 0.35);
+    --rsi-shadow-gold-xl: 0 0 50px rgba(74, 158, 255, 0.45);
 }
 
-/* Transición suave entre modos */
+/* ==========================================
+   TRANSICIÓN SUAVE ENTRE MODOS
+   ========================================== */
 body,
 body * {
     transition: background-color 0.3s ease, 
                 color 0.3s ease, 
                 border-color 0.3s ease,
-                box-shadow 0.3s ease;
+                box-shadow 0.3s ease,
+                text-shadow 0.3s ease,
+                fill 0.3s ease,
+                stroke 0.3s ease;
 }
 
-/* ========== CLASES DE UTILIDAD PARA EFECTO DORADO ========== */
+/* ==========================================
+   CLASES DE UTILIDAD - EFECTOS DORADOS
+   ========================================== */
+
+/* === TEXTOS DORADOS === */
 
 /* Texto con gradiente dorado metálico */
 .rsi-text-gold {
@@ -159,7 +268,7 @@ body * {
     display: inline-block;
 }
 
-/* Texto con gradiente dorado horizontal (efecto brillo) */
+/* Texto dorado con brillo horizontal */
 .rsi-text-gold-shine {
     background: var(--rsi-gold-gradient-horizontal);
     -webkit-background-clip: text;
@@ -170,6 +279,29 @@ body * {
     animation: goldShineHorizontal 3s linear infinite;
 }
 
+/* Texto dorado con brillo vertical */
+.rsi-text-gold-shine-vertical {
+    background: var(--rsi-gold-gradient-vertical);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+    background-size: auto 200%;
+    animation: goldShineVertical 3s linear infinite;
+}
+
+/* Texto dorado con pulsación */
+.rsi-text-gold-pulse {
+    background: var(--rsi-gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+    animation: goldPulseText 2s ease-in-out infinite;
+}
+
+/* === BORDES DORADOS === */
+
 /* Borde con gradiente dorado */
 .rsi-border-gold {
     border: 2px solid transparent;
@@ -177,7 +309,24 @@ body * {
     border-image-slice: 1;
 }
 
-/* Sombra dorada */
+/* Borde dorado sólido */
+.rsi-border-gold-solid {
+    border: 2px solid var(--rsi-gold-base);
+}
+
+/* Borde dorado con brillo */
+.rsi-border-gold-glow {
+    border: 2px solid var(--rsi-gold-base);
+    box-shadow: var(--rsi-shadow-gold);
+}
+
+.rsi-border-gold-glow:hover {
+    border-color: var(--rsi-gold-light);
+    box-shadow: var(--rsi-shadow-gold-lg);
+}
+
+/* === SOMBRAS DORADAS === */
+
 .rsi-shadow-gold {
     box-shadow: var(--rsi-shadow-gold);
 }
@@ -186,31 +335,120 @@ body * {
     box-shadow: var(--rsi-shadow-gold-lg);
 }
 
-/* Efecto brillo dorado al hover */
-.rsi-gold-hover {
+.rsi-shadow-gold-xl {
+    box-shadow: var(--rsi-shadow-gold-xl);
+}
+
+/* === FONDOS DORADOS === */
+
+/* Fondo con gradiente dorado */
+.rsi-bg-gold {
+    background: var(--rsi-gold-gradient);
+    background-size: 200% 200%;
+}
+
+/* Fondo dorado animado */
+.rsi-bg-gold-animated {
+    background: var(--rsi-gold-gradient);
+    background-size: 200% 200%;
+    animation: goldShineVertical 3s ease infinite;
+}
+
+/* Fondo dorado con hover */
+.rsi-bg-gold-hover {
     transition: all var(--rsi-transition-base);
 }
 
-.rsi-gold-hover:hover {
+.rsi-bg-gold-hover:hover {
     background: var(--rsi-gold-gradient);
-    color: var(--rsi-black);
+    color: var(--rsi-white) !important;
     box-shadow: var(--rsi-shadow-gold-lg);
     transform: translateY(-2px);
 }
 
-/* Animaciones doradas */
+/* === ICONOS DORADOS === */
+
+.rsi-icon-gold {
+    background: var(--rsi-gold-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.rsi-icon-gold-hover {
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-icon-gold-hover:hover {
+    background: var(--rsi-gold-gradient-hover);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transform: scale(1.1);
+}
+
+/* === BOTONES DORADOS === */
+
+.rsi-btn-gold {
+    background: var(--rsi-gold-gradient);
+    border: none;
+    color: var(--rsi-white);
+    padding: 12px 24px;
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    box-shadow: var(--rsi-shadow-gold);
+}
+
+.rsi-btn-gold:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--rsi-shadow-gold-lg);
+    color: var(--rsi-white);
+}
+
+.rsi-btn-gold:active {
+    transform: translateY(0);
+    box-shadow: var(--rsi-shadow-sm);
+}
+
+/* === BOTÓN DORADO OUTLINE === */
+
+.rsi-btn-gold-outline {
+    background: transparent;
+    border: 2px solid var(--rsi-gold-base);
+    color: var(--rsi-gold-base);
+    padding: 10px 22px;
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-btn-gold-outline:hover {
+    background: var(--rsi-gold-gradient);
+    color: var(--rsi-white);
+    border-color: transparent;
+    box-shadow: var(--rsi-shadow-gold);
+    transform: translateY(-2px);
+}
+
+/* ==========================================
+   ANIMACIONES DORADAS
+   ========================================== */
+
 @keyframes goldShineVertical {
     0% {
         background-position: 0% 0%;
     }
     100% {
-        background-position: 100% 100%;
+        background-position: 0% 200%;
     }
 }
 
 @keyframes goldShineHorizontal {
     0% {
-        background-position: -100% 0;
+        background-position: -200% 0;
     }
     100% {
         background-position: 200% 0;
@@ -222,30 +460,107 @@ body * {
         box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
     }
     50% {
-        box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
     }
 }
+
+@keyframes goldPulseText {
+    0%, 100% {
+        opacity: 0.8;
+        filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.2));
+    }
+    50% {
+        opacity: 1;
+        filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.4));
+    }
+}
+
+@keyframes goldGlow {
+    0% {
+        box-shadow: 0 0 5px rgba(212, 175, 55, 0.2), 0 0 10px rgba(212, 175, 55, 0.1);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.4), 0 0 40px rgba(212, 175, 55, 0.2);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(212, 175, 55, 0.2), 0 0 10px rgba(212, 175, 55, 0.1);
+    }
+}
+
+@keyframes goldSparkle {
+    0% {
+        background-position: 0% 0%;
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.2);
+    }
+    100% {
+        background-position: 100% 100%;
+        filter: brightness(1);
+    }
+}
+
+/* ==========================================
+   CLASES DE ANIMACIÓN
+   ========================================== */
 
 .rsi-gold-pulse {
     animation: goldPulse 2s ease-in-out infinite;
 }
 
-/* Icono dorado */
-.rsi-icon-gold {
-    background: var(--rsi-gold-gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+.rsi-gold-glow {
+    animation: goldGlow 2s ease-in-out infinite;
 }
 
-/* Gradiente dorado para fondos */
-.rsi-bg-gold {
+.rsi-gold-sparkle {
     background: var(--rsi-gold-gradient);
     background-size: 200% 200%;
+    animation: goldSparkle 3s ease-in-out infinite;
 }
 
-.rsi-bg-gold-animated {
-    background: var(--rsi-gold-gradient);
-    background-size: 200% 200%;
-    animation: goldShineVertical 3s ease infinite;
+/* ==========================================
+   SCROLLBAR PERSONALIZADA (Opcional)
+   ========================================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--rsi-gray-100);
+    border-radius: var(--rsi-radius-full);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--rsi-gray-400);
+    border-radius: var(--rsi-radius-full);
+    transition: background var(--rsi-transition-base);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--rsi-primary);
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: var(--rsi-gold-base);
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: var(--rsi-gold-light);
+}
+
+/* ==========================================
+   SELECTION (Text Selection)
+   ========================================== */
+
+::selection {
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+}
+
+body.dark-mode ::selection {
+    background: var(--rsi-gold-base);
+    color: var(--rsi-black);
 }

@@ -1,0 +1,305 @@
+<!-- ========================================
+   NUEVO COLABORADOR - Formulario por pasos
+   ======================================== -->
+
+<section class="rsi-new-collaborator-section">
+    <div class="rsi-container">
+        
+        <!-- Título -->
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Registro</span> de Nuevo Colaborador
+        </h1>
+        <p class="rsi-page-subtitle">
+            Completa todos los datos para registrar un nuevo colaborador en el sistema.
+        </p>
+
+        <!-- ===== FORMULARIO POR PASOS ===== -->
+        <form id="collaboratorForm" class="rsi-form-steps" autocomplete="off">
+
+            <!-- Indicador de pasos -->
+            <div class="rsi-steps-indicator">
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number active" data-step="1">1</span>
+                    <span class="rsi-step-label active" data-step="1">Personal</span>
+                </div>
+                <div class="rsi-step-line" data-step="1"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number" data-step="2">2</span>
+                    <span class="rsi-step-label" data-step="2">Laboral</span>
+                </div>
+                <div class="rsi-step-line" data-step="2"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number" data-step="3">3</span>
+                    <span class="rsi-step-label" data-step="3">Contacto</span>
+                </div>
+            </div>
+
+            <!-- Contenedor de pasos -->
+            <div class="rsi-steps-container">
+
+                <!-- ===== PASO 1: INFORMACIÓN PERSONAL ===== -->
+                <div class="rsi-step-panel active" data-step="1">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <h3>Información Personal</h3>
+                        <p>Datos básicos del colaborador</p>
+                    </div>
+
+                    <!-- Foto de perfil -->
+                    <div class="rsi-form-group">
+                        <label for="fotoPerfil">Foto de perfil</label>
+                        <div class="rsi-upload-wrapper">
+                            <!-- ✅ AGREGAR name="fotoPerfil" -->
+                            <input type="file" id="fotoPerfil" name="fotoPerfil" accept="image/*" class="rsi-file-input">
+                            <div class="rsi-upload-preview" id="fotoPreview">
+                                <i class="fas fa-camera"></i>
+                                <span>Subir foto</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-row">
+                        <div class="rsi-form-group">
+                            <label for="nombreCompleto">Nombre completo <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-user rsi-input-icon"></i>
+                                <!-- ✅ AGREGAR name="nombreCompleto" -->
+                                <input type="text" id="nombreCompleto" name="nombreCompleto" placeholder="Ej: Juan Pérez García" required>
+                            </div>
+                        </div>
+                        <div class="rsi-form-group">
+                            <label for="fechaNacimiento">Fecha de nacimiento <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-calendar-alt rsi-input-icon"></i>
+                                <!-- ✅ AGREGAR name="fechaNacimiento" -->
+                                <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-row">
+                        <div class="rsi-form-group">
+                            <label for="curp">CURP <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-id-card rsi-input-icon"></i>
+                                <!-- ✅ AGREGAR name="curp" -->
+                                <input type="text" id="curp" name="curp" placeholder="Ej: PEGJ900101HDFRRN01" required maxlength="18">
+                            </div>
+                        </div>
+                        <div class="rsi-form-group">
+                            <label for="rfc">RFC <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-file-invoice rsi-input-icon"></i>
+                                <!-- ✅ AGREGAR name="rfc" -->
+                                <input type="text" id="rfc" name="rfc" placeholder="Ej: PEGJ900101XXX" required maxlength="13">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-row">
+                        <div class="rsi-form-group">
+                            <label for="estadoCivil">Estado civil <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-heart rsi-input-icon"></i>
+                                <!-- ✅ AGREGAR name="estadoCivil" -->
+                                <select id="estadoCivil" name="estadoCivil" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="soltero">Soltero(a)</option>
+                                    <option value="casado">Casado(a)</option>
+                                    <option value="divorciado">Divorciado(a)</option>
+                                    <option value="viudo">Viudo(a)</option>
+                                    <option value="union_libre">Unión libre</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="rsi-form-group">
+                            <label for="nss">NSS</label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-shield-alt rsi-input-icon"></i>
+                                <!-- ✅ AGREGAR name="nss" -->
+                                <input type="text" id="nss" name="nss" placeholder="Ej: 12345678901" maxlength="11">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-row">
+                        <div class="rsi-form-group">
+                            <label for="telefonoFijo">Teléfono fijo</label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-phone rsi-input-icon"></i>
+                                <!-- ✅ AGREGAR name="telefonoFijo" -->
+                                <input type="tel" id="telefonoFijo" name="telefonoFijo" placeholder="55 1234 5678">
+                            </div>
+                        </div>
+                        <div class="rsi-form-group">
+                            <label for="telefonoMovil">Teléfono móvil <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-mobile-alt rsi-input-icon"></i>
+                                <!-- ✅ AGREGAR name="telefonoMovil" -->
+                                <input type="tel" id="telefonoMovil" name="telefonoMovil" placeholder="55 1234 5678" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button class="rsi-btn-prev" disabled>Anterior</button>
+                        <button class="rsi-btn-next" data-next="2">Siguiente <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>1</span> de 3</div>
+                </div>
+
+                <!-- ===== PASO 2: INFORMACIÓN LABORAL ===== -->
+                <div class="rsi-step-panel" data-step="2">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h3>Información Laboral</h3>
+                        <p>Datos del puesto y área de trabajo</p>
+                    </div>
+
+                    <div class="rsi-form-row">
+                        <div class="rsi-form-group">
+                            <label for="area">Área <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-building rsi-input-icon"></i>
+                                <!-- ✅ AGREGAR name="area" -->
+                                <select id="area" name="area" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="administracion">Administración</option>
+                                    <option value="ventas">Ventas</option>
+                                    <option value="operaciones">Operaciones</option>
+                                    <option value="tecnologia">Tecnología</option>
+                                    <option value="recursos_humanos">Recursos Humanos</option>
+                                    <option value="marketing">Marketing</option>
+                                    <option value="logistica">Logística</option>
+                                    <option value="calidad">Calidad</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="rsi-form-group">
+                            <label for="subarea">Subárea <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-layer-group rsi-input-icon"></i>
+                                <!-- ✅ AGREGAR name="subarea" -->
+                                <select id="subarea" name="subarea" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="instalacion">Instalación</option>
+                                    <option value="mantenimiento">Mantenimiento</option>
+                                    <option value="diseno">Diseño</option>
+                                    <option value="supervision">Supervisión</option>
+                                    <option value="atencion_cliente">Atención al Cliente</option>
+                                    <option value="desarrollo">Desarrollo</option>
+                                    <option value="soporte">Soporte Técnico</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-row">
+                        <div class="rsi-form-group">
+                            <label for="tipoColaborador">Tipo de colaborador <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-user-tag rsi-input-icon"></i>
+                                <!-- ✅ AGREGAR name="tipoColaborador" -->
+                                <select id="tipoColaborador" name="tipoColaborador" required>
+                                    <option value="">Seleccionar...</option>
+                                    <option value="interno">Interno</option>
+                                    <option value="externo">Externo</option>
+                                    <option value="freelance">Freelance</option>
+                                    <option value="becario">Becario</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="rsi-form-group">
+                            <label for="rol">Rol <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-user-cog rsi-input-icon"></i>
+                                <!-- ✅ AGREGAR name="rol" -->
+                                <input type="text" id="rol" name="rol" value="partner" readonly disabled>
+                            </div>
+                            <small style="color: var(--rsi-gray-500); font-size: 0.8rem;">El rol asignado es <strong>partner</strong></small>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="nit">NIT</label>
+                        <div class="rsi-input-wrapper">
+                            <i class="fas fa-file-invoice-dollar rsi-input-icon"></i>
+                            <!-- ✅ AGREGAR name="nit" -->
+                            <input type="text" id="nit" name="nit" placeholder="Ej: 123456789-0">
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button class="rsi-btn-prev" data-prev="1"><i class="fas fa-arrow-left"></i> Anterior</button>
+                        <button class="rsi-btn-next" data-next="3">Siguiente <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>2</span> de 3</div>
+                </div>
+
+                <!-- ===== PASO 3: INFORMACIÓN DE CONTACTO ===== -->
+                <div class="rsi-step-panel" data-step="3">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Información de Contacto</h3>
+                        <p>Datos para acceso y comunicación</p>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="emailEmpresarial">Correo electrónico empresarial <span class="rsi-required">*</span></label>
+                        <div class="rsi-input-wrapper">
+                            <i class="fas fa-building rsi-input-icon"></i>
+                            <!-- ✅ AGREGAR name="emailEmpresarial" -->
+                            <input type="email" id="emailEmpresarial" name="emailEmpresarial" placeholder="nombre@rsienterprise.com" required>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="emailPersonal">Correo electrónico personal <span class="rsi-required">*</span></label>
+                        <div class="rsi-input-wrapper">
+                            <i class="fas fa-envelope rsi-input-icon"></i>
+                            <!-- ✅ AGREGAR name="emailPersonal" -->
+                            <input type="email" id="emailPersonal" name="emailPersonal" placeholder="ejemplo@gmail.com" required>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-row">
+                        <div class="rsi-form-group">
+                            <label for="password">Contraseña <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-lock rsi-input-icon"></i>
+                                <!-- ✅ AGREGAR name="password" -->
+                                <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres" required minlength="6">
+                            </div>
+                        </div>
+                        <div class="rsi-form-group">
+                            <label for="confirmPassword">Confirmar contraseña <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-lock rsi-input-icon"></i>
+                                <!-- ✅ AGREGAR name="confirmPassword" -->
+                                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repite la contraseña" required minlength="6">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button class="rsi-btn-prev" data-prev="2"><i class="fas fa-arrow-left"></i> Anterior</button>
+                        <button class="rsi-btn-submit-step" id="submitCollaborator">
+                            <i class="fas fa-user-plus"></i> Registrar Colaborador
+                        </button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>3</span> de 3</div>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</section>
