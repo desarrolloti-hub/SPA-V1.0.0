@@ -138,7 +138,47 @@
     box-sizing: border-box;
 }
 
-/* Select específico (sin ícono a la izquierda) */
+/* ==========================================
+   PASSWORD TOGGLE - CORREGIDO
+   ========================================== */
+
+/* ✅ El input de contraseña necesita más padding a la derecha */
+.rsi-form-group input[type="password"] {
+    padding-right: 52px;  /* Espacio para el botón del ojo */
+}
+
+/* ✅ El toggle del ojo debe estar dentro del input */
+.rsi-password-toggle {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--rsi-gray-500);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    z-index: 3;
+    padding: 8px 4px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rsi-password-toggle:hover {
+    color: var(--rsi-primary);
+}
+
+.rsi-password-toggle:focus {
+    outline: none;
+}
+
+/* ==========================================
+   SELECT (sin ícono a la izquierda)
+   ========================================== */
+
 .rsi-form-group select {
     padding: 14px 40px 14px 16px;
     appearance: none;
@@ -158,7 +198,10 @@
     cursor: pointer;
 }
 
-/* Textarea específico */
+/* ==========================================
+   TEXTAREA
+   ========================================== */
+
 .rsi-form-group textarea {
     min-height: 140px;
     resize: vertical;
@@ -417,6 +460,11 @@
         padding: 12px 14px 12px 44px;
         font-size: 0.95rem;
     }
+
+    /* ✅ En móvil también ajustamos el padding del password */
+    .rsi-form-group input[type="password"] {
+        padding-right: 44px;
+    }
     
     .rsi-input-icon {
         left: 14px;
@@ -442,6 +490,12 @@
     
     .rsi-form-header p {
         font-size: 0.9rem;
+    }
+
+    .rsi-password-toggle {
+        right: 10px;
+        font-size: 1rem;
+        padding: 6px 2px;
     }
 }
 
@@ -532,4 +586,13 @@ body.dark-mode .rsi-radio-group input {
 body.dark-mode .rsi-checkbox-group label,
 body.dark-mode .rsi-radio-group label {
     color: var(--rsi-gray-600);
+}
+
+/* ✅ Modo oscuro - Toggle de contraseña */
+body.dark-mode .rsi-password-toggle {
+    color: var(--rsi-gray-500);
+}
+
+body.dark-mode .rsi-password-toggle:hover {
+    color: var(--rsi-gold-base);
 }

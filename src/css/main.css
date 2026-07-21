@@ -32,10 +32,8 @@
 @import url('./pages/contact.css');
 @import url('./pages/partner/newPartner.css');
 /* Utilidades (opcional) */
-
 /* @import url('utils/helpers.css'); */
 /* @import url('utils/responsive.css'); */
-
 /* Estilos base adicionales */
 body {
     padding-top: 95px;
@@ -47,6 +45,6 @@ body {
 
 @media (max-width: 768px) {
     body {
-        padding-top: 45px;
+        padding-top: 70px;
     }
 }

@@ -128,7 +128,7 @@
 
 @media (max-width: 576px) {
     .rsi-login-section {
-        padding: var(--rsi-spacing-xl) 0;
+        padding: var(--rsi-spacing-xl);
     }
 
     .rsi-login-section .rsi-container {
