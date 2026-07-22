@@ -1,0 +1,451 @@
+
+/* ============================================
+   MENÚ DE USUARIO (Perfil) - DESKTOP
+   ============================================ */
+
+.nan_user-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-left: var(--rsi-spacing-md);
+}
+
+.nan-user-info {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    padding: 4px 12px 4px 6px;
+    border-radius: var(--rsi-radius-full);
+    transition: all var(--rsi-transition-base);
+    background: var(--rsi-gray-100);
+    border: 1px solid transparent;
+}
+
+.nan-user-info:hover {
+    background: var(--rsi-gray-200);
+    border-color: var(--rsi-gray-300);
+}
+
+.nan-user-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--rsi-primary);
+}
+
+.nan-user-details {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.nan-user-name {
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--rsi-text-primary);
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.nan-user-role {
+    font-size: 0.65rem;
+    color: var(--rsi-gray-500);
+}
+
+.nan-user-info .fa-chevron-down {
+    font-size: 0.65rem;
+    color: var(--rsi-gray-500);
+    transition: transform var(--rsi-transition-base);
+    margin-left: var(--rsi-spacing-xs);
+}
+
+.nan-user-info.active .fa-chevron-down {
+    transform: rotate(180deg);
+}
+
+/* ============================================
+   DROPDOWN DE USUARIO - DESKTOP
+   ============================================ */
+
+.nan-user-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 280px;
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-lg);
+    box-shadow: var(--rsi-shadow-lg);
+    border: 1px solid var(--rsi-gray-200);
+    padding: var(--rsi-spacing-sm) 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(0.98);
+    transition: all var(--rsi-transition-base);
+    z-index: var(--rsi-z-dropdown);
+    transform-origin: top right;
+}
+
+.nan-user-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+/* Header del dropdown */
+.nan-user-dropdown-header {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-md);
+    padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
+    border-bottom: 1px solid var(--rsi-gray-200);
+}
+
+.nan-user-dropdown-header img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--rsi-primary);
+}
+
+.nan-user-dropdown-header div {
+    display: flex;
+    flex-direction: column;
+}
+
+.nan-user-dropdown-header span {
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+    font-size: 0.95rem;
+}
+
+.nan-user-dropdown-header small {
+    color: var(--rsi-gray-500);
+    font-size: 0.75rem;
+}
+
+/* Tema dentro del dropdown */
+.nan-dropdown-theme {
+    padding: var(--rsi-spacing-sm) var(--rsi-spacing-lg);
+}
+
+.nan-dropdown-theme .rsi-theme-toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 12px;
+    border-radius: var(--rsi-radius-md);
+    background: var(--rsi-gray-50);
+    width: 100%;
+}
+
+.nan-dropdown-theme .rsi-theme-label {
+    font-size: 0.85rem;
+    color: var(--rsi-gray-600);
+}
+
+.nan-dropdown-theme .rsi-theme-switch {
+    width: 44px;
+    height: 24px;
+}
+
+.nan-dropdown-theme .rsi-theme-slider::before {
+    height: 18px;
+    width: 18px;
+}
+
+.nan-dropdown-theme .rsi-theme-switch input:checked + .rsi-theme-slider::before {
+    transform: translateX(20px);
+}
+
+/* Enlaces del dropdown */
+.nan-user-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-md);
+    padding: 10px var(--rsi-spacing-lg);
+    color: var(--rsi-gray-700);
+    text-decoration: none;
+    transition: all var(--rsi-transition-base);
+    font-size: 0.9rem;
+}
+
+.nan-user-dropdown a:hover {
+    background: var(--rsi-gray-100);
+    color: var(--rsi-primary);
+}
+
+.nan-user-dropdown a i {
+    width: 20px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.nan-user-dropdown hr {
+    margin: var(--rsi-spacing-xs) 0;
+    border: none;
+    border-top: 1px solid var(--rsi-gray-200);
+}
+
+/* ============================================
+   MENÚ RESPONSIVE - Perfil, Tema y Logout
+   ============================================ */
+
+.nan-menu-profile {
+    display: none !important;
+    width: 100%;
+    max-width: 400px;
+    padding: var(--rsi-spacing-md) 0;
+    border-bottom: 1px solid var(--rsi-gray-200);
+}
+
+.nan-menu-profile-container {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-md);
+    padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    background: var(--rsi-gray-50);
+    border-radius: var(--rsi-radius-lg);
+}
+
+.nan-menu-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--rsi-primary);
+}
+
+.nan-menu-profile-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.nan-menu-name {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--rsi-text-primary);
+}
+
+.nan-menu-role {
+    font-size: 0.8rem;
+    color: var(--rsi-gray-500);
+}
+
+/* Tema en menú mobile */
+.nan-menu-theme {
+    display: none !important;
+    width: 100%;
+    max-width: 400px;
+    padding: var(--rsi-spacing-sm) 0;
+}
+
+.nan-menu-theme-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--rsi-spacing-md);
+    padding: var(--rsi-spacing-sm);
+    background: var(--rsi-gray-50);
+    border-radius: var(--rsi-radius-lg);
+}
+
+/* Logout en menú mobile */
+.nan-menu-logout {
+    display: none !important;
+    width: 100%;
+    max-width: 400px;
+    padding: var(--rsi-spacing-sm) 0;
+    border-top: 1px solid var(--rsi-gray-200);
+}
+
+.nan-menu-logout a {
+    color: var(--rsi-danger) !important;
+    justify-content: center !important;
+    font-weight: 600 !important;
+}
+
+.nan-menu-logout a:hover {
+    background: var(--rsi-danger-light) !important;
+    color: var(--rsi-danger) !important;
+}
+
+/* ============================================
+   ACCIONES (derecha)
+   ============================================ */
+
+.nan_actions {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-md);
+}
+
+/* ============================================
+   RESPONSIVE - Mostrar elementos en mobile
+   ============================================ */
+
+@media (max-width: 992px) {
+    /* Mostrar perfil, tema y logout en mobile */
+    .nan-menu-profile,
+    .nan-menu-theme,
+    .nan-menu-logout {
+        display: flex !important;
+    }
+
+    .nan-menu-theme .rsi-theme-toggle-container {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .nan-menu-profile-container {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .nan-menu-profile-info {
+        text-align: center;
+    }
+
+    /* Asegurar que el tema en el dropdown sea visible en mobile */
+    .nan-user-dropdown .nan-dropdown-theme {
+        display: block !important;
+    }
+
+    .nan-user-dropdown .nan-dropdown-theme .rsi-theme-toggle-container {
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* Ocultar detalles del usuario en mobile (solo avatar) */
+    .nan-user-details {
+        display: none;
+    }
+
+    .nan-user-info .fa-chevron-down {
+        display: none;
+    }
+
+    .nan-user-info {
+        padding: 4px;
+        background: transparent;
+    }
+
+    .nan-user-info:hover {
+        background: transparent;
+    }
+
+    .nan-user-avatar {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 576px) {
+    .nan-user-dropdown .nan-dropdown-theme .rsi-theme-toggle-container {
+        flex-wrap: wrap;
+        gap: var(--rsi-spacing-sm);
+    }
+}
+
+/* ============================================
+   MODO OSCURO
+   ============================================ */
+
+body.dark-mode .nan-user-info {
+    background: var(--rsi-gray-200);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .nan-user-info:hover {
+    background: var(--rsi-gray-300);
+}
+
+body.dark-mode .nan-user-name {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .nan-user-role {
+    color: var(--rsi-gray-500);
+}
+
+body.dark-mode .nan-user-dropdown {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .nan-user-dropdown a {
+    color: var(--rsi-gray-700);
+}
+
+body.dark-mode .nan-user-dropdown a:hover {
+    background: var(--rsi-gray-200);
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .nan-user-dropdown-header span {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .nan-user-dropdown-header {
+    border-bottom-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .nan-user-dropdown hr {
+    border-top-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .nan-dropdown-theme .rsi-theme-toggle-container {
+    background: var(--rsi-gray-200);
+}
+
+body.dark-mode .nan-menu-profile-container {
+    background: var(--rsi-gray-200);
+}
+
+body.dark-mode .nan-menu-name {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .nan-menu-theme-container {
+    background: var(--rsi-gray-200);
+}
+
+body.dark-mode .nan-menu-profile {
+    border-bottom-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .nan-menu-logout {
+    border-top-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .nan-user-info {
+    background: var(--rsi-gray-200);
+}
+
+body.dark-mode .nan-user-avatar {
+    border-color: var(--rsi-gold-base);
+}
+
+/* ============================================
+   ANIMACIONES PARA DROPDOWN
+   ============================================ */
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.nan-user-dropdown.active {
+    animation: dropdownFadeIn 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}

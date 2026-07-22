@@ -1,0 +1,175 @@
+<!-- ========================================
+   NAVBAR PARTNER - RSI Enterprise
+   ======================================== -->
+
+<nav class="nan_navbar">
+    <!-- Logo -->
+    <div class="nan_logo">
+        <a href="/" data-link>
+            <img src="/assets/icons/logo.png" alt="RSI Enterprise" id="navbarLogo">
+        </a>
+    </div>
+
+    <!-- Hamburguesa (mobile) -->
+    <button class="nan_hamburger" aria-label="Abrir menú">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Menú principal -->
+    <ul class="nan_menu">
+        <!-- 👥 Recursos Humanos -->
+        <li class="nan_dropdown-item">
+            <a href="#" class="nan_dropdown-trigger" data-dropdown="hr">
+                <i class="fas fa-users"></i> Recursos Humanos
+                <i class="fas fa-chevron-down nan_arrow"></i>
+            </a>
+            <ul class="nan_dropdown-menu">
+                <li><a href="/hr/colaboradores" data-link><i class="fas fa-user-friends"></i> Colaboradores</a></li>
+                <li><a href="/hr/areas" data-link><i class="fas fa-building"></i> Áreas</a></li>
+                <li><a href="/hr/asistencias" data-link><i class="fas fa-clipboard-check"></i> Asistencias</a></li>
+                <li><a href="/hr/reembolsos" data-link><i class="fas fa-hand-holding-usd"></i> Reembolsos</a></li>
+            </ul>
+        </li>
+
+        <!-- 📋 Operaciones -->
+        <li class="nan_dropdown-item">
+            <a href="#" class="nan_dropdown-trigger" data-dropdown="ops">
+                <i class="fas fa-clipboard-list"></i> Operaciones
+                <i class="fas fa-chevron-down nan_arrow"></i>
+            </a>
+            <ul class="nan_dropdown-menu">
+                <li><a href="/ops/checklist" data-link><i class="fas fa-check-double"></i> Checklist</a></li>
+                <li><a href="/ops/historial" data-link><i class="fas fa-history"></i> Historial</a></li>
+                <li><a href="/ops/manuales" data-link><i class="fas fa-book"></i> Manuales</a></li>
+                <li><a href="/ops/notas" data-link><i class="fas fa-sticky-note"></i> Notas</a></li>
+            </ul>
+        </li>
+
+        <!-- 🎫 Soporte -->
+        <li class="nan_dropdown-item">
+            <a href="#" class="nan_dropdown-trigger" data-dropdown="support">
+                <i class="fas fa-headset"></i> Soporte
+                <i class="fas fa-chevron-down nan_arrow"></i>
+            </a>
+            <ul class="nan_dropdown-menu">
+                <li><a href="/support/tickets" data-link><i class="fas fa-ticket-alt"></i> Tickets</a></li>
+                <li><a href="/support/mis-tickets" data-link><i class="fas fa-user-ticket"></i> Mis Tickets</a></li>
+                <li><a href="/support/estadisticas" data-link><i class="fas fa-chart-bar"></i> Estadísticas</a></li>
+            </ul>
+        </li>
+
+        <!-- 💼 Comercial -->
+        <li class="nan_dropdown-item">
+            <a href="#" class="nan_dropdown-trigger" data-dropdown="commercial">
+                <i class="fas fa-briefcase"></i> Comercial
+                <i class="fas fa-chevron-down nan_arrow"></i>
+            </a>
+            <ul class="nan_dropdown-menu">
+                <li><a href="/commercial/clientes" data-link><i class="fas fa-handshake"></i> Clientes</a></li>
+                <li><a href="/commercial/cotizaciones" data-link><i class="fas fa-file-invoice-dollar"></i> Cotizaciones</a></li>
+            </ul>
+        </li>
+
+        <!-- 🛒 Ecommerce -->
+        <li class="nan_dropdown-item">
+            <a href="#" class="nan_dropdown-trigger" data-dropdown="ecommerce">
+                <i class="fas fa-store"></i> Ecommerce
+                <i class="fas fa-chevron-down nan_arrow"></i>
+            </a>
+            <ul class="nan_dropdown-menu">
+                <li><a href="/ecommerce/productos" data-link><i class="fas fa-box"></i> Productos</a></li>
+                <li><a href="/ecommerce/pedidos" data-link><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
+                <li><a href="/ecommerce/ventas" data-link><i class="fas fa-chart-line"></i> Ventas</a></li>
+                <li><a href="/ecommerce/categorias" data-link><i class="fas fa-tags"></i> Categorías</a></li>
+                <li><a href="/ecommerce/opiniones" data-link><i class="fas fa-star"></i> Opiniones</a></li>
+                <li><a href="/ecommerce/usuarios" data-link><i class="fas fa-user"></i> Usuarios</a></li>
+                <li><a href="/ecommerce/entregas" data-link><i class="fas fa-truck"></i> Entregas</a></li>
+                <li><a href="/ecommerce/carrusel" data-link><i class="fas fa-images"></i> Carrusel</a></li>
+                <li><a href="/ecommerce/contactos" data-link><i class="fas fa-address-book"></i> Contactos</a></li>
+            </ul>
+        </li>
+        
+        <!-- ✅ SOLO UN PERFIL EN EL MENÚ MOBILE -->
+        <li class="nan_dropdown-item nan-menu-profile-dropdown">
+            <a href="#" class="nan_dropdown-trigger" data-dropdown="profile-mobile">
+                <i class="fas fa-user-circle"></i> Mi Perfil
+                <i class="fas fa-chevron-down nan_arrow"></i>
+            </a>
+            <ul class="nan_dropdown-menu nan-profile-dropdown-menu">
+                <li class="nan-profile-header">
+                    <img src="/assets/images/default-avatar.png" alt="Avatar" class="nan-menu-avatar" id="menuAvatar">
+                    <div class="nan-profile-info">
+                        <span class="nan-menu-name" id="menuName">Usuario</span>
+                        <span class="nan-menu-role" id="menuRole">Área</span>
+                    </div>
+                </li>
+                <li><a href="/mi-cuenta" data-link><i class="fas fa-user"></i> Mi cuenta</a></li>
+                <li><a href="#" id="terminarAsistenciaMobile"><i class="fas fa-clock"></i> Terminar asistencia</a></li>
+                <li class="nan-menu-theme-in-dropdown">
+                    <div class="nan-menu-theme-container">
+                        <span class="rsi-theme-label">
+                            <i class="fas fa-sun"></i>
+                        </span>
+                        <label class="rsi-theme-switch">
+                            <input type="checkbox" id="themeToggleMobile">
+                            <span class="rsi-theme-slider"></span>
+                        </label>
+                        <span class="rsi-theme-label">
+                            <i class="fas fa-moon"></i>
+                        </span>
+                    </div>
+                </li>
+                <li class="nan-menu-logout-in-dropdown">
+                    <a href="#" id="logoutBtnMobile">
+                        <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                    </a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <!-- Acciones derecha (desktop) - SOLO EL PERFIL -->
+    <div class="nan_actions">
+        <div class="nan_user-menu">
+            <div class="nan-user-info" id="userInfo">
+                <img src="/assets/images/default-avatar.png" alt="Avatar" class="nan-user-avatar" id="userAvatar">
+                <div class="nan-user-details">
+                    <span class="nan-user-name" id="userName">Usuario</span>
+                    <span class="nan-user-role" id="userRole">Área</span>
+                </div>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            
+            <div class="nan-user-dropdown" id="userDropdown">
+                <div class="nan-user-dropdown-header">
+                    <img src="/assets/images/default-avatar.png" alt="Avatar" id="dropdownAvatar">
+                    <div>
+                        <span id="dropdownName">Usuario</span>
+                        <small id="dropdownRole">Área</small>
+                    </div>
+                </div>
+                <hr>
+                <div class="nan-dropdown-theme">
+                    <div class="rsi-theme-toggle-container">
+                        <span class="rsi-theme-label"><i class="fas fa-sun"></i></span>
+                        <label class="rsi-theme-switch">
+                            <input type="checkbox" id="themeToggleDesktop">
+                            <span class="rsi-theme-slider"></span>
+                        </label>
+                        <span class="rsi-theme-label"><i class="fas fa-moon"></i></span>
+                    </div>
+                </div>
+                <hr>
+                <a href="/mi-cuenta" data-link><i class="fas fa-user"></i> Mi cuenta</a>
+                <a href="#" id="terminarAsistencia"><i class="fas fa-clock"></i> Terminar asistencia</a>
+                <hr>
+                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón cerrar (mobile) -->
+    <button class="nan_close" aria-label="Cerrar menú">
+        <i class="fas fa-times"></i>
+    </button>
+</nav>

@@ -1,9 +1,9 @@
 import { loadLayout } from './components/shared/loadLayout.js';
 import { initNavbarController } from './components/visitor/navbarController.js';
 import { initFooterController } from './components/visitor/footerController.js';
+import { initFooterPartnerController } from './components/partner/footerPartnertController.js';
 import { initRouter } from './router/router.js';
 import { ThemeService } from './components/shared/themeService.js';
-// ⚠️ NO importamos lazy-loader aquí, lo maneja el router
 
 function loadExternalScripts() {
     return new Promise((resolve) => {
@@ -41,24 +41,24 @@ function loadExternalScripts() {
     });
 }
 
-/**
- * Inicializa la aplicación
- */
 async function initApp() {
     try {
         await loadExternalScripts();
         
-        // 1. Cargar layouts persistentes
-        await loadLayout();
-        
-        // 2. Inicializar controllers de layout
-        initNavbarController();
-        initFooterController();
-        
-        // 3. Inicializar tema (modo oscuro/claro)
+        // 1. Inicializar tema (modo oscuro/claro)
         ThemeService.init();
         
-        // 4. Inicializar router (él se encarga del lazy loader)
+        // 2. Cargar layouts persistentes
+        await loadLayout();
+        
+        // 3. Inicializar controllers de layout
+        initNavbarController();
+        
+        // ✅ Inicializar AMBOS controllers (cada uno busca su propio footer)
+        initFooterController();        // Para el footer visitante
+        initFooterPartnerController(); // Para el footer partner
+        
+        // 4. Inicializar router
         initRouter();
         
         console.log('✅ Aplicación inicializada correctamente');
@@ -67,5 +67,4 @@ async function initApp() {
     }
 }
 
-// Iniciar aplicación
 initApp();

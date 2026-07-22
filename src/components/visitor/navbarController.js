@@ -1,7 +1,9 @@
 /* ========================================
    NAVBAR CONTROLLER - RSI Enterprise
    ======================================== */
+
 import ThemeService from '../shared/themeService.js';
+import AuthService from '../../services/authService.js';
 
 let state = {
     isMenuOpen: false,
@@ -11,8 +13,13 @@ let state = {
 };
 
 let elements = {};
+let authService = null;
+let eventListeners = [];
 
 export function initNavbarController() {
+    console.log('🧭 Inicializando Navbar Controller');
+    
+    authService = new AuthService();
     cacheElements();
     
     if (!elements.navbar) {
@@ -20,11 +27,23 @@ export function initNavbarController() {
         return null;
     }
     
+    // ✅ Cargar sesión y actualizar perfil
+    loadUserSession();
+    
+    // ✅ Inicializar tema
+    initThemeToggle();
+    updateLogo(ThemeService.isDarkMode());
+    
     bindEvents();
     setActiveLink();
     handleScroll();
-    loadUserSession();
-    initThemeToggle();
+    
+    // ✅ Escuchar recarga del navbar
+    document.addEventListener('navbarLoaded', () => {
+        console.log('🔄 Navbar recargado');
+        cleanup();
+        setTimeout(initNavbarController, 50);
+    });
     
     console.log('✅ Navbar Controller inicializado');
     
@@ -44,118 +63,245 @@ function cacheElements() {
         closeBtn: document.querySelector('.nan_close'),
         menu: document.querySelector('.nan_menu'),
         menuLinks: document.querySelectorAll('.nan_menu li a'),
-        themeSwitch: document.getElementById('themeToggleSwitch'),
+        themeSwitchDesktop: document.getElementById('themeToggleDesktop'),
+        themeSwitchMobile: document.getElementById('themeToggleMobile'),
         logo: document.getElementById('navbarLogo'),
         dropdownTriggers: document.querySelectorAll('.nan_dropdown-trigger'),
         dropdownItems: document.querySelectorAll('.nan_dropdown-item'),
-        body: document.body
+        body: document.body,
+        // Elementos del perfil
+        userAvatar: document.getElementById('userAvatar'),
+        userName: document.getElementById('userName'),
+        userRole: document.getElementById('userRole'),
+        dropdownAvatar: document.getElementById('dropdownAvatar'),
+        dropdownName: document.getElementById('dropdownName'),
+        dropdownRole: document.getElementById('dropdownRole'),
+        menuAvatar: document.getElementById('menuAvatar'),
+        menuName: document.getElementById('menuName'),
+        menuRole: document.getElementById('menuRole'),
+        userInfo: document.querySelector('.nan-user-info'),
+        userDropdown: document.querySelector('.nan-user-dropdown'),
+        logoutBtn: document.getElementById('logoutBtn'),
+        logoutBtnMobile: document.getElementById('logoutBtnMobile'),
+        terminarAsistencia: document.getElementById('terminarAsistencia')
     };
 }
 
 function bindEvents() {
+    // Menú hamburguesa
     if (elements.hamburger) {
         elements.hamburger.addEventListener('click', openMenu);
+        eventListeners.push({ element: elements.hamburger, event: 'click', handler: openMenu });
     }
     
     if (elements.closeBtn) {
         elements.closeBtn.addEventListener('click', closeMenu);
+        eventListeners.push({ element: elements.closeBtn, event: 'click', handler: closeMenu });
     }
     
+    // Scroll
     window.addEventListener('scroll', handleScroll);
+    eventListeners.push({ element: window, event: 'scroll', handler: handleScroll });
     
+    // Click fuera
     document.addEventListener('click', handleClickOutside);
+    eventListeners.push({ element: document, event: 'click', handler: handleClickOutside });
     
+    // Resize
     window.addEventListener('resize', handleResize);
+    eventListeners.push({ element: window, event: 'resize', handler: handleResize });
     
-    document.addEventListener('route:changed', () => {
-        setActiveLink();
-        closeMenu();
-    });
-    
+    // Clicks en enlaces
     if (elements.menu) {
         elements.menu.addEventListener('click', handleLinkClick);
+        eventListeners.push({ element: elements.menu, event: 'click', handler: handleLinkClick });
     }
     
-    // Dropdown triggers - solo en mobile
+    // Dropdown triggers
     if (elements.dropdownTriggers) {
         elements.dropdownTriggers.forEach(trigger => {
-            trigger.addEventListener('click', handleDropdownToggle);
-            
-            // En desktop, hover maneja el dropdown
-            if (window.innerWidth > 992) {
-                trigger.addEventListener('mouseenter', () => {
-                    const parent = trigger.closest('.nan_dropdown-item');
-                    if (parent) {
-                        elements.dropdownItems.forEach(item => {
-                            if (item !== parent) {
-                                item.classList.remove('active');
-                            }
-                        });
-                        parent.classList.add('active');
-                    }
-                });
-            }
+            const handler = (e) => handleDropdownToggle(e);
+            trigger.addEventListener('click', handler);
+            eventListeners.push({ element: trigger, event: 'click', handler });
         });
     }
     
-    // Cerrar dropdowns al salir del mouse en desktop
-    if (elements.dropdownItems) {
-        elements.dropdownItems.forEach(item => {
-            item.addEventListener('mouseleave', () => {
-                if (window.innerWidth > 992) {
-                    item.classList.remove('active');
-                }
-            });
-        });
+    // Tema
+    const themeToggles = [elements.themeSwitchDesktop, elements.themeSwitchMobile];
+    themeToggles.forEach(toggle => {
+        if (toggle) {
+            const handler = (e) => handleThemeChange(e);
+            toggle.addEventListener('change', handler);
+            eventListeners.push({ element: toggle, event: 'change', handler });
+        }
+    });
+    
+    // Logout
+    if (elements.logoutBtn) {
+        const handler = (e) => {
+            e.preventDefault();
+            handleLogout();
+        };
+        elements.logoutBtn.addEventListener('click', handler);
+        eventListeners.push({ element: elements.logoutBtn, event: 'click', handler });
     }
     
+    if (elements.logoutBtnMobile) {
+        const handler = (e) => {
+            e.preventDefault();
+            handleLogout();
+        };
+        elements.logoutBtnMobile.addEventListener('click', handler);
+        eventListeners.push({ element: elements.logoutBtnMobile, event: 'click', handler });
+    }
+    
+    // Terminar asistencia
+    if (elements.terminarAsistencia) {
+        const handler = (e) => {
+            e.preventDefault();
+            handleTerminarAsistencia();
+        };
+        elements.terminarAsistencia.addEventListener('click', handler);
+        eventListeners.push({ element: elements.terminarAsistencia, event: 'click', handler });
+    }
+    
+    // Perfil - toggle dropdown
+    if (elements.userInfo) {
+        const handler = (e) => {
+            e.stopPropagation();
+            elements.userDropdown.classList.toggle('active');
+            elements.userInfo.classList.toggle('active');
+        };
+        elements.userInfo.addEventListener('click', handler);
+        eventListeners.push({ element: elements.userInfo, event: 'click', handler });
+    }
+    
+    // Evento de tema global
     document.addEventListener('theme:changed', (e) => {
         const isDark = e.detail.isDarkMode;
         state.isDarkMode = isDark;
         updateLogo(isDark);
-        updateThemeSwitch(isDark);
+        updateThemeSwitches(isDark);
     });
 }
 
+/**
+ * CARGA LA SESIÓN DEL USUARIO
+ */
+function loadUserSession() {
+    const session = authService.getSession();
+    
+    console.log('👤 Sesión:', session);
+    
+    if (session) {
+        state.currentUser = session;
+        updateUserProfile(session);
+    } else {
+        console.log('👤 No hay sesión activa');
+    }
+}
+
+/**
+ * ACTUALIZA EL PERFIL DEL USUARIO EN EL NAVBAR
+ */
+function updateUserProfile(user) {
+    if (!user) return;
+    
+    const displayName = user.displayName || user.nombreCompleto || user.email || 'Usuario';
+    const area = user.area || user.subarea || 'Sin área';
+    const fotoPerfil = user.fotoPerfil || null;
+    const areaFormatted = area.charAt(0).toUpperCase() + area.slice(1);
+    
+    // ✅ Actualizar avatares
+    const avatarIds = ['userAvatar', 'dropdownAvatar', 'menuAvatar'];
+    avatarIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            if (fotoPerfil && fotoPerfil.startsWith('data:image')) {
+                el.src = fotoPerfil;
+            } else {
+                el.src = '/assets/images/default-avatar.png';
+            }
+        }
+    });
+    
+    // ✅ Actualizar nombres
+    const nameIds = ['userName', 'dropdownName', 'menuName'];
+    nameIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.textContent = displayName;
+        }
+    });
+    
+    // ✅ Actualizar roles/áreas
+    const roleIds = ['userRole', 'dropdownRole', 'menuRole'];
+    roleIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.textContent = areaFormatted;
+        }
+    });
+    
+    console.log('✅ Perfil actualizado:', { displayName, area: areaFormatted });
+}
+
+/**
+ * ACTUALIZA EL USUARIO (para uso externo)
+ */
+function updateUser(user) {
+    state.currentUser = user;
+    if (user) {
+        updateUserProfile(user);
+    }
+}
+
+/**
+ * MANEJA EL CAMBIO DE TEMA
+ */
+function handleThemeChange(e) {
+    const isDarkMode = e.target.checked;
+    
+    if (isDarkMode) {
+        ThemeService.enableDarkMode();
+    } else {
+        ThemeService.enableLightMode();
+    }
+    
+    state.isDarkMode = isDarkMode;
+    updateLogo(isDarkMode);
+    updateThemeSwitches(isDarkMode);
+    
+    document.dispatchEvent(new CustomEvent('theme:changed', {
+        detail: { isDarkMode }
+    }));
+}
+
+/**
+ * INICIALIZA EL TEMA
+ */
 function initThemeToggle() {
-    if (!elements.themeSwitch) return;
-    
     const isDark = ThemeService.isDarkMode();
-    elements.themeSwitch.checked = isDark;
     state.isDarkMode = isDark;
+    updateThemeSwitches(isDark);
     updateLogo(isDark);
-    
-    elements.themeSwitch.addEventListener('change', (e) => {
-        e.stopPropagation();
-        const isDarkMode = e.target.checked;
-        
-        if (isDarkMode) {
-            ThemeService.enableDarkMode();
-        } else {
-            ThemeService.enableLightMode();
-        }
-        
-        state.isDarkMode = isDarkMode;
-        updateLogo(isDarkMode);
-        
-        document.dispatchEvent(new CustomEvent('theme:changed', {
-            detail: { isDarkMode }
-        }));
-    });
-    
-    // Override ThemeService.toggle para mantener sincronía
-    const originalToggle = ThemeService.toggle;
-    ThemeService.toggle = function() {
-        originalToggle.call(ThemeService);
-        const isDark = ThemeService.isDarkMode();
-        if (elements.themeSwitch) {
-            elements.themeSwitch.checked = isDark;
-        }
-        state.isDarkMode = isDark;
-        updateLogo(isDark);
-    };
 }
 
+/**
+ * ACTUALIZA TODOS LOS SWITCHES DE TEMA
+ */
+function updateThemeSwitches(isDark) {
+    const toggles = [elements.themeSwitchDesktop, elements.themeSwitchMobile];
+    toggles.forEach(toggle => {
+        if (toggle) {
+            toggle.checked = isDark;
+        }
+    });
+}
+
+/**
+ * ACTUALIZA EL LOGO SEGÚN EL TEMA
+ */
 function updateLogo(isDark) {
     if (!elements.logo) return;
     
@@ -163,18 +309,16 @@ function updateLogo(isDark) {
         ? '/assets/icons/logoBlanco.png' 
         : '/assets/icons/logo.png';
     
-    elements.logo.style.opacity = '0.7';
+    // Transición suave
+    elements.logo.style.opacity = '0.5';
     setTimeout(() => {
         elements.logo.style.opacity = '1';
     }, 50);
 }
 
-function updateThemeSwitch(isDark) {
-    if (elements.themeSwitch) {
-        elements.themeSwitch.checked = isDark;
-    }
-}
-
+/**
+ * MANEJA EL TOGGLE DE DROPDOWN
+ */
 function handleDropdownToggle(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -199,6 +343,9 @@ function handleDropdownToggle(e) {
     parent.classList.toggle('active');
 }
 
+/**
+ * ABRE EL MENÚ MOBILE
+ */
 function openMenu() {
     if (!elements.menu) return;
     
@@ -215,6 +362,9 @@ function openMenu() {
     }
 }
 
+/**
+ * CIERRA EL MENÚ MOBILE
+ */
 function closeMenu() {
     if (!elements.menu) return;
     
@@ -236,6 +386,9 @@ function closeMenu() {
     }
 }
 
+/**
+ * MANEJA EL SCROLL PARA EL NAVBAR
+ */
 function handleScroll() {
     if (!elements.navbar) return;
     
@@ -252,18 +405,25 @@ function handleScroll() {
     }
 }
 
+/**
+ * MANEJA CLICK FUERA DEL MENÚ
+ */
 function handleClickOutside(event) {
     if (!state.isMenuOpen) return;
     
     const isClickInsideMenu = elements.menu?.contains(event.target);
     const isClickOnHamburger = elements.hamburger?.contains(event.target);
-    const isClickOnThemeSwitch = elements.themeSwitch?.contains(event.target);
+    const isClickOnThemeSwitch = elements.themeSwitchDesktop?.contains(event.target) || 
+                                  elements.themeSwitchMobile?.contains(event.target);
     
     if (!isClickInsideMenu && !isClickOnHamburger && !isClickOnThemeSwitch) {
         closeMenu();
     }
 }
 
+/**
+ * MANEJA EL RESIZE
+ */
 function handleResize() {
     if (window.innerWidth > 992) {
         if (state.isMenuOpen) {
@@ -275,6 +435,9 @@ function handleResize() {
     }
 }
 
+/**
+ * MANEJA CLICK EN ENLACES
+ */
 function handleLinkClick(e) {
     const link = e.target.closest('a');
     if (link && link.getAttribute('href')) {
@@ -284,19 +447,21 @@ function handleLinkClick(e) {
         
         if (!href.startsWith('http')) {
             e.preventDefault();
-            addLoadingEffect(link);
+            closeMenu();
             
+            // Navegar
             if (typeof window.navigateTo === 'function') {
                 window.navigateTo(href);
             } else {
                 window.location.href = href;
             }
-            
-            closeMenu();
         }
     }
 }
 
+/**
+ * SETEA EL ENLACE ACTIVO
+ */
 function setActiveLink() {
     if (!elements.menuLinks || elements.menuLinks.length === 0) return;
     
@@ -327,40 +492,86 @@ function setActiveLink() {
     });
 }
 
-function addLoadingEffect(link) {
-    link.classList.add('loading');
-    setTimeout(() => {
-        link.classList.remove('loading');
-    }, 500);
-}
-
-async function loadUserSession() {
-    try {
-        const user = await AuthService?.getCurrentUser();
-        if (user && user.isLoggedIn) {
-            state.currentUser = user;
-            updateNavbarForLoggedUser(user);
+/**
+ * MANEJA TERMINAR ASISTENCIA
+ */
+function handleTerminarAsistencia() {
+    console.log('📋 Terminar asistencia');
+    
+    Swal.fire({
+        icon: 'question',
+        title: '¿Terminar asistencia?',
+        text: '¿Estás seguro de que quieres terminar tu jornada laboral?',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, terminar',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#1c1948',
+        cancelButtonColor: '#6c757d'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Asistencia terminada!',
+                text: 'Tu jornada laboral ha sido registrada correctamente.',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
         }
-    } catch (error) {
-        console.error('Error cargando sesión:', error);
-    }
+    });
 }
 
-function updateNavbarForLoggedUser(user) {
-    // ... implementación del usuario
-}
-
+/**
+ * MANEJA EL LOGOUT
+ */
 async function handleLogout() {
-    // ... implementación de logout
-}
-
-export function updateUser(user) {
-    state.currentUser = user;
-    if (user && user.isLoggedIn) {
-        updateNavbarForLoggedUser(user);
+    const result = await Swal.fire({
+        icon: 'question',
+        title: '¿Cerrar sesión?',
+        text: '¿Estás seguro de que quieres cerrar sesión?',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, cerrar sesión',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d'
+    });
+    
+    if (result.isConfirmed) {
+        try {
+            await authService.logout();
+            const { reloadLayouts } = await import('../../components/shared/loadLayout.js');
+            await reloadLayouts();
+            window.location.href = '/';
+        } catch (error) {
+            console.error('❌ Error al cerrar sesión:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un error al cerrar sesión',
+                confirmButtonText: 'Intentar de nuevo',
+                confirmButtonColor: '#dc3545'
+            });
+        }
     }
 }
 
-export function getState() {
+/**
+ * OBTIENE EL ESTADO ACTUAL
+ */
+function getState() {
     return { ...state };
 }
+
+/**
+ * LIMPIA EVENT LISTENERS
+ */
+function cleanup() {
+    eventListeners.forEach(({ element, event, handler }) => {
+        if (element) {
+            element.removeEventListener(event, handler);
+        }
+    });
+    eventListeners = [];
+}
+
+export default initNavbarController;

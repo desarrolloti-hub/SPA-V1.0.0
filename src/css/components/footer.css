@@ -354,3 +354,224 @@ body.dark-mode .rsi-footer-bottom a:hover {
         height: 45px;
     }
 }
+
+/*FOOTER PARA PARTNER*/
+/* ========================================
+   FOOTER PARTNER - RSI Enterprise
+   ======================================== */
+
+.rsi-footer-partner {
+    background: var(--rsi-primary);
+    border-top: 3px solid var(--rsi-accent);
+    padding: var(--rsi-spacing-lg) 0;
+    margin-top: auto;
+    width: 100%;
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-footer-partner-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--rsi-spacing-xl);
+}
+
+.rsi-footer-partner-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--rsi-spacing-lg);
+    flex-wrap: wrap;
+}
+
+/* Logo */
+.rsi-footer-partner-logo img {
+    height: 90px;
+    width: auto;
+    display: block;
+    transition: transform var(--rsi-transition-base);
+    filter: brightness(0) invert(1);
+}
+
+.rsi-footer-partner-logo img:hover {
+    transform: scale(1.05);
+}
+
+/* Texto */
+.rsi-footer-partner-text {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-md);
+    font-family: var(--rsi-font-secondary);
+    font-size: 0.95rem;
+    color: var(--rsi-white);
+    flex-wrap: wrap;
+}
+
+.rsi-footer-partner-text p {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    margin: 0;
+    font-weight: 500;
+    color: var(--rsi-white);
+}
+
+.rsi-footer-partner-text p i {
+    color: var(--rsi-accent);
+    font-size: 1.1rem;
+}
+
+.rsi-footer-partner-year {
+    font-weight: 600;
+    color: var(--rsi-white);
+    background: rgba(255, 255, 255, 0.15);
+    padding: 2px 14px;
+    border-radius: var(--rsi-radius-full);
+    font-size: 0.8rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Separador */
+.rsi-footer-partner-divider {
+    color: rgba(255, 255, 255, 0.3);
+    font-weight: 300;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+    .rsi-footer-partner {
+        padding: var(--rsi-spacing-md) 0;
+    }
+
+    .rsi-footer-partner-container {
+        padding: 0 var(--rsi-spacing-lg);
+    }
+
+    .rsi-footer-partner-content {
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        gap: var(--rsi-spacing-sm);
+    }
+
+    .rsi-footer-partner-logo img {
+        height: 50px;
+    }
+
+    .rsi-footer-partner-text {
+        font-size: 0.85rem;
+        justify-content: center;
+    }
+
+    .rsi-footer-partner-year {
+        font-size: 0.7rem;
+        padding: 2px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .rsi-footer-partner {
+        padding: var(--rsi-spacing-sm) 0;
+    }
+
+    .rsi-footer-partner-container {
+        padding: 0 var(--rsi-spacing-md);
+    }
+
+    .rsi-footer-partner-logo img {
+        height: 28px;
+    }
+
+    .rsi-footer-partner-text {
+        font-size: 0.75rem;
+        gap: var(--rsi-spacing-sm);
+    }
+
+    .rsi-footer-partner-text p i {
+        font-size: 0.9rem;
+    }
+}
+
+/* ============================================
+   MODO OSCURO - AZUL OSCURO CON DORADOS
+   ============================================ */
+
+body.dark-mode .rsi-footer-partner {
+    background: var(--rsi-primary-dark);
+    border-top-color: var(--rsi-gold-base);
+}
+
+body.dark-mode .rsi-footer-partner-text {
+    color: var(--rsi-gray-700);
+}
+
+body.dark-mode .rsi-footer-partner-text p {
+    color: var(--rsi-gray-700);
+}
+
+body.dark-mode .rsi-footer-partner-text p i {
+    color: var(--rsi-gold-base);
+}
+
+body.dark-mode .rsi-footer-partner-year {
+    color: var(--rsi-black);
+    background: var(--rsi-gold-gradient);
+    border-color: var(--rsi-gold-base);
+}
+
+body.dark-mode .rsi-footer-partner-divider {
+    color: rgba(255, 255, 255, 0.15);
+}
+
+body.dark-mode .rsi-footer-partner-logo img {
+    filter: brightness(0) invert(1);
+}
+
+body.dark-mode .rsi-footer-partner-logo img:hover {
+    filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+}
+/* ============================================
+   FOOTER PARTNER - Estilos para el reloj
+   ============================================ */
+
+.rsi-footer-partner-clock {
+    font-weight: 400;
+    font-size: 0.85rem;
+    color: var(--rsi-white);
+    opacity: 0.9;
+    font-family: var(--rsi-font-primary);
+    letter-spacing: 0.5px;
+    min-width: 200px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 12px;
+    border-radius: var(--rsi-radius-full);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Modo oscuro */
+body.dark-mode .rsi-footer-partner-clock {
+    color: var(--rsi-gray-700);
+    background: rgba(212, 175, 55, 0.05);
+    border-color: rgba(212, 175, 55, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .rsi-footer-partner-clock {
+        font-size: 0.75rem;
+        min-width: 160px;
+        padding: 2px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .rsi-footer-partner-clock {
+        font-size: 0.7rem;
+        min-width: 140px;
+        padding: 2px 6px;
+    }
+}

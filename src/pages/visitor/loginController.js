@@ -21,8 +21,8 @@ export async function loginController() {
     if (session) {
         console.log('👤 Sesión activa detectada:', session.email);
         // Redirigir al dashboard o home
-        // window.location.href = '/dashboard';
-        // return;
+        window.location.href = '/partner/users';
+         return;
     }
     
     // Inicializar funciones
