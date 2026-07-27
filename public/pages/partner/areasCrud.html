@@ -1,0 +1,73 @@
+<!-- ========================================
+   PANEL CRUD - Gestión de Áreas
+   ======================================== -->
+
+<section class="rsi-areas-section">
+    <div class="rsi-container">
+        
+        <!-- Título -->
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Gestión</span> de Áreas
+        </h1>
+        <p class="rsi-page-subtitle">
+            Administra todas las áreas del sistema.
+        </p>
+
+        <!-- ===== PANEL CRUD ===== -->
+        <div class="rsi-panel-crud">
+            
+            <!-- Header -->
+            <div class="rsi-panel-header">
+                <h2>
+                    <i class="fas fa-building"></i>
+                    Áreas Registradas
+                    <span id="areaCount" class="rsi-badge rsi-badge-primary" style="font-size: 0.8rem;">0</span>
+                </h2>
+                <div class="rsi-panel-actions">
+                    <button id="refreshAreas" class="rsi-btn-crud rsi-btn-crud-outline">
+                        <i class="fas fa-sync"></i> Actualizar
+                    </button>
+                    <a href="/partner/area" class="rsi-btn-crud rsi-btn-crud-primary">
+                        <i class="fas fa-plus"></i> Nueva Área
+                    </a>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="rsi-loading-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Cargando áreas...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="rsi-empty-state" style="display: none;">
+                <i class="fas fa-building"></i>
+                <h3>No hay áreas registradas</h3>
+                <p>Comienza creando tu primera área para organizar las subáreas y permisos del sistema.</p>
+                <a href="#/areas/nuevo" class="rsi-btn-crud rsi-btn-crud-primary">
+                    <i class="fas fa-plus"></i> Crear primera área
+                </a>
+            </div>
+
+            <!-- Tabla -->
+            <div class="rsi-table-wrapper" style="display: none;">
+                <table class="rsi-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Subáreas</th>
+                            <th>Módulos</th>
+                            <th>Creado</th>
+                            <th style="text-align: center;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="areasTableBody">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</section>

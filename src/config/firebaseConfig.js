@@ -18,7 +18,9 @@ import {
     where, 
     orderBy, 
     limit,
-    setDoc
+    setDoc,
+    Timestamp,        // ✅ AGREGAR Timestamp
+    writeBatch        // ✅ AGREGAR writeBatch
 } from 'firebase/firestore';
 
 import { 
@@ -89,10 +91,12 @@ export {
     query,
     where,
     orderBy,
-    limit
+    limit,
+    Timestamp,      // ✅ Exportar Timestamp
+    writeBatch      // ✅ Exportar writeBatch
 };
 
-// ✅ Exportar funciones de Auth (CORREGIDO)
+// ✅ Exportar funciones de Auth
 export {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -133,7 +137,9 @@ export default {
     where,
     orderBy,
     limit,
-    // Auth ✅ CORREGIDO
+    Timestamp,      // ✅ Exportar Timestamp
+    writeBatch,     // ✅ Exportar writeBatch
+    // Auth
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,

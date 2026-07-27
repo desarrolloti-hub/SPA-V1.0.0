@@ -1,0 +1,259 @@
+<!-- ========================================
+   GESTIÓN DE ÁREAS - Formulario por pasos
+   ======================================== -->
+
+<section class="rsi-areas-section">
+    <div class="rsi-container">
+        
+        <!-- Título -->
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Gestión</span> de Áreas
+        </h1>
+        <p class="rsi-page-subtitle">
+            Crea un área con múltiples subáreas y módulos con permisos.
+        </p>
+
+        <!-- ===== FORMULARIO POR PASOS ===== -->
+        <form id="areaForm" class="rsi-form-steps" autocomplete="off">
+
+            <!-- Indicador de pasos -->
+            <div class="rsi-steps-indicator">
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number active" data-step="1">1</span>
+                    <span class="rsi-step-label active" data-step="1">Área</span>
+                </div>
+                <div class="rsi-step-line" data-step="1"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number" data-step="2">2</span>
+                    <span class="rsi-step-label" data-step="2">Subáreas</span>
+                </div>
+                <div class="rsi-step-line" data-step="2"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number" data-step="3">3</span>
+                    <span class="rsi-step-label" data-step="3">Confirmar</span>
+                </div>
+            </div>
+
+            <!-- Contenedor de pasos -->
+            <div class="rsi-steps-container">
+
+                <!-- ===== PASO 1: INFORMACIÓN DEL ÁREA ===== -->
+                <div class="rsi-step-panel active" data-step="1">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3>Información del Área</h3>
+                        <p>Datos principales del área</p>
+                    </div>
+
+                    <div class="rsi-step-body">
+                        <div class="rsi-form-group">
+                            <label for="nombreArea">Nombre del área <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-tag rsi-input-icon"></i>
+                                <input type="text" id="nombreArea" name="nombreArea" 
+                                       placeholder="Ej: Administración, Ventas, Tecnología" 
+                                       required minlength="2" maxlength="50">
+                            </div>
+                            <div class="rsi-form-error-message"></div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button class="rsi-btn-prev" disabled>Anterior</button>
+                        <button class="rsi-btn-next" data-next="2">Siguiente <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>1</span> de 3</div>
+                </div>
+
+                <!-- ===== PASO 2: SUBÁREAS CON MÓDULOS ===== -->
+                <div class="rsi-step-panel" data-step="2">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h3>Subáreas y Módulos</h3>
+                        <p>Configura las subáreas con sus módulos y permisos</p>
+                    </div>
+
+                    <div class="rsi-step-body">
+                        <!-- Resumen de subáreas agregadas -->
+                        <div class="rsi-subareas-summary">
+                            <h4><i class="fas fa-list"></i> Subáreas configuradas</h4>
+                            <div id="subareasSummary" class="rsi-summary-list">
+                                <div class="rsi-empty-summary">
+                                    <i class="fas fa-plus-circle"></i>
+                                    <p>No hay subáreas agregadas</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botón para agregar subárea (SIEMPRE visible) -->
+                        <button type="button" id="showSubareaFormBtn" class="rsi-btn-show-form">
+                            <i class="fas fa-plus-circle"></i> Agregar subárea
+                        </button>
+
+                        <!-- ===== FORMULARIO PARA AGREGAR SUBÁREA (OCULTO POR DEFECTO) ===== -->
+                        <div class="rsi-subarea-form-container" id="subareaFormContainer" style="display: none;">
+                            <div class="rsi-subarea-form-header">
+                                <h4><i class="fas fa-plus-circle" style="color: var(--rsi-primary);"></i> 
+                                    <span id="subareaFormTitle">Nueva Subárea</span>
+                                </h4>
+                                <button type="button" id="cancelEditSubarea" class="rsi-btn-cancel-edit" style="display: none;">
+                                    <i class="fas fa-times"></i> Cancelar
+                                </button>
+                            </div>
+
+                            <!-- Datos de la subárea -->
+                            <div class="rsi-form-group">
+                                <label for="nombreSubarea">Nombre de la subárea <span class="rsi-required">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-tag rsi-input-icon"></i>
+                                    <input type="text" id="nombreSubarea" name="nombreSubarea" 
+                                           placeholder="Ej: Instalación, Mantenimiento, Diseño" 
+                                           required minlength="2" maxlength="50">
+                                </div>
+                                <div class="rsi-form-error-message"></div>
+                            </div>
+
+                            <hr style="margin: var(--rsi-spacing-md) 0; border-color: var(--rsi-gray-200);">
+
+                            <!-- Módulos de la subárea -->
+                            <div class="rsi-modulos-container">
+                                <h5><i class="fas fa-cubes" style="color: var(--rsi-accent);"></i> Módulos y permisos</h5>
+                                
+                                <!-- Lista de módulos de esta subárea -->
+                                <div id="modulosList" class="rsi-modulos-list">
+                                    <div class="rsi-empty-modulos">
+                                        <p>No hay módulos agregados para esta subárea</p>
+                                    </div>
+                                </div>
+
+                                <!-- Formulario para agregar módulo -->
+                                <div class="rsi-modulo-form">
+                                    <div class="rsi-form-row">
+                                        <div class="rsi-form-group">
+                                            <label for="nombreModulo">Nombre del módulo <span class="rsi-required">*</span></label>
+                                            <div class="rsi-input-wrapper">
+                                                <i class="fas fa-cube rsi-input-icon"></i>
+                                                <input type="text" id="nombreModulo" name="nombreModulo" 
+                                                       placeholder="Ej: usuarios, inventario, ventas" 
+                                                       required minlength="2" maxlength="30">
+                                            </div>
+                                            <div class="rsi-form-error-message"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Permisos con TOGGLE SWITCH -->
+                                    <div class="rsi-form-group">
+                                        <label>Permisos <span class="rsi-required">*</span></label>
+                                        <div class="rsi-permisos-grid">
+                                            <label class="rsi-switch-group">
+                                                <span class="rsi-switch-label">
+                                                    <i class="fas fa-eye"></i> Leer
+                                                </span>
+                                                <div class="rsi-switch">
+                                                    <input type="checkbox" name="permisos" value="leer">
+                                                    <span class="rsi-slider"></span>
+                                                </div>
+                                            </label>
+                                            <label class="rsi-switch-group">
+                                                <span class="rsi-switch-label">
+                                                    <i class="fas fa-pen"></i> Escribir
+                                                </span>
+                                                <div class="rsi-switch">
+                                                    <input type="checkbox" name="permisos" value="escribir">
+                                                    <span class="rsi-slider"></span>
+                                                </div>
+                                            </label>
+                                            <label class="rsi-switch-group">
+                                                <span class="rsi-switch-label">
+                                                    <i class="fas fa-sync"></i> Actualizar
+                                                </span>
+                                                <div class="rsi-switch">
+                                                    <input type="checkbox" name="permisos" value="actualizar">
+                                                    <span class="rsi-slider"></span>
+                                                </div>
+                                            </label>
+                                            <label class="rsi-switch-group">
+                                                <span class="rsi-switch-label">
+                                                    <i class="fas fa-trash"></i> Eliminar
+                                                </span>
+                                                <div class="rsi-switch">
+                                                    <input type="checkbox" name="permisos" value="eliminar">
+                                                    <span class="rsi-slider"></span>
+                                                </div>
+                                            </label>
+                                        </div>
+                                        <div class="rsi-form-error-message"></div>
+                                    </div>
+
+                                    <button type="button" id="addModuloBtn" class="rsi-btn-add-modulo">
+                                        <i class="fas fa-plus"></i> Agregar Módulo
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Acciones de la subárea -->
+                            <div class="rsi-subarea-actions-form">
+                                <button type="button" id="saveSubareaBtn" class="rsi-btn-save-subarea">
+                                    <i class="fas fa-save"></i> Guardar Subárea
+                                </button>
+                                <button type="button" id="cancelSubareaBtn" class="rsi-btn-cancel-subarea">
+                                    <i class="fas fa-times"></i> Cancelar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button class="rsi-btn-prev" data-prev="1"><i class="fas fa-arrow-left"></i> Anterior</button>
+                        <button class="rsi-btn-next" data-next="3">Siguiente <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>2</span> de 3</div>
+                </div>
+
+                <!-- ===== PASO 3: CONFIRMACIÓN ===== -->
+                <div class="rsi-step-panel" data-step="3">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Confirmar Registro</h3>
+                        <p>Revisa todos los datos antes de guardar</p>
+                    </div>
+
+                    <div class="rsi-step-body">
+                        <div class="rsi-confirmacion-card">
+                            <h4><i class="fas fa-building" style="color: var(--rsi-primary);"></i> Área</h4>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Nombre:</span>
+                                <span id="confirmNombreArea" class="rsi-confirmacion-value">-</span>
+                            </div>
+
+                            <hr style="margin: var(--rsi-spacing-md) 0; border-color: var(--rsi-gray-200);">
+
+                            <h4><i class="fas fa-layer-group" style="color: var(--rsi-accent);"></i> Subáreas</h4>
+                            <div id="confirmSubareasList">
+                                <p style="color: var(--rsi-gray-500);">No hay subáreas configuradas</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button class="rsi-btn-prev" data-prev="2"><i class="fas fa-arrow-left"></i> Anterior</button>
+                        <button class="rsi-btn-submit-step" id="submitArea">
+                            <i class="fas fa-save"></i> Guardar Área
+                        </button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>3</span> de 3</div>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</section>

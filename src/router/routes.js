@@ -5,8 +5,11 @@
 // Importar controllers de vistas
 import { homeController } from '../pages/visitor/homeController.js';
 import { init404Controller } from '../pages/shared/errors/404Controller.js';
-import { newCollaboratorController } from '../pages/partner/newCollaboratorController.js';
 import { loginController } from '../pages/visitor/loginController.js';
+//Controllers de Partner
+import { newCollaboratorController } from '../pages/partner/newCollaboratorController.js';
+import { areaController } from '../pages/partner/areaController.js';
+import { areaCrudController } from '../pages/partner/areaCrudController.js';
 
 export const routes = {
     "/": {
@@ -48,5 +51,13 @@ export const routes = {
     "/partner": {
     view: '/pages/partner/newPartner.html',
     controller: newCollaboratorController
+    },
+    "/partner/area": {
+    view: '/pages/partner/areas.html',
+    controller: areaController
+    },
+    "/partner/crudAreas": {
+    view: '/pages/partner/areasCrud.html',
+    controller: areaCrudController
     }
 };

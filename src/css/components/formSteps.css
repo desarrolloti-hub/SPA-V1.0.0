@@ -283,7 +283,6 @@
    ========================================== */
 
 @media (min-width: 992px) {
-    /* ✅ Formulario más ancho y con padding generoso */
     .rsi-form-steps {
         max-width: 1000px;
         padding: var(--rsi-spacing-2xl) var(--rsi-spacing-3xl);
@@ -293,7 +292,6 @@
         justify-content: center;
     }
 
-    /* ✅ Indicador más espaciado */
     .rsi-steps-indicator {
         gap: var(--rsi-spacing-xl);
         margin-bottom: var(--rsi-spacing-xl);
@@ -303,7 +301,6 @@
         max-width: 80px;
     }
 
-    /* ✅ Contenedor de pasos ocupa todo el espacio */
     .rsi-steps-container {
         flex: 1;
         display: flex;
@@ -312,7 +309,6 @@
         min-height: 420px;
     }
 
-    /* ✅ Cada paso ocupa toda la altura disponible */
     .rsi-step-panel {
         min-height: 380px;
         display: none;
@@ -326,7 +322,6 @@
         justify-content: center;
     }
 
-    /* ✅ Header más compacto */
     .rsi-step-header {
         margin-bottom: var(--rsi-spacing-lg);
     }
@@ -335,14 +330,12 @@
         font-size: 1.6rem;
     }
 
-    /* ✅ Grid de 2 columnas con más espacio */
     .rsi-form-row {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: var(--rsi-spacing-xl);
     }
 
-    /* ✅ Campos más grandes y espaciosos */
     .rsi-form-group {
         margin-bottom: var(--rsi-spacing-lg);
     }
@@ -359,7 +352,6 @@
         font-size: 1.2rem;
     }
 
-    /* ✅ Botones más grandes */
     .rsi-step-actions .rsi-btn-next,
     .rsi-step-actions .rsi-btn-prev,
     .rsi-step-actions .rsi-btn-submit-step {
@@ -367,7 +359,6 @@
         font-size: 1rem;
     }
 
-    /* ✅ Upload de foto más grande */
     .rsi-upload-preview {
         min-height: 140px;
         padding: var(--rsi-spacing-xl);
@@ -536,6 +527,644 @@
 }
 
 /* ==========================================
+   ==========================================
+   COMPONENTES REUTILIZABLES PARA FORMULARIOS
+   ==========================================
+   ========================================== */
+
+/* ==========================================
+   BOTÓN PARA MOSTRAR FORMULARIO
+   ========================================== */
+
+.rsi-btn-toggle-form {
+    width: 100%;
+    padding: 14px 24px;
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+    border: 2px dashed var(--rsi-primary);
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--rsi-spacing-sm);
+    margin-bottom: var(--rsi-spacing-lg);
+}
+
+.rsi-btn-toggle-form:hover {
+    background: transparent;
+    color: var(--rsi-primary);
+    transform: translateY(-2px);
+}
+
+.rsi-btn-toggle-form.hidden {
+    display: none;
+}
+
+/* ==========================================
+   BOTÓN PARA CANCELAR EDICIÓN
+   ========================================== */
+
+.rsi-btn-cancel-edit {
+    padding: 6px 14px;
+    background: transparent;
+    border: 1px solid var(--rsi-gray-300);
+    border-radius: var(--rsi-radius-sm);
+    color: var(--rsi-gray-600);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-btn-cancel-edit:hover {
+    border-color: var(--rsi-danger);
+    color: var(--rsi-danger);
+}
+
+/* ==========================================
+   CONTENEDOR DE LISTA (Resumen de items)
+   ========================================== */
+
+.rsi-list-container {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-md);
+    padding: var(--rsi-spacing-md);
+    margin-bottom: var(--rsi-spacing-lg);
+    border: 2px solid var(--rsi-gray-200);
+}
+
+.rsi-list-container h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+    margin: 0 0 var(--rsi-spacing-sm) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-list-items {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.rsi-list-empty {
+    text-align: center;
+    padding: var(--rsi-spacing-md);
+    color: var(--rsi-gray-500);
+}
+
+.rsi-list-empty i {
+    font-size: 1.5rem;
+    color: var(--rsi-gray-300);
+    display: block;
+    margin-bottom: var(--rsi-spacing-xs);
+}
+
+.rsi-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--rsi-bg-input);
+    padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    border-radius: var(--rsi-radius-sm);
+    margin-bottom: var(--rsi-spacing-xs);
+    border: 1px solid var(--rsi-gray-200);
+}
+
+.rsi-list-item:last-child {
+    margin-bottom: 0;
+}
+
+.rsi-list-item .item-info {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-md);
+    flex-wrap: wrap;
+}
+
+.rsi-list-item .item-name {
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-list-item .item-badge {
+    font-size: 0.8rem;
+    color: var(--rsi-gray-500);
+}
+
+.rsi-list-item .item-actions {
+    display: flex;
+    gap: var(--rsi-spacing-xs);
+}
+
+.rsi-list-item .item-actions button {
+    background: transparent;
+    border: none;
+    color: var(--rsi-gray-500);
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: var(--rsi-radius-sm);
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-list-item .item-actions .btn-edit:hover {
+    color: var(--rsi-primary);
+    background: rgba(28, 25, 72, 0.1);
+}
+
+.rsi-list-item .item-actions .btn-delete:hover {
+    color: var(--rsi-danger);
+    background: rgba(220, 53, 69, 0.1);
+}
+
+/* ==========================================
+   SUBFORMULARIO (Formulario dentro de otro)
+   ========================================== */
+
+.rsi-subform {
+    background: var(--rsi-bg-card);
+    border: 2px solid var(--rsi-gray-200);
+    border-radius: var(--rsi-radius-md);
+    padding: var(--rsi-spacing-lg);
+    transition: all var(--rsi-transition-base);
+    margin-bottom: var(--rsi-spacing-lg);
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.rsi-subform.active {
+    border-color: var(--rsi-primary);
+    box-shadow: 0 0 0 4px rgba(28, 25, 72, 0.1);
+}
+
+.rsi-subform-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--rsi-spacing-md);
+}
+
+.rsi-subform-header h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-subform-actions {
+    display: flex;
+    gap: var(--rsi-spacing-md);
+    margin-top: var(--rsi-spacing-md);
+}
+
+/* ==========================================
+   BOTONES DE ACCIÓN SECUNDARIA
+   ========================================== */
+
+.rsi-btn-save-secondary {
+    flex: 1;
+    padding: 12px 24px;
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+    border: none;
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-btn-save-secondary:hover {
+    background: var(--rsi-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-primary);
+}
+
+.rsi-btn-cancel-secondary {
+    padding: 12px 24px;
+    background: transparent;
+    border: 2px solid var(--rsi-gray-300);
+    border-radius: var(--rsi-radius-md);
+    color: var(--rsi-gray-600);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-btn-cancel-secondary:hover {
+    border-color: var(--rsi-danger);
+    color: var(--rsi-danger);
+}
+
+/* ==========================================
+   MÓDULOS / SUB-ITEMS (Items dentro de subformulario)
+   ========================================== */
+
+.rsi-modules-wrapper {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-md);
+    padding: var(--rsi-spacing-md);
+    margin: var(--rsi-spacing-md) 0;
+    border: 1px solid var(--rsi-gray-200);
+}
+
+.rsi-modules-wrapper h5 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+    margin: 0 0 var(--rsi-spacing-sm) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-modules-list {
+    margin-bottom: var(--rsi-spacing-md);
+    min-height: 40px;
+}
+
+.rsi-modules-empty {
+    text-align: center;
+    padding: var(--rsi-spacing-sm);
+    color: var(--rsi-gray-500);
+    font-size: 0.9rem;
+}
+
+.rsi-module-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--rsi-bg-input);
+    padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    border-radius: var(--rsi-radius-sm);
+    margin-bottom: var(--rsi-spacing-xs);
+    border: 1px solid var(--rsi-gray-200);
+}
+
+.rsi-module-item:last-child {
+    margin-bottom: 0;
+}
+
+.rsi-module-info {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-md);
+    flex-wrap: wrap;
+}
+
+.rsi-module-name {
+    font-weight: 500;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-module-tags {
+    display: flex;
+    gap: var(--rsi-spacing-xs);
+    flex-wrap: wrap;
+}
+
+.rsi-tag {
+    display: inline-block;
+    padding: 1px 8px;
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.rsi-module-actions {
+    display: flex;
+    gap: var(--rsi-spacing-xs);
+}
+
+.rsi-module-actions button {
+    background: transparent;
+    border: none;
+    color: var(--rsi-gray-500);
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: var(--rsi-radius-sm);
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-module-actions .btn-remove:hover {
+    color: var(--rsi-danger);
+    background: rgba(220, 53, 69, 0.1);
+}
+
+.rsi-module-form {
+    padding-top: var(--rsi-spacing-md);
+    border-top: 1px dashed var(--rsi-gray-300);
+}
+
+.rsi-module-form .rsi-form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--rsi-spacing-md);
+}
+
+.rsi-btn-add-module {
+    width: 100%;
+    padding: 10px 20px;
+    background: var(--rsi-accent);
+    color: var(--rsi-white);
+    border: none;
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--rsi-spacing-sm);
+    margin-top: var(--rsi-spacing-sm);
+}
+
+.rsi-btn-add-module:hover {
+    background: var(--rsi-accent-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-primary);
+}
+
+/* ==========================================
+   CONFIRMACIÓN
+   ========================================== */
+
+.rsi-confirm-card {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-lg);
+    padding: var(--rsi-spacing-xl);
+    border: 1px solid var(--rsi-gray-200);
+    max-height: 450px;
+    overflow-y: auto;
+}
+
+.rsi-confirm-card h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: var(--rsi-spacing-md) 0 var(--rsi-spacing-sm) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    color: var(--rsi-text-primary);
+}
+
+.rsi-confirm-card h4:first-of-type {
+    margin-top: 0;
+}
+
+.rsi-confirm-item {
+    display: flex;
+    padding: var(--rsi-spacing-xs) 0;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-confirm-label {
+    font-weight: 600;
+    color: var(--rsi-gray-600);
+    min-width: 120px;
+}
+
+.rsi-confirm-value {
+    color: var(--rsi-text-primary);
+    font-weight: 500;
+}
+
+.rsi-confirm-subitem {
+    background: var(--rsi-bg-input);
+    padding: var(--rsi-spacing-md);
+    border-radius: var(--rsi-radius-sm);
+    margin-bottom: var(--rsi-spacing-sm);
+    border: 1px solid var(--rsi-gray-200);
+}
+
+.rsi-confirm-subitem:last-child {
+    margin-bottom: 0;
+}
+
+.rsi-confirm-subitem-title {
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+    display: block;
+    margin-bottom: var(--rsi-spacing-xs);
+}
+
+.rsi-confirm-module {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--rsi-spacing-xs) var(--rsi-spacing-sm);
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-sm);
+    margin-bottom: var(--rsi-spacing-xs);
+    border: 1px solid var(--rsi-gray-100);
+}
+
+.rsi-confirm-module:last-child {
+    margin-bottom: 0;
+}
+
+.rsi-confirm-module-name {
+    font-weight: 500;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-confirm-module-tags {
+    display: flex;
+    gap: var(--rsi-spacing-xs);
+    flex-wrap: wrap;
+}
+
+/* ==========================================
+   SWITCHES (Toggles personalizados)
+   ========================================== */
+
+.rsi-switches-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--rsi-spacing-md);
+    margin-top: var(--rsi-spacing-sm);
+}
+
+.rsi-switch-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    background: var(--rsi-bg-input);
+    border: 2px solid var(--rsi-gray-200);
+    border-radius: var(--rsi-radius-md);
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    gap: var(--rsi-spacing-md);
+    min-height: 48px;
+    user-select: none;
+}
+
+.rsi-switch-group:hover {
+    border-color: var(--rsi-gray-400);
+    background: var(--rsi-gray-50);
+}
+
+.rsi-switch-label {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    font-weight: 500;
+    color: var(--rsi-text-primary);
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+
+.rsi-switch-label i {
+    font-size: 0.9rem;
+    color: var(--rsi-accent);
+}
+
+/* TOGGLE SWITCH Personalizado */
+.rsi-switch {
+    position: relative;
+    width: 48px;
+    height: 26px;
+    flex-shrink: 0;
+    display: inline-block;
+}
+
+.rsi-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.rsi-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--rsi-gray-400);
+    border-radius: 34px;
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-slider::before {
+    content: "";
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background: var(--rsi-white);
+    border-radius: 50%;
+    transition: all var(--rsi-transition-base);
+    box-shadow: var(--rsi-shadow-sm);
+}
+
+.rsi-switch input:checked + .rsi-slider {
+    background: var(--rsi-primary);
+}
+
+.rsi-switch input:checked + .rsi-slider::before {
+    transform: translateX(22px);
+}
+
+.rsi-switch input:focus + .rsi-slider {
+    box-shadow: 0 0 0 3px rgba(28, 25, 72, 0.2);
+}
+
+.rsi-switch input:disabled + .rsi-slider {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   RESPONSIVE DE COMPONENTES
+   ========================================== */
+
+@media (max-width: 576px) {
+    .rsi-switches-grid {
+        grid-template-columns: 1fr;
+        gap: var(--rsi-spacing-sm);
+    }
+
+    .rsi-list-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--rsi-spacing-xs);
+    }
+
+    .rsi-list-item .item-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .rsi-subform-actions {
+        flex-direction: column;
+    }
+
+    .rsi-confirm-item {
+        flex-direction: column;
+        gap: var(--rsi-spacing-xs);
+    }
+
+    .rsi-confirm-label {
+        min-width: auto;
+    }
+
+    .rsi-module-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--rsi-spacing-xs);
+    }
+
+    .rsi-module-info {
+        width: 100%;
+    }
+
+    .rsi-module-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .rsi-confirm-module {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--rsi-spacing-xs);
+    }
+}
+
+/* ==========================================
    MODO OSCURO
    ========================================== */
 
@@ -614,4 +1243,122 @@ body.dark-mode .rsi-step-actions .rsi-btn-next:hover {
 body.dark-mode .rsi-step-actions .rsi-btn-submit-step {
     background: var(--rsi-gold-gradient);
     color: var(--rsi-black);
+}
+
+/* Modo oscuro - Componentes reutilizables */
+body.dark-mode .rsi-list-container {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-list-item {
+    background: var(--rsi-bg-input);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-list-item .item-name {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-subform {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-subform.active {
+    border-color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-subform-header h4 {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-modules-wrapper {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-modules-wrapper h5 {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-module-item {
+    background: var(--rsi-bg-input);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-module-name {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-confirm-card {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-confirm-label {
+    color: var(--rsi-gray-400);
+}
+
+body.dark-mode .rsi-confirm-value {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-confirm-subitem {
+    background: var(--rsi-bg-input);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-confirm-subitem-title {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-confirm-module {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-confirm-module-name {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-btn-toggle-form {
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+    border-color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-btn-toggle-form:hover {
+    background: transparent;
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-switch-group {
+    background: var(--rsi-bg-input);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-switch-group:hover {
+    border-color: var(--rsi-gray-400);
+    background: var(--rsi-gray-800);
+}
+
+body.dark-mode .rsi-switch-label {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-switch input:checked + .rsi-slider {
+    background: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-list-empty {
+    color: var(--rsi-gray-500);
+}
+
+body.dark-mode .rsi-list-empty i {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-modules-empty {
+    color: var(--rsi-gray-500);
 }

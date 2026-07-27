@@ -1,0 +1,745 @@
+/* ========================================
+   AREAS - Estilos específicos para gestión de áreas
+   ======================================== */
+
+.rsi-areas-section {
+    padding: var(--rsi-spacing-2xl) 0;
+}
+
+/* ==========================================
+   BOTÓN PARA MOSTRAR FORMULARIO
+   ========================================== */
+
+.rsi-btn-show-form {
+    width: 100%;
+    padding: 14px 24px;
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+    border: 2px dashed var(--rsi-primary);
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--rsi-spacing-sm);
+    margin-bottom: var(--rsi-spacing-lg);
+}
+
+.rsi-btn-show-form:hover {
+    background: transparent;
+    color: var(--rsi-primary);
+    transform: translateY(-2px);
+}
+
+.rsi-btn-show-form.hidden {
+    display: none;
+}
+
+/* ==========================================
+   PERMISOS CON SWITCHES (TOGGLES)
+   ========================================== */
+
+.rsi-permisos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--rsi-spacing-md);
+    margin-top: var(--rsi-spacing-sm);
+}
+
+.rsi-switch-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    background: var(--rsi-bg-input);
+    border: 2px solid var(--rsi-gray-200);
+    border-radius: var(--rsi-radius-md);
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-switch-group:hover {
+    border-color: var(--rsi-gray-400);
+    background: var(--rsi-gray-50);
+}
+
+.rsi-switch-label {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    font-weight: 500;
+    color: var(--rsi-text-primary);
+    font-size: 0.95rem;
+}
+
+.rsi-switch-label i {
+    font-size: 0.9rem;
+    color: var(--rsi-accent);
+}
+
+/* ==========================================
+   TOGGLE SWITCH (Personalizado)
+   ========================================== */
+
+.rsi-switch {
+    position: relative;
+    width: 48px;
+    height: 26px;
+    flex-shrink: 0;
+}
+
+.rsi-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.rsi-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--rsi-gray-400);
+    border-radius: 34px;
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-slider::before {
+    content: "";
+    position: absolute;
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background: var(--rsi-white);
+    border-radius: 50%;
+    transition: all var(--rsi-transition-base);
+    box-shadow: var(--rsi-shadow-sm);
+}
+
+.rsi-switch input:checked + .rsi-slider {
+    background: var(--rsi-primary);
+}
+
+.rsi-switch input:checked + .rsi-slider::before {
+    transform: translateX(22px);
+}
+
+.rsi-switch input:focus + .rsi-slider {
+    box-shadow: 0 0 0 3px rgba(28, 25, 72, 0.2);
+}
+
+/* ==========================================
+   RESUMEN DE SUBÁREAS
+   ========================================== */
+
+.rsi-subareas-summary {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-md);
+    padding: var(--rsi-spacing-md);
+    margin-bottom: var(--rsi-spacing-lg);
+    border: 2px solid var(--rsi-gray-200);
+}
+
+.rsi-subareas-summary h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+    margin: 0 0 var(--rsi-spacing-sm) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-summary-list {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.rsi-empty-summary {
+    text-align: center;
+    padding: var(--rsi-spacing-md);
+    color: var(--rsi-gray-500);
+}
+
+.rsi-empty-summary i {
+    font-size: 1.5rem;
+    color: var(--rsi-gray-300);
+    display: block;
+    margin-bottom: var(--rsi-spacing-xs);
+}
+
+.rsi-summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--rsi-bg-input);
+    padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    border-radius: var(--rsi-radius-sm);
+    margin-bottom: var(--rsi-spacing-xs);
+    border: 1px solid var(--rsi-gray-200);
+}
+
+.rsi-summary-item:last-child {
+    margin-bottom: 0;
+}
+
+.rsi-summary-item .subarea-name {
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-summary-item .subarea-modulos-count {
+    font-size: 0.8rem;
+    color: var(--rsi-gray-500);
+}
+
+.rsi-summary-item .subarea-actions {
+    display: flex;
+    gap: var(--rsi-spacing-xs);
+}
+
+.rsi-summary-item .subarea-actions button {
+    background: transparent;
+    border: none;
+    color: var(--rsi-gray-500);
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: var(--rsi-radius-sm);
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-summary-item .subarea-actions .btn-edit-summary:hover {
+    color: var(--rsi-primary);
+    background: rgba(28, 25, 72, 0.1);
+}
+
+.rsi-summary-item .subarea-actions .btn-delete-summary:hover {
+    color: var(--rsi-danger);
+    background: rgba(220, 53, 69, 0.1);
+}
+
+/* ==========================================
+   FORMULARIO DE SUBÁREA
+   ========================================== */
+
+.rsi-subarea-form-container {
+    background: var(--rsi-bg-card);
+    border: 2px solid var(--rsi-gray-200);
+    border-radius: var(--rsi-radius-md);
+    padding: var(--rsi-spacing-lg);
+    transition: all var(--rsi-transition-base);
+    margin-bottom: var(--rsi-spacing-lg);
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.rsi-subarea-form-container.editing {
+    border-color: var(--rsi-primary);
+    box-shadow: 0 0 0 4px rgba(28, 25, 72, 0.1);
+}
+
+.rsi-subarea-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--rsi-spacing-md);
+}
+
+.rsi-subarea-form-header h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-btn-cancel-edit {
+    padding: 6px 14px;
+    background: transparent;
+    border: 1px solid var(--rsi-gray-300);
+    border-radius: var(--rsi-radius-sm);
+    color: var(--rsi-gray-600);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-btn-cancel-edit:hover {
+    border-color: var(--rsi-danger);
+    color: var(--rsi-danger);
+}
+
+/* ==========================================
+   MÓDULOS
+   ========================================== */
+
+.rsi-modulos-container {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-md);
+    padding: var(--rsi-spacing-md);
+    margin: var(--rsi-spacing-md) 0;
+    border: 1px solid var(--rsi-gray-200);
+}
+
+.rsi-modulos-container h5 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+    margin: 0 0 var(--rsi-spacing-sm) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-modulos-list {
+    margin-bottom: var(--rsi-spacing-md);
+    min-height: 40px;
+}
+
+.rsi-empty-modulos {
+    text-align: center;
+    padding: var(--rsi-spacing-sm);
+    color: var(--rsi-gray-500);
+    font-size: 0.9rem;
+}
+
+.rsi-modulo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--rsi-bg-input);
+    padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    border-radius: var(--rsi-radius-sm);
+    margin-bottom: var(--rsi-spacing-xs);
+    border: 1px solid var(--rsi-gray-200);
+}
+
+.rsi-modulo-item:last-child {
+    margin-bottom: 0;
+}
+
+.rsi-modulo-info {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-md);
+    flex-wrap: wrap;
+}
+
+.rsi-modulo-name {
+    font-weight: 500;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-modulo-permisos {
+    display: flex;
+    gap: var(--rsi-spacing-xs);
+    flex-wrap: wrap;
+}
+
+.rsi-modulo-permisos .permiso-tag {
+    display: inline-block;
+    padding: 1px 8px;
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.rsi-modulo-actions button {
+    background: transparent;
+    border: none;
+    color: var(--rsi-gray-500);
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: var(--rsi-radius-sm);
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-modulo-actions .btn-remove-modulo:hover {
+    color: var(--rsi-danger);
+    background: rgba(220, 53, 69, 0.1);
+}
+
+.rsi-modulo-form {
+    padding-top: var(--rsi-spacing-md);
+    border-top: 1px dashed var(--rsi-gray-300);
+}
+
+.rsi-modulo-form .rsi-form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--rsi-spacing-md);
+}
+
+.rsi-btn-add-modulo {
+    width: 100%;
+    padding: 10px 20px;
+    background: var(--rsi-accent);
+    color: var(--rsi-white);
+    border: none;
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--rsi-spacing-sm);
+    margin-top: var(--rsi-spacing-sm);
+}
+
+.rsi-btn-add-modulo:hover {
+    background: var(--rsi-accent-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-primary);
+}
+
+/* ==========================================
+   ACCIONES DE SUBÁREA
+   ========================================== */
+
+.rsi-subarea-actions-form {
+    display: flex;
+    gap: var(--rsi-spacing-md);
+    margin-top: var(--rsi-spacing-md);
+}
+
+.rsi-btn-save-subarea {
+    flex: 1;
+    padding: 12px 24px;
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+    border: none;
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-btn-save-subarea:hover {
+    background: var(--rsi-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-primary);
+}
+
+.rsi-btn-cancel-subarea {
+    padding: 12px 24px;
+    background: transparent;
+    border: 2px solid var(--rsi-gray-300);
+    border-radius: var(--rsi-radius-md);
+    color: var(--rsi-gray-600);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-btn-cancel-subarea:hover {
+    border-color: var(--rsi-danger);
+    color: var(--rsi-danger);
+}
+
+/* ==========================================
+   CONFIRMACIÓN
+   ========================================== */
+
+.rsi-confirmacion-card {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-lg);
+    padding: var(--rsi-spacing-xl);
+    border: 1px solid var(--rsi-gray-200);
+    max-height: 450px;
+    overflow-y: auto;
+}
+
+.rsi-confirmacion-card h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: var(--rsi-spacing-md) 0 var(--rsi-spacing-sm) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    color: var(--rsi-text-primary);
+}
+
+.rsi-confirmacion-card h4:first-of-type {
+    margin-top: 0;
+}
+
+.rsi-confirmacion-item {
+    display: flex;
+    padding: var(--rsi-spacing-xs) 0;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-confirmacion-label {
+    font-weight: 600;
+    color: var(--rsi-gray-600);
+    min-width: 120px;
+}
+
+.rsi-confirmacion-value {
+    color: var(--rsi-text-primary);
+    font-weight: 500;
+}
+
+.rsi-confirm-subarea-item {
+    background: var(--rsi-bg-input);
+    padding: var(--rsi-spacing-md);
+    border-radius: var(--rsi-radius-sm);
+    margin-bottom: var(--rsi-spacing-sm);
+    border: 1px solid var(--rsi-gray-200);
+}
+
+.rsi-confirm-subarea-item:last-child {
+    margin-bottom: 0;
+}
+
+.rsi-confirm-subarea-name {
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+    display: block;
+    margin-bottom: var(--rsi-spacing-xs);
+}
+
+.rsi-confirm-modulo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--rsi-spacing-xs) var(--rsi-spacing-sm);
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-sm);
+    margin-bottom: var(--rsi-spacing-xs);
+    border: 1px solid var(--rsi-gray-100);
+}
+
+.rsi-confirm-modulo-item:last-child {
+    margin-bottom: 0;
+}
+
+.rsi-confirm-modulo-name {
+    font-weight: 500;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-confirm-modulo-permisos {
+    display: flex;
+    gap: var(--rsi-spacing-xs);
+    flex-wrap: wrap;
+}
+
+.rsi-confirm-modulo-permisos .permiso-tag {
+    display: inline-block;
+    padding: 1px 8px;
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 576px) {
+    .rsi-permisos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rsi-subarea-actions-form {
+        flex-direction: column;
+    }
+
+    .rsi-modulo-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--rsi-spacing-xs);
+    }
+
+    .rsi-modulo-info {
+        width: 100%;
+    }
+
+    .rsi-modulo-actions {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .rsi-confirmacion-item {
+        flex-direction: column;
+        gap: var(--rsi-spacing-xs);
+    }
+
+    .rsi-confirmacion-label {
+        min-width: auto;
+    }
+
+    .rsi-summary-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--rsi-spacing-xs);
+    }
+
+    .rsi-summary-item .subarea-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .rsi-confirm-modulo-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--rsi-spacing-xs);
+    }
+}
+
+/* ==========================================
+   MODO OSCURO - Usando variables CSS
+   ========================================== */
+
+body.dark-mode .rsi-btn-show-form {
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+    border-color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-btn-show-form:hover {
+    background: transparent;
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-subareas-summary {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-summary-item {
+    background: var(--rsi-bg-input);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-summary-item .subarea-name {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-subarea-form-container {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-subarea-form-container.editing {
+    border-color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-subarea-form-header h4 {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-modulos-container {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-modulos-container h5 {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-modulo-item {
+    background: var(--rsi-bg-input);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-modulo-name {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-confirmacion-card {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-confirmacion-label {
+    color: var(--rsi-gray-400);
+}
+
+body.dark-mode .rsi-confirmacion-value {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-confirm-subarea-item {
+    background: var(--rsi-bg-input);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-confirm-subarea-name {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-confirm-modulo-item {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-confirm-modulo-name {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-switch-group {
+    background: var(--rsi-bg-input);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-switch-group:hover {
+    border-color: var(--rsi-gray-400);
+    background: var(--rsi-gray-800);
+}
+
+body.dark-mode .rsi-switch-label {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-switch input:checked + .rsi-slider {
+    background: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-empty-summary {
+    color: var(--rsi-gray-500);
+}
+
+body.dark-mode .rsi-empty-summary i {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-empty-modulos {
+    color: var(--rsi-gray-500);
+}

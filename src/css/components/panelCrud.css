@@ -1,0 +1,617 @@
+/* ========================================
+   PANEL CRUD - Estilos para tablas responsive
+   ======================================== */
+
+/* ==========================================
+   CONTENEDOR DEL PANEL
+   ========================================== */
+
+.rsi-panel-crud {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-xl);
+    padding: var(--rsi-spacing-xl);
+    box-shadow: var(--rsi-shadow-lg);
+    border: 1px solid var(--rsi-gray-200);
+    overflow: hidden;
+}
+
+/* ==========================================
+   HEADER DEL PANEL
+   ========================================== */
+
+.rsi-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--rsi-spacing-md);
+    margin-bottom: var(--rsi-spacing-lg);
+    padding-bottom: var(--rsi-spacing-md);
+    border-bottom: 2px solid var(--rsi-gray-200);
+}
+
+.rsi-panel-header h2 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-panel-header h2 i {
+    color: var(--rsi-primary);
+}
+
+.rsi-panel-header .rsi-panel-actions {
+    display: flex;
+    gap: var(--rsi-spacing-sm);
+    flex-wrap: wrap;
+}
+
+/* ==========================================
+   BOTONES DE ACCIÓN
+   ========================================== */
+
+.rsi-btn-crud {
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-btn-crud-primary {
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+}
+
+.rsi-btn-crud-primary:hover {
+    background: var(--rsi-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-primary);
+}
+
+.rsi-btn-crud-success {
+    background: var(--rsi-success);
+    color: var(--rsi-white);
+}
+
+.rsi-btn-crud-success:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+}
+
+.rsi-btn-crud-danger {
+    background: var(--rsi-danger);
+    color: var(--rsi-white);
+}
+
+.rsi-btn-crud-danger:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+}
+
+.rsi-btn-crud-warning {
+    background: var(--rsi-warning);
+    color: var(--rsi-black);
+}
+
+.rsi-btn-crud-warning:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+}
+
+.rsi-btn-crud-outline {
+    background: transparent;
+    color: var(--rsi-primary);
+    border: 2px solid var(--rsi-primary);
+}
+
+.rsi-btn-crud-outline:hover {
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+    transform: translateY(-2px);
+}
+
+/* ==========================================
+   TABLA
+   ========================================== */
+
+.rsi-table-wrapper {
+    overflow-x: auto;
+    margin: 0;
+}
+
+.rsi-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    min-width: 600px;
+}
+
+.rsi-table thead {
+    background: var(--rsi-gray-50);
+    border-bottom: 2px solid var(--rsi-gray-200);
+}
+
+.rsi-table thead th {
+    padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
+    text-align: left;
+    font-weight: 600;
+    color: var(--rsi-text-secondary);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.rsi-table tbody tr {
+    border-bottom: 1px solid var(--rsi-gray-100);
+    transition: background var(--rsi-transition-base);
+}
+
+.rsi-table tbody tr:hover {
+    background: var(--rsi-gray-50);
+}
+
+.rsi-table tbody td {
+    padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
+    color: var(--rsi-text-primary);
+    vertical-align: middle;
+}
+
+.rsi-table .rsi-table-actions {
+    display: flex;
+    gap: var(--rsi-spacing-xs);
+    flex-wrap: wrap;
+}
+
+.rsi-table .rsi-btn-icon {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: var(--rsi-radius-sm);
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.rsi-table .rsi-btn-icon-edit {
+    background: transparent;
+    color: var(--rsi-primary);
+}
+
+.rsi-table .rsi-btn-icon-edit:hover {
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+}
+
+.rsi-table .rsi-btn-icon-delete {
+    background: transparent;
+    color: var(--rsi-danger);
+}
+
+.rsi-table .rsi-btn-icon-delete:hover {
+    background: var(--rsi-danger);
+    color: var(--rsi-white);
+}
+
+.rsi-table .rsi-btn-icon-view {
+    background: transparent;
+    color: var(--rsi-accent);
+}
+
+.rsi-table .rsi-btn-icon-view:hover {
+    background: var(--rsi-accent);
+    color: var(--rsi-white);
+}
+
+/* Badges en tabla */
+.rsi-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.rsi-badge-primary {
+    background: rgba(28, 25, 72, 0.1);
+    color: var(--rsi-primary);
+}
+
+.rsi-badge-success {
+    background: rgba(40, 167, 69, 0.1);
+    color: var(--rsi-success);
+}
+
+.rsi-badge-danger {
+    background: rgba(220, 53, 69, 0.1);
+    color: var(--rsi-danger);
+}
+
+.rsi-badge-warning {
+    background: rgba(255, 193, 7, 0.1);
+    color: #856404;
+}
+
+/* ==========================================
+   EMPTY STATE
+   ========================================== */
+
+.rsi-empty-state {
+    text-align: center;
+    padding: var(--rsi-spacing-3xl) var(--rsi-spacing-xl);
+    color: var(--rsi-gray-500);
+}
+
+.rsi-empty-state i {
+    font-size: 4rem;
+    color: var(--rsi-gray-300);
+    display: block;
+    margin-bottom: var(--rsi-spacing-md);
+}
+
+.rsi-empty-state h3 {
+    font-size: 1.3rem;
+    color: var(--rsi-text-primary);
+    margin-bottom: var(--rsi-spacing-sm);
+}
+
+.rsi-empty-state p {
+    font-size: 1rem;
+    color: var(--rsi-gray-500);
+    max-width: 400px;
+    margin: 0 auto var(--rsi-spacing-lg);
+}
+
+/* ==========================================
+   LOADING STATE
+   ========================================== */
+
+.rsi-loading-state {
+    text-align: center;
+    padding: var(--rsi-spacing-3xl) var(--rsi-spacing-xl);
+    color: var(--rsi-gray-500);
+}
+
+.rsi-loading-state i {
+    font-size: 3rem;
+    color: var(--rsi-primary);
+    display: block;
+    margin-bottom: var(--rsi-spacing-md);
+}
+
+.rsi-loading-state p {
+    font-size: 1rem;
+    color: var(--rsi-gray-500);
+}
+
+/* ==========================================
+   RESPONSIVE - TARJETAS (Mobile First)
+   ========================================== */
+
+/* Vista de tarjetas en móvil */
+@media (max-width: 768px) {
+    .rsi-panel-crud {
+        padding: var(--rsi-spacing-md);
+        border-radius: var(--rsi-radius-lg);
+        margin: 0;
+    }
+
+    .rsi-panel-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--rsi-spacing-sm);
+    }
+
+    .rsi-panel-header h2 {
+        font-size: 1.1rem;
+        justify-content: center;
+    }
+
+    .rsi-panel-header .rsi-panel-actions {
+        justify-content: stretch;
+        flex-direction: column;
+        gap: var(--rsi-spacing-sm);
+    }
+
+    .rsi-panel-header .rsi-panel-actions .rsi-btn-crud {
+        flex: 1;
+        justify-content: center;
+        width: 100%;
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+
+    /* La tabla se convierte en tarjetas */
+    .rsi-table-wrapper {
+        margin: 0;
+        overflow: visible;
+    }
+
+    .rsi-table {
+        min-width: 100%;
+    }
+
+    .rsi-table thead {
+        display: none;
+    }
+
+    .rsi-table,
+    .rsi-table tbody,
+    .rsi-table tr,
+    .rsi-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .rsi-table tbody tr {
+        display: block;
+        padding: var(--rsi-spacing-md);
+        margin-bottom: var(--rsi-spacing-md);
+        border: 1px solid var(--rsi-gray-200);
+        border-radius: var(--rsi-radius-md);
+        background: var(--rsi-bg-card);
+        box-shadow: var(--rsi-shadow-sm);
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .rsi-table tbody tr:hover {
+        background: var(--rsi-bg-card);
+    }
+
+    .rsi-table tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--rsi-spacing-xs) 0;
+        border: none;
+        border-bottom: 1px solid var(--rsi-gray-100);
+        gap: var(--rsi-spacing-sm);
+        width: 100%;
+        box-sizing: border-box;
+        flex-wrap: wrap;
+    }
+
+    .rsi-table tbody td:last-child {
+        border-bottom: none;
+    }
+
+    .rsi-table tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--rsi-gray-600);
+        font-size: 0.8rem;
+        flex-shrink: 0;
+        min-width: 80px;
+    }
+
+    .rsi-table tbody td .rsi-badge {
+        font-size: 0.7rem;
+        padding: 2px 8px;
+    }
+
+    .rsi-table .rsi-table-actions {
+        justify-content: flex-end;
+        width: 100%;
+        gap: var(--rsi-spacing-sm);
+        flex-wrap: wrap;
+    }
+
+    .rsi-table .rsi-table-actions::before {
+        content: "Acciones";
+        font-weight: 600;
+        color: var(--rsi-gray-600);
+        font-size: 0.8rem;
+        flex-shrink: 0;
+        min-width: 80px;
+    }
+
+    .rsi-table .rsi-btn-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    /* Badges en modo tarjeta */
+    .rsi-table tbody td .rsi-badge {
+        font-size: 0.7rem;
+        padding: 2px 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .rsi-panel-crud {
+        padding: var(--rsi-spacing-sm);
+        border-radius: var(--rsi-radius-md);
+    }
+
+    .rsi-panel-header h2 {
+        font-size: 1rem;
+    }
+
+    .rsi-panel-header .rsi-panel-actions .rsi-btn-crud {
+        font-size: 0.8rem;
+        padding: 8px 12px;
+    }
+
+    .rsi-table tbody tr {
+        padding: var(--rsi-spacing-sm);
+        margin-bottom: var(--rsi-spacing-sm);
+    }
+
+    .rsi-table tbody td {
+        font-size: 0.85rem;
+        padding: var(--rsi-spacing-xs) 0;
+        flex-wrap: wrap;
+    }
+
+    .rsi-table tbody td::before {
+        font-size: 0.75rem;
+        min-width: 70px;
+    }
+
+    .rsi-table .rsi-table-actions::before {
+        font-size: 0.75rem;
+        min-width: 70px;
+    }
+
+    .rsi-table .rsi-btn-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
+    }
+
+    .rsi-empty-state i {
+        font-size: 3rem;
+    }
+
+    .rsi-empty-state h3 {
+        font-size: 1.1rem;
+    }
+
+    .rsi-empty-state p {
+        font-size: 0.9rem;
+    }
+}
+
+/* ==========================================
+   MODO OSCURO - CON COLORES CONSISTENTES
+   ========================================== */
+
+body.dark-mode .rsi-panel-crud {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-panel-header {
+    border-bottom-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-panel-header h2 {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-table thead {
+    background: var(--rsi-gray-800);
+    border-bottom-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-table thead th {
+    color: var(--rsi-gray-400);
+}
+
+body.dark-mode .rsi-table tbody tr {
+    border-bottom-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-table tbody tr:hover {
+    background: var(--rsi-gray-800);
+}
+
+body.dark-mode .rsi-table tbody td {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-empty-state h3 {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-empty-state i {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-badge-primary {
+    background: rgba(74, 158, 255, 0.15);
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-badge-success {
+    background: rgba(40, 167, 69, 0.15);
+    color: var(--rsi-success);
+}
+
+body.dark-mode .rsi-badge-danger {
+    background: rgba(220, 53, 69, 0.15);
+    color: var(--rsi-danger);
+}
+
+body.dark-mode .rsi-badge-warning {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+}
+
+body.dark-mode .rsi-btn-crud-outline {
+    color: var(--rsi-primary);
+    border-color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-btn-crud-outline:hover {
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+}
+
+/* Responsive oscuro - Tarjetas */
+@media (max-width: 768px) {
+    body.dark-mode .rsi-table tbody tr {
+        background: var(--rsi-bg-card);
+        border-color: var(--rsi-gray-300);
+    }
+
+    body.dark-mode .rsi-table tbody tr:hover {
+        background: var(--rsi-bg-card);
+    }
+
+    body.dark-mode .rsi-table tbody td {
+        border-bottom-color: var(--rsi-gray-300);
+        color: var(--rsi-text-light);
+    }
+
+    body.dark-mode .rsi-table tbody td::before {
+        color: var(--rsi-gray-400);
+    }
+
+    body.dark-mode .rsi-table .rsi-table-actions::before {
+        color: var(--rsi-gray-400);
+    }
+
+    body.dark-mode .rsi-table .rsi-btn-icon-edit {
+        color: var(--rsi-primary);
+    }
+
+    body.dark-mode .rsi-table .rsi-btn-icon-edit:hover {
+        background: var(--rsi-primary);
+        color: var(--rsi-white);
+    }
+
+    body.dark-mode .rsi-table .rsi-btn-icon-delete {
+        color: var(--rsi-danger);
+    }
+
+    body.dark-mode .rsi-table .rsi-btn-icon-delete:hover {
+        background: var(--rsi-danger);
+        color: var(--rsi-white);
+    }
+
+    body.dark-mode .rsi-table .rsi-btn-icon-view {
+        color: var(--rsi-accent);
+    }
+
+    body.dark-mode .rsi-table .rsi-btn-icon-view:hover {
+        background: var(--rsi-accent);
+        color: var(--rsi-white);
+    }
+}
