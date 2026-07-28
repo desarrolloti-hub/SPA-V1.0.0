@@ -30,6 +30,26 @@ export class AreaService {
     }
 
     /**
+     * Obtiene el nombre de un usuario por su UID
+     * @param {string} uid - UID del usuario
+     * @returns {Promise<string>} - Nombre del usuario
+     */
+    async getUserName(uid) {
+        if (!uid) return 'Sistema';
+        return await this.repository.getUserName(uid);
+    }
+
+    /**
+     * Obtiene múltiples nombres de usuarios en lote
+     * @param {string[]} uids - Array de UIDs
+     * @returns {Promise<Object>} - Mapa de uid -> nombre
+     */
+    async getUsersNames(uids) {
+        if (!uids || uids.length === 0) return {};
+        return await this.repository.getUsersNames(uids);
+    }
+
+    /**
      * Valida los datos de un área usando el Model
      * @param {Object} data - Datos del área
      * @returns {Object} - { valid: boolean, errors: Object }

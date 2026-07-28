@@ -1,13 +1,13 @@
 /* ========================================
-   AREA CRUD CONTROLLER
-   Controlador para listar y gestionar áreas
+   PARTNER CRUD CONTROLLER
+   Controlador con buscador, paginación y estadísticas
    ======================================== */
 
-import AreaService from '../../services/areaService.js';
+import NewCollaboratorService from '../../services/partnerService.js';
 
 let service = null;
 let eventListeners = [];
-let areasData = [];
+let collaboratorsData = [];
 let usersCache = {};
 let currentPage = 1;
 const pageSize = 10;
@@ -17,10 +17,10 @@ let searchTerm = '';
 let isSearching = false;
 
 /**
- * Inicializa el controlador CRUD de áreas
+ * Inicializa el controlador CRUD de colaboradores
  */
-export async function areaCrudController() {
-    console.log('📋 Area CRUD Controller iniciado');
+export async function partnerCrudController() {
+    console.log('👥 Partner CRUD Controller iniciado');
     
     if (document.readyState === 'loading') {
         await new Promise(resolve => {
@@ -28,30 +28,31 @@ export async function areaCrudController() {
         });
     }
     
-    service = new AreaService();
+    service = new NewCollaboratorService();
     usersCache = {};
     currentPage = 1;
     searchTerm = '';
     isSearching = false;
     
-    initLoadAreas();
-    initDeleteArea();
-    initRefreshAreas();
+    initLoadCollaborators();
+    initDeleteCollaborator();
+    initRefreshCollaborators();
     initPagination();
     initSearch();
     initClearSearch();
     
-    await loadAreasTable();
+    await loadCollaboratorsTable();
+    await loadStats();
     
-    console.log('✅ Area CRUD Controller listo');
+    console.log('✅ Partner CRUD Controller listo');
 }
 
 /**
  * Inicializa la búsqueda
  */
 function initSearch() {
-    const searchInput = document.getElementById('searchArea');
-    const searchBtn = document.getElementById('searchAreaBtn');
+    const searchInput = document.getElementById('searchPartner');
+    const searchBtn = document.getElementById('searchPartnerBtn');
     
     if (searchBtn) {
         searchBtn.addEventListener('click', async () => {
@@ -88,7 +89,7 @@ function initSearch() {
  * Realiza la búsqueda
  */
 async function performSearch() {
-    const searchInput = document.getElementById('searchArea');
+    const searchInput = document.getElementById('searchPartner');
     const newSearchTerm = searchInput?.value?.trim() || '';
     
     if (newSearchTerm === searchTerm && isSearching) return;
@@ -97,7 +98,8 @@ async function performSearch() {
     currentPage = 1;
     isSearching = searchTerm.length > 0;
     
-    await loadAreasTable();
+    await loadCollaboratorsTable();
+    await loadStats();
     updateSearchInfo();
 }
 
@@ -128,7 +130,7 @@ function updateSearchInfo() {
 function initClearSearch() {
     const clearBtn = document.getElementById('clearSearchBtn');
     const clearResultsBtn = document.getElementById('clearSearchResults');
-    const searchInput = document.getElementById('searchArea');
+    const searchInput = document.getElementById('searchPartner');
     
     if (clearBtn) {
         clearBtn.addEventListener('click', async () => {
@@ -139,7 +141,8 @@ function initClearSearch() {
             searchTerm = '';
             isSearching = false;
             currentPage = 1;
-            await loadAreasTable();
+            await loadCollaboratorsTable();
+            await loadStats();
             updateSearchInfo();
         });
         eventListeners.push({ element: clearBtn, event: 'click', handler: () => {} });
@@ -155,7 +158,8 @@ function initClearSearch() {
             searchTerm = '';
             isSearching = false;
             currentPage = 1;
-            await loadAreasTable();
+            await loadCollaboratorsTable();
+            await loadStats();
             updateSearchInfo();
         });
         eventListeners.push({ element: clearResultsBtn, event: 'click', handler: () => {} });
@@ -173,7 +177,7 @@ function initPagination() {
         prevBtn.addEventListener('click', async () => {
             if (currentPage > 1) {
                 currentPage--;
-                await loadAreasTable();
+                await loadCollaboratorsTable();
                 const tableWrapper = document.querySelector('.rsi-table-wrapper');
                 if (tableWrapper) {
                     tableWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -187,7 +191,7 @@ function initPagination() {
         nextBtn.addEventListener('click', async () => {
             if (currentPage < totalPages) {
                 currentPage++;
-                await loadAreasTable();
+                await loadCollaboratorsTable();
                 const tableWrapper = document.querySelector('.rsi-table-wrapper');
                 if (tableWrapper) {
                     tableWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -199,40 +203,38 @@ function initPagination() {
 }
 
 /**
- * Inicializa la carga de áreas
+ * Inicializa la carga de colaboradores
  */
-function initLoadAreas() {
-    // La carga se hace en loadAreasTable()
+function initLoadCollaborators() {
+    // La carga se hace en loadCollaboratorsTable()
 }
 
 /**
- * Inicializa el refresco de áreas
+ * 🔥 Inicializa el refresco de colaboradores (SIN SweetAlert)
  */
-function initRefreshAreas() {
-    const refreshBtn = document.getElementById('refreshAreas');
+function initRefreshCollaborators() {
+    const refreshBtn = document.getElementById('refreshPartners');
     if (!refreshBtn) return;
 
     const handler = async () => {
+        // Deshabilitar botón y mostrar spinner
         refreshBtn.disabled = true;
         refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
         
         try {
-            service.clearCache?.();
+            // Limpiar caché del servicio
+            service.clearCache();
+            // Limpiar caché de usuarios
             usersCache = {};
+            // Resetear paginación
             currentPage = 1;
-            searchTerm = '';
-            isSearching = false;
             
-            const searchInput = document.getElementById('searchArea');
-            if (searchInput) {
-                searchInput.value = '';
-                const clearBtn = document.getElementById('clearSearchBtn');
-                if (clearBtn) clearBtn.style.display = 'none';
-            }
-            
-            await loadAreasTable();
+            // Recargar datos
+            await loadCollaboratorsTable(true);
+            await loadStats();
             updateSearchInfo();
             
+            // ✅ Feedback visual solo con el icono (cambio de color temporal)
             refreshBtn.style.color = 'var(--rsi-success)';
             setTimeout(() => {
                 refreshBtn.style.color = '';
@@ -245,6 +247,7 @@ function initRefreshAreas() {
                 refreshBtn.style.color = '';
             }, 500);
         } finally {
+            // Restaurar botón
             refreshBtn.disabled = false;
             refreshBtn.innerHTML = '<i class="fas fa-sync"></i> Actualizar';
         }
@@ -255,24 +258,24 @@ function initRefreshAreas() {
 }
 
 /**
- * Inicializa la eliminación/habilitación de áreas (event delegation)
+ * Inicializa las acciones de colaboradores
  */
-function initDeleteArea() {
-    const tableBody = document.getElementById('areasTableBody');
+function initDeleteCollaborator() {
+    const tableBody = document.getElementById('partnersTableBody');
     if (!tableBody) return;
 
     const handler = async (e) => {
-        const toggleBtn = e.target.closest('.btn-toggle-area');
+        const toggleBtn = e.target.closest('.btn-toggle-partner');
         if (toggleBtn) {
-            const areaId = toggleBtn.dataset.id;
-            await handleToggleArea(areaId);
+            const docId = toggleBtn.dataset.id;
+            await handleToggleCollaborator(docId);
             return;
         }
         
-        const deleteBtn = e.target.closest('.btn-delete-area');
+        const deleteBtn = e.target.closest('.btn-delete-partner');
         if (deleteBtn) {
-            const areaId = deleteBtn.dataset.id;
-            await handleDeleteArea(areaId);
+            const docId = deleteBtn.dataset.id;
+            await handleDeleteCollaborator(docId);
             return;
         }
     };
@@ -319,14 +322,56 @@ function formatDate(dateString) {
 }
 
 /**
- * 🔥 Carga y muestra las áreas en la tabla con paginación y búsqueda
+ * Obtiene el estado de verificación de email
  */
-async function loadAreasTable() {
-    const tableBody = document.getElementById('areasTableBody');
+function getEmailVerifiedBadge(emailVerified) {
+    if (emailVerified === true) {
+        return '<span class="rsi-badge rsi-badge-success"><i class="fas fa-check-circle"></i> Verificado</span>';
+    }
+    return '<span class="rsi-badge rsi-badge-warning"><i class="fas fa-clock"></i> Pendiente</span>';
+}
+
+/**
+ * Carga las estadísticas
+ */
+async function loadStats() {
+    try {
+        const stats = await service.getCollaboratorStats();
+        const statsContainer = document.getElementById('partnerStats');
+        if (!statsContainer) return;
+        
+        statsContainer.innerHTML = `
+            <div class="rsi-stat-item">
+                <span class="rsi-stat-value">${stats.total}</span>
+                <span class="rsi-stat-label">Total</span>
+            </div>
+            <div class="rsi-stat-item">
+                <span class="rsi-stat-value" style="color: var(--rsi-success);">${stats.active}</span>
+                <span class="rsi-stat-label">Activos</span>
+            </div>
+            <div class="rsi-stat-item">
+                <span class="rsi-stat-value" style="color: var(--rsi-danger);">${stats.inactive}</span>
+                <span class="rsi-stat-label">Inactivos</span>
+            </div>
+            <div class="rsi-stat-item">
+                <span class="rsi-stat-value" style="color: var(--rsi-info);">${stats.verified}</span>
+                <span class="rsi-stat-label">Verificados</span>
+            </div>
+        `;
+    } catch (error) {
+        console.error('❌ Error cargando estadísticas:', error);
+    }
+}
+
+/**
+ * Carga y muestra los colaboradores en la tabla con paginación
+ */
+async function loadCollaboratorsTable(forceRefresh = false) {
+    const tableBody = document.getElementById('partnersTableBody');
     const loadingState = document.getElementById('loadingState');
     const emptyState = document.getElementById('emptyState');
     const tableWrapper = document.querySelector('.rsi-table-wrapper');
-    const areaCount = document.getElementById('areaCount');
+    const partnerCount = document.getElementById('partnerCount');
     const paginationContainer = document.getElementById('paginationContainer');
     const pageInfo = document.getElementById('pageInfo');
     const emptyStateTitle = document.getElementById('emptyStateTitle');
@@ -340,41 +385,32 @@ async function loadAreasTable() {
         if (tableWrapper) tableWrapper.style.display = 'none';
         if (paginationContainer) paginationContainer.style.display = 'none';
         
-        // 🔥 Obtener todas las áreas (con caché)
-        let areas = await service.getAllAreas();
+        let result;
         
-        // 🔥 Filtrar por búsqueda (en memoria)
         if (isSearching && searchTerm.length > 0) {
-            const termLower = searchTerm.toLowerCase();
-            areas = areas.filter(area => {
-                const nombre = (area.nombreArea || '').toLowerCase();
-                return nombre.includes(termLower);
-            });
+            result = await service.getCollaboratorsPaginated(pageSize, currentPage, searchTerm);
+        } else {
+            result = await service.getCollaboratorsPaginated(pageSize, currentPage);
         }
         
-        areasData = areas;
-        totalItems = areas.length;
-        totalPages = Math.ceil(totalItems / pageSize);
-        
-        // 🔥 Paginar en memoria
-        const start = (currentPage - 1) * pageSize;
-        const end = Math.min(start + pageSize, totalItems);
-        const paginatedAreas = areas.slice(start, end);
+        collaboratorsData = result.data || [];
+        totalItems = result.total || collaboratorsData.length;
+        totalPages = result.totalPages || Math.ceil(totalItems / pageSize);
 
         if (loadingState) loadingState.style.display = 'none';
 
-        if (paginatedAreas.length === 0) {
+        if (collaboratorsData.length === 0) {
             if (emptyState) {
                 emptyState.style.display = 'block';
                 if (emptyStateTitle) {
                     emptyStateTitle.textContent = isSearching 
                         ? 'No se encontraron resultados' 
-                        : 'No hay áreas registradas';
+                        : 'No hay colaboradores registrados';
                 }
                 if (emptyStateText) {
                     emptyStateText.textContent = isSearching 
-                        ? `No hay áreas que coincidan con "${searchTerm}"` 
-                        : 'Comienza creando tu primera área para organizar las subáreas y permisos del sistema.';
+                        ? `No hay colaboradores que coincidan con "${searchTerm}"` 
+                        : 'Comienza registrando tu primer colaborador en el sistema.';
                 }
                 const emptyBtn = emptyState.querySelector('a');
                 if (emptyBtn && isSearching) {
@@ -384,7 +420,7 @@ async function loadAreasTable() {
                 }
             }
             if (tableWrapper) tableWrapper.style.display = 'none';
-            if (areaCount) areaCount.textContent = '0';
+            if (partnerCount) partnerCount.textContent = '0';
             if (paginationContainer) paginationContainer.style.display = 'none';
             updateSearchInfo();
             return;
@@ -392,7 +428,7 @@ async function loadAreasTable() {
 
         if (emptyState) emptyState.style.display = 'none';
         if (tableWrapper) tableWrapper.style.display = 'block';
-        if (areaCount) areaCount.textContent = totalItems;
+        if (partnerCount) partnerCount.textContent = totalItems;
         if (paginationContainer) paginationContainer.style.display = 'flex';
         
         if (pageInfo) {
@@ -404,31 +440,34 @@ async function loadAreasTable() {
         if (prevBtn) prevBtn.disabled = currentPage <= 1;
         if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
 
-        // 🔥 Construir filas con los datos paginados
         let rowsHtml = '';
-        for (const area of paginatedAreas) {
-            const isEnabled = area.habilitado !== false;
-            const createdBy = await getUserName(area.modificadoPor);
+        for (const collab of collaboratorsData) {
+            const isEnabled = collab.status !== 'inactive';
+            const createdBy = await getUserName(collab.creadoPor);
+            const areaName = collab.areaNombre || collab.area || '-';
+            const subareaName = collab.subareaNombre || collab.subarea || '-';
             
             rowsHtml += `
                 <tr>
                     <td data-label="Nombre">
-                        <span style="font-weight: 600;">${area.nombreArea || '-'}</span>
+                        <div style="display: flex; align-items: center; gap: var(--rsi-spacing-sm);">
+                            <img src="${collab.fotoPerfil && collab.fotoPerfil.startsWith('data:image') ? collab.fotoPerfil : '/assets/images/default-avatar.png'}" 
+                                 alt="${collab.nombreCompleto}" 
+                                 style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid var(--rsi-gray-200);">
+                            <span style="font-weight: 600;">${collab.nombreCompleto || '-'}</span>
+                        </div>
                     </td>
-                    <td data-label="Subáreas">
-                        <span class="rsi-badge rsi-badge-primary">
-                            ${Object.keys(area.subareas || {}).length}
-                        </span>
+                    <td data-label="Correo">
+                        <span style="font-size: 0.85rem;">${collab.emailEmpresarial || '-'}</span>
                     </td>
-                    <td data-label="Creado por">
-                        <span style="font-size: 0.85rem; color: var(--rsi-gray-500);">
-                            ${createdBy}
-                        </span>
+                    <td data-label="Área">
+                        <span style="font-size: 0.85rem;">${areaName}</span>
                     </td>
-                    <td data-label="Fecha">
-                        <span style="font-size: 0.85rem; color: var(--rsi-gray-500);">
-                            ${formatDate(area.createdAt)}
-                        </span>
+                    <td data-label="Subárea">
+                        <span style="font-size: 0.85rem;">${subareaName}</span>
+                    </td>
+                    <td data-label="Verificado">
+                        ${getEmailVerifiedBadge(collab.emailVerified)}
                     </td>
                     <td data-label="Estado">
                         <span class="rsi-badge ${isEnabled ? 'rsi-badge-success' : 'rsi-badge-danger'}">
@@ -437,13 +476,13 @@ async function loadAreasTable() {
                     </td>
                     <td data-label="Acciones">
                         <div class="rsi-table-actions">
-                            <button class="rsi-btn-icon rsi-btn-icon-view btn-view-area" data-id="${area.id}" title="Ver detalles">
+                            <button class="rsi-btn-icon rsi-btn-icon-view btn-view-partner" data-id="${collab.id}" title="Ver detalles">
                                 <i class="fas fa-eye"></i>
                             </button>
-                            <button class="rsi-btn-icon rsi-btn-icon-edit btn-edit-area" data-id="${area.id}" title="Editar área">
+                            <button class="rsi-btn-icon rsi-btn-icon-edit btn-edit-partner" data-id="${collab.id}" title="Editar colaborador">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="rsi-btn-icon ${isEnabled ? 'rsi-btn-icon-delete' : 'rsi-btn-icon-success'} btn-toggle-area" data-id="${area.id}" title="${isEnabled ? 'Deshabilitar' : 'Habilitar'}">
+                            <button class="rsi-btn-icon ${isEnabled ? 'rsi-btn-icon-delete' : 'rsi-btn-icon-success'} btn-toggle-partner" data-id="${collab.id}" title="${isEnabled ? 'Deshabilitar' : 'Habilitar'}">
                                 <i class="fas ${isEnabled ? 'fa-toggle-on' : 'fa-toggle-off'}"></i>
                             </button>
                         </div>
@@ -454,32 +493,30 @@ async function loadAreasTable() {
         
         tableBody.innerHTML = rowsHtml;
 
-        // Event listeners para ver detalles
-        tableBody.querySelectorAll('.btn-view-area').forEach(btn => {
+        tableBody.querySelectorAll('.btn-view-partner').forEach(btn => {
             btn.addEventListener('click', () => {
-                const areaId = btn.dataset.id;
-                handleViewArea(areaId);
+                const docId = btn.dataset.id;
+                handleViewCollaborator(docId);
             });
         });
 
-        // Event listeners para editar
-        tableBody.querySelectorAll('.btn-edit-area').forEach(btn => {
+        tableBody.querySelectorAll('.btn-edit-partner').forEach(btn => {
             btn.addEventListener('click', () => {
-                const areaId = btn.dataset.id;
-                handleEditArea(areaId);
+                const docId = btn.dataset.id;
+                handleEditCollaborator(docId);
             });
         });
 
         updateSearchInfo();
 
     } catch (error) {
-        console.error('❌ Error cargando áreas:', error);
+        console.error('❌ Error cargando colaboradores:', error);
         if (loadingState) loadingState.style.display = 'none';
         
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'Error al cargar las áreas: ' + error.message,
+            text: 'Error al cargar los colaboradores: ' + error.message,
             confirmButtonText: 'Reintentar',
             confirmButtonColor: '#d33'
         });
@@ -487,40 +524,24 @@ async function loadAreasTable() {
 }
 
 /**
- * Cuenta el total de módulos en todas las subáreas
+ * Maneja la habilitación/deshabilitación de un colaborador
  */
-function countModulos(subareas) {
-    if (!subareas) return 0;
-    const subareaKeys = Object.keys(subareas);
-    let total = 0;
-    subareaKeys.forEach(key => {
-        const subarea = subareas[key];
-        if (subarea.modulos) {
-            total += Object.keys(subarea.modulos).length;
-        }
-    });
-    return total;
-}
+async function handleToggleCollaborator(docId) {
+    const collab = collaboratorsData.find(c => c.id === docId);
+    if (!collab) return;
 
-/**
- * Maneja la habilitación/deshabilitación de un área
- */
-async function handleToggleArea(areaId) {
-    const area = areasData.find(a => a.id === areaId);
-    if (!area) return;
-
-    const currentState = area.habilitado !== false;
+    const currentState = collab.status !== 'inactive';
     const newState = !currentState;
     const action = newState ? 'habilitar' : 'deshabilitar';
 
     const result = await Swal.fire({
-        title: `${newState ? 'Habilitar' : 'Deshabilitar'} área`,
+        title: `${newState ? 'Habilitar' : 'Deshabilitar'} colaborador`,
         html: `
             <div style="text-align: left;">
-                <p><strong>Área:</strong> ${area.nombreArea}</p>
+                <p><strong>Colaborador:</strong> ${collab.nombreCompleto}</p>
                 <p><strong>Estado actual:</strong> ${currentState ? 'Activo' : 'Inactivo'}</p>
                 <p style="color: var(--rsi-${newState ? 'success' : 'danger'});">
-                    ¿Estás seguro de ${action} esta área?
+                    ¿Estás seguro de ${action} este colaborador?
                 </p>
             </div>
         `,
@@ -535,25 +556,25 @@ async function handleToggleArea(areaId) {
     if (!result.isConfirmed) return;
 
     try {
-        await service.updateArea(areaId, { 
-            habilitado: newState 
-        });
+        const newStatus = newState ? 'active' : 'inactive';
+        await service.updateCollaborator(docId, { status: newStatus });
         
         Swal.fire({
             icon: 'success',
-            title: `¡Área ${newState ? 'habilitada' : 'deshabilitada'}!`,
-            text: `El área "${area.nombreArea}" ha sido ${newState ? 'habilitada' : 'deshabilitada'}.`,
+            title: `¡Colaborador ${newState ? 'habilitado' : 'deshabilitado'}!`,
+            text: `El colaborador "${collab.nombreCompleto}" ha sido ${newState ? 'habilitado' : 'deshabilitado'}.`,
             timer: 2000,
             showConfirmButton: false
         });
         
-        await loadAreasTable();
+        await loadCollaboratorsTable();
+        await loadStats();
     } catch (error) {
-        console.error('❌ Error cambiando estado del área:', error);
+        console.error('❌ Error cambiando estado del colaborador:', error);
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: error.message || 'Error al cambiar el estado del área',
+            text: error.message || 'Error al cambiar el estado del colaborador',
             confirmButtonText: 'Aceptar',
             confirmButtonColor: '#d33'
         });
@@ -561,19 +582,19 @@ async function handleToggleArea(areaId) {
 }
 
 /**
- * Maneja la eliminación de un área (solo si está deshabilitada)
+ * Maneja la eliminación de un colaborador (solo si está deshabilitado)
  */
-async function handleDeleteArea(areaId) {
-    const area = areasData.find(a => a.id === areaId);
-    if (!area) return;
+async function handleDeleteCollaborator(docId) {
+    const collab = collaboratorsData.find(c => c.id === docId);
+    if (!collab) return;
 
-    const isEnabled = area.habilitado !== false;
+    const isEnabled = collab.status !== 'inactive';
     
     if (isEnabled) {
         Swal.fire({
             icon: 'warning',
-            title: 'Área activa',
-            text: 'Debes deshabilitar el área antes de poder eliminarla.',
+            title: 'Colaborador activo',
+            text: 'Debes deshabilitar el colaborador antes de poder eliminarlo.',
             confirmButtonText: 'Entendido',
             confirmButtonColor: '#1c1948'
         });
@@ -581,11 +602,11 @@ async function handleDeleteArea(areaId) {
     }
 
     const result = await Swal.fire({
-        title: '¿Eliminar área?',
+        title: '¿Eliminar colaborador?',
         html: `
             <div style="text-align: left;">
-                <p><strong>Área:</strong> ${area.nombreArea}</p>
-                <p><strong>Subáreas:</strong> ${Object.keys(area.subareas || {}).length}</p>
+                <p><strong>Colaborador:</strong> ${collab.nombreCompleto}</p>
+                <p><strong>Correo:</strong> ${collab.emailEmpresarial}</p>
                 <p style="color: var(--rsi-danger);">Esta acción no se puede deshacer.</p>
             </div>
         `,
@@ -600,23 +621,24 @@ async function handleDeleteArea(areaId) {
     if (!result.isConfirmed) return;
 
     try {
-        await service.deleteArea(areaId);
+        await service.deleteCollaboratorPermanently(docId);
         
         Swal.fire({
             icon: 'success',
-            title: '¡Eliminada!',
-            text: `El área "${area.nombreArea}" ha sido eliminada permanentemente.`,
+            title: '¡Eliminado!',
+            text: `El colaborador "${collab.nombreCompleto}" ha sido eliminado permanentemente.`,
             timer: 2000,
             showConfirmButton: false
         });
         
-        await loadAreasTable();
+        await loadCollaboratorsTable();
+        await loadStats();
     } catch (error) {
-        console.error('❌ Error eliminando área:', error);
+        console.error('❌ Error eliminando colaborador:', error);
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: error.message || 'Error al eliminar el área',
+            text: error.message || 'Error al eliminar el colaborador',
             confirmButtonText: 'Aceptar',
             confirmButtonColor: '#d33'
         });
@@ -624,70 +646,36 @@ async function handleDeleteArea(areaId) {
 }
 
 /**
- * Maneja la visualización de detalles de un área
+ * Maneja la visualización de detalles de un colaborador
  */
-async function handleViewArea(areaId) {
+async function handleViewCollaborator(docId) {
     try {
-        const area = await service.getAreaById(areaId);
-        if (!area) {
-            throw new Error('Área no encontrada');
+        const collab = await service.getCollaboratorById(docId);
+        if (!collab) {
+            throw new Error('Colaborador no encontrado');
         }
 
-        const subareas = area.subareas || {};
-        const subareaKeys = Object.keys(subareas);
-        const createdBy = await getUserName(area.modificadoPor);
-        const isEnabled = area.habilitado !== false;
-        
-        let subareasHtml = '';
-        if (subareaKeys.length === 0) {
-            subareasHtml = '<p style="color: var(--rsi-gray-500);">No hay subáreas</p>';
-        } else {
-            subareasHtml = subareaKeys.map(key => {
-                const s = subareas[key];
-                const modulos = s.modulos || {};
-                const modulosKeys = Object.keys(modulos);
-                const modulosHtml = modulosKeys.map(mk => {
-                    const m = modulos[mk];
-                    return `
-                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--rsi-gray-100);">
-                            <span style="font-weight: 500;">${m.nombreModulo}</span>
-                            <div>
-                                ${(m.permisos?.permiso || []).map(p => 
-                                    `<span class="rsi-tag" style="margin: 0 2px;">${p}</span>`
-                                ).join('')}
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-                
-                return `
-                    <div style="background: var(--rsi-gray-50); padding: var(--rsi-spacing-md); border-radius: var(--rsi-radius-md); margin-bottom: var(--rsi-spacing-sm);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--rsi-spacing-sm);">
-                            <strong style="color: var(--rsi-text-primary);">${s.nombreSubarea}</strong>
-                            <span class="rsi-badge rsi-badge-primary">${modulosKeys.length} módulos</span>
-                        </div>
-                        ${modulosHtml || '<p style="color: var(--rsi-gray-500); font-size: 0.9rem;">Sin módulos</p>'}
-                    </div>
-                `;
-            }).join('');
-        }
+        const createdBy = await getUserName(collab.creadoPor);
+        const isEnabled = collab.status !== 'inactive';
+        const areaName = collab.areaNombre || collab.area || '-';
+        const subareaName = collab.subareaNombre || collab.subarea || '-';
 
         Swal.fire({
-            title: area.nombreArea,
+            title: collab.nombreCompleto,
             html: `
                 <div style="text-align: left; max-height: 400px; overflow-y: auto;">
                     <div style="display: flex; gap: var(--rsi-spacing-md); margin-bottom: var(--rsi-spacing-md); flex-wrap: wrap;">
                         <div>
                             <span style="color: var(--rsi-gray-500); font-size: 0.8rem;">ID</span>
-                            <p style="font-size: 0.85rem; font-family: monospace; margin: 0;">${area.id}</p>
+                            <p style="font-size: 0.85rem; font-family: monospace; margin: 0;">${collab.id}</p>
                         </div>
                         <div>
-                            <span style="color: var(--rsi-gray-500); font-size: 0.8rem;">Subáreas</span>
-                            <p style="font-weight: 600; margin: 0;">${subareaKeys.length}</p>
+                            <span style="color: var(--rsi-gray-500); font-size: 0.8rem;">UID</span>
+                            <p style="font-size: 0.85rem; font-family: monospace; margin: 0;">${collab.uid}</p>
                         </div>
                         <div>
-                            <span style="color: var(--rsi-gray-500); font-size: 0.8rem;">Módulos</span>
-                            <p style="font-weight: 600; margin: 0;">${countModulos(subareas)}</p>
+                            <span style="color: var(--rsi-gray-500); font-size: 0.8rem;">Correo</span>
+                            <p style="margin: 0;">${collab.emailEmpresarial}</p>
                         </div>
                         <div>
                             <span style="color: var(--rsi-gray-500); font-size: 0.8rem;">Estado</span>
@@ -698,26 +686,58 @@ async function handleViewArea(areaId) {
                             </p>
                         </div>
                         <div>
+                            <span style="color: var(--rsi-gray-500); font-size: 0.8rem;">Verificado</span>
+                            <p style="margin: 0;">${collab.emailVerified ? '✅ Sí' : '❌ No'}</p>
+                        </div>
+                        <div>
+                            <span style="color: var(--rsi-gray-500); font-size: 0.8rem;">Área</span>
+                            <p style="margin: 0;">${areaName}</p>
+                        </div>
+                        <div>
+                            <span style="color: var(--rsi-gray-500); font-size: 0.8rem;">Subárea</span>
+                            <p style="margin: 0;">${subareaName}</p>
+                        </div>
+                        <div>
+                            <span style="color: var(--rsi-gray-500); font-size: 0.8rem;">Tipo</span>
+                            <p style="margin: 0;">${collab.tipoColaborador || '-'}</p>
+                        </div>
+                        <div>
                             <span style="color: var(--rsi-gray-500); font-size: 0.8rem;">Creado por</span>
                             <p style="margin: 0;">${createdBy}</p>
                         </div>
                         <div>
                             <span style="color: var(--rsi-gray-500); font-size: 0.8rem;">Fecha</span>
-                            <p style="margin: 0;">${formatDate(area.createdAt)}</p>
+                            <p style="margin: 0;">${formatDate(collab.createdAt)}</p>
                         </div>
                     </div>
                     <hr style="margin: var(--rsi-spacing-md) 0; border-color: var(--rsi-gray-200);">
-                    <h4 style="margin: 0 0 var(--rsi-spacing-sm) 0; color: var(--rsi-text-primary);">Subáreas</h4>
-                    ${subareasHtml}
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--rsi-spacing-sm);">
+                        <div>
+                            <span style="color: var(--rsi-gray-500); font-size: 0.8rem;">CURP</span>
+                            <p style="font-weight: 500; margin: 0;">${collab.curp || '-'}</p>
+                        </div>
+                        <div>
+                            <span style="color: var(--rsi-gray-500); font-size: 0.8rem;">RFC</span>
+                            <p style="font-weight: 500; margin: 0;">${collab.rfc || '-'}</p>
+                        </div>
+                        <div>
+                            <span style="color: var(--rsi-gray-500); font-size: 0.8rem;">Teléfono móvil</span>
+                            <p style="font-weight: 500; margin: 0;">${collab.telefonoMovil || '-'}</p>
+                        </div>
+                        <div>
+                            <span style="color: var(--rsi-gray-500); font-size: 0.8rem;">NIT</span>
+                            <p style="font-weight: 500; margin: 0;">${collab.nit || '-'}</p>
+                        </div>
+                    </div>
                 </div>
             `,
             confirmButtonText: 'Cerrar',
             confirmButtonColor: '#1c1948',
-            width: '700px'
+            width: '750px'
         });
 
     } catch (error) {
-        console.error('❌ Error viendo área:', error);
+        console.error('❌ Error viendo colaborador:', error);
         Swal.fire({
             icon: 'error',
             title: 'Error',
@@ -729,21 +749,21 @@ async function handleViewArea(areaId) {
 }
 
 /**
- * Maneja la edición de un área
+ * Maneja la edición de un colaborador
  */
-async function handleEditArea(areaId) {
+async function handleEditCollaborator(docId) {
     try {
         if (typeof window.navigateTo === 'function') {
-            window.navigateTo(`/partner/area?id=${areaId}`);
+            window.navigateTo(`/partner/partner?id=${docId}`);
         } else {
-            window.location.href = `/partner/area?id=${areaId}`;
+            window.location.href = `/partner/partner?id=${docId}`;
         }
     } catch (error) {
-        console.error('❌ Error editando área:', error);
+        console.error('❌ Error editando colaborador:', error);
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: error.message || 'Error al editar el área',
+            text: error.message || 'Error al editar el colaborador',
             confirmButtonText: 'Aceptar',
             confirmButtonColor: '#d33'
         });
@@ -753,8 +773,8 @@ async function handleEditArea(areaId) {
 /**
  * Limpia eventos
  */
-export function destroyAreaCrudController() {
-    console.log('🧹 Destroying AreaCrudController');
+export function destroyPartnerCrudController() {
+    console.log('🧹 Destroying PartnerCrudController');
     
     eventListeners.forEach(({ element, event, handler }) => {
         element.removeEventListener(event, handler);
@@ -762,11 +782,8 @@ export function destroyAreaCrudController() {
     eventListeners = [];
     
     service = null;
-    areasData = [];
+    collaboratorsData = [];
     usersCache = {};
-    currentPage = 1;
-    searchTerm = '';
-    isSearching = false;
 }
 
-export default areaCrudController;
+export default partnerCrudController;

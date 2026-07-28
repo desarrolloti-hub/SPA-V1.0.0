@@ -18,18 +18,21 @@ import {
     Timestamp,
     writeBatch
 } from '../config/firebaseConfig.js';
+import BaseRepository from './baseRepository.js';
 
-export class AreaRepository {
+export class AreaRepository extends BaseRepository {
     
+    constructor() {
+        super('areas', 60000);
+    }
+
     /**
      * Obtiene el UID del usuario desde localStorage
-     * @returns {string|null} - UID del usuario
      */
     _getCurrentUserUid() {
         try {
             const session = localStorage.getItem('rsi_session');
             if (!session) return null;
-            
             const sessionData = JSON.parse(session);
             return sessionData.uid || null;
         } catch (error) {
@@ -39,17 +42,137 @@ export class AreaRepository {
     }
 
     /**
-     * Obtiene la colección de áreas
-     * @returns {Object} - Referencia a la colección
+     * Obtiene la colección de usuarios
      */
-    _getCollection() {
-        return collection(db, 'areas');
+    _getUsersCollection() {
+        return collection(db, 'usersRSI');
+    }
+
+    /**
+     * 🔥 Obtiene todas las áreas con sus subáreas usando índices
+     */
+    async getAreasForSelect(onlyActive = true) {
+        const cacheKey = this._getCacheKey('select', { onlyActive });
+        const cached = this._getFromCache('list', cacheKey);
+        if (cached) return cached;
+
+        try {
+            // 🔥 Usar índices compuestos: nombreArea + habilitado
+            const filters = [];
+            if (onlyActive) {
+                filters.push({ field: 'habilitado', operator: '==', value: true });
+            }
+            
+            const areas = await this.getAll(filters, 'nombreArea', 'asc', true);
+            
+            // Formatear áreas con subáreas
+            const formattedAreas = areas.map(area => {
+                const subareas = area.subareas || {};
+                const subareaKeys = Object.keys(subareas);
+                
+                const subareasList = subareaKeys.map(key => ({
+                    id: key,
+                    nombre: subareas[key].nombreSubarea || key
+                }));
+                
+                return {
+                    id: area.id,
+                    nombre: area.nombreArea,
+                    subareas: subareasList,
+                    habilitado: area.habilitado !== false
+                };
+            });
+            
+            this._setCache('list', cacheKey, formattedAreas);
+            return formattedAreas;
+        } catch (error) {
+            console.error('❌ Error obteniendo áreas para selects:', error);
+            return [];
+        }
+    }
+
+    /**
+     * 🔥 Búsqueda de áreas por nombre con índices
+     */
+    async searchAreasByName(searchTerm, onlyActive = true) {
+        const filters = [];
+        if (onlyActive) {
+            filters.push({ field: 'habilitado', operator: '==', value: true });
+        }
+        
+        // 🔥 Usar índice compuesto: nombreArea + habilitado
+        return await this.searchWithIndex('nombreArea', searchTerm, filters, 20);
+    }
+
+    /**
+     * Obtiene el nombre de un usuario por su UID
+     */
+    async getUserName(uid) {
+        if (!uid) return 'Sistema';
+        
+        const cacheKey = this._getCacheKey('userName', { uid });
+        const cached = this._getFromCache('single', cacheKey);
+        if (cached) return cached;
+        
+        try {
+            const usersRef = this._getUsersCollection();
+            // 🔥 Usar índice: uid (único por defecto)
+            const q = query(usersRef, where('uid', '==', uid));
+            const snapshot = await getDocs(q);
+            
+            let name = 'Usuario desconocido';
+            if (!snapshot.empty) {
+                const userData = snapshot.docs[0].data();
+                name = userData.nombreCompleto || userData.displayName || userData.email || 'Usuario';
+            }
+            
+            this._setCache('single', cacheKey, name);
+            return name;
+        } catch (error) {
+            console.error('❌ Error obteniendo usuario:', error);
+            return 'Usuario desconocido';
+        }
+    }
+
+    /**
+     * Obtiene múltiples nombres de usuarios en lote
+     */
+    async getUsersNames(uids) {
+        if (!uids || uids.length === 0) return {};
+        
+        try {
+            const usersRef = this._getUsersCollection();
+            const batchSize = 10;
+            const result = {};
+            
+            for (let i = 0; i < uids.length; i += batchSize) {
+                const batch = uids.slice(i, i + batchSize);
+                // 🔥 Usar índice: uid (único por defecto)
+                const q = query(usersRef, where('uid', 'in', batch));
+                const snapshot = await getDocs(q);
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const name = data.nombreCompleto || data.displayName || data.email || 'Usuario';
+                    result[data.uid] = name;
+                });
+            }
+            
+            uids.forEach(uid => {
+                if (!result[uid]) {
+                    result[uid] = 'Usuario desconocido';
+                }
+            });
+            
+            return result;
+        } catch (error) {
+            console.error('❌ Error obteniendo usuarios:', error);
+            return {};
+        }
     }
 
     /**
      * Crea una nueva área
-     * @param {Object} areaData - Datos del área
-     * @returns {Promise<string>} - ID del documento creado
      */
     async createArea(areaData) {
         try {
@@ -59,6 +182,7 @@ export class AreaRepository {
             }
 
             const docRef = await addDoc(this._getCollection(), areaData);
+            this.clearCache();
             console.log('✅ Área creada:', docRef.id);
             return docRef.id;
         } catch (error) {
@@ -68,47 +192,19 @@ export class AreaRepository {
     }
 
     /**
-     * Obtiene todas las áreas
-     * @returns {Promise<Array>} - Lista de áreas
+     * 🔥 Obtiene todas las áreas (usa índices para ordenamiento)
      */
     async getAllAreas() {
-        try {
-            const q = query(this._getCollection());
-            const snapshot = await getDocs(q);
-            
-            const areas = [];
-            snapshot.forEach(doc => {
-                areas.push({
-                    id: doc.id,
-                    ...doc.data()
-                });
-            });
-            
-            return areas;
-        } catch (error) {
-            console.error('❌ Error obteniendo áreas:', error);
-            throw new Error('Error al obtener las áreas');
-        }
+        // 🔥 Usar índice: createdAt (desc)
+        return await this.getAll([], 'createdAt', 'desc');
     }
 
     /**
      * Obtiene un área por ID
-     * @param {string} areaId - ID del área
-     * @returns {Promise<Object|null>} - Datos del área
      */
     async getAreaById(areaId) {
         try {
-            const docRef = doc(db, 'areas', areaId);
-            const docSnap = await getDoc(docRef);
-            
-            if (!docSnap.exists()) {
-                return null;
-            }
-            
-            return {
-                id: docSnap.id,
-                ...docSnap.data()
-            };
+            return await this.getById(areaId);
         } catch (error) {
             console.error('❌ Error obteniendo área:', error);
             return null;
@@ -117,11 +213,10 @@ export class AreaRepository {
 
     /**
      * Obtiene un área por nombre
-     * @param {string} nombreArea - Nombre del área
-     * @returns {Promise<Object|null>} - Datos del área
      */
     async getAreaByNombre(nombreArea) {
         try {
+            // 🔥 Usar índice: nombreArea
             const q = query(
                 this._getCollection(),
                 where('nombreArea', '==', nombreArea)
@@ -145,9 +240,6 @@ export class AreaRepository {
 
     /**
      * Actualiza un área
-     * @param {string} areaId - ID del área
-     * @param {Object} data - Datos a actualizar
-     * @returns {Promise<void>}
      */
     async updateArea(areaId, data) {
         try {
@@ -156,13 +248,14 @@ export class AreaRepository {
                 throw new Error('Usuario no autenticado');
             }
 
-            const docRef = doc(db, 'areas', areaId);
+            const docRef = doc(db, this.collectionName, areaId);
             await updateDoc(docRef, {
                 ...data,
                 modificadoPor: uid,
                 fechaModificacion: new Date().toISOString()
             });
             
+            this.clearCache();
             console.log('✅ Área actualizada:', areaId);
         } catch (error) {
             console.error('❌ Error actualizando área:', error);
@@ -172,13 +265,12 @@ export class AreaRepository {
 
     /**
      * Elimina un área
-     * @param {string} areaId - ID del área
-     * @returns {Promise<void>}
      */
     async deleteArea(areaId) {
         try {
-            const docRef = doc(db, 'areas', areaId);
+            const docRef = doc(db, this.collectionName, areaId);
             await deleteDoc(docRef);
+            this.clearCache();
             console.log('✅ Área eliminada:', areaId);
         } catch (error) {
             console.error('❌ Error eliminando área:', error);
@@ -188,9 +280,6 @@ export class AreaRepository {
 
     /**
      * Agrega una subárea a un área
-     * @param {string} areaId - ID del área
-     * @param {Object} subareaData - Datos de la subárea
-     * @returns {Promise<string>} - ID de la subárea creada
      */
     async addSubarea(areaId, subareaData) {
         try {
@@ -215,6 +304,7 @@ export class AreaRepository {
             };
 
             await this.updateArea(areaId, { subareas });
+            this.clearCache();
             console.log('✅ Subárea agregada:', subareaId);
             return subareaId;
         } catch (error) {
@@ -225,10 +315,6 @@ export class AreaRepository {
 
     /**
      * Agrega un módulo a una subárea
-     * @param {string} areaId - ID del área
-     * @param {string} subareaId - ID de la subárea
-     * @param {Object} moduloData - Datos del módulo
-     * @returns {Promise<void>}
      */
     async addModuloToSubarea(areaId, subareaId, moduloData) {
         try {
@@ -247,12 +333,10 @@ export class AreaRepository {
                 throw new Error('Subárea no encontrada');
             }
 
-            // Inicializar modulos si no existe
             if (!subareas[subareaId].modulos) {
                 subareas[subareaId].modulos = {};
             }
 
-            // Agregar el módulo
             const moduloNombre = moduloData.nombreModulo;
             subareas[subareaId].modulos[moduloNombre] = {
                 ...moduloData,
@@ -261,6 +345,7 @@ export class AreaRepository {
             };
 
             await this.updateArea(areaId, { subareas });
+            this.clearCache();
             console.log('✅ Módulo agregado:', moduloNombre);
         } catch (error) {
             console.error('❌ Error agregando módulo:', error);
@@ -270,12 +355,10 @@ export class AreaRepository {
 
     /**
      * Verifica si existe un área con el mismo nombre
-     * @param {string} nombreArea - Nombre del área
-     * @param {string} excludeId - ID a excluir (para edición)
-     * @returns {Promise<boolean>}
      */
     async existsAreaNombre(nombreArea, excludeId = null) {
         try {
+            // 🔥 Usar índice: nombreArea
             const q = query(
                 this._getCollection(),
                 where('nombreArea', '==', nombreArea)
@@ -302,8 +385,18 @@ export class AreaRepository {
     }
 
     /**
+     * Limpia la caché (sobreescribe el método base)
+     */
+    clearCache(type = null) {
+        super.clearCache(type);
+        if (!type || type === 'list') {
+            this.cache.list.delete(this._getCacheKey('select', { onlyActive: true }));
+            this.cache.list.delete(this._getCacheKey('select', { onlyActive: false }));
+        }
+    }
+
+    /**
      * Genera un ID único
-     * @returns {string} - ID generado
      */
     _generateId() {
         const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';

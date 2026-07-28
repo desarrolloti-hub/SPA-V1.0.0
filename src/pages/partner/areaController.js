@@ -14,6 +14,8 @@ let currentUserUid = '';
 let editingSubareaIndex = null;
 let currentModulos = [];
 let isNavigating = false;
+let editingAreaId = null;
+let isEditMode = false;
 
 /**
  * Inicializa el controlador de áreas
@@ -33,6 +35,18 @@ export async function areaController() {
     currentModulos = [];
     editingSubareaIndex = null;
     isNavigating = false;
+    editingAreaId = null;
+    isEditMode = false;
+    
+    // Verificar si hay ID en la URL (modo edición)
+    const urlParams = new URLSearchParams(window.location.search);
+    const areaId = urlParams.get('id');
+    
+    if (areaId) {
+        editingAreaId = areaId;
+        isEditMode = true;
+        console.log('✏️ Modo edición - Área ID:', editingAreaId);
+    }
     
     loadUserData();
     initStepNavigation();
@@ -42,11 +56,122 @@ export async function areaController() {
     initFormToggle();
     initSubmitHandler();
     
+    // Si es modo edición, cargar los datos
+    if (isEditMode && editingAreaId) {
+        await loadAreaData(editingAreaId);
+    }
+    
     goToStep(1);
     updateSubareasSummary();
     updateModulosList();
+    updateTitle();
     
-    console.log('✅ Area Controller listo');
+    console.log(`✅ Area Controller listo (${isEditMode ? 'Edición' : 'Creación'})`);
+}
+
+/**
+ * Actualiza el título según el modo
+ */
+function updateTitle() {
+    const titleEl = document.querySelector('.rsi-step-header h3');
+    const subtitleEl = document.querySelector('.rsi-step-header p');
+    const pageTitle = document.querySelector('.rsi-page-title');
+    const pageSubtitle = document.querySelector('.rsi-page-subtitle');
+    const submitBtn = document.getElementById('submitArea');
+    
+    if (isEditMode) {
+        if (pageTitle) {
+            pageTitle.innerHTML = `<span class="rsi-text-gold">Editar</span> Área`;
+        }
+        if (pageSubtitle) {
+            pageSubtitle.textContent = 'Modifica el área, sus subáreas y módulos.';
+        }
+        if (titleEl) {
+            titleEl.textContent = 'Editar Área';
+        }
+        if (subtitleEl) {
+            subtitleEl.textContent = 'Modifica los datos del área';
+        }
+        if (submitBtn) {
+            submitBtn.innerHTML = '<i class="fas fa-save"></i> Actualizar Área';
+        }
+    } else {
+        if (pageTitle) {
+            pageTitle.innerHTML = `<span class="rsi-text-gold">Gestión</span> de Áreas`;
+        }
+        if (pageSubtitle) {
+            pageSubtitle.textContent = 'Crea un área con múltiples subáreas y módulos con permisos.';
+        }
+        if (titleEl) {
+            titleEl.textContent = 'Información del Área';
+        }
+        if (subtitleEl) {
+            subtitleEl.textContent = 'Datos principales del área';
+        }
+        if (submitBtn) {
+            submitBtn.innerHTML = '<i class="fas fa-save"></i> Guardar Área';
+        }
+    }
+}
+
+/**
+ * Carga los datos del área para edición
+ */
+async function loadAreaData(areaId) {
+    try {
+        const area = await service.getAreaById(areaId);
+        if (!area) {
+            throw new Error('Área no encontrada');
+        }
+
+        // Cargar nombre del área
+        document.getElementById('nombreArea').value = area.nombreArea || '';
+
+        // Cargar subáreas
+        const subareas = area.subareas || {};
+        const subareaKeys = Object.keys(subareas);
+        
+        for (const key of subareaKeys) {
+            const subarea = subareas[key];
+            const modulos = subarea.modulos || {};
+            const modulosKeys = Object.keys(modulos);
+            
+            // Convertir módulos a array para el frontend
+            const modulosArray = modulosKeys.map(mk => ({
+                nombreModulo: mk,
+                permisos: modulos[mk].permisos?.permiso || []
+            }));
+            
+            subareasCollection.push({
+                idsubarea: subarea.idsubarea || key,
+                nombreSubarea: subarea.nombreSubarea,
+                modulos: modulosArray,
+                modificadoPor: subarea.modificadoPor,
+                fechaModificacion: subarea.fechaModificacion
+            });
+        }
+
+        updateSubareasSummary();
+        updateConfirmacion();
+        console.log('✅ Datos del área cargados:', area.nombreArea);
+
+    } catch (error) {
+        console.error('❌ Error cargando área:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo cargar el área para edición: ' + error.message,
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#d33'
+        }).then(() => {
+            // Redirigir al CRUD si falla
+            if (typeof window.navigateTo === 'function') {
+                window.navigateTo('/partner/crudAreas');
+            } else {
+                window.location.href = '/partner/crudAreas';
+            }
+        });
+    }
 }
 
 /**
@@ -92,10 +217,7 @@ function showForm() {
     const nombreSubarea = document.getElementById('nombreSubarea');
     
     if (formContainer) {
-        // Mostrar el formulario
         formContainer.style.display = 'block';
-        
-        // Esperar a que el DOM se actualice y luego hacer scroll al campo
         setTimeout(() => {
             if (nombreSubarea) {
                 nombreSubarea.focus();
@@ -209,12 +331,10 @@ async function validateCurrentStepAsync(nextStep) {
     const currentPanel = document.querySelector(`.rsi-step-panel[data-step="${currentStep}"]`);
     if (!currentPanel) return true;
 
-    // SOLO validar campos visibles (no ocultos)
     const inputs = currentPanel.querySelectorAll('[required]');
     let isValid = true;
 
     inputs.forEach(input => {
-        // Verificar si el input está visible (no oculto por display:none)
         const isVisible = input.closest('.rsi-subarea-form-container') 
             ? input.closest('.rsi-subarea-form-container').style.display !== 'none'
             : true;
@@ -226,9 +346,7 @@ async function validateCurrentStepAsync(nextStep) {
 
     if (!isValid) return false;
 
-    // Validación específica para el paso 2
     if (currentStep === 2) {
-        // Si NO hay subáreas, preguntar si quiere agregar una
         if (subareasCollection.length === 0) {
             isNavigating = true;
             const result = await Swal.fire({
@@ -250,8 +368,6 @@ async function validateCurrentStepAsync(nextStep) {
                 return true;
             }
         }
-        
-        // Si HAY subáreas, permitir continuar SIN preguntar
         return true;
     }
 
@@ -265,7 +381,6 @@ function validateCurrentStep() {
     const currentPanel = document.querySelector(`.rsi-step-panel[data-step="${currentStep}"]`);
     if (!currentPanel) return true;
 
-    // SOLO validar campos visibles (no ocultos)
     const inputs = currentPanel.querySelectorAll('[required]');
     let isValid = true;
 
@@ -797,6 +912,7 @@ async function handleSubmit() {
 
         const nombreArea = document.getElementById('nombreArea').value.trim();
 
+        // Preparar datos completos
         const fullData = {
             nombreArea: nombreArea,
             subareas: subareasCollection.map(subarea => ({
@@ -808,13 +924,57 @@ async function handleSubmit() {
             }))
         };
 
-        const result = await service.createFullArea(fullData);
+        let result;
+
+        if (isEditMode && editingAreaId) {
+            // 🔥 MODO EDICIÓN: Actualizar área existente
+            // Primero actualizar el nombre del área
+            await service.updateArea(editingAreaId, { nombreArea });
+            
+            // Luego actualizar subáreas y módulos
+            // Para simplificar, eliminamos las subáreas existentes y las reemplazamos
+            const area = await service.getAreaById(editingAreaId);
+            const existingSubareas = area.subareas || {};
+            const existingKeys = Object.keys(existingSubareas);
+            
+            // Eliminar subáreas existentes (una por una)
+            for (const key of existingKeys) {
+                await service.deleteSubarea(editingAreaId, key);
+            }
+            
+            // Agregar nuevas subáreas
+            for (const subarea of subareasCollection) {
+                const subareaResult = await service.addSubarea(editingAreaId, { 
+                    nombreSubarea: subarea.nombreSubarea 
+                });
+                
+                if (subareaResult.success) {
+                    const subareaId = subareaResult.id;
+                    for (const modulo of subarea.modulos) {
+                        await service.addModuloToSubarea(editingAreaId, subareaId, {
+                            nombreModulo: modulo.nombreModulo,
+                            permisos: modulo.permisos
+                        });
+                    }
+                }
+            }
+            
+            result = {
+                success: true,
+                message: `Área "${nombreArea}" actualizada exitosamente`,
+                data: { subareas: {} }
+            };
+        } else {
+            // 🔥 MODO CREACIÓN: Crear área nueva
+            result = await service.createFullArea(fullData);
+        }
 
         if (!result.success) {
             throw new Error(result.message);
         }
 
-        const subareasData = result.data.subareas || {};
+        // Generar texto para mostrar
+        const subareasData = result.data?.subareas || {};
         const subareaKeys = Object.keys(subareasData);
         
         let subareasText = '';
@@ -830,16 +990,20 @@ async function handleSubmit() {
                 return `<strong>${s.nombreSubarea}</strong><br>${modulosText}`;
             }).join('<br><br>');
         } else {
-            subareasText = '<em style="color: var(--rsi-gray-500);">Sin subáreas</em>';
+            subareasText = subareasCollection.map(s => 
+                `<strong>${s.nombreSubarea}</strong><br>${s.modulos.map(m => 
+                    `&nbsp;&nbsp;• <strong>${m.nombreModulo}</strong> (${m.permisos.join(', ')})`
+                ).join('<br>')}`
+            ).join('<br><br>');
         }
 
         Swal.fire({
             icon: 'success',
-            title: '¡Registro exitoso!',
+            title: isEditMode ? '¡Área actualizada!' : '¡Registro exitoso!',
             html: `
                 <div style="text-align: left;">
                     <p><strong>Área:</strong> ${nombreArea}</p>
-                    <p><strong>Subáreas creadas:</strong> ${subareaKeys.length}</p>
+                    <p><strong>Subáreas:</strong> ${subareasCollection.length}</p>
                     <div style="margin-top: var(--rsi-spacing-sm); padding-left: var(--rsi-spacing-md);">
                         ${subareasText}
                     </div>
@@ -848,28 +1012,23 @@ async function handleSubmit() {
             confirmButtonText: 'Aceptar',
             confirmButtonColor: '#1c1948'
         }).then(() => {
-            // 🔥 REDIRECCIÓN CORRECTA USANDO EL ROUTER
-            // Limpiar el estado antes de redirigir
+            // Redirigir al CRUD
             document.getElementById('areaForm').reset();
             subareasCollection = [];
             currentModulos = [];
             editingSubareaIndex = null;
             
-            // ✅ Usar navigateTo del router (ya está expuesto globalmente)
             if (typeof window.navigateTo === 'function') {
                 window.navigateTo('/partner/crudAreas');
             } else {
-                // Fallback: usar history pushState directamente
-                window.history.pushState({}, '', '/partner/crudAreas');
-                // Disparar evento popstate para que el router maneje la navegación
-                window.dispatchEvent(new PopStateEvent('popstate'));
+                window.location.href = '/partner/crudAreas';
             }
         });
 
     } catch (error) {
         console.error('❌ Error en submit:', error);
         
-        let errorMessage = error.message || 'Ocurrió un error al registrar el área';
+        let errorMessage = error.message || 'Ocurrió un error al guardar el área';
         
         if (errorMessage.includes('{"')) {
             try {
@@ -890,7 +1049,9 @@ async function handleSubmit() {
 
     } finally {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fas fa-save"></i> Guardar Área';
+        submitBtn.innerHTML = isEditMode ? 
+            '<i class="fas fa-save"></i> Actualizar Área' : 
+            '<i class="fas fa-save"></i> Guardar Área';
     }
 }
 
@@ -909,6 +1070,8 @@ export function destroyAreaController() {
     subareasCollection = [];
     currentModulos = [];
     isNavigating = false;
+    editingAreaId = null;
+    isEditMode = false;
 }
 
 export default areaController;

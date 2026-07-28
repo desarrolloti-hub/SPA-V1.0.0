@@ -208,7 +208,7 @@ function updateUserProfile(user) {
     if (!user) return;
     
     const displayName = user.displayName || user.nombreCompleto || user.email || 'Usuario';
-    const area = user.area || user.subarea || 'Sin área';
+    const area = user.areaNombre || user.subarea || 'Sin área';
     const fotoPerfil = user.fotoPerfil || null;
     const areaFormatted = area.charAt(0).toUpperCase() + area.slice(1);
     

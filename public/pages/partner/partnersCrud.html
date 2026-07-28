@@ -1,16 +1,16 @@
 <!-- ========================================
-   PANEL CRUD - Gestión de Áreas
+   PANEL CRUD - Gestión de Colaboradores
    ======================================== -->
 
-<section class="rsi-areas-section">
+<section class="rsi-partners-section">
     <div class="rsi-container">
         
         <!-- Título -->
         <h1 class="rsi-page-title">
-            <span class="rsi-text-gold">Gestión</span> de Áreas
+            <span class="rsi-text-gold">Gestión</span> de Colaboradores
         </h1>
         <p class="rsi-page-subtitle">
-            Administra todas las áreas del sistema.
+            Administra todos los colaboradores del sistema.
         </p>
 
         <!-- ===== PANEL CRUD ===== -->
@@ -19,16 +19,16 @@
             <!-- Header -->
             <div class="rsi-panel-header">
                 <h2>
-                    <i class="fas fa-building"></i>
-                    Áreas Registradas
-                    <span id="areaCount" class="rsi-badge rsi-badge-primary" style="font-size: 0.8rem;">0</span>
+                    <i class="fas fa-users"></i>
+                    Colaboradores Registrados
+                    <span id="partnerCount" class="rsi-badge rsi-badge-primary" style="font-size: 0.8rem;">0</span>
                 </h2>
                 <div class="rsi-panel-actions">
-                    <button id="refreshAreas" class="rsi-btn-crud rsi-btn-crud-outline">
+                    <button id="refreshPartners" class="rsi-btn-crud rsi-btn-crud-outline" title="Actualizar lista">
                         <i class="fas fa-sync"></i> Actualizar
                     </button>
-                    <a href="/partner/area" class="rsi-btn-crud rsi-btn-crud-primary">
-                        <i class="fas fa-plus"></i> Nueva Área
+                    <a href="/partner/partner" class="rsi-btn-crud rsi-btn-crud-primary">
+                        <i class="fas fa-user-plus"></i> Nuevo Colaborador
                     </a>
                 </div>
             </div>
@@ -39,8 +39,8 @@
                     <div class="rsi-search-input-wrapper">
                         <input 
                             type="text" 
-                            id="searchArea" 
-                            placeholder="Buscar área por nombre..." 
+                            id="searchPartner" 
+                            placeholder="Buscar por nombre o correo..." 
                             class="rsi-search-input"
                             autocomplete="off"
                         >
@@ -48,8 +48,8 @@
                             <i class="fas fa-times-circle"></i>
                         </button>
                     </div>
-                    <button id="searchAreaBtn" class="rsi-btn-search">
-                        Buscar
+                    <button id="searchPartnerBtn" class="rsi-btn-search">
+                         Buscar
                     </button>
                 </div>
                 
@@ -61,20 +61,19 @@
                     </button>
                 </div>
             </div>
-
             <!-- Loading State -->
             <div id="loadingState" class="rsi-loading-state">
                 <i class="fas fa-spinner fa-spin"></i>
-                <p>Cargando áreas...</p>
+                <p>Cargando colaboradores...</p>
             </div>
 
             <!-- Empty State -->
             <div id="emptyState" class="rsi-empty-state" style="display: none;">
-                <i class="fas fa-building"></i>
-                <h3 id="emptyStateTitle">No hay áreas registradas</h3>
-                <p id="emptyStateText">Comienza creando tu primera área para organizar las subáreas y permisos del sistema.</p>
-                <a href="/partner/area" class="rsi-btn-crud rsi-btn-crud-primary">
-                    <i class="fas fa-plus"></i> Crear primera área
+                <i class="fas fa-users"></i>
+                <h3 id="emptyStateTitle">No hay colaboradores registrados</h3>
+                <p id="emptyStateText">Comienza registrando tu primer colaborador en el sistema.</p>
+                <a href="/partner" class="rsi-btn-crud rsi-btn-crud-primary">
+                    <i class="fas fa-user-plus"></i> Registrar primer colaborador
                 </a>
             </div>
 
@@ -84,14 +83,15 @@
                     <thead>
                         <tr>
                             <th>Nombre</th>
-                            <th>Subáreas</th>
-                            <th>Creado por</th>
-                            <th>Fecha</th>
+                            <th>Correo</th>
+                            <th>Área</th>
+                            <th>Subárea</th>
+                            <th>Verificado</th>
                             <th>Estado</th>
                             <th style="text-align: center;">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="areasTableBody">
+                    <tbody id="partnersTableBody">
                         <!-- Se llena dinámicamente -->
                     </tbody>
                 </table>

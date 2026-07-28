@@ -18,9 +18,12 @@ import {
     where, 
     orderBy, 
     limit,
+    startAfter,        // ✅ AGREGAR startAfter
+    startAt,           // ✅ AGREGAR startAt
+    endAt,             // ✅ AGREGAR endAt
     setDoc,
-    Timestamp,        // ✅ AGREGAR Timestamp
-    writeBatch        // ✅ AGREGAR writeBatch
+    Timestamp,
+    writeBatch
 } from 'firebase/firestore';
 
 import { 
@@ -78,7 +81,7 @@ console.log('✅ Firebase inicializado correctamente');
 // Exportar servicios principales
 export { db, auth, storage, app };
 
-// Exportar funciones de Firestore
+// ✅ Exportar TODAS las funciones de Firestore
 export {
     collection,
     doc,
@@ -92,8 +95,11 @@ export {
     where,
     orderBy,
     limit,
-    Timestamp,      // ✅ Exportar Timestamp
-    writeBatch      // ✅ Exportar writeBatch
+    startAfter,      // ✅ Exportar startAfter
+    startAt,         // ✅ Exportar startAt
+    endAt,           // ✅ Exportar endAt
+    Timestamp,
+    writeBatch
 };
 
 // ✅ Exportar funciones de Auth
@@ -137,8 +143,11 @@ export default {
     where,
     orderBy,
     limit,
-    Timestamp,      // ✅ Exportar Timestamp
-    writeBatch,     // ✅ Exportar writeBatch
+    startAfter,      // ✅ Exportar startAfter
+    startAt,         // ✅ Exportar startAt
+    endAt,           // ✅ Exportar endAt
+    Timestamp,
+    writeBatch,
     // Auth
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,

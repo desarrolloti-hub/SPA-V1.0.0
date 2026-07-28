@@ -1,153 +1,97 @@
 /* ========================================
    NEW COLLABORATOR SERVICE
-   Lógica de negocio
+   Lógica de negocio con caché y paginación
    ======================================== */
 
 import NewCollaboratorRepository from '../repositories/partnerRepository.js';
+import AreaRepository from '../repositories/areaRepository.js';
+import PartnerModel from '../models/partnerModel.js';
 
 export class NewCollaboratorService {
     
     constructor() {
         this.repository = new NewCollaboratorRepository();
+        this.areaRepository = new AreaRepository();
     }
 
     /**
-     * Valida todos los campos del formulario
-     * @param {Object} data - Datos del formulario
-     * @returns {Object} - { valid: boolean, errors: Object }
+     * Obtiene el UID del usuario actual desde localStorage
+     */
+    _getCurrentUserUid() {
+        try {
+            const session = localStorage.getItem('rsi_session');
+            if (!session) return null;
+            const sessionData = JSON.parse(session);
+            return sessionData.uid || null;
+        } catch (error) {
+            console.error('❌ Error obteniendo sesión:', error);
+            return null;
+        }
+    }
+
+    /**
+     * Obtiene todas las áreas con sus subáreas para selects (con caché)
+     */
+    async getAreasForSelect() {
+        try {
+            return await this.areaRepository.getAreasForSelect(true);
+        } catch (error) {
+            console.error('❌ Error obteniendo áreas:', error);
+            return [];
+        }
+    }
+
+    /**
+     * Obtiene el nombre de un usuario por su UID (con caché)
+     */
+    async getUserName(uid) {
+        if (!uid) return 'Sistema';
+        return await this.areaRepository.getUserName(uid);
+    }
+
+    /**
+     * Valida los datos del formulario
      */
     validateForm(data) {
-        const errors = {};
-
-        // Paso 1: Información personal
-        if (!data.nombreCompleto || data.nombreCompleto.trim().length < 3) {
-            errors.nombreCompleto = 'El nombre completo es requerido (mínimo 3 caracteres)';
-        }
-
-        if (!data.fechaNacimiento) {
-            errors.fechaNacimiento = 'La fecha de nacimiento es requerida';
-        }
-
-        if (!data.curp || data.curp.length !== 18) {
-            errors.curp = 'CURP inválido (18 caracteres)';
-        }
-
-        if (!data.rfc || data.rfc.length < 12) {
-            errors.rfc = 'RFC inválido (mínimo 12 caracteres)';
-        }
-
-        if (!data.estadoCivil) {
-            errors.estadoCivil = 'El estado civil es requerido';
-        }
-
-        if (!data.telefonoMovil || data.telefonoMovil.length < 10) {
-            errors.telefonoMovil = 'Teléfono móvil inválido (mínimo 10 dígitos)';
-        }
-
-        // Paso 2: Información laboral
-        if (!data.area) {
-            errors.area = 'El área es requerida';
-        }
-
-        if (!data.subarea) {
-            errors.subarea = 'La subárea es requerida';
-        }
-
-        if (!data.tipoColaborador) {
-            errors.tipoColaborador = 'El tipo de colaborador es requerido';
-        }
-
-        // Paso 3: Información de contacto
-        if (!data.emailEmpresarial || !this._isValidEmail(data.emailEmpresarial)) {
-            errors.emailEmpresarial = 'Correo empresarial inválido';
-        }
-
-        if (!data.emailPersonal || !this._isValidEmail(data.emailPersonal)) {
-            errors.emailPersonal = 'Correo personal inválido';
-        }
-
-        if (!data.password || data.password.length < 6) {
-            errors.password = 'La contraseña debe tener al menos 6 caracteres';
-        }
-
-        if (data.password !== data.confirmPassword) {
-            errors.confirmPassword = 'Las contraseñas no coinciden';
-        }
-
-        return {
-            valid: Object.keys(errors).length === 0,
-            errors
-        };
-    }
-
-    /**
-     * Valida un email
-     * @param {string} email
-     * @returns {boolean}
-     */
-    _isValidEmail(email) {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(email);
+        return PartnerModel.validate(data);
     }
 
     /**
      * Registra un nuevo colaborador
-     * @param {Object} data - Datos del formulario
-     * @returns {Promise<Object>} - Resultado del registro
      */
-    async registerCollaborator(data) {
+    async registerCollaborator(data, areaData, subareaData) {
         try {
-            // 1. Validar datos
             const validation = this.validateForm(data);
             if (!validation.valid) {
                 throw new Error(JSON.stringify(validation.errors));
             }
 
-            // 2. Verificar si el email ya existe
             const emailExists = await this.repository.checkEmailExists(data.emailEmpresarial);
             if (emailExists) {
                 throw new Error('El correo empresarial ya está registrado');
             }
 
-            // 3. Crear usuario en Auth
+            const creadoPor = this._getCurrentUserUid();
+            if (!creadoPor) {
+                throw new Error('No se pudo identificar al usuario que realiza el registro');
+            }
+
             const userCredential = await this.repository.createAuthUser(
                 data.emailEmpresarial,
-                data.password
+                data.password,
+                data.nombreCompleto
             );
 
             const uid = userCredential.user.uid;
-
-            // 4. Preparar datos para Firestore
-            const collaboratorData = {
-                nombreCompleto: data.nombreCompleto.trim(),
-                fechaNacimiento: data.fechaNacimiento,
-                curp: data.curp.toUpperCase(),
-                rfc: data.rfc.toUpperCase(),
-                estadoCivil: data.estadoCivil,
-                nss: data.nss || '',
-                telefonoFijo: data.telefonoFijo || '',
-                telefonoMovil: data.telefonoMovil,
-                area: data.area,
-                subarea: data.subarea,
-                tipoColaborador: data.tipoColaborador,
-                rol: 'partner', // Siempre partner
-                nit: data.nit || '',
-                emailEmpresarial: data.emailEmpresarial,
-                emailPersonal: data.emailPersonal,
-                fotoPerfil: data.fotoPerfil || '',
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-                status: 'active'
-            };
-
-            // 5. Guardar en Firestore
+            const collaboratorData = PartnerModel.create(data, uid, creadoPor, areaData, subareaData);
             const docId = await this.repository.saveCollaboratorData(uid, collaboratorData);
 
             return {
                 success: true,
                 uid: uid,
                 docId: docId,
-                message: 'Colaborador registrado exitosamente'
+                message: 'Colaborador registrado exitosamente. Se ha enviado un correo de verificación.',
+                emailSent: true
             };
 
         } catch (error) {
@@ -157,9 +101,111 @@ export class NewCollaboratorService {
     }
 
     /**
+     * Obtiene todos los colaboradores (con caché)
+     */
+    async getAllCollaborators(forceRefresh = false) {
+        try {
+            return await this.repository.getAllCollaborators(forceRefresh);
+        } catch (error) {
+            console.error('❌ Error en getAllCollaborators:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * 🔥 Obtiene colaboradores con paginación
+     */
+    async getCollaboratorsPaginated(pageSize = 20, page = 1, searchTerm = '') {
+        try {
+            return await this.repository.getCollaboratorsPaginated(pageSize, page, searchTerm);
+        } catch (error) {
+            console.error('❌ Error en getCollaboratorsPaginated:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Obtiene un colaborador por ID (con caché)
+     */
+    async getCollaboratorById(docId, forceRefresh = false) {
+        try {
+            return await this.repository.getCollaboratorById(docId, forceRefresh);
+        } catch (error) {
+            console.error('❌ Error en getCollaboratorById:', error);
+            return null;
+        }
+    }
+
+    /**
+     * Actualiza un colaborador
+     */
+    async updateCollaborator(docId, data) {
+        try {
+            await this.repository.updateCollaborator(docId, data);
+            return {
+                success: true,
+                message: 'Colaborador actualizado exitosamente'
+            };
+        } catch (error) {
+            console.error('❌ Error en updateCollaborator:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Elimina un colaborador (soft delete)
+     */
+    async deleteCollaborator(docId) {
+        try {
+            await this.repository.deleteCollaborator(docId);
+            return {
+                success: true,
+                message: 'Colaborador deshabilitado exitosamente'
+            };
+        } catch (error) {
+            console.error('❌ Error en deleteCollaborator:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Elimina permanentemente un colaborador
+     */
+    async deleteCollaboratorPermanently(docId) {
+        try {
+            await this.repository.deleteCollaboratorPermanently(docId);
+            return {
+                success: true,
+                message: 'Colaborador eliminado permanentemente'
+            };
+        } catch (error) {
+            console.error('❌ Error en deleteCollaboratorPermanently:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * 🔥 Obtiene estadísticas de colaboradores
+     */
+    async getCollaboratorStats() {
+        try {
+            return await this.repository.getCollaboratorStats();
+        } catch (error) {
+            console.error('❌ Error en getCollaboratorStats:', error);
+            return { total: 0, active: 0, inactive: 0, verified: 0, unverified: 0 };
+        }
+    }
+
+    /**
+     * Limpia la caché del repositorio
+     */
+    clearCache() {
+        this.repository.clearCache();
+        this.areaRepository.clearCache();
+    }
+
+    /**
      * Prepara los datos del formulario para enviar
-     * @param {FormData} formData
-     * @returns {Object}
      */
     prepareData(formData) {
         return {
@@ -171,8 +217,8 @@ export class NewCollaboratorService {
             nss: formData.get('nss') || '',
             telefonoFijo: formData.get('telefonoFijo') || '',
             telefonoMovil: formData.get('telefonoMovil') || '',
-            area: formData.get('area') || '',
-            subarea: formData.get('subarea') || '',
+            areaNombre: formData.get('area') || '',
+            subareaNombre: formData.get('subarea') || '',
             tipoColaborador: formData.get('tipoColaborador') || '',
             nit: formData.get('nit') || '',
             emailEmpresarial: formData.get('emailEmpresarial') || '',
