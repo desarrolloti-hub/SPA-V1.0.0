@@ -1,0 +1,486 @@
+<!-- ========================================
+   CREAR/EDITAR COTIZACIÓN
+   ======================================== -->
+
+<section class="rsi-cotizacion-form-section">
+    <div class="rsi-container">
+        
+        <!-- Título dinámico -->
+        <h1 class="rsi-page-title" id="formPageTitle">
+            <span class="rsi-text-gold">Nueva</span> Cotización
+        </h1>
+        <p class="rsi-page-subtitle" id="formPageSubtitle">
+            Crea una nueva cotización para un cliente.
+        </p>
+
+        <!-- ===== FORMULARIO ===== -->
+        <form id="cotizacionForm" class="rsi-form-steps" autocomplete="off">
+
+            <!-- Indicador de pasos -->
+            <div class="rsi-steps-indicator">
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number active" data-step="1">1</span>
+                    <span class="rsi-step-label active" data-step="1">Cliente</span>
+                </div>
+                <div class="rsi-step-line" data-step="1"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number" data-step="2">2</span>
+                    <span class="rsi-step-label" data-step="2">Productos</span>
+                </div>
+                <div class="rsi-step-line" data-step="2"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number" data-step="3">3</span>
+                    <span class="rsi-step-label" data-step="3">Confirmar</span>
+                </div>
+            </div>
+
+            <!-- Contenedor de pasos -->
+            <div class="rsi-steps-container">
+
+                <!-- ===== PASO 1: CLIENTE Y DATOS GENERALES ===== -->
+                <div class="rsi-step-panel active" data-step="1">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3 id="step1Title">Datos del Cliente</h3>
+                        <p id="step1Subtitle">Selecciona o ingresa los datos del cliente</p>
+                    </div>
+
+                    <div class="rsi-step-body">
+                        <!-- Buscador de clientes -->
+                        <div class="rsi-form-group">
+                            <label for="clienteSearch">Buscar cliente</label>
+                            <div class="rsi-cliente-search-container">
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-search rsi-input-icon"></i>
+                                    <input type="text" id="clienteSearch" 
+                                           placeholder="Buscar por nombre o RFC..." 
+                                           autocomplete="off">
+                                </div>
+                                <div id="clienteDropdown" class="rsi-cliente-dropdown" style="display: none;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Datos del cliente -->
+                        <div class="rsi-form-row">
+                            <div class="rsi-form-group">
+                                <label for="clienteNombre">Nombre del Cliente <span class="rsi-required">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-user rsi-input-icon"></i>
+                                    <input type="text" id="clienteNombre" name="clienteNombre" required>
+                                </div>
+                                <div class="rsi-form-error-message" id="errorClienteNombre"></div>
+                            </div>
+                            <div class="rsi-form-group">
+                                <label for="clienteRFC">RFC</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-id-card rsi-input-icon"></i>
+                                    <input type="text" id="clienteRFC" name="clienteRFC">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rsi-form-group">
+                            <label for="clienteDireccion">Dirección <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-map-marker-alt rsi-input-icon"></i>
+                                <input type="text" id="clienteDireccion" name="clienteDireccion" required>
+                            </div>
+                            <div class="rsi-form-error-message" id="errorClienteDireccion"></div>
+                        </div>
+
+                        <div class="rsi-form-row">
+                            <div class="rsi-form-group">
+                                <label for="clienteTelefono">Teléfono <span class="rsi-required">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-phone rsi-input-icon"></i>
+                                    <input type="tel" id="clienteTelefono" name="clienteTelefono" required>
+                                </div>
+                                <div class="rsi-form-error-message" id="errorClienteTelefono"></div>
+                            </div>
+                            <div class="rsi-form-group">
+                                <label for="clienteEmail">Email</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-envelope rsi-input-icon"></i>
+                                    <input type="email" id="clienteEmail" name="clienteEmail">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ===== SECCIÓN OCULTA PARA DATOS COMPLETOS DEL CLIENTE ===== -->
+                        <div style="display: none;">
+                            <!-- Campos adicionales del cliente para facturación -->
+                            <input type="hidden" id="clienteRazonSocial">
+                            <input type="hidden" id="clienteNombreComercial">
+                            <input type="hidden" id="clienteRegimen">
+                            <input type="hidden" id="clienteRegimenCodigo">
+                            <input type="hidden" id="clienteCodigoPostal">
+                            <input type="hidden" id="clienteTipoVialidad">
+                            <input type="hidden" id="clienteNombreVialidad">
+                            <input type="hidden" id="clienteNumeroExterior">
+                            <input type="hidden" id="clienteNumeroInterior">
+                            <input type="hidden" id="clienteColonia">
+                            <input type="hidden" id="clienteLocalidad">
+                            <input type="hidden" id="clienteMunicipio">
+                            <input type="hidden" id="clienteEstado">
+                            <input type="hidden" id="clienteTelefonoFijo">
+                        </div>
+
+                        <hr style="margin: var(--rsi-spacing-md) 0; border-color: var(--rsi-gray-200);">
+
+                        <!-- Datos de la cotización -->
+                        <div class="rsi-form-row">
+                            <div class="rsi-form-group">
+                                <label for="tipoCotizacion">Tipo de Cotización <span class="rsi-required">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-tag rsi-input-icon"></i>
+                                    <select id="tipoCotizacion" name="tipoCotizacion" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="implementacion">Implementación</option>
+                                        <option value="proyecto">Proyecto</option>
+                                        <option value="servicio">Servicio</option>
+                                        <option value="pruebaTI">Prueba TI</option>
+                                    </select>
+                                </div>
+                                <div class="rsi-form-error-message" id="errorTipoCotizacion"></div>
+                            </div>
+                            <div class="rsi-form-group">
+                                <label for="cotizacionNumero">Número de Cotización</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-hashtag rsi-input-icon"></i>
+                                    <input type="text" id="cotizacionNumero" name="cotizacionNumero" readonly>
+                                </div>
+                                <small class="rsi-form-help">Se genera al seleccionar el tipo</small>
+                            </div>
+                        </div>
+
+                        <div class="rsi-form-row">
+                            <div class="rsi-form-group">
+                                <label for="cotizacionFecha">Fecha <span class="rsi-required">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-calendar rsi-input-icon"></i>
+                                    <input type="date" id="cotizacionFecha" name="cotizacionFecha" required>
+                                </div>
+                            </div>
+                            <div class="rsi-form-group">
+                                <label for="cotizacionVigencia">Vigencia (días)</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-clock rsi-input-icon"></i>
+                                    <input type="number" id="cotizacionVigencia" name="cotizacionVigencia" value="30" min="1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rsi-form-row">
+                            <div class="rsi-form-group">
+                                <label for="cotizacionMoneda">Moneda</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-money-bill-wave rsi-input-icon"></i>
+                                    <select id="cotizacionMoneda" name="cotizacionMoneda">
+                                        <option value="MXN">Peso Mexicano (MXN)</option>
+                                        <option value="USD">Dólar Americano (USD)</option>
+                                        <option value="EUR">Euro (EUR)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="rsi-form-group">
+                                <label for="tipoCredito">Tipo de Pago</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-credit-card rsi-input-icon"></i>
+                                    <select id="tipoCredito" name="tipoCredito">
+                                        <option value="">Seleccionar...</option>
+                                        <option value="contado">Contado</option>
+                                        <option value="credito">Crédito</option>
+                                        <option value="debido">Debido</option>
+                                        <option value="transferencia">Transferencia</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Opciones de crédito -->
+                        <div id="creditOptions" style="display: none;">
+                            <div class="rsi-form-group">
+                                <label for="diasCredito">Días de Crédito</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-calendar-plus rsi-input-icon"></i>
+                                    <select id="diasCredito" name="diasCredito">
+                                        <option value="">Seleccionar...</option>
+                                        <option value="8">8 días</option>
+                                        <option value="15">15 días</option>
+                                        <option value="30">30 días</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rsi-form-group">
+                            <label for="cotizacionDescripcion">Descripción (para búsquedas)</label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-align-left rsi-input-icon" style="top: 12px;"></i>
+                                <textarea id="cotizacionDescripcion" name="cotizacionDescripcion" rows="3" 
+                                    maxlength="500" 
+                                    placeholder="Descripción breve de la cotización para búsquedas internas (máximo 500 caracteres)..."
+                                    style="padding-left: 2.5rem; resize: vertical;"></textarea>
+                            </div>
+                            <small id="contadorCaracteres" style="color: var(--rsi-gray-500); display: block; text-align: right;">0/500 caracteres</small>
+                        </div>
+
+                        <!-- Empresa -->
+                        <div class="rsi-form-group">
+                            <label for="empresaSelector">Sucursal</label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-building rsi-input-icon"></i>
+                                <select id="empresaSelector" name="empresaSelector">
+                                    <option value="RSI NEZA">RSI NEZA</option>
+                                    <option value="RSI IXT">RSI IXT</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button class="rsi-btn-prev" disabled>Anterior</button>
+                        <button class="rsi-btn-next" data-next="2">Siguiente <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>1</span> de 3</div>
+                </div>
+
+                <!-- ===== PASO 2: PRODUCTOS ===== -->
+                <div class="rsi-step-panel" data-step="2">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3>Productos y Servicios</h3>
+                        <p>Agrega los productos o servicios a cotizar</p>
+                    </div>
+
+                    <div class="rsi-step-body">
+                        <!-- Buscador de productos -->
+                        <div class="rsi-form-group">
+                            <label for="productoSearch">Buscar producto</label>
+                            <div class="rsi-producto-search-container">
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-search rsi-input-icon"></i>
+                                    <input type="text" id="productoSearch" 
+                                           placeholder="Buscar producto por nombre..." 
+                                           autocomplete="off">
+                                </div>
+                                <div id="productoDropdown" class="rsi-producto-dropdown" style="display: none;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Tabla de items -->
+                        <div class="rsi-table-container">
+                            <div class="rsi-table-header-actions">
+                                <h4><i class="fas fa-list"></i> Items</h4>
+                                <button type="button" id="agregarItemBtn" class="rsi-btn-add-item">
+                                    <i class="fas fa-plus"></i> Agregar Item
+                                </button>
+                            </div>
+                            <div class="rsi-table-wrapper">
+                                <table class="rsi-items-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 5%;">Mover</th>
+                                            <th style="width: 15%;">Categoría</th>
+                                            <th style="width: 10%;">Unidad</th>
+                                            <th style="width: 30%;">Descripción</th>
+                                            <th style="width: 10%;">Cantidad</th>
+                                            <th style="width: 15%;">Precio Unit.</th>
+                                            <th style="width: 10%;">Total</th>
+                                            <th style="width: 5%;">Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="itemsTableBody">
+                                        <!-- Se llena dinámicamente -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Totales -->
+                        <div class="rsi-totales-container">
+                            <div class="rsi-totales-row">
+                                <span class="rsi-totales-label">Subtotal:</span>
+                                <span id="subtotal" class="rsi-totales-value">$0.00</span>
+                            </div>
+                            <div class="rsi-totales-row">
+                                <label for="descuento">Descuento (%):</label>
+                                <input type="number" id="descuento" name="descuento" value="0" min="0" max="100" step="0.01">
+                            </div>
+                            <div class="rsi-totales-row">
+                                <label for="impuesto">IVA (%):</label>
+                                <input type="number" id="impuesto" name="impuesto" value="16" min="0" max="100" step="0.01">
+                            </div>
+                            <div class="rsi-totales-row rsi-totales-total">
+                                <span class="rsi-totales-label">Total:</span>
+                                <span id="total" class="rsi-totales-value">$0.00</span>
+                            </div>
+                            <!-- Detalle de operaciones -->
+                            <div id="detalleOperaciones" class="rsi-detalle-operaciones" style="display: none; margin-top: var(--rsi-spacing-sm); padding-top: var(--rsi-spacing-sm); border-top: 1px dashed var(--rsi-gray-300);">
+                                <small style="color: var(--rsi-gray-500); display: block; font-size: 0.85rem;"></small>
+                            </div>
+                        </div>
+
+                        <!-- Términos -->
+                        <div class="rsi-form-group">
+                            <label for="terminos">Términos y Condiciones</label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-file-alt rsi-input-icon" style="top: 12px;"></i>
+                                <textarea id="terminos" name="terminos" rows="4" 
+                                    style="padding-left: 2.5rem; resize: vertical;"
+                                    placeholder="Ingrese los términos y condiciones...">1. La presente cotización se realiza en base a los requerimientos necesarios para la solución tecnológica.
+2. Condiciones de pago, 70% de anticipo y 30% al término de la instalación y funcionamiento.
+3. En caso de cancelación tendrá una penalización del 20% en el total de la cotización.
+4. Trabajo adicional que no esté dentro de la cotización tendrá un costo extra.
+5. Los equipos tienen un año de garantía por defecto de fábrica.
+6. La instalación tendrá la garantía de 2 meses siempre y cuando no cuente con daños o manipulación.</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button class="rsi-btn-prev" data-prev="1"><i class="fas fa-arrow-left"></i> Anterior</button>
+                        <button class="rsi-btn-next" data-next="3">Siguiente <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>2</span> de 3</div>
+                </div>
+
+                <!-- ===== PASO 3: CONFIRMACIÓN ===== -->
+                <div class="rsi-step-panel" data-step="3">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Confirmar Cotización</h3>
+                        <p>Revisa todos los datos antes de guardar</p>
+                    </div>
+
+                    <div class="rsi-step-body">
+                        <div class="rsi-confirmacion-card">
+                            <h4><i class="fas fa-user" style="color: var(--rsi-primary);"></i> Cliente</h4>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Nombre:</span>
+                                <span id="confirmClienteNombre" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">RFC:</span>
+                                <span id="confirmClienteRFC" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Dirección:</span>
+                                <span id="confirmClienteDireccion" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Teléfono:</span>
+                                <span id="confirmClienteTelefono" class="rsi-confirmacion-value">-</span>
+                            </div>
+
+                            <hr style="margin: var(--rsi-spacing-md) 0; border-color: var(--rsi-gray-200);">
+
+                            <h4><i class="fas fa-file-invoice" style="color: var(--rsi-accent);"></i> Cotización</h4>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Número:</span>
+                                <span id="confirmNumero" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Tipo:</span>
+                                <span id="confirmTipo" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Fecha:</span>
+                                <span id="confirmFecha" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Vigencia:</span>
+                                <span id="confirmVigencia" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Moneda:</span>
+                                <span id="confirmMoneda" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Pago:</span>
+                                <span id="confirmPago" class="rsi-confirmacion-value">-</span>
+                            </div>
+
+                            <hr style="margin: var(--rsi-spacing-md) 0; border-color: var(--rsi-gray-200);">
+
+                            <h4><i class="fas fa-shopping-cart" style="color: var(--rsi-primary);"></i> Items</h4>
+                            <div id="confirmItemsList">
+                                <p style="color: var(--rsi-gray-500);">No hay items agregados</p>
+                            </div>
+
+                            <hr style="margin: var(--rsi-spacing-md) 0; border-color: var(--rsi-gray-200);">
+
+                            <h4><i class="fas fa-calculator" style="color: var(--rsi-accent);"></i> Totales</h4>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Subtotal:</span>
+                                <span id="confirmSubtotal" class="rsi-confirmacion-value">$0.00</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Descuento:</span>
+                                <span id="confirmDescuento" class="rsi-confirmacion-value">0%</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">IVA:</span>
+                                <span id="confirmImpuesto" class="rsi-confirmacion-value">16%</span>
+                            </div>
+                            <div class="rsi-confirmacion-item" style="font-weight: 700; font-size: 1.1rem;">
+                                <span class="rsi-confirmacion-label" style="color: var(--rsi-primary);">Total:</span>
+                                <span id="confirmTotal" class="rsi-confirmacion-value" style="color: var(--rsi-primary);">$0.00</span>
+                            </div>
+                            <!-- Detalle de operaciones en confirmación -->
+                            <div id="confirmDetalleOperaciones" style="margin-top: var(--rsi-spacing-sm); padding-top: var(--rsi-spacing-sm); border-top: 1px dashed var(--rsi-gray-300);">
+                                <small style="color: var(--rsi-gray-500); display: block; font-size: 0.8rem;"></small>
+                            </div>
+
+                            <!-- Auditoría (solo en modo edición) -->
+                            <div id="auditoriaConfirmacion" style="display: none; margin-top: var(--rsi-spacing-md);">
+                                <hr style="margin: var(--rsi-spacing-md) 0; border-color: var(--rsi-gray-200);">
+                                <h4><i class="fas fa-history" style="color: var(--rsi-gray-500);"></i> Auditoría</h4>
+                                <div class="rsi-confirmacion-item">
+                                    <span class="rsi-confirmacion-label">Creado por:</span>
+                                    <span id="confirmCreadoPor" class="rsi-confirmacion-value">-</span>
+                                </div>
+                                <div class="rsi-confirmacion-item">
+                                    <span class="rsi-confirmacion-label">Fecha creación:</span>
+                                    <span id="confirmFechaCreacion" class="rsi-confirmacion-value">-</span>
+                                </div>
+                                <div class="rsi-confirmacion-item">
+                                    <span class="rsi-confirmacion-label">Modificado por:</span>
+                                    <span id="confirmModificadoPor" class="rsi-confirmacion-value">-</span>
+                                </div>
+                                <div class="rsi-confirmacion-item">
+                                    <span class="rsi-confirmacion-label">Fecha modificación:</span>
+                                    <span id="confirmFechaModificacion" class="rsi-confirmacion-value">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button class="rsi-btn-prev" data-prev="2"><i class="fas fa-arrow-left"></i> Anterior</button>
+                        <button class="rsi-btn-submit-step" id="submitCotizacion">
+                            <i class="fas fa-save"></i> <span id="submitBtnText">Generar Cotización</span>
+                        </button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>3</span> de 3</div>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</section>
+
+<!-- ========================================
+   LOADING OVERLAY
+   ======================================== -->
+<div id="loadingSpinner" class="rsi-loading-overlay" style="display: none;">
+    <div class="rsi-spinner"></div>
+</div>

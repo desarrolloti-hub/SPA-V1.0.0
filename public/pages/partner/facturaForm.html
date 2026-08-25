@@ -1,0 +1,767 @@
+<!-- ========================================
+   CREAR/EDITAR FACTURA
+   ======================================== -->
+
+<section class="rsi-factura-form-section">
+    <div class="rsi-container">
+        
+        <!-- Título dinámico -->
+        <h1 class="rsi-page-title" id="formPageTitle">
+            <span class="rsi-text-gold">Nueva</span> Factura
+        </h1>
+        <p class="rsi-page-subtitle" id="formPageSubtitle">
+            Crea una nueva factura a partir de una cotización.
+        </p>
+
+        <!-- ===== FORMULARIO ===== -->
+        <form id="facturaForm" class="rsi-form-steps" autocomplete="off">
+
+            <!-- Indicador de pasos -->
+            <div class="rsi-steps-indicator">
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number active" data-step="1">1</span>
+                    <span class="rsi-step-label active" data-step="1">Datos CFDI</span>
+                </div>
+                <div class="rsi-step-line" data-step="1"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number" data-step="2">2</span>
+                    <span class="rsi-step-label" data-step="2">Items</span>
+                </div>
+                <div class="rsi-step-line" data-step="2"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number" data-step="3">3</span>
+                    <span class="rsi-step-label" data-step="3">Confirmar</span>
+                </div>
+            </div>
+
+            <!-- Contenedor de pasos -->
+            <div class="rsi-steps-container">
+
+                <!-- ===== PASO 1: DATOS CFDI ===== -->
+                <div class="rsi-step-panel active" data-step="1">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                        <h3 id="step1Title">Datos para CFDI</h3>
+                        <p id="step1Subtitle">Información del cliente y datos fiscales</p>
+                    </div>
+
+                    <div class="rsi-step-body">
+                        <!-- Cotización origen -->
+                        <div class="rsi-form-group">
+                            <label for="cotizacionNumero">Cotización origen</label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-file-alt rsi-input-icon"></i>
+                                <input type="text" id="cotizacionNumero" readonly style="background: var(--rsi-gray-100);">
+                            </div>
+                        </div>
+
+                        <div class="rsi-form-group">
+                            <label for="facturaNumero">Número de Factura</label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-hashtag rsi-input-icon"></i>
+                                <input type="text" id="facturaNumero" readonly style="background: var(--rsi-gray-100);">
+                            </div>
+                        </div>
+
+                        <hr style="margin: var(--rsi-spacing-md) 0; border-color: var(--rsi-gray-200);">
+
+                        <!-- Datos del Cliente -->
+                        <h4 style="margin-bottom: var(--rsi-spacing-md);"><i class="fas fa-user" style="color: var(--rsi-primary);"></i> Datos del Cliente</h4>
+
+                        <div class="rsi-form-row">
+                            <div class="rsi-form-group">
+                                <label for="clienteRazonSocial">Razón Social <span class="rsi-required">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-building rsi-input-icon"></i>
+                                    <input type="text" id="clienteRazonSocial" required>
+                                </div>
+                                <div class="rsi-form-error-message" id="errorClienteRazonSocial"></div>
+                            </div>
+                            <div class="rsi-form-group">
+                                <label for="clienteRFC">RFC <span class="rsi-required">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-id-card rsi-input-icon"></i>
+                                    <input type="text" id="clienteRFC" required maxlength="13" placeholder="Ej: XAXX010101000">
+                                </div>
+                                <div class="rsi-form-error-message" id="errorClienteRFC"></div>
+                            </div>
+                        </div>
+
+                        <div class="rsi-form-row">
+                            <div class="rsi-form-group">
+                                <label for="clienteRegimenCodigo">Régimen Fiscal <span class="rsi-required">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-scale-balanced rsi-input-icon"></i>
+                                    <input type="text" id="clienteRegimenCodigo" required placeholder="Ej: 601, 605, 612">
+                                </div>
+                                <div class="rsi-form-error-message" id="errorClienteRegimenCodigo"></div>
+                            </div>
+                            <div class="rsi-form-group">
+                                <label for="clienteCodigoPostal">Código Postal <span class="rsi-required">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-envelope rsi-input-icon"></i>
+                                    <input type="text" id="clienteCodigoPostal" required maxlength="5" placeholder="Ej: 57200">
+                                </div>
+                                <div class="rsi-form-error-message" id="errorClienteCodigoPostal"></div>
+                            </div>
+                        </div>
+
+                        <div class="rsi-form-group">
+                            <label for="clienteDireccion">Dirección</label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-map-marker-alt rsi-input-icon"></i>
+                                <input type="text" id="clienteDireccion" placeholder="Calle, número, colonia, ciudad">
+                            </div>
+                        </div>
+
+                        <div class="rsi-form-row">
+                            <div class="rsi-form-group">
+                                <label for="clienteTelefono">Teléfono</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-phone rsi-input-icon"></i>
+                                    <input type="tel" id="clienteTelefono" placeholder="55 1234 5678">
+                                </div>
+                            </div>
+                            <div class="rsi-form-group">
+                                <label for="clienteEmail">Email</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-envelope rsi-input-icon"></i>
+                                    <input type="email" id="clienteEmail" placeholder="cliente@empresa.com">
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr style="margin: var(--rsi-spacing-md) 0; border-color: var(--rsi-gray-200);">
+
+                        <!-- Datos CFDI -->
+                        <h4 style="margin-bottom: var(--rsi-spacing-md);"><i class="fas fa-file-invoice" style="color: var(--rsi-accent);"></i> Datos para CFDI</h4>
+
+                        <div class="rsi-form-row">
+                            <div class="rsi-form-group">
+                                <label for="usoCFDI">Uso de CFDI <span class="rsi-required">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-tag rsi-input-icon"></i>
+                                    <select id="usoCFDI" required>
+                                        <option value="">Seleccionar...</option>
+                                    </select>
+                                </div>
+                                <div class="rsi-form-error-message" id="errorUsoCFDI"></div>
+                            </div>
+                            <div class="rsi-form-group">
+                                <label for="formaPago">Forma de Pago <span class="rsi-required">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-credit-card rsi-input-icon"></i>
+                                    <select id="formaPago" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="01">01 - Efectivo</option>
+                                        <option value="02">02 - Cheque nominativo</option>
+                                        <option value="03">03 - Transferencia electrónica</option>
+                                        <option value="04">04 - Tarjeta de crédito</option>
+                                        <option value="05">05 - Monedero electrónico</option>
+                                        <option value="06">06 - Dinero electrónico</option>
+                                        <option value="08">08 - Vales de despensa</option>
+                                        <option value="12">12 - Dación en pago</option>
+                                        <option value="13">13 - Pago por subrogación</option>
+                                        <option value="14">14 - Pago por consignación</option>
+                                        <option value="15">15 - Condonación</option>
+                                        <option value="17">17 - Compensación</option>
+                                        <option value="23">23 - Novación</option>
+                                        <option value="24">24 - Confusión</option>
+                                        <option value="25">25 - Remisión de deuda</option>
+                                        <option value="26">26 - Prescripción o caducidad</option>
+                                        <option value="27">27 - A satisfacción del acreedor</option>
+                                        <option value="28">28 - Tarjeta de débito</option>
+                                        <option value="29">29 - Tarjeta de servicios</option>
+                                        <option value="30">30 - Aplicación de anticipos</option>
+                                        <option value="31">31 - Intermediario pagos</option>
+                                        <option value="99">99 - Por definir</option>
+                                    </select>
+                                </div>
+                                <div class="rsi-form-error-message" id="errorFormaPago"></div>
+                            </div>
+                        </div>
+
+                        <div class="rsi-form-row">
+                            <div class="rsi-form-group">
+                                <label for="metodoPago">Método de Pago <span class="rsi-required">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-coins rsi-input-icon"></i>
+                                    <select id="metodoPago" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="PUE">PUE - Pago en una sola exhibición</option>
+                                        <option value="PPD">PPD - Pago en parcialidades o diferido</option>
+                                    </select>
+                                </div>
+                                <div class="rsi-form-error-message" id="errorMetodoPago"></div>
+                            </div>
+                            <div class="rsi-form-group">
+                                <label for="facturaFecha">Fecha <span class="rsi-required">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-calendar rsi-input-icon"></i>
+                                    <input type="date" id="facturaFecha" required>
+                                </div>
+                                <div class="rsi-form-error-message" id="errorFacturaFecha"></div>
+                            </div>
+                        </div>
+
+                        <div class="rsi-form-group">
+                            <label for="facturaDescripcion">Descripción (para búsquedas)</label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-align-left rsi-input-icon" style="top: 12px;"></i>
+                                <textarea id="facturaDescripcion" rows="2" 
+                                    placeholder="Descripción breve de la factura para búsquedas internas"
+                                    style="padding-left: 2.5rem; resize: vertical;"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Estatus -->
+                        <div class="rsi-form-group" id="estatusContainer" style="display: none;">
+                            <label>Estatus</label>
+                            <div>
+                                <span id="estatusBadge" class="rsi-badge-status">borrador</span>
+                            </div>
+                        </div>
+
+                        <!-- Información de timbrado -->
+                        <div id="timbradoInfo" style="display: none; margin-top: var(--rsi-spacing-md);">
+                            <hr style="margin: var(--rsi-spacing-md) 0; border-color: var(--rsi-gray-200);">
+                            <h4><i class="fas fa-check-circle" style="color: var(--rsi-success);"></i> Datos del Timbrado</h4>
+                            <div class="rsi-form-row">
+                                <div class="rsi-form-group">
+                                    <label>UUID</label>
+                                    <div class="rsi-auditoria-info">
+                                        <i class="fas fa-fingerprint"></i>
+                                        <span id="timbradoUUID">-</span>
+                                    </div>
+                                </div>
+                                <div class="rsi-form-group">
+                                    <label>Fecha de Timbrado</label>
+                                    <div class="rsi-auditoria-info">
+                                        <i class="fas fa-calendar-check"></i>
+                                        <span id="timbradoFecha">-</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rsi-form-group">
+                                <label>No. Certificado</label>
+                                <div class="rsi-auditoria-info">
+                                    <i class="fas fa-certificate"></i>
+                                    <span id="timbradoNoCertificado">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button class="rsi-btn-prev" disabled>Anterior</button>
+                        <button class="rsi-btn-next" data-next="2">Siguiente <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>1</span> de 3</div>
+                </div>
+
+                <!-- ===== PASO 2: ITEMS ===== -->
+                <div class="rsi-step-panel" data-step="2">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3>Items de la Factura</h3>
+                        <p>Productos y servicios a facturar</p>
+                    </div>
+
+                    <div class="rsi-step-body">
+                        <!-- Tabla de items -->
+                        <div class="rsi-table-container">
+                            <h4><i class="fas fa-list"></i> Items</h4>
+                            <div class="rsi-table-wrapper">
+                                <table class="rsi-items-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 5%;">#</th>
+                                            <th style="width: 35%;">Descripción</th>
+                                            <th style="width: 10%;">Cantidad</th>
+                                            <th style="width: 15%;">Precio Unit.</th>
+                                            <th style="width: 20%;">Categoría</th>
+                                            <th style="width: 15%;">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="itemsTableBody">
+                                        <tr>
+                                            <td colspan="6" style="text-align: center; padding: var(--rsi-spacing-lg); color: var(--rsi-gray-500);">
+                                                <i class="fas fa-plus-circle" style="font-size: 1.5rem; display: block; margin-bottom: var(--rsi-spacing-sm);"></i>
+                                                No hay items en esta factura
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Totales -->
+                        <div class="rsi-totales-container">
+                            <div class="rsi-totales-row">
+                                <span class="rsi-totales-label">Subtotal:</span>
+                                <span id="subtotal" class="rsi-totales-value">$0.00</span>
+                            </div>
+                            <div class="rsi-totales-row">
+                                <label for="impuesto">IVA (%):</label>
+                                <input type="number" id="impuesto" name="impuesto" value="16" min="0" max="100" step="0.01">
+                            </div>
+                            <div class="rsi-totales-row rsi-totales-total">
+                                <span class="rsi-totales-label">Total:</span>
+                                <span id="totalFinal" class="rsi-totales-value">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button class="rsi-btn-prev" data-prev="1"><i class="fas fa-arrow-left"></i> Anterior</button>
+                        <button class="rsi-btn-next" data-next="3">Siguiente <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>2</span> de 3</div>
+                </div>
+
+                <!-- ===== PASO 3: CONFIRMACIÓN ===== -->
+                <div class="rsi-step-panel" data-step="3">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Confirmar Factura</h3>
+                        <p>Revisa todos los datos antes de guardar o timbrar</p>
+                    </div>
+
+                    <div class="rsi-step-body">
+                        <div class="rsi-confirmacion-card">
+                            <h4><i class="fas fa-user" style="color: var(--rsi-primary);"></i> Cliente</h4>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Razón Social:</span>
+                                <span id="confirmClienteRazonSocial" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">RFC:</span>
+                                <span id="confirmClienteRFC" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Régimen:</span>
+                                <span id="confirmClienteRegimen" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Código Postal:</span>
+                                <span id="confirmClienteCP" class="rsi-confirmacion-value">-</span>
+                            </div>
+
+                            <hr style="margin: var(--rsi-spacing-md) 0; border-color: var(--rsi-gray-200);">
+
+                            <h4><i class="fas fa-file-invoice" style="color: var(--rsi-accent);"></i> Datos CFDI</h4>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Número Factura:</span>
+                                <span id="confirmFacturaNumero" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Cotización:</span>
+                                <span id="confirmCotizacionNumero" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Uso CFDI:</span>
+                                <span id="confirmUsoCFDI" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Forma de Pago:</span>
+                                <span id="confirmFormaPago" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Método de Pago:</span>
+                                <span id="confirmMetodoPago" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Fecha:</span>
+                                <span id="confirmFacturaFecha" class="rsi-confirmacion-value">-</span>
+                            </div>
+
+                            <hr style="margin: var(--rsi-spacing-md) 0; border-color: var(--rsi-gray-200);">
+
+                            <h4><i class="fas fa-shopping-cart" style="color: var(--rsi-primary);"></i> Items</h4>
+                            <div id="confirmItemsList">
+                                <p style="color: var(--rsi-gray-500);">No hay items</p>
+                            </div>
+
+                            <hr style="margin: var(--rsi-spacing-md) 0; border-color: var(--rsi-gray-200);">
+
+                            <h4><i class="fas fa-calculator" style="color: var(--rsi-accent);"></i> Totales</h4>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Subtotal:</span>
+                                <span id="confirmSubtotal" class="rsi-confirmacion-value">$0.00</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">IVA:</span>
+                                <span id="confirmIVA" class="rsi-confirmacion-value">16%</span>
+                            </div>
+                            <div class="rsi-confirmacion-item" style="font-weight: 700; font-size: 1.1rem;">
+                                <span class="rsi-confirmacion-label" style="color: var(--rsi-primary);">Total:</span>
+                                <span id="confirmTotal" class="rsi-confirmacion-value" style="color: var(--rsi-primary);">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button class="rsi-btn-prev" data-prev="2"><i class="fas fa-arrow-left"></i> Anterior</button>
+                        <div style="display: flex; gap: var(--rsi-spacing-sm);">
+                            <button type="button" id="guardarBorradorBtn" class="rsi-btn-crud rsi-btn-crud-outline">
+                                <i class="fas fa-save"></i> Guardar Borrador
+                            </button>
+                            <button type="button" id="guardarTimbrarBtn" class="rsi-btn-crud rsi-btn-crud-primary">
+                                <i class="fas fa-file-invoice"></i> Guardar y Timbrar
+                            </button>
+                        </div>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>3</span> de 3</div>
+                </div>
+
+            </div>
+        </form>
+
+        <!-- ===== BOTÓN CANCELAR ===== -->
+        <div style="display: flex; justify-content: flex-end; margin-top: var(--rsi-spacing-lg);">
+            <button type="button" id="cancelBtn" class="rsi-btn-crud rsi-btn-crud-outline">
+                <i class="fas fa-times"></i> Cancelar
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<!-- ========================================
+   LOADING OVERLAY
+   ======================================== -->
+<div id="loadingSpinner" class="rsi-loading-overlay" style="display: none;">
+    <div class="rsi-spinner"></div>
+</div>
+
+<!-- ========================================
+   ESTILOS ADICIONALES
+   ======================================== -->
+<style>
+    .rsi-items-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+
+    .rsi-items-table thead th {
+        background: var(--rsi-gray-100);
+        color: var(--text-color);
+        padding: 10px 12px;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .rsi-items-table tbody td {
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--rsi-gray-100);
+        vertical-align: middle;
+    }
+
+    .rsi-items-table tbody tr:hover {
+        background: var(--rsi-gray-50);
+    }
+
+    .rsi-totales-container {
+        background: var(--rsi-gray-50);
+        border-radius: var(--rsi-radius-md);
+        padding: var(--rsi-spacing-md);
+        margin: var(--rsi-spacing-md) 0;
+        border: 1px solid var(--border-color);
+    }
+
+    .rsi-totales-row {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 4px 0;
+        gap: var(--rsi-spacing-md);
+    }
+
+    .rsi-totales-row label {
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: var(--text-color);
+        min-width: 100px;
+        text-align: right;
+    }
+
+    .rsi-totales-row input {
+        width: 100px;
+        padding: 4px 8px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--rsi-radius-sm);
+        background: var(--input-bg);
+        color: var(--text-color);
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .rsi-totales-row input:focus {
+        outline: none;
+        border-color: var(--rsi-primary);
+        box-shadow: 0 0 0 2px rgba(28, 25, 72, 0.1);
+    }
+
+    .rsi-totales-label {
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--text-color);
+    }
+
+    .rsi-totales-value {
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--rsi-primary);
+        min-width: 120px;
+        text-align: right;
+    }
+
+    .rsi-totales-total {
+        border-top: 2px solid var(--border-color);
+        padding-top: var(--rsi-spacing-sm);
+        margin-top: var(--rsi-spacing-xs);
+    }
+
+    .rsi-totales-total .rsi-totales-label {
+        font-size: 1.1rem;
+        color: var(--rsi-primary);
+    }
+
+    .rsi-totales-total .rsi-totales-value {
+        font-size: 1.2rem;
+    }
+
+    .rsi-auditoria-info {
+        display: flex;
+        align-items: center;
+        gap: var(--rsi-spacing-sm);
+        padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+        background: var(--rsi-gray-50);
+        border-radius: var(--rsi-radius-md);
+        border: 1px solid var(--rsi-gray-200);
+        flex-wrap: wrap;
+    }
+
+    .rsi-auditoria-info i {
+        color: var(--rsi-gray-400);
+        font-size: 0.9rem;
+    }
+
+    .rsi-auditoria-info span {
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: var(--text-color);
+    }
+
+    .rsi-confirmacion-card {
+        background: var(--card-bg);
+        border-radius: var(--rsi-radius-lg);
+        padding: var(--rsi-spacing-xl);
+        border: 1px solid var(--border-color);
+    }
+
+    .rsi-confirmacion-card h4 {
+        font-size: 1rem;
+        font-weight: 700;
+        margin: var(--rsi-spacing-md) 0 var(--rsi-spacing-sm) 0;
+        display: flex;
+        align-items: center;
+        gap: var(--rsi-spacing-sm);
+        color: var(--text-color);
+    }
+
+    .rsi-confirmacion-card h4:first-of-type {
+        margin-top: 0;
+    }
+
+    .rsi-confirmacion-item {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--rsi-spacing-xs) 0;
+        border-bottom: 1px solid var(--rsi-gray-100);
+    }
+
+    .rsi-confirmacion-item:last-child {
+        border-bottom: none;
+    }
+
+    .rsi-confirmacion-label {
+        font-weight: 500;
+        color: var(--rsi-gray-500);
+        font-size: 0.9rem;
+    }
+
+    .rsi-confirmacion-value {
+        font-weight: 600;
+        color: var(--text-color);
+        font-size: 0.9rem;
+        text-align: right;
+        word-break: break-word;
+        max-width: 60%;
+    }
+
+    .rsi-badge-status.borrador {
+        background: rgba(108, 117, 125, 0.15);
+        color: #6c757d;
+        border: 1px solid rgba(108, 117, 125, 0.3);
+    }
+
+    .rsi-badge-status.pendiente {
+        background: rgba(255, 193, 7, 0.15);
+        color: #ffc107;
+        border: 1px solid rgba(255, 193, 7, 0.3);
+    }
+
+    .rsi-badge-status.timbrada {
+        background: rgba(40, 167, 69, 0.15);
+        color: #28a745;
+        border: 1px solid rgba(40, 167, 69, 0.3);
+    }
+
+    .rsi-badge-status.cancelada {
+        background: rgba(220, 53, 69, 0.15);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .rsi-step-actions {
+            flex-direction: column;
+        }
+
+        .rsi-step-actions .rsi-btn-crud {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .rsi-confirmacion-item {
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .rsi-confirmacion-value {
+            text-align: left;
+            max-width: 100%;
+        }
+
+        .rsi-totales-row {
+            flex-direction: column;
+            align-items: stretch;
+            gap: var(--rsi-spacing-xs);
+        }
+
+        .rsi-totales-row label {
+            text-align: left;
+            min-width: auto;
+        }
+
+        .rsi-totales-row input {
+            width: 100%;
+        }
+
+        .rsi-totales-value {
+            min-width: auto;
+            text-align: left;
+        }
+
+        .rsi-items-table {
+            font-size: 0.8rem;
+        }
+
+        .rsi-items-table thead {
+            display: none;
+        }
+
+        .rsi-items-table tbody tr {
+            display: block;
+            border: 1px solid var(--border-color);
+            border-radius: var(--rsi-radius-md);
+            padding: var(--rsi-spacing-sm);
+            margin-bottom: var(--rsi-spacing-sm);
+        }
+
+        .rsi-items-table tbody td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--rsi-gray-100);
+        }
+
+        .rsi-items-table tbody td:last-child {
+            border-bottom: none;
+        }
+
+        .rsi-items-table tbody td::before {
+            content: attr(data-label);
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: var(--rsi-gray-500);
+            margin-right: var(--rsi-spacing-sm);
+        }
+
+        .rsi-step-actions .rsi-btn-crud {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .rsi-form-steps {
+            padding: var(--rsi-spacing-md);
+        }
+
+        .rsi-confirmacion-card {
+            padding: var(--rsi-spacing-md);
+        }
+
+        .rsi-totales-container {
+            padding: var(--rsi-spacing-sm);
+        }
+
+        .rsi-auditoria-info {
+            padding: var(--rsi-spacing-xs) var(--rsi-spacing-sm);
+            font-size: 0.85rem;
+        }
+    }
+
+    /* Modo oscuro */
+    body.dark-mode .rsi-items-table thead th {
+        background: var(--rsi-gray-700);
+        color: var(--text-color);
+    }
+
+    body.dark-mode .rsi-items-table tbody tr:hover {
+        background: var(--rsi-gray-800);
+    }
+
+    body.dark-mode .rsi-totales-container {
+        background: var(--rsi-gray-800);
+        border-color: var(--border-color);
+    }
+
+    body.dark-mode .rsi-confirmacion-card {
+        background: var(--card-bg);
+        border-color: var(--border-color);
+    }
+
+    body.dark-mode .rsi-confirmacion-value {
+        color: var(--text-color);
+    }
+
+    body.dark-mode .rsi-auditoria-info {
+        background: var(--rsi-gray-800);
+        border-color: var(--rsi-gray-300);
+    }
+</style>

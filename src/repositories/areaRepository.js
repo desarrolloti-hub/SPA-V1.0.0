@@ -49,7 +49,7 @@ export class AreaRepository extends BaseRepository {
     }
 
     /**
-     * 🔥 Obtiene todas las áreas con sus subáreas usando índices
+     * 🔥 Obtiene todas las áreas con sus subáreas - SIMPLE (sin índices)
      */
     async getAreasForSelect(onlyActive = true) {
         const cacheKey = this._getCacheKey('select', { onlyActive });
@@ -57,17 +57,21 @@ export class AreaRepository extends BaseRepository {
         if (cached) return cached;
 
         try {
-            // 🔥 Usar índices compuestos: nombreArea + habilitado
-            const filters = [];
-            if (onlyActive) {
-                filters.push({ field: 'habilitado', operator: '==', value: true });
-            }
+            // ✅ Obtener todas las áreas sin filtros (no requiere índices)
+            const snapshot = await getDocs(this._getCollection());
             
-            const areas = await this.getAll(filters, 'nombreArea', 'asc', true);
-            
-            // Formatear áreas con subáreas
-            const formattedAreas = areas.map(area => {
-                const subareas = area.subareas || {};
+            const areas = [];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const areaId = doc.id;
+                
+                // Si solo activas y está deshabilitado, saltar
+                if (onlyActive && data.habilitado === false) {
+                    return;
+                }
+                
+                // Obtener subáreas
+                const subareas = data.subareas || {};
                 const subareaKeys = Object.keys(subareas);
                 
                 const subareasList = subareaKeys.map(key => ({
@@ -75,33 +79,46 @@ export class AreaRepository extends BaseRepository {
                     nombre: subareas[key].nombreSubarea || key
                 }));
                 
-                return {
-                    id: area.id,
-                    nombre: area.nombreArea,
+                areas.push({
+                    id: areaId,
+                    nombre: data.nombreArea || 'Sin nombre',
                     subareas: subareasList,
-                    habilitado: area.habilitado !== false
-                };
+                    habilitado: data.habilitado !== false
+                });
             });
             
-            this._setCache('list', cacheKey, formattedAreas);
-            return formattedAreas;
+            // Ordenar por nombre
+            areas.sort((a, b) => a.nombre.localeCompare(b.nombre));
+            
+            // Guardar en caché
+            this._setCache('list', cacheKey, areas);
+            
+            console.log('✅ Áreas cargadas para selects:', areas.length);
+            return areas;
+            
         } catch (error) {
             console.error('❌ Error obteniendo áreas para selects:', error);
-            return [];
+            
+            // 🔥 Fallback: intentar obtener sin filtros
+            try {
+                const snapshot = await getDocs(this._getCollection());
+                const areas = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    areas.push({
+                        id: doc.id,
+                        nombre: data.nombreArea || 'Sin nombre',
+                        subareas: [],
+                        habilitado: true
+                    });
+                });
+                areas.sort((a, b) => a.nombre.localeCompare(b.nombre));
+                return areas;
+            } catch (fallbackError) {
+                console.error('❌ Error en fallback:', fallbackError);
+                return [];
+            }
         }
-    }
-
-    /**
-     * 🔥 Búsqueda de áreas por nombre con índices
-     */
-    async searchAreasByName(searchTerm, onlyActive = true) {
-        const filters = [];
-        if (onlyActive) {
-            filters.push({ field: 'habilitado', operator: '==', value: true });
-        }
-        
-        // 🔥 Usar índice compuesto: nombreArea + habilitado
-        return await this.searchWithIndex('nombreArea', searchTerm, filters, 20);
     }
 
     /**
@@ -116,7 +133,6 @@ export class AreaRepository extends BaseRepository {
         
         try {
             const usersRef = this._getUsersCollection();
-            // 🔥 Usar índice: uid (único por defecto)
             const q = query(usersRef, where('uid', '==', uid));
             const snapshot = await getDocs(q);
             
@@ -147,7 +163,6 @@ export class AreaRepository extends BaseRepository {
             
             for (let i = 0; i < uids.length; i += batchSize) {
                 const batch = uids.slice(i, i + batchSize);
-                // 🔥 Usar índice: uid (único por defecto)
                 const q = query(usersRef, where('uid', 'in', batch));
                 const snapshot = await getDocs(q);
                 
@@ -192,11 +207,23 @@ export class AreaRepository extends BaseRepository {
     }
 
     /**
-     * 🔥 Obtiene todas las áreas (usa índices para ordenamiento)
+     * Obtiene todas las áreas
      */
     async getAllAreas() {
-        // 🔥 Usar índice: createdAt (desc)
-        return await this.getAll([], 'createdAt', 'desc');
+        try {
+            const snapshot = await getDocs(this._getCollection());
+            const areas = [];
+            snapshot.forEach(doc => {
+                areas.push({
+                    id: doc.id,
+                    ...doc.data()
+                });
+            });
+            return areas;
+        } catch (error) {
+            console.error('❌ Error obteniendo áreas:', error);
+            throw new Error('Error al obtener las áreas');
+        }
     }
 
     /**
@@ -216,7 +243,6 @@ export class AreaRepository extends BaseRepository {
      */
     async getAreaByNombre(nombreArea) {
         try {
-            // 🔥 Usar índice: nombreArea
             const q = query(
                 this._getCollection(),
                 where('nombreArea', '==', nombreArea)
@@ -358,7 +384,6 @@ export class AreaRepository extends BaseRepository {
      */
     async existsAreaNombre(nombreArea, excludeId = null) {
         try {
-            // 🔥 Usar índice: nombreArea
             const q = query(
                 this._getCollection(),
                 where('nombreArea', '==', nombreArea)
@@ -385,7 +410,7 @@ export class AreaRepository extends BaseRepository {
     }
 
     /**
-     * Limpia la caché (sobreescribe el método base)
+     * Limpia la caché
      */
     clearCache(type = null) {
         super.clearCache(type);

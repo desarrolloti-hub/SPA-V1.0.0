@@ -1,0 +1,251 @@
+<!-- ========================================
+   PERFIL DE COLABORADOR
+   Basado en estilos de formSteps
+   ======================================== -->
+
+<section class="rsi-profile-section">
+    <div class="rsi-container">
+        
+        <!-- Título -->
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Mi</span> Perfil
+        </h1>
+        <p class="rsi-page-subtitle">
+            Administra tu información personal y configuración de notificaciones.
+        </p>
+
+        <!-- ===== PERFIL ===== -->
+        <div class="rsi-profile-container" id="profile-container">
+
+            <!-- Header del perfil -->
+            <div class="rsi-profile-header">
+                <div class="rsi-profile-avatar">
+                    <img id="profile-avatar-img" src="" alt="Foto de perfil" style="display:none;">
+                    <div id="avatar-placeholder" class="rsi-avatar-placeholder">U</div>
+                    <div id="profile-status-badge" class="rsi-avatar-status rsi-status-active">● Activo</div>
+                </div>
+                <div class="rsi-profile-info">
+                    <h2 id="profile-name">Cargando...</h2>
+                    <p id="profile-email" class="rsi-profile-email">Cargando...</p>
+                    <div class="rsi-profile-tags">
+                        <span id="profile-role" class="rsi-tag">Colaborador</span>
+                        <span id="profile-area-tag" class="rsi-tag">Área</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido del perfil -->
+            <div class="rsi-profile-content">
+
+                <!-- ===== PESTAÑAS ===== -->
+                <div class="rsi-tabs">
+                    <button class="rsi-tab active" data-tab="personal">
+                        <i class="fas fa-user"></i>
+                        <span>Personal</span>
+                    </button>
+                    <button class="rsi-tab" data-tab="contacto">
+                        <i class="fas fa-address-card"></i>
+                        <span>Contacto</span>
+                    </button>
+                    <button class="rsi-tab" data-tab="laboral">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Laboral</span>
+                    </button>
+                    <button class="rsi-tab" data-tab="notificaciones">
+                        <i class="fas fa-bell"></i>
+                        <span>Notificaciones</span>
+                    </button>
+                </div>
+
+                <!-- ===== PANEL PERSONAL ===== -->
+                <div class="rsi-tab-panel active" data-tab="personal">
+                    <div class="rsi-panel-header">
+                        <h3><i class="fas fa-user-circle"></i> Información Personal</h3>
+                        <p>Datos personales del colaborador</p>
+                    </div>
+                    <div class="rsi-panel-body">
+                        <div class="rsi-info-grid">
+                            <div class="rsi-info-item">
+                                <label>Nombre Completo</label>
+                                <p id="info-nombreCompleto">-</p>
+                            </div>
+                            <div class="rsi-info-item">
+                                <label>Fecha de Nacimiento</label>
+                                <p id="info-fechaNacimiento">-</p>
+                            </div>
+                            <div class="rsi-info-item">
+                                <label>CURP</label>
+                                <p id="info-curp">-</p>
+                            </div>
+                            <div class="rsi-info-item">
+                                <label>RFC</label>
+                                <p id="info-rfc">-</p>
+                            </div>
+                            <div class="rsi-info-item">
+                                <label>Estado Civil</label>
+                                <p id="info-estadoCivil">-</p>
+                            </div>
+                            <div class="rsi-info-item">
+                                <label>NSS</label>
+                                <p id="info-nss">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== PANEL CONTACTO ===== -->
+                <div class="rsi-tab-panel" data-tab="contacto">
+                    <div class="rsi-panel-header">
+                        <h3><i class="fas fa-address-card"></i> Información de Contacto</h3>
+                        <p>Datos de contacto del colaborador</p>
+                    </div>
+                    <div class="rsi-panel-body">
+                        <div class="rsi-info-grid">
+                            <div class="rsi-info-item">
+                                <label>Teléfono Fijo</label>
+                                <p id="info-telefonoFijo">-</p>
+                            </div>
+                            <div class="rsi-info-item">
+                                <label>Teléfono Móvil</label>
+                                <p id="info-telefonoMovil">-</p>
+                            </div>
+                            <div class="rsi-info-item">
+                                <label>Correo Empresarial</label>
+                                <p id="info-emailEmpresarial">-</p>
+                            </div>
+                            <div class="rsi-info-item">
+                                <label>Correo Personal</label>
+                                <p id="info-emailPersonal">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== PANEL LABORAL ===== -->
+                <div class="rsi-tab-panel" data-tab="laboral">
+                    <div class="rsi-panel-header">
+                        <h3><i class="fas fa-briefcase"></i> Información Laboral</h3>
+                        <p>Datos laborales del colaborador</p>
+                    </div>
+                    <div class="rsi-panel-body">
+                        <div class="rsi-info-grid">
+                            <div class="rsi-info-item">
+                                <label>Área</label>
+                                <p id="info-area">-</p>
+                            </div>
+                            <div class="rsi-info-item">
+                                <label>Subárea</label>
+                                <p id="info-subarea">-</p>
+                            </div>
+                            <div class="rsi-info-item">
+                                <label>Tipo de Colaborador</label>
+                                <p id="info-tipoColaborador">-</p>
+                            </div>
+                            <div class="rsi-info-item">
+                                <label>NIT</label>
+                                <p id="info-nit">-</p>
+                            </div>
+                            <div class="rsi-info-item">
+                                <label>Estado</label>
+                                <p id="info-status">-</p>
+                            </div>
+                            <div class="rsi-info-item">
+                                <label>Fecha de Registro</label>
+                                <p id="info-createdAt">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== PANEL NOTIFICACIONES ===== -->
+                <div class="rsi-tab-panel" data-tab="notificaciones">
+                    <div class="rsi-panel-header">
+                        <h3><i class="fas fa-bell"></i> Configuración de Notificaciones</h3>
+                        <p>Administra tus preferencias de notificaciones y ubicación</p>
+                    </div>
+                    <div class="rsi-panel-body">
+                        
+                        <!-- Tarjeta de Notificaciones -->
+                        <div class="rsi-permission-card" id="notification-card">
+                            <div class="rsi-permission-header">
+                                <div class="rsi-permission-icon">
+                                    <i class="fas fa-bell"></i>
+                                </div>
+                                <div class="rsi-permission-info">
+                                    <h4>Notificaciones Push</h4>
+                                    <p>Recibe alertas en tiempo real sobre actividades importantes</p>
+                                </div>
+                                <label class="rsi-toggle-switch">
+                                    <input type="checkbox" id="notifications-toggle">
+                                    <span class="rsi-toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="rsi-permission-status">
+                                <span class="rsi-status-label">Estado:</span>
+                                <span id="notif-status-text" class="rsi-status-value rsi-status-denied">
+                                    <i class="fas fa-times-circle"></i> Desactivadas
+                                </span>
+                            </div>
+                            <div id="notif-token-info" class="rsi-permission-detail" style="display:none;">
+                                <i class="fas fa-key"></i>
+                                <span>Token: <span id="notif-token-text"></span></span>
+                            </div>
+                            <div id="notif-platform-info" class="rsi-permission-detail" style="display:none;">
+                                <i class="fas fa-device"></i>
+                                <span>Plataforma: <span id="notif-platform-text"></span></span>
+                            </div>
+                            <div id="notif-date-info" class="rsi-permission-detail" style="display:none;">
+                                <i class="fas fa-clock"></i>
+                                <span>Actualizado: <span id="notif-date-text"></span></span>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta de Ubicación -->
+                        <div class="rsi-permission-card" id="location-card">
+                            <div class="rsi-permission-header">
+                                <div class="rsi-permission-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="rsi-permission-info">
+                                    <h4>Ubicación</h4>
+                                    <p>Permite acceder a tu ubicación para servicios personalizados</p>
+                                </div>
+                                <label class="rsi-toggle-switch">
+                                    <input type="checkbox" id="location-toggle">
+                                    <span class="rsi-toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="rsi-permission-status">
+                                <span class="rsi-status-label">Estado:</span>
+                                <span id="location-status-text" class="rsi-status-value rsi-status-denied">
+                                    <i class="fas fa-times-circle"></i> Desactivada
+                                </span>
+                            </div>
+                            <div id="location-coords-info" class="rsi-permission-detail" style="display:none;">
+                                <i class="fas fa-location-dot"></i>
+                                <span>Ubicación: <span id="location-coords-text"></span></span>
+                            </div>
+                            <div id="location-date-info" class="rsi-permission-detail" style="display:none;">
+                                <i class="fas fa-clock"></i>
+                                <span>Actualizado: <span id="location-date-text"></span></span>
+                            </div>
+                        </div>
+
+                        <!-- Botones de acción -->
+                        <div class="rsi-profile-actions">
+                            <button id="refresh-profile-btn" class="rsi-btn rsi-btn-secondary">
+                                <i class="fas fa-sync"></i> Actualizar Datos
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>

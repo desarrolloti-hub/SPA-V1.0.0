@@ -1,6 +1,6 @@
 /* ========================================
    BASE REPOSITORY
-   Caché inteligente con soporte para índices
+   Caché simple sin índices complejos
    ======================================== */
 
 import { 
@@ -75,34 +75,34 @@ export class BaseRepository {
         });
     }
 
-    /**
-     * Limpia la caché
-     */
-    clearCache(type = null) {
-        if (type && this.cache[type]) {
-            this.cache[type].clear();
-        } else {
-            Object.keys(this.cache).forEach(key => {
-                this.cache[key].clear();
-            });
-        }
-        this.pendingRequests.clear();
-    }
+   // baseRepository.js - Método clearCache corregido
 
-    /**
-     * Limpia caché de un usuario específico
-     */
-    clearUserCache(uid) {
-        const prefix = `${uid}:${this.collectionName}:`;
-        Object.keys(this.cache).forEach(type => {
-            const cache = this.cache[type];
-            for (const key of cache.keys()) {
-                if (key.startsWith(prefix)) {
-                    cache.delete(key);
-                }
+/**
+ * Limpia la caché
+ */
+clearCache() {
+    // Limpiar caché de búsqueda
+    if (this.cache.search) {
+        this.cache.search = {};
+    }
+    // Limpiar caché por ID
+    if (this.cache.byId) {
+        this.cache.byId = {};
+    }
+    // Limpiar caché general
+    if (this.cache.all) {
+        this.cache.all = null;
+    }
+    // Limpiar cualquier otra caché
+    if (this.cache) {
+        Object.keys(this.cache).forEach(key => {
+            if (key !== 'search' && key !== 'byId' && key !== 'all') {
+                this.cache[key] = null;
             }
         });
     }
+    console.log('🗑️ Caché limpiada');
+}
 
     /**
      * Evita duplicación de requests
@@ -155,7 +155,7 @@ export class BaseRepository {
     }
 
     /**
-     * 🔥 Obtiene todos los documentos con filtros (usa índices compuestos)
+     * Obtiene todos los documentos con filtros
      */
     async getAll(filters = [], orderByField = null, orderDirection = 'asc', forceRefresh = false) {
         const cacheKey = this._getCacheKey('list', { 
@@ -174,12 +174,10 @@ export class BaseRepository {
             try {
                 let q = query(this._getCollection());
                 
-                // 🔥 Aplicar filtros (usa índices compuestos)
                 filters.forEach(filter => {
                     q = query(q, where(filter.field, filter.operator, filter.value));
                 });
                 
-                // 🔥 Aplicar orden (usa índices compuestos)
                 if (orderByField) {
                     q = query(q, orderBy(orderByField, orderDirection));
                 }
@@ -194,13 +192,46 @@ export class BaseRepository {
                 return results;
             } catch (error) {
                 console.error(`❌ Error obteniendo documentos:`, error);
-                throw error;
+                // Fallback: obtener todo sin filtros
+                const snapshot = await getDocs(this._getCollection());
+                const results = [];
+                snapshot.forEach(doc => {
+                    results.push({ id: doc.id, ...doc.data() });
+                });
+                
+                // Filtrar en memoria
+                let filtered = results;
+                filters.forEach(filter => {
+                    filtered = filtered.filter(item => {
+                        const value = item[filter.field];
+                        if (filter.operator === '==') {
+                            return value === filter.value;
+                        }
+                        return true;
+                    });
+                });
+                
+                // Ordenar en memoria
+                if (orderByField) {
+                    filtered.sort((a, b) => {
+                        const valA = a[orderByField] || '';
+                        const valB = b[orderByField] || '';
+                        if (orderDirection === 'asc') {
+                            return valA > valB ? 1 : -1;
+                        } else {
+                            return valA < valB ? 1 : -1;
+                        }
+                    });
+                }
+                
+                this._setCache('list', cacheKey, filtered);
+                return filtered;
             }
         });
     }
 
     /**
-     * 🔥 Obtiene documentos con paginación usando índices
+     * Obtiene listas con caché por página
      */
     async getPaginatedWithCache(pageSize = 20, page = 1, filters = [], orderByField = null, orderDirection = 'asc') {
         const cacheKey = this._getCacheKey('list', { 
@@ -216,7 +247,6 @@ export class BaseRepository {
 
         return this._deduplicateRequest(`list:${cacheKey}`, async () => {
             try {
-                // 🔥 Obtener todos los datos con los filtros
                 const allData = await this.getAll(filters, orderByField, orderDirection, true);
                 const total = allData.length;
                 const start = (page - 1) * pageSize;
@@ -238,81 +268,6 @@ export class BaseRepository {
                 throw error;
             }
         });
-    }
-
-    /**
-     * 🔥 Búsqueda eficiente con índices compuestos
-     */
-    async searchWithIndex(searchField, searchTerm, filters = [], limitCount = 20) {
-        const cacheKey = this._getCacheKey('search', { 
-            field: searchField,
-            term: searchTerm,
-            filters: JSON.stringify(filters),
-            limit: limitCount
-        });
-        
-        const cached = this._getFromCache('search', cacheKey);
-        if (cached) return cached;
-
-        return this._deduplicateRequest(`search:${cacheKey}`, async () => {
-            try {
-                let q = query(this._getCollection());
-                
-                // 🔥 Aplicar filtros base
-                filters.forEach(filter => {
-                    q = query(q, where(filter.field, filter.operator, filter.value));
-                });
-                
-                // 🔥 Búsqueda por rango (usa índice compuesto)
-                if (searchTerm && searchTerm.length >= 2) {
-                    const termLower = searchTerm.toLowerCase();
-                    const termEnd = termLower + '\uf8ff';
-                    
-                    q = query(
-                        q,
-                        where(searchField, '>=', termLower),
-                        where(searchField, '<=', termEnd),
-                        orderBy(searchField),
-                        limit(limitCount)
-                    );
-                } else {
-                    q = query(q, limit(limitCount));
-                }
-                
-                const snapshot = await getDocs(q);
-                const results = [];
-                snapshot.forEach(doc => {
-                    results.push({ id: doc.id, ...doc.data() });
-                });
-                
-                this._setCache('search', cacheKey, results);
-                return results;
-            } catch (error) {
-                console.error('❌ Error en búsqueda con índice:', error);
-                // Fallback a búsqueda en memoria
-                return this.searchInMemory(searchTerm, filters, limitCount);
-            }
-        });
-    }
-
-    /**
-     * 🔥 Fallback: Búsqueda en memoria (sin índices)
-     */
-    async searchInMemory(searchTerm, filters = [], limitCount = 20) {
-        try {
-            const allData = await this.getAll(filters, null, null, true);
-            const termLower = searchTerm.toLowerCase();
-            
-            const results = allData.filter(item => {
-                const nombre = (item.nombreArea || item.nombreCompleto || '').toLowerCase();
-                return nombre.includes(termLower);
-            }).slice(0, limitCount);
-            
-            return results;
-        } catch (error) {
-            console.error('❌ Error en búsqueda en memoria:', error);
-            return [];
-        }
     }
 
     /**

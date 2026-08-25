@@ -1,0 +1,700 @@
+<!-- ========================================
+   VER TICKET - Detalle completo
+   ======================================== -->
+
+<section class="rsi-ticket-view-section">
+    <div class="rsi-container">
+        
+        <!-- Título -->
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Detalle</span> del Ticket
+        </h1>
+        <p class="rsi-page-subtitle">
+            Información completa del ticket y su historial.
+        </p>
+
+        <!-- ===== TARJETA DE DETALLE ===== -->
+        <div class="rsi-view-card" id="viewCard">
+            
+            <!-- Cabecera con ID y título -->
+            <div class="rsi-view-header">
+                <div class="rsi-view-icon-container">
+                    <div id="viewIcon" class="rsi-view-icon">
+                        <i class="fas fa-ticket-alt" style="font-size: 2.5rem; color: var(--rsi-primary);"></i>
+                    </div>
+                </div>
+                <div class="rsi-view-title">
+                    <h2 id="viewTitulo">-</h2>
+                    <div class="rsi-view-badges">
+                        <span id="viewIdTicket" class="rsi-badge rsi-badge-primary" style="font-size: 0.85rem;">-</span>
+                        <span id="viewEstado" class="rsi-badge-status">-</span>
+                        <span id="viewPrioridad" class="rsi-badge-prioridad">-</span>
+                        <span id="viewTipo" class="rsi-badge-tipo">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información principal -->
+            <div class="rsi-view-body">
+                <div class="rsi-view-grid">
+                    <div class="rsi-view-item full-width">
+                        <span class="rsi-view-label">Título</span>
+                        <span class="rsi-view-value" id="viewTituloValue">-</span>
+                    </div>
+                    <div class="rsi-view-item full-width">
+                        <span class="rsi-view-label">Descripción</span>
+                        <span class="rsi-view-value" id="viewDescripcion">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">ID Ticket</span>
+                        <span class="rsi-view-value" id="viewIdTicketValue">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Tipo</span>
+                        <span class="rsi-view-value" id="viewTipoValue">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Estado</span>
+                        <span class="rsi-view-value" id="viewEstadoValue">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Prioridad</span>
+                        <span class="rsi-view-value" id="viewPrioridadValue">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Fecha Creación</span>
+                        <span class="rsi-view-value" id="viewFechaCreacion">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Fecha Actualización</span>
+                        <span class="rsi-view-value" id="viewFechaActualizacion">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Fecha Inicio</span>
+                        <span class="rsi-view-value" id="viewFechaInicio">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Fecha Finalización</span>
+                        <span class="rsi-view-value" id="viewFechaFin">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Área</span>
+                        <span class="rsi-view-value" id="viewArea">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Responsable</span>
+                        <span class="rsi-view-value" id="viewResponsable">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Creado por</span>
+                        <span class="rsi-view-value" id="viewCreadoPor">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Modificado por</span>
+                        <span class="rsi-view-value" id="viewModificadoPor">-</span>
+                    </div>
+                </div>
+
+                <!-- Campos específicos para OPERATIVO -->
+                <div id="viewOperativoFields" class="rsi-view-section" style="display: none;">
+                    <h4 class="rsi-section-title">
+                        <i class="fas fa-user"></i> Información del Cliente
+                    </h4>
+                    <div class="rsi-view-grid">
+                        <div class="rsi-view-item">
+                            <span class="rsi-view-label">Cliente</span>
+                            <span class="rsi-view-value" id="viewCliente">-</span>
+                        </div>
+                        <div class="rsi-view-item">
+                            <span class="rsi-view-label">RFC</span>
+                            <span class="rsi-view-value" id="viewRfc">-</span>
+                        </div>
+                        <div class="rsi-view-item">
+                            <span class="rsi-view-label">Atención A</span>
+                            <span class="rsi-view-value" id="viewAtencionA">-</span>
+                        </div>
+                        <div class="rsi-view-item">
+                            <span class="rsi-view-label">Correo</span>
+                            <span class="rsi-view-value" id="viewCorreo">-</span>
+                        </div>
+                    </div>
+
+                    <h4 class="rsi-section-title" style="margin-top: var(--rsi-spacing-lg);">
+                        <i class="fas fa-cogs"></i> Información del Servicio
+                    </h4>
+                    <div class="rsi-view-grid">
+                        <div class="rsi-view-item">
+                            <span class="rsi-view-label">Orden de Servicio</span>
+                            <span class="rsi-view-value" id="viewOrdenServicio">-</span>
+                        </div>
+                        <div class="rsi-view-item">
+                            <span class="rsi-view-label">Proyecto</span>
+                            <span class="rsi-view-value" id="viewProyecto">-</span>
+                        </div>
+                        <div class="rsi-view-item">
+                            <span class="rsi-view-label">Servicio</span>
+                            <span class="rsi-view-value" id="viewServicio">-</span>
+                        </div>
+                        <div class="rsi-view-item">
+                            <span class="rsi-view-label">Sistemas</span>
+                            <span class="rsi-view-value" id="viewSistemas">-</span>
+                        </div>
+                        <div class="rsi-view-item">
+                            <span class="rsi-view-label">Cotización</span>
+                            <span class="rsi-view-value" id="viewCotizacion">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campos específicos para ADMINISTRACIÓN -->
+                <div id="viewAdminFields" class="rsi-view-section" style="display: none;">
+                    <h4 class="rsi-section-title">
+                        <i class="fas fa-calendar-check"></i> Información Adicional
+                    </h4>
+                    <div class="rsi-view-grid">
+                        <div class="rsi-view-item">
+                            <span class="rsi-view-label">Fecha Estimada Finalización</span>
+                            <span class="rsi-view-value" id="viewFechaEstimada">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Colaboradores asignados -->
+                <div class="rsi-view-section">
+                    <h4 class="rsi-section-title">
+                        <i class="fas fa-users"></i> Colaboradores Asignados
+                    </h4>
+                    <div id="viewColaboradores" class="rsi-view-colaboradores">
+                        <span style="color: var(--rsi-gray-500);">Sin colaboradores asignados</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Línea de tiempo de auditoría (HISTORIAL) -->
+            <div class="rsi-view-timeline">
+                <h3 class="rsi-timeline-title">
+                    <i class="fas fa-history"></i>
+                    Historial del Ticket
+                    <span id="historialCount" class="rsi-badge rsi-badge-primary" style="font-size: 0.7rem;">0 eventos</span>
+                </h3>
+                
+                <div class="rsi-timeline" id="timelineContainer">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="rsi-view-actions">
+                <button type="button" id="backBtn" class="rsi-btn-crud rsi-btn-crud-outline">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </button>
+                <button type="button" id="editBtn" class="rsi-btn-crud rsi-btn-crud-primary">
+                    <i class="fas fa-edit"></i> Editar Ticket
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ========================================
+   LOADING OVERLAY
+   ======================================== -->
+<div id="loadingSpinner" class="rsi-loading-overlay" style="display: none;">
+    <div class="rsi-spinner"></div>
+</div>
+<style>
+    /* ==========================================
+   VISTA DE TICKET - ESTILOS
+   ========================================== */
+
+.rsi-ticket-view-section {
+    padding: var(--rsi-spacing-2xl) 0;
+}
+
+.rsi-view-icon-container {
+    flex-shrink: 0;
+}
+
+.rsi-view-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: var(--rsi-radius-lg);
+    border: 2px solid var(--rsi-gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--rsi-bg-card);
+    transition: var(--rsi-transition);
+}
+
+.rsi-view-icon i {
+    font-size: 2.5rem;
+    color: var(--rsi-primary);
+}
+
+.rsi-view-section {
+    margin-top: var(--rsi-spacing-lg);
+    padding-top: var(--rsi-spacing-lg);
+    border-top: 1px solid var(--rsi-gray-200);
+}
+
+.rsi-view-section:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+.rsi-section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    margin: 0 0 var(--rsi-spacing-md) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-section-title i {
+    color: var(--rsi-gold-base);
+}
+
+/* ==========================================
+   COLABORADORES ASIGNADOS
+   ========================================== */
+
+.rsi-view-colaboradores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--rsi-spacing-sm);
+    padding: var(--rsi-spacing-sm) 0;
+}
+
+.rsi-view-colaborador {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--rsi-spacing-xs);
+    background: var(--rsi-gray-100);
+    padding: 4px 12px 4px 4px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--rsi-text-primary);
+    border: 1px solid var(--rsi-gray-200);
+}
+
+.rsi-view-colaborador .rsi-avatar-mini {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+    font-size: 0.7rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.rsi-view-colaborador .rsi-avatar-mini img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rsi-view-colaborador .rsi-avatar-mini.fallback {
+    background: var(--rsi-gray-400);
+    color: var(--rsi-white);
+}
+
+.rsi-view-colaborador .rsi-colaborador-role {
+    font-size: 0.6rem;
+    background: var(--rsi-gold-base);
+    color: var(--rsi-black);
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.rsi-view-item.full-width {
+    grid-column: 1 / -1;
+}
+
+/* ==========================================
+   HISTORIAL - LÍNEA DE TIEMPO
+   ========================================== */
+
+.rsi-timeline-icon {
+    position: absolute;
+    left: -12px;
+    top: 4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    z-index: 3;
+    color: white;
+    border: 2px solid white;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+    transition: all 0.3s ease;
+}
+
+/* ✅ Parpadeo para INICIO y FIN */
+.rsi-timeline-icon.pulse {
+    animation: pulse-blue 2s ease-in-out infinite;
+}
+
+@keyframes pulse-blue {
+    0% {
+        box-shadow: 0 0 0 0 rgba(28, 25, 72, 0.3), 0 0 0 0 rgba(28, 25, 72, 0.1);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 0 12px rgba(28, 25, 72, 0), 0 0 0 20px rgba(28, 25, 72, 0.05);
+        transform: scale(1.06);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(28, 25, 72, 0), 0 0 0 0 rgba(28, 25, 72, 0);
+        transform: scale(1);
+    }
+}
+
+/* ✅ Etiquetas INICIO y FIN con azules consistentes */
+.rsi-timeline-label-tag {
+    display: inline-block;
+    font-size: 0.6rem;
+    padding: 2px 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    margin-left: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+}
+
+.rsi-timeline-label-tag i {
+    margin-right: 6px;
+    font-size: 0.6rem;
+}
+
+/* INICIO - Morado RSI (el más antiguo) */
+.rsi-timeline-label-first {
+    background: rgba(28, 25, 72, 0.1);
+    color: var(--rsi-primary);
+    border: 1px solid rgba(28, 25, 72, 0.15);
+}
+
+/* FIN - Azul claro (el más reciente) */
+.rsi-timeline-label-last {
+    background: rgba(23, 162, 184, 0.12);
+    color: #17a2b8;
+    border: 1px solid rgba(23, 162, 184, 0.2);
+}
+
+.rsi-timeline-item {
+    display: flex;
+    gap: var(--rsi-spacing-md);
+    position: relative;
+    padding-left: 40px;
+    margin-bottom: var(--rsi-spacing-sm);
+}
+
+.rsi-timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 36px;
+    bottom: -8px;
+    width: 2px;
+    background: var(--rsi-gray-300);
+}
+
+.rsi-timeline-item.last::before {
+    display: none;
+}
+
+.rsi-timeline-item::after {
+    display: none;
+}
+
+.rsi-timeline-content {
+    flex: 1;
+    background: var(--rsi-bg-card);
+    padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
+    border-radius: var(--rsi-radius-md);
+    border: 1px solid var(--rsi-gray-200);
+    transition: var(--rsi-transition);
+}
+
+.rsi-timeline-content:hover {
+    border-color: var(--rsi-primary);
+    box-shadow: var(--rsi-shadow-sm);
+}
+
+.rsi-timeline-content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-timeline-event {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    font-size: 0.95rem;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-timeline-event i {
+    font-size: 1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.rsi-timeline-date {
+    font-size: 0.8rem;
+    color: var(--rsi-gray-400);
+    white-space: nowrap;
+}
+
+.rsi-timeline-empty {
+    text-align: center;
+    padding: var(--rsi-spacing-xl);
+    color: var(--rsi-gray-500);
+}
+
+.rsi-timeline-empty i {
+    font-size: 2rem;
+    color: var(--rsi-gray-300);
+    display: block;
+    margin-bottom: var(--rsi-spacing-sm);
+}
+
+/* ==========================================
+   BADGES CON ICONOS
+   ========================================== */
+
+.rsi-badge-prioridad i,
+.rsi-badge-tipo i {
+    margin-right: 4px;
+    font-size: 0.7rem;
+}
+
+.rsi-badge-prioridad.alta i {
+    color: #dc3545;
+}
+
+.rsi-badge-prioridad.media i {
+    color: #ffc107;
+}
+
+.rsi-badge-prioridad.baja i {
+    color: #28a745;
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 768px) {
+    .rsi-view-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .rsi-view-icon i {
+        font-size: 2rem;
+    }
+
+    .rsi-view-colaboradores {
+        gap: var(--rsi-spacing-xs);
+    }
+
+    .rsi-view-colaborador {
+        font-size: 0.75rem;
+        padding: 3px 10px 3px 3px;
+    }
+
+    .rsi-view-colaborador .rsi-avatar-mini {
+        width: 24px;
+        height: 24px;
+        font-size: 0.6rem;
+    }
+
+    .rsi-timeline-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
+        left: -10px;
+        top: 4px;
+    }
+
+    .rsi-timeline-item {
+        padding-left: 34px;
+    }
+
+    .rsi-timeline-item::before {
+        left: 13px;
+    }
+
+    .rsi-timeline-content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--rsi-spacing-xs);
+    }
+
+    .rsi-timeline-date {
+        white-space: normal;
+    }
+}
+
+@media (max-width: 576px) {
+    .rsi-view-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .rsi-view-icon i {
+        font-size: 1.5rem;
+    }
+
+    .rsi-view-colaborador {
+        font-size: 0.7rem;
+        padding: 2px 8px 2px 2px;
+    }
+
+    .rsi-view-colaborador .rsi-avatar-mini {
+        width: 20px;
+        height: 20px;
+        font-size: 0.5rem;
+    }
+
+    .rsi-view-section h4 {
+        font-size: 0.9rem;
+    }
+
+    .rsi-timeline-icon {
+        width: 24px;
+        height: 24px;
+        font-size: 0.6rem;
+        left: -8px;
+        top: 4px;
+    }
+
+    .rsi-timeline-item {
+        padding-left: 28px;
+    }
+
+    .rsi-timeline-item::before {
+        left: 11px;
+    }
+
+    .rsi-timeline-content {
+        padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    }
+
+    .rsi-timeline-label-tag {
+        font-size: 0.5rem;
+        padding: 1px 10px;
+        margin-left: 6px;
+    }
+}
+
+/* ==========================================
+   MODO OSCURO
+   ========================================== */
+
+body.dark-mode .rsi-view-icon {
+    border-color: var(--rsi-gray-300);
+    background: var(--rsi-bg-card);
+}
+
+body.dark-mode .rsi-view-section {
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-view-colaborador {
+    background: var(--rsi-gray-700);
+    border-color: var(--rsi-gray-600);
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-section-title {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-timeline-item::before {
+    background: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-timeline-content {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-timeline-content:hover {
+    border-color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-timeline-event {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-timeline-date {
+    color: var(--rsi-gray-500);
+}
+
+body.dark-mode .rsi-timeline-empty {
+    color: var(--rsi-gray-400);
+}
+
+body.dark-mode .rsi-timeline-empty i {
+    color: var(--rsi-gray-600);
+}
+
+body.dark-mode .rsi-timeline-icon {
+    border-color: var(--rsi-bg-card);
+}
+
+/* INICIO - Morado RSI en modo oscuro */
+body.dark-mode .rsi-timeline-label-first {
+    background: rgba(28, 25, 72, 0.3);
+    color: #6c8bff;
+    border-color: rgba(28, 25, 72, 0.2);
+}
+
+/* FIN - Azul claro en modo oscuro */
+body.dark-mode .rsi-timeline-label-last {
+    background: rgba(23, 162, 184, 0.2);
+    color: #5bc0de;
+    border-color: rgba(23, 162, 184, 0.25);
+}
+
+body.dark-mode .rsi-timeline-icon.pulse {
+    animation: pulse-blue-dark 2s ease-in-out infinite;
+}
+
+@keyframes pulse-blue-dark {
+    0% {
+        box-shadow: 0 0 0 0 rgba(28, 25, 72, 0.4), 0 0 0 0 rgba(28, 25, 72, 0.15);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 0 12px rgba(28, 25, 72, 0), 0 0 0 20px rgba(28, 25, 72, 0.08);
+        transform: scale(1.06);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(28, 25, 72, 0), 0 0 0 0 rgba(28, 25, 72, 0);
+        transform: scale(1);
+    }
+}
+</style>

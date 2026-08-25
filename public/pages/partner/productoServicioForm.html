@@ -1,0 +1,242 @@
+<!-- ========================================
+   CREAR/EDITAR PRODUCTO O SERVICIO
+   ======================================== -->
+
+<section class="rsi-producto-form-section">
+    <div class="rsi-container">
+        
+        <!-- Título dinámico -->
+        <h1 class="rsi-page-title" id="formPageTitle">
+            <span class="rsi-text-gold">Nuevo</span> Producto o Servicio
+        </h1>
+        <p class="rsi-page-subtitle" id="formPageSubtitle">
+            Registra un nuevo producto o servicio para usar en cotizaciones y facturas.
+        </p>
+
+        <!-- ===== FORMULARIO ===== -->
+        <form id="productoForm" class="rsi-form-steps" autocomplete="off">
+
+            <!-- Indicador de pasos (igual que áreas) -->
+            <div class="rsi-steps-indicator">
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number active" data-step="1">1</span>
+                    <span class="rsi-step-label active" data-step="1">Producto</span>
+                </div>
+                <div class="rsi-step-line" data-step="1"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number" data-step="2">2</span>
+                    <span class="rsi-step-label" data-step="2">Imagen</span>
+                </div>
+                <div class="rsi-step-line" data-step="2"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number" data-step="3">3</span>
+                    <span class="rsi-step-label" data-step="3">Confirmar</span>
+                </div>
+            </div>
+
+            <!-- Contenedor de pasos -->
+            <div class="rsi-steps-container">
+
+                <!-- ===== PASO 1: INFORMACIÓN DEL PRODUCTO ===== -->
+                <div class="rsi-step-panel active" data-step="1">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <h3 id="step1Title">Información del Producto</h3>
+                        <p id="step1Subtitle">Datos principales del producto o servicio</p>
+                    </div>
+
+                    <div class="rsi-step-body">
+                        <div class="rsi-form-group">
+                            <label for="nombre">Nombre del producto/servicio <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-tag rsi-input-icon"></i>
+                                <input type="text" id="nombre" name="nombre" 
+                                       placeholder="Ej: Cámara IP 2MP, Servicio de Instalación" 
+                                       required minlength="2" maxlength="100">
+                            </div>
+                            <div class="rsi-form-error-message" id="errorNombre"></div>
+                        </div>
+
+                        <div class="rsi-form-group">
+                            <label for="categoriaId">Categoría <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-tags rsi-input-icon"></i>
+                                <select id="categoriaId" name="categoriaId" required>
+                                    <option value="">Selecciona una categoría</option>
+                                    <!-- Se llena dinámicamente -->
+                                </select>
+                            </div>
+                            <div class="rsi-form-error-message" id="errorCategoria"></div>
+                        </div>
+
+                        <div class="rsi-form-group">
+                            <label for="precioUnitario">Precio Unitario <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-dollar-sign rsi-input-icon"></i>
+                                <input type="number" id="precioUnitario" name="precioUnitario" 
+                                       placeholder="0.00" step="0.01" min="0" required>
+                            </div>
+                            <div class="rsi-form-error-message" id="errorPrecio"></div>
+                        </div>
+
+                        <!-- Estado -->
+                        <div class="rsi-form-group">
+                            <label>Estado</label>
+                            <div class="rsi-switch-group">
+                                <label class="rsi-switch-label">
+                                    <span class="rsi-switch-text">
+                                        <i class="fas fa-circle" style="color: var(--rsi-success);"></i>
+                                        Activo
+                                    </span>
+                                    <div class="rsi-switch">
+                                        <input type="checkbox" id="activo" name="activo" checked>
+                                        <span class="rsi-slider"></span>
+                                    </div>
+                                </label>
+                            </div>
+                            <small class="rsi-form-help">Desactivado: No aparecerá en las listas de selección</small>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button class="rsi-btn-prev" disabled>Anterior</button>
+                        <button class="rsi-btn-next" data-next="2">Siguiente <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>1</span> de 3</div>
+                </div>
+
+                <!-- ===== PASO 2: IMAGEN ===== -->
+                <div class="rsi-step-panel" data-step="2">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3>Imagen del Producto</h3>
+                        <p>Sube una imagen para identificar el producto</p>
+                    </div>
+
+                    <div class="rsi-step-body">
+                        <!-- Vista previa de imagen -->
+                        <div class="rsi-image-preview-container">
+                            <div class="rsi-image-preview" id="imagePreview">
+                                <i class="fas fa-image" style="font-size: 3rem; color: var(--rsi-gray-300);"></i>
+                                <p>Sin imagen seleccionada</p>
+                            </div>
+                        </div>
+
+                        <!-- Área de carga -->
+                        <div class="rsi-form-group">
+                            <label for="imagenInput">Subir imagen</label>
+                            <div class="rsi-file-upload-wrapper">
+                                <div class="rsi-file-upload-area" id="dropArea">
+                                    <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--rsi-primary);"></i>
+                                    <p>Arrastra una imagen aquí o haz clic para seleccionar</p>
+                                    <small>Formatos: JPG, PNG, WEBP (Máx 5MB)</small>
+                                    <input type="file" id="imagenInput" accept="image/*" style="display: none;">
+                                </div>
+                            </div>
+                            <div class="rsi-form-error-message" id="errorImagen"></div>
+                        </div>
+
+                        <!-- Botón para eliminar imagen -->
+                        <button type="button" id="removeImageBtn" class="rsi-btn-remove-image" style="display: none;">
+                            <i class="fas fa-trash"></i> Eliminar imagen
+                        </button>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button class="rsi-btn-prev" data-prev="1"><i class="fas fa-arrow-left"></i> Anterior</button>
+                        <button class="rsi-btn-next" data-next="3">Siguiente <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>2</span> de 3</div>
+                </div>
+
+                <!-- ===== PASO 3: CONFIRMACIÓN ===== -->
+                <div class="rsi-step-panel" data-step="3">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Confirmar Registro</h3>
+                        <p>Revisa todos los datos antes de guardar</p>
+                    </div>
+
+                    <div class="rsi-step-body">
+                        <div class="rsi-confirmacion-card">
+                            <h4><i class="fas fa-box" style="color: var(--rsi-primary);"></i> Producto/Servicio</h4>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Nombre:</span>
+                                <span id="confirmNombre" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Categoría:</span>
+                                <span id="confirmCategoria" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Precio:</span>
+                                <span id="confirmPrecio" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Estado:</span>
+                                <span id="confirmEstado" class="rsi-confirmacion-value">-</span>
+                            </div>
+
+                            <hr style="margin: var(--rsi-spacing-md) 0; border-color: var(--rsi-gray-200);">
+
+                            <h4><i class="fas fa-image" style="color: var(--rsi-accent);"></i> Imagen</h4>
+                            <div id="confirmImagenContainer">
+                                <div class="rsi-confirmacion-imagen" id="confirmImagenPreview">
+                                    <i class="fas fa-image" style="font-size: 2rem; color: var(--rsi-gray-300);"></i>
+                                    <p>Sin imagen</p>
+                                </div>
+                            </div>
+
+                            <!-- Auditoría (solo en modo edición) -->
+                            <div id="auditoriaConfirmacion" style="display: none; margin-top: var(--rsi-spacing-md);">
+                                <hr style="margin: var(--rsi-spacing-md) 0; border-color: var(--rsi-gray-200);">
+                                <h4><i class="fas fa-history" style="color: var(--rsi-gray-500);"></i> Auditoría</h4>
+                                <div class="rsi-confirmacion-item">
+                                    <span class="rsi-confirmacion-label">Creado por:</span>
+                                    <span id="confirmCreadoPor" class="rsi-confirmacion-value">-</span>
+                                </div>
+                                <div class="rsi-confirmacion-item">
+                                    <span class="rsi-confirmacion-label">Fecha creación:</span>
+                                    <span id="confirmFechaCreacion" class="rsi-confirmacion-value">-</span>
+                                </div>
+                                <div class="rsi-confirmacion-item">
+                                    <span class="rsi-confirmacion-label">Modificado por:</span>
+                                    <span id="confirmModificadoPor" class="rsi-confirmacion-value">-</span>
+                                </div>
+                                <div class="rsi-confirmacion-item">
+                                    <span class="rsi-confirmacion-label">Fecha modificación:</span>
+                                    <span id="confirmFechaModificacion" class="rsi-confirmacion-value">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button class="rsi-btn-prev" data-prev="2"><i class="fas fa-arrow-left"></i> Anterior</button>
+                        <button class="rsi-btn-submit-step" id="submitProducto">
+                            <i class="fas fa-save"></i> <span id="submitBtnText">Guardar Producto</span>
+                        </button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>3</span> de 3</div>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</section>
+
+<!-- ========================================
+   LOADING OVERLAY
+   ======================================== -->
+<div id="loadingSpinner" class="rsi-loading-overlay" style="display: none;">
+    <div class="rsi-spinner"></div>
+</div>

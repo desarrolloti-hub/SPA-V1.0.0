@@ -1,0 +1,475 @@
+    /* ========== CLIENTE SEARCH ========== */
+    .rsi-cliente-search-container {
+        position: relative;
+        width: 100%;
+    }
+
+    .rsi-cliente-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: var(--rsi-radius-md);
+        box-shadow: var(--shadow-lg);
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 100;
+        margin-top: 4px;
+    }
+
+    .rsi-cliente-option {
+        padding: 10px 14px;
+        cursor: pointer;
+        border-bottom: 1px solid var(--rsi-gray-100);
+        transition: var(--rsi-transition);
+    }
+
+    .rsi-cliente-option:hover {
+        background: rgba(28, 25, 72, 0.05);
+    }
+
+    .rsi-cliente-option:last-child {
+        border-bottom: none;
+    }
+
+    .rsi-cliente-option strong {
+        display: block;
+        color: var(--text-color);
+    }
+
+    .rsi-cliente-option .cliente-info {
+        font-size: 0.8rem;
+        color: var(--rsi-gray-500);
+    }
+
+    .rsi-cliente-option.manual {
+        background: rgba(28, 25, 72, 0.05);
+        border-top: 1px solid var(--border-color);
+    }
+
+    .rsi-cliente-option.manual:hover {
+        background: rgba(28, 25, 72, 0.1);
+    }
+
+    /* ========== PRODUCTO SEARCH ========== */
+    .rsi-producto-search-container {
+        position: relative;
+        width: 100%;
+    }
+
+    .rsi-producto-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: var(--rsi-radius-md);
+        box-shadow: var(--shadow-lg);
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 100;
+        margin-top: 4px;
+    }
+
+    .rsi-producto-option {
+        padding: 10px 14px;
+        cursor: pointer;
+        border-bottom: 1px solid var(--rsi-gray-100);
+        transition: var(--rsi-transition);
+    }
+
+    .rsi-producto-option:hover {
+        background: rgba(28, 25, 72, 0.05);
+    }
+
+    .rsi-producto-option:last-child {
+        border-bottom: none;
+    }
+
+    .rsi-producto-option strong {
+        display: block;
+        color: var(--text-color);
+    }
+
+    .rsi-producto-option .producto-info {
+        font-size: 0.8rem;
+        color: var(--rsi-gray-500);
+        display: flex;
+        gap: var(--rsi-spacing-md);
+    }
+
+    /* ========== TABLA DE ITEMS ========== */
+    .rsi-table-container {
+        margin: var(--rsi-spacing-md) 0;
+    }
+
+    .rsi-table-header-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--rsi-spacing-sm);
+    }
+
+    .rsi-table-header-actions h4 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-color);
+        display: flex;
+        align-items: center;
+        gap: var(--rsi-spacing-sm);
+    }
+
+    .rsi-btn-add-item {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--rsi-spacing-xs);
+        padding: 0.4rem 1rem;
+        background: var(--rsi-primary);
+        color: white;
+        border: none;
+        border-radius: var(--rsi-radius-md);
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: var(--rsi-transition);
+    }
+
+    .rsi-btn-add-item:hover {
+        background: var(--rsi-primary-dark);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+    }
+
+    .rsi-items-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+
+    .rsi-items-table thead th {
+        background: var(--rsi-gray-100);
+        color: var(--text-color);
+        padding: 8px 10px;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid var(--border-color);
+    }
+
+    .rsi-items-table tbody td {
+        padding: 6px 10px;
+        border-bottom: 1px solid var(--rsi-gray-100);
+        vertical-align: middle;
+    }
+
+    .rsi-items-table select,
+    .rsi-items-table input {
+        width: 100%;
+        padding: 4px 6px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--rsi-radius-sm);
+        background: var(--input-bg);
+        color: var(--text-color);
+        font-size: 0.85rem;
+        transition: var(--rsi-transition);
+    }
+
+    .rsi-items-table select:focus,
+    .rsi-items-table input:focus {
+        outline: none;
+        border-color: var(--rsi-primary);
+        box-shadow: 0 0 0 2px rgba(28, 25, 72, 0.1);
+    }
+
+    .rsi-items-table .item-total {
+        font-weight: 600;
+        color: var(--rsi-primary);
+    }
+
+    .rsi-btn-remove-item {
+        background: transparent;
+        border: none;
+        color: var(--rsi-danger);
+        cursor: pointer;
+        padding: 4px 6px;
+        border-radius: var(--rsi-radius-sm);
+        transition: var(--rsi-transition);
+    }
+
+    .rsi-btn-remove-item:hover {
+        background: rgba(220, 53, 69, 0.1);
+    }
+
+    .drag-handle {
+        cursor: grab;
+        color: var(--rsi-gray-400);
+        font-size: 1.2rem;
+        user-select: none;
+    }
+
+    .drag-handle:active {
+        cursor: grabbing;
+    }
+
+    /* ========== TOTALES ========== */
+    .rsi-totales-container {
+        background: var(--rsi-gray-50);
+        border-radius: var(--rsi-radius-md);
+        padding: var(--rsi-spacing-md);
+        margin: var(--rsi-spacing-md) 0;
+        border: 1px solid var(--border-color);
+    }
+
+    .rsi-totales-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 0;
+        gap: var(--rsi-spacing-md);
+    }
+
+    .rsi-totales-row label {
+        font-weight: 500;
+        font-size: 0.9rem;
+        color: var(--text-color);
+        min-width: 120px;
+    }
+
+    .rsi-totales-row input {
+        width: 100px;
+        padding: 4px 8px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--rsi-radius-sm);
+        background: var(--input-bg);
+        color: var(--text-color);
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .rsi-totales-row input:focus {
+        outline: none;
+        border-color: var(--rsi-primary);
+        box-shadow: 0 0 0 2px rgba(28, 25, 72, 0.1);
+    }
+
+    .rsi-totales-label {
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--text-color);
+    }
+
+    .rsi-totales-value {
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--rsi-primary);
+    }
+
+    .rsi-totales-total {
+        border-top: 2px solid var(--border-color);
+        padding-top: var(--rsi-spacing-sm);
+        margin-top: var(--rsi-spacing-xs);
+    }
+
+    .rsi-totales-total .rsi-totales-label {
+        font-size: 1.1rem;
+        color: var(--rsi-primary);
+    }
+
+    .rsi-totales-total .rsi-totales-value {
+        font-size: 1.2rem;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+        .rsi-items-table {
+            font-size: 0.8rem;
+        }
+
+        .rsi-items-table thead {
+            display: none;
+        }
+
+        .rsi-items-table tbody tr {
+            display: block;
+            border: 1px solid var(--border-color);
+            border-radius: var(--rsi-radius-md);
+            padding: var(--rsi-spacing-sm);
+            margin-bottom: var(--rsi-spacing-sm);
+        }
+
+        .rsi-items-table tbody td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--rsi-gray-100);
+        }
+
+        .rsi-items-table tbody td:last-child {
+            border-bottom: none;
+        }
+
+        .rsi-items-table tbody td::before {
+            content: attr(data-label);
+            font-weight: 600;
+            font-size: 0.75rem;
+            color: var(--rsi-gray-500);
+            margin-right: var(--rsi-spacing-sm);
+        }
+
+        .rsi-items-table select,
+        .rsi-items-table input {
+            width: auto;
+            max-width: 120px;
+        }
+
+        .rsi-totales-row {
+            flex-wrap: wrap;
+        }
+
+        .rsi-totales-row input {
+            width: 80px;
+        }
+
+        .rsi-table-header-actions {
+            flex-direction: column;
+            gap: var(--rsi-spacing-sm);
+        }
+    }
+
+    /* ========== MODO OSCURO ========== */
+    body.dark-mode .rsi-items-table thead th {
+        background: var(--rsi-gray-700);
+        color: var(--text-color);
+    }
+
+    body.dark-mode .rsi-cliente-dropdown,
+    body.dark-mode .rsi-producto-dropdown {
+        background: var(--card-bg);
+        border-color: var(--border-color);
+    }
+
+    body.dark-mode .rsi-cliente-option,
+    body.dark-mode .rsi-producto-option {
+        border-color: var(--rsi-gray-300);
+    }
+
+    body.dark-mode .rsi-cliente-option:hover,
+    body.dark-mode .rsi-producto-option:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    body.dark-mode .rsi-totales-container {
+        background: var(--rsi-gray-800);
+        border-color: var(--border-color);
+    }
+
+    body.dark-mode .rsi-cliente-option.manual {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+/* Estilos corregidos para el contenedor*/    
+/* ========== DROPDOWNS - CLIENTES Y PRODUCTOS ========== */
+.rsi-cliente-dropdown,
+.rsi-producto-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--card-bg, #ffffff) !important;
+    border: 1px solid var(--border-color, #e0e0e0);
+    border-radius: var(--rsi-radius-md, 8px);
+    box-shadow: var(--shadow-lg, 0 10px 30px rgba(0,0,0,0.12));
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 1000;
+    margin-top: 4px;
+    padding: 4px 0;
+}
+
+.rsi-cliente-option,
+.rsi-producto-option {
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--rsi-gray-100, #f1f3f5);
+    transition: var(--rsi-transition-base, 0.3s ease);
+    background: var(--card-bg, #ffffff) !important;
+}
+
+.rsi-cliente-option:last-child,
+.rsi-producto-option:last-child {
+    border-bottom: none;
+}
+
+.rsi-cliente-option:hover,
+.rsi-producto-option:hover {
+    background: var(--rsi-gray-50, #f8f9fa) !important;
+}
+
+.rsi-cliente-option strong,
+.rsi-producto-option strong {
+    display: block;
+    color: var(--text-color, #333);
+}
+
+.rsi-cliente-option .cliente-info,
+.rsi-producto-option .producto-info {
+    font-size: 0.8rem;
+    color: var(--rsi-gray-500, #6c757d);
+    display: flex;
+    gap: var(--rsi-spacing-md, 16px);
+    flex-wrap: wrap;
+}
+
+.rsi-cliente-option.manual,
+.rsi-producto-option.manual {
+    background: var(--rsi-gray-50, #f8f9fa) !important;
+    border-top: 1px solid var(--border-color, #e0e0e0);
+    font-weight: 500;
+}
+
+.rsi-cliente-option.manual:hover,
+.rsi-producto-option.manual:hover {
+    background: var(--rsi-gray-100, #f1f3f5) !important;
+}
+
+/* Modo oscuro */
+body.dark-mode .rsi-cliente-dropdown,
+body.dark-mode .rsi-producto-dropdown {
+    background: var(--card-bg, #2a2a35) !important;
+    border-color: var(--border-color, #3d3e4a);
+}
+
+body.dark-mode .rsi-cliente-option,
+body.dark-mode .rsi-producto-option {
+    background: var(--card-bg, #2a2a35) !important;
+    border-color: var(--rsi-gray-300, #343540);
+}
+
+body.dark-mode .rsi-cliente-option:hover,
+body.dark-mode .rsi-producto-option:hover {
+    background: var(--rsi-gray-200, #2a2a35) !important;
+}
+
+body.dark-mode .rsi-cliente-option strong,
+body.dark-mode .rsi-producto-option strong {
+    color: var(--text-color, #e8e9f0);
+}
+
+body.dark-mode .rsi-cliente-option .cliente-info,
+body.dark-mode .rsi-producto-option .producto-info {
+    color: var(--rsi-gray-400, #8a8b98);
+}
+
+body.dark-mode .rsi-cliente-option.manual,
+body.dark-mode .rsi-producto-option.manual {
+    background: var(--rsi-gray-100, #22222e) !important;
+}
+
+body.dark-mode .rsi-cliente-option.manual:hover,
+body.dark-mode .rsi-producto-option.manual:hover {
+    background: var(--rsi-gray-200, #2a2a35) !important;
+}

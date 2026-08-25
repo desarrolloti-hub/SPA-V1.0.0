@@ -1,0 +1,119 @@
+<!-- ========================================
+   PANEL CRUD - Gestión de Clientes
+   ======================================== -->
+
+<section class="rsi-clientes-section">
+    <div class="rsi-container">
+        
+        <!-- Título -->
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Gestión</span> de Clientes
+        </h1>
+        <p class="rsi-page-subtitle">
+            Administra todos los clientes del sistema.
+        </p>
+
+        <!-- ===== PANEL CRUD ===== -->
+        <div class="rsi-panel-crud">
+            
+            <!-- Header -->
+            <div class="rsi-panel-header">
+                <h2>
+                    <i class="fas fa-users"></i>
+                    Clientes Registrados
+                    <span id="clienteCount" class="rsi-badge rsi-badge-primary" style="font-size: 0.8rem;">0</span>
+                </h2>
+                <div class="rsi-panel-actions">
+                    <button id="refreshClientes" class="rsi-btn-crud rsi-btn-crud-outline">
+                        <i class="fas fa-sync"></i> Actualizar
+                    </button>
+                    <a href="/partner/cliente" class="rsi-btn-crud rsi-btn-crud-primary">
+                        <i class="fas fa-user-plus"></i> Nuevo Cliente
+                    </a>
+                </div>
+            </div>
+
+            <!-- 🔥 BUSCADOR -->
+            <div class="rsi-search-container">
+                <div class="rsi-search-box">
+                    <div class="rsi-search-input-wrapper">
+                        <input 
+                            type="text" 
+                            id="searchCliente" 
+                            placeholder="Buscar por razón social o RFC..." 
+                            class="rsi-search-input"
+                            autocomplete="off"
+                        >
+                        <button id="clearSearchBtn" class="rsi-btn-clear-search" style="display: none;" title="Limpiar búsqueda">
+                            <i class="fas fa-times-circle"></i>
+                        </button>
+                    </div>
+                    <button id="searchClienteBtn" class="rsi-btn-search">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
+                </div>
+                
+                <!-- Resultados de búsqueda -->
+                <div id="searchResultsInfo" class="rsi-search-results-info" style="display: none;">
+                    <span id="searchResultsText"></span>
+                    <button id="clearSearchResults" class="rsi-btn-clear-results">
+                        <i class="fas fa-times"></i> Limpiar búsqueda
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="rsi-loading-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Cargando clientes...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="rsi-empty-state" style="display: none;">
+                <i class="fas fa-users"></i>
+                <h3 id="emptyStateTitle">No hay clientes registrados</h3>
+                <p id="emptyStateText">Comienza registrando tu primer cliente.</p>
+                <a href="/partner/cliente" class="rsi-btn-crud rsi-btn-crud-primary">
+                    <i class="fas fa-user-plus"></i> Registrar primer cliente
+                </a>
+            </div>
+
+            <!-- Tabla -->
+            <div class="rsi-table-wrapper" style="display: none;">
+                <table class="rsi-table">
+                    <thead>
+                        <tr>
+                            <th>Razón Social</th>
+                            <th>RFC</th>
+                            <th>Email</th>
+                            <th>Validación SAT</th>
+                            <th>Facturama</th>
+                            <th>Estado</th>
+                            <th>Creado por</th>
+                            <th style="text-align: center;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientesTableBody">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div id="paginationContainer" class="rsi-pagination" style="display: none;">
+                <div class="rsi-pagination-info">
+                    <span id="pageInfo">Página 1 de 1 (0 items)</span>
+                </div>
+                <div class="rsi-pagination-controls">
+                    <button id="prevPage" class="rsi-btn-page" disabled>
+                        <i class="fas fa-chevron-left"></i> Anterior
+                    </button>
+                    <button id="nextPage" class="rsi-btn-page" disabled>
+                        Siguiente <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

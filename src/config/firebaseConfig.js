@@ -1,3 +1,4 @@
+// src/config/firebaseConfig.js
 /* ========================================
    FIREBASE CONFIG - Módulo ES6
    Compatible con Firebase v9+ (modular)
@@ -18,9 +19,9 @@ import {
     where, 
     orderBy, 
     limit,
-    startAfter,        // ✅ AGREGAR startAfter
-    startAt,           // ✅ AGREGAR startAt
-    endAt,             // ✅ AGREGAR endAt
+    startAfter,
+    startAt,
+    endAt,
     setDoc,
     Timestamp,
     writeBatch
@@ -42,8 +43,17 @@ import {
     ref, 
     uploadBytes, 
     getDownloadURL, 
-    deleteObject 
+    deleteObject,
+    getMetadata
 } from 'firebase/storage';
+
+// 🔥 NUEVO: Importar funciones de Messaging
+import { 
+    getMessaging, 
+    getToken, 
+    onMessage,
+    isSupported
+} from 'firebase/messaging';
 
 // ==========================================
 // CONFIGURACIÓN DE FIREBASE
@@ -72,6 +82,18 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const storage = getStorage(app);
 
+// 🔥 NUEVO: Inicializar Messaging (solo en navegador)
+let messaging = null;
+if (typeof window !== 'undefined') {
+    // Verificar si el navegador soporta messaging
+    try {
+        messaging = getMessaging(app);
+        console.log('✅ Firebase Messaging inicializado');
+    } catch (error) {
+        console.warn('⚠️ Firebase Messaging no soportado en este entorno:', error);
+    }
+}
+
 console.log('✅ Firebase inicializado correctamente');
 
 // ==========================================
@@ -79,7 +101,7 @@ console.log('✅ Firebase inicializado correctamente');
 // ==========================================
 
 // Exportar servicios principales
-export { db, auth, storage, app };
+export { db, auth, storage, app, messaging };
 
 // ✅ Exportar TODAS las funciones de Firestore
 export {
@@ -95,9 +117,9 @@ export {
     where,
     orderBy,
     limit,
-    startAfter,      // ✅ Exportar startAfter
-    startAt,         // ✅ Exportar startAt
-    endAt,           // ✅ Exportar endAt
+    startAfter,
+    startAt,
+    endAt,
     Timestamp,
     writeBatch
 };
@@ -113,12 +135,20 @@ export {
     sendEmailVerification
 };
 
-// Exportar funciones de Storage
+// ✅ Exportar funciones de Storage (incluyendo getMetadata)
 export {
     ref,
     uploadBytes,
     getDownloadURL,
-    deleteObject
+    deleteObject,
+    getMetadata
+};
+
+// 🔥 NUEVO: Exportar funciones de Messaging
+export {
+    getToken,
+    onMessage,
+    isSupported
 };
 
 // ==========================================
@@ -130,6 +160,7 @@ export default {
     db,
     auth,
     storage,
+    messaging, // 🔥 Nuevo
     // Firestore
     collection,
     doc,
@@ -143,9 +174,9 @@ export default {
     where,
     orderBy,
     limit,
-    startAfter,      // ✅ Exportar startAfter
-    startAt,         // ✅ Exportar startAt
-    endAt,           // ✅ Exportar endAt
+    startAfter,
+    startAt,
+    endAt,
     Timestamp,
     writeBatch,
     // Auth
@@ -160,5 +191,10 @@ export default {
     ref,
     uploadBytes,
     getDownloadURL,
-    deleteObject
+    deleteObject,
+    getMetadata,
+    // Messaging 🔥 Nuevo
+    getToken,
+    onMessage,
+    isSupported
 };

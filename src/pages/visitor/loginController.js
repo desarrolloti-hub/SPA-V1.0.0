@@ -21,7 +21,7 @@ export async function loginController() {
     if (session) {
         console.log('👤 Sesión activa detectada:', session.email);
         // Redirigir al dashboard o home
-        window.location.href = '/partner/users';
+        window.location.href = '/partner/dashboard';
          return;
     }
     
@@ -223,8 +223,8 @@ async function handleSubmit() {
             showConfirmButton: false
         }).then(() => {
             // Redirigir según rol
-            if (result.user.rol === 'admin') {
-                window.location.href = '/admin/dashboard';
+            if (result.user.rol === 'partner') {
+                window.location.href = '/partner/dashboard';
             } else {
                 window.location.href = '/';
             }

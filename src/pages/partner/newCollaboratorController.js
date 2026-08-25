@@ -71,10 +71,10 @@ export async function newCollaboratorController() {
         console.log('✏️ Modo edición - Colaborador ID:', editingDocId);
     }
     
-    // Cargar áreas antes de cargar los datos del colaborador
+    // ✅ PRIMERO: Cargar áreas
     await loadAreas();
     
-    // Si es modo edición, cargar los datos del colaborador
+    // ✅ SEGUNDO: Si es modo edición, cargar los datos del colaborador
     if (isEditMode && editingDocId) {
         await loadCollaboratorData(editingDocId);
     }
@@ -166,27 +166,38 @@ async function loadCollaboratorData(docId) {
         const areaSelect = document.getElementById('area');
         const subareaSelect = document.getElementById('subarea');
         
+        // ✅ Esperar a que las áreas estén cargadas y seleccionar
         if (areaSelect && areaNombre) {
-            setTimeout(() => {
-                for (const option of areaSelect.options) {
-                    if (option.value === areaNombre) {
-                        option.selected = true;
-                        break;
-                    }
+            // Buscar y seleccionar el área
+            let areaFound = false;
+            for (const option of areaSelect.options) {
+                if (option.value === areaNombre) {
+                    option.selected = true;
+                    areaFound = true;
+                    break;
                 }
+            }
+            
+            // Si el área existe en el mapa, disparar cambio para cargar subáreas
+            if (areaFound && areasDataMap[areaNombre]) {
+                // Disparar evento change para cargar subáreas
                 areaSelect.dispatchEvent(new Event('change'));
                 
-                setTimeout(() => {
-                    if (subareaSelect && subareaNombre) {
-                        for (const option of subareaSelect.options) {
-                            if (option.value === subareaNombre) {
-                                option.selected = true;
-                                break;
-                            }
+                // ✅ Esperar un momento para que se carguen las subáreas
+                await new Promise(resolve => setTimeout(resolve, 300));
+                
+                // Seleccionar la subárea
+                if (subareaSelect && subareaNombre) {
+                    for (const option of subareaSelect.options) {
+                        if (option.value === subareaNombre) {
+                            option.selected = true;
+                            break;
                         }
                     }
-                }, 200);
-            }, 300);
+                }
+            } else {
+                console.warn('⚠️ Área no encontrada en el mapa:', areaNombre);
+            }
         }
         
         document.getElementById('tipoColaborador').value = collaborator.tipoColaborador || '';
@@ -257,22 +268,26 @@ async function loadAreas() {
             return;
         }
 
+        // Mostrar loading en los selects
         areaSelect.innerHTML = '<option value="">Cargando áreas...</option>';
         if (subareaSelect) {
             subareaSelect.innerHTML = '<option value="">Selecciona un área primero</option>';
         }
 
         const areas = await service.getAreasForSelect();
+        console.log('📋 Áreas recibidas:', areas);
         
+        // ✅ Guardar en mapa para acceso rápido por nombre
         areasDataMap = {};
         areas.forEach(area => {
             areasDataMap[area.nombre] = {
                 id: area.id,
                 nombre: area.nombre,
-                subareas: area.subareas
+                subareas: area.subareas || []
             };
         });
         
+        // Limpiar y llenar select de áreas
         areaSelect.innerHTML = '<option value="">Seleccionar...</option>';
         
         if (areas.length === 0) {
@@ -289,6 +304,7 @@ async function loadAreas() {
         });
 
         console.log('✅ Áreas cargadas:', areas.length);
+        console.log('📋 areasDataMap:', Object.keys(areasDataMap));
 
     } catch (error) {
         console.error('❌ Error cargando áreas:', error);
@@ -306,10 +322,12 @@ function updateSubareas(areaNombre) {
     const subareaSelect = document.getElementById('subarea');
     if (!subareaSelect) return;
 
+    // Limpiar subáreas
     subareaSelect.innerHTML = '<option value="">Seleccionar...</option>';
 
     if (!areaNombre || !areasDataMap[areaNombre]) {
         subareaSelect.innerHTML = '<option value="">Selecciona un área primero</option>';
+        console.warn('⚠️ Área no encontrada en mapa:', areaNombre);
         return;
     }
 
@@ -321,6 +339,7 @@ function updateSubareas(areaNombre) {
         return;
     }
 
+    // Llenar subáreas con sus IDs
     subareas.forEach(subarea => {
         const option = document.createElement('option');
         option.value = subarea.nombre;

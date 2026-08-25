@@ -1,9 +1,13 @@
+// src/main.js
 import { loadLayout } from './components/shared/loadLayout.js';
 import { initNavbarController } from './components/visitor/navbarController.js';
 import { initFooterController } from './components/visitor/footerController.js';
 import { initFooterPartnerController } from './components/partner/footerPartnertController.js';
 import { initRouter } from './router/router.js';
 import { ThemeService } from './components/shared/themeService.js';
+
+// ✅ ELIMINAR imports de notificaciones
+// Ya no se importan aquí
 
 function loadExternalScripts() {
     return new Promise((resolve) => {
@@ -53,13 +57,13 @@ async function initApp() {
         
         // 3. Inicializar controllers de layout
         initNavbarController();
-        
-        // ✅ Inicializar AMBOS controllers (cada uno busca su propio footer)
-        initFooterController();        // Para el footer visitante
-        initFooterPartnerController(); // Para el footer partner
+        initFooterController();
+        initFooterPartnerController();
         
         // 4. Inicializar router
         initRouter();
+        
+        // ✅ ELIMINAR toda la lógica de notificaciones de aquí
         
         console.log('✅ Aplicación inicializada correctamente');
     } catch (error) {
@@ -67,4 +71,5 @@ async function initApp() {
     }
 }
 
+// Iniciar la aplicación
 initApp();

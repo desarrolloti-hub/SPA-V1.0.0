@@ -1,0 +1,456 @@
+<!-- ========================================
+   PANEL CRUD - Gestión de Tickets
+   ======================================== -->
+
+<section class="rsi-tickets-section">
+    <div class="rsi-container">
+        
+        <!-- Título -->
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Gestión</span> de Tickets
+        </h1>
+        <p class="rsi-page-subtitle">
+            Administra todos los tickets del sistema.
+        </p>
+
+        <!-- ===== PANEL CRUD ===== -->
+        <div class="rsi-panel-crud">
+            
+            <!-- Header -->
+            <div class="rsi-panel-header">
+                <h2>
+                    <i class="fas fa-ticket-alt"></i>
+                    Tickets Registrados
+                    <span id="ticketCount" class="rsi-badge rsi-badge-primary" style="font-size: 0.8rem;">0</span>
+                </h2>
+                <div class="rsi-panel-actions">
+                    <button id="refreshTickets" class="rsi-btn-crud rsi-btn-crud-outline">
+                        <i class="fas fa-sync"></i> Actualizar
+                    </button>
+                    <a href="/partner/ticket" class="rsi-btn-crud rsi-btn-crud-primary">
+                        <i class="fas fa-plus"></i> Nuevo Ticket
+                    </a>
+                </div>
+            </div>
+
+            <!-- 🔥 BUSCADOR -->
+            <div class="rsi-search-container">
+                <div class="rsi-search-box">
+                    <div class="rsi-search-input-wrapper">
+                        <span class="rsi-search-icon"><i class="fas fa-search"></i></span>
+                        <input 
+                            type="text" 
+                            id="searchTicket" 
+                            placeholder="Buscar por título, ID o cliente..." 
+                            class="rsi-search-input"
+                            autocomplete="off"
+                        >
+                        <button id="clearSearchBtn" class="rsi-btn-clear-search" style="display: none;" title="Limpiar búsqueda">
+                            <i class="fas fa-times-circle"></i>
+                        </button>
+                    </div>
+                    <button id="searchTicketBtn" class="rsi-btn-search">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
+                </div>
+                
+                <!-- Resultados de búsqueda -->
+                <div id="searchResultsInfo" class="rsi-search-results-info" style="display: none;">
+                    <span id="searchResultsText"></span>
+                    <button id="clearSearchResults" class="rsi-btn-clear-results">
+                        <i class="fas fa-times"></i> Limpiar búsqueda
+                    </button>
+                </div>
+            </div>
+
+            <!-- Estadísticas -->
+            <div id="ticketStats" class="rsi-stats-container">
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" id="statTotal">0</span>
+                    <span class="rsi-stat-label">Total</span>
+                </div>
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" style="color: var(--rsi-warning);" id="statPendientes">0</span>
+                    <span class="rsi-stat-label">Pendientes</span>
+                </div>
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" style="color: var(--rsi-info);" id="statEnProceso">0</span>
+                    <span class="rsi-stat-label">En Proceso</span>
+                </div>
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" style="color: var(--rsi-success);" id="statFinalizados">0</span>
+                    <span class="rsi-stat-label">Finalizados</span>
+                </div>
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" style="color: var(--rsi-danger);" id="statCancelados">0</span>
+                    <span class="rsi-stat-label">Cancelados</span>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="rsi-loading-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Cargando tickets...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="rsi-empty-state" style="display: none;">
+                <i class="fas fa-ticket-alt"></i>
+                <h3 id="emptyStateTitle">No hay tickets registrados</h3>
+                <p id="emptyStateText">Comienza creando tu primer ticket.</p>
+                <a href="/partner/ticket" class="rsi-btn-crud rsi-btn-crud-primary">
+                    <i class="fas fa-plus"></i> Crear primer ticket
+                </a>
+            </div>
+
+            <!-- Tabla -->
+            <div class="rsi-table-wrapper" style="display: none;">
+                <table class="rsi-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Cliente</th>
+                            <th>Fecha Creación</th>
+                            <th>Estado</th>
+                            <th>Prioridad</th>
+                            <th>Asignado a</th>
+                            <th>Creado por</th>
+                            <th style="text-align: center;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ticketsTableBody">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div id="paginationContainer" class="rsi-pagination" style="display: none;">
+                <div class="rsi-pagination-info">
+                    <span id="pageInfo">Página 1 de 1 (0 items)</span>
+                </div>
+                <div class="rsi-pagination-controls">
+                    <button id="prevPage" class="rsi-btn-page" disabled>
+                        <i class="fas fa-chevron-left"></i> Anterior
+                    </button>
+                    <button id="nextPage" class="rsi-btn-page" disabled>
+                        Siguiente <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<style>
+    /* ========================================
+   ESTILOS ESPECÍFICOS PARA TICKETS CRUD
+   ======================================== */
+
+.rsi-tickets-section {
+    padding: var(--rsi-spacing-2xl) 0;
+}
+
+/* Badges de estado específicos para tickets */
+.rsi-badge-status.pendiente {
+    background: rgba(255, 193, 7, 0.15);
+    color: #856404;
+}
+
+.rsi-badge-status.en-proceso {
+    background: rgba(23, 162, 184, 0.15);
+    color: #0c5460;
+}
+
+.rsi-badge-status.finalizado {
+    background: rgba(40, 167, 69, 0.15);
+    color: #155724;
+}
+
+.rsi-badge-status.cancelado {
+    background: rgba(220, 53, 69, 0.15);
+    color: #721c24;
+}
+
+/* Badges de prioridad */
+.rsi-badge-prioridad {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.rsi-badge-prioridad.alta {
+    background: rgba(220, 53, 69, 0.15);
+    color: var(--rsi-danger);
+}
+
+.rsi-badge-prioridad.media {
+    background: rgba(255, 193, 7, 0.15);
+    color: #856404;
+}
+
+.rsi-badge-prioridad.baja {
+    background: rgba(40, 167, 69, 0.15);
+    color: var(--rsi-success);
+}
+
+/* Tags de colaboradores en la tabla */
+.rsi-colaboradores-tags-mini {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.rsi-colaborador-tag-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--rsi-gray-100);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-colaborador-tag-mini .rsi-avatar-mini {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+    font-size: 0.6rem;
+    font-weight: 700;
+}
+
+.rsi-colaborador-tag-mini .rsi-avatar-mini img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rsi-colaborador-tag-mini .rsi-avatar-mini.fallback {
+    background: var(--rsi-gray-400);
+    color: var(--rsi-white);
+}
+
+.rsi-colaborador-mas {
+    font-size: 0.65rem;
+    color: var(--rsi-gray-500);
+    padding: 2px 6px;
+    background: var(--rsi-gray-100);
+    border-radius: 12px;
+}
+
+/* Tipo de ticket badge */
+.rsi-badge-tipo {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.rsi-badge-tipo.operativo {
+    background: rgba(28, 25, 72, 0.1);
+    color: var(--rsi-primary);
+}
+
+.rsi-badge-tipo.administracion {
+    background: rgba(108, 117, 125, 0.15);
+    color: var(--rsi-gray-600);
+}
+
+/* Botón cancelar */
+.rsi-btn-icon-cancel {
+    color: var(--rsi-danger);
+}
+
+.rsi-btn-icon-cancel:hover {
+    background: var(--rsi-danger);
+    color: var(--rsi-white);
+}
+
+.rsi-btn-icon-cancel:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Tooltip para descripción en tabla */
+.rsi-descripcion-container {
+    position: relative;
+    display: inline-block;
+    max-width: 150px;
+    cursor: help;
+}
+
+.rsi-descripcion-texto {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.85rem;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-descripcion-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 120%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--rsi-gray-900);
+    color: var(--rsi-white);
+    padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    border-radius: var(--rsi-radius-sm);
+    font-size: 0.85rem;
+    white-space: normal;
+    word-wrap: break-word;
+    max-width: 300px;
+    min-width: 150px;
+    z-index: 100;
+    transition: all 0.3s ease;
+    box-shadow: var(--rsi-shadow-lg);
+    line-height: 1.5;
+}
+
+.rsi-descripcion-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--rsi-gray-900);
+}
+
+.rsi-descripcion-container:hover .rsi-descripcion-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ==========================================
+   MODO OSCURO
+   ========================================== */
+
+body.dark-mode .rsi-colaborador-tag-mini {
+    background: var(--rsi-gray-700);
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-colaborador-mas {
+    background: var(--rsi-gray-700);
+    color: var(--rsi-gray-400);
+}
+
+body.dark-mode .rsi-badge-tipo.operativo {
+    background: rgba(74, 158, 255, 0.15);
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-badge-tipo.administracion {
+    background: rgba(108, 117, 125, 0.2);
+    color: var(--rsi-gray-400);
+}
+
+body.dark-mode .rsi-badge-prioridad.alta {
+    background: rgba(220, 53, 69, 0.2);
+}
+
+body.dark-mode .rsi-badge-prioridad.media {
+    background: rgba(255, 193, 7, 0.2);
+}
+
+body.dark-mode .rsi-badge-prioridad.baja {
+    background: rgba(40, 167, 69, 0.2);
+}
+
+body.dark-mode .rsi-badge-status.pendiente {
+    background: rgba(255, 193, 7, 0.2);
+}
+
+body.dark-mode .rsi-badge-status.en-proceso {
+    background: rgba(23, 162, 184, 0.2);
+}
+
+body.dark-mode .rsi-badge-status.finalizado {
+    background: rgba(40, 167, 69, 0.2);
+}
+
+body.dark-mode .rsi-badge-status.cancelado {
+    background: rgba(220, 53, 69, 0.2);
+}
+
+body.dark-mode .rsi-descripcion-tooltip {
+    background: var(--rsi-gray-700);
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-descripcion-tooltip::after {
+    border-top-color: var(--rsi-gray-700);
+}
+
+body.dark-mode .rsi-descripcion-texto {
+    color: var(--rsi-text-light);
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 768px) {
+    .rsi-tickets-section {
+        padding: var(--rsi-spacing-lg) 0;
+    }
+
+    .rsi-colaboradores-tags-mini {
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .rsi-colaborador-tag-mini {
+        font-size: 0.65rem;
+        padding: 1px 6px;
+    }
+
+    .rsi-descripcion-container {
+        max-width: 100px;
+    }
+}
+
+@media (max-width: 576px) {
+    .rsi-colaborador-tag-mini .rsi-avatar-mini {
+        width: 16px;
+        height: 16px;
+        font-size: 0.5rem;
+    }
+
+    .rsi-colaboradores-tags-mini {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .rsi-descripcion-container {
+        max-width: 80px;
+    }
+
+    .rsi-badge-tipo {
+        font-size: 0.55rem;
+        padding: 1px 6px;
+    }
+
+    .rsi-badge-prioridad {
+        font-size: 0.6rem;
+        padding: 1px 6px;
+    }
+}
+</style>

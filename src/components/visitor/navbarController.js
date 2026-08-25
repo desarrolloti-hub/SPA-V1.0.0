@@ -522,7 +522,7 @@ function handleTerminarAsistencia() {
 }
 
 /**
- * MANEJA EL LOGOUT
+ * MANEJA EL LOGOUT - ACTUALIZADO PARA REDIRIGIR A /login
  */
 async function handleLogout() {
     const result = await Swal.fire({
@@ -538,16 +538,31 @@ async function handleLogout() {
     
     if (result.isConfirmed) {
         try {
-            await authService.logout();
-            const { reloadLayouts } = await import('../../components/shared/loadLayout.js');
-            await reloadLayouts();
-            window.location.href = '/';
+            // Mostrar loading
+            Swal.fire({
+                title: 'Cerrando sesión...',
+                text: 'Por favor espera un momento',
+                icon: 'info',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            // Ejecutar logout con redirección a /login
+            await authService.logout(true);
+            
+            // Cerrar cualquier SweetAlert abierto
+            Swal.close();
+            
         } catch (error) {
             console.error('❌ Error al cerrar sesión:', error);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Ocurrió un error al cerrar sesión',
+                text: 'Ocurrió un error al cerrar sesión. Intenta nuevamente.',
                 confirmButtonText: 'Intentar de nuevo',
                 confirmButtonColor: '#dc3545'
             });

@@ -68,11 +68,11 @@ export class AuthService {
             }
 
             // 4. Verificar rol (opcional)
-            if (userData.rol !== 'partner' && userData.rol !== 'admin') {
+            if (userData.rol !== 'partner' && userData.rol !== 'admin' && userData.rol !== 'customer') {
                 throw new Error('No tienes permisos para acceder a esta área');
             }
 
-            // 5. Guardar sesión en localStorage (opcional)
+            // 5. Guardar sesión en localStorage
             const session = {
                 uid: user.uid,
                 email: user.email,
@@ -103,12 +103,28 @@ export class AuthService {
 
     /**
      * Cierra sesión
+     * @param {boolean} redirectToLogin - Si debe redirigir al login
      * @returns {Promise<Object>}
      */
-    async logout() {
+    async logout(redirectToLogin = true) {
         try {
-            await this.repository.logout();
+            // Limpiar localStorage primero
             localStorage.removeItem('rsi_session');
+            localStorage.removeItem('rsi_user'); // Por si existe
+            
+            // Cerrar sesión en Firebase
+            await this.repository.logout();
+            
+            // Redirigir al login si se solicita
+            if (redirectToLogin) {
+                // Limpiar cualquier estado de navegación
+                if (typeof window.navigateTo === 'function') {
+                    window.navigateTo('/login');
+                } else {
+                    window.location.href = '/login';
+                }
+            }
+            
             return {
                 success: true,
                 message: 'Sesión cerrada correctamente'

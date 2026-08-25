@@ -5,6 +5,9 @@
 export async function homeController() {
     console.log('🏠 Home controller con animaciones premium');
     
+    // 🔐 Verificar sesión activa y redirigir según rol
+    await checkSessionAndRedirect();
+    
     // Inicializar todas las animaciones elegantes
     initTypingEffect();           // Efecto de escritura en títulos
     initStatsCounter();           // Contadores animados
@@ -17,6 +20,133 @@ export async function homeController() {
     initTypewriterLoop();         // Texto que cambia cíclicamente
     
     console.log('✅ Animaciones premium activadas');
+}
+
+/**
+ * 🔐 VERIFICACIÓN DE SESIÓN Y REDIRECCIÓN SEGÚN ROL
+ * Si hay sesión activa, redirige al dashboard correspondiente
+ * Si no hay sesión, permanece en la página actual
+ */
+async function checkSessionAndRedirect() {
+    try {
+        // Primero verificar si existe sesión en localStorage
+        const sessionData = localStorage.getItem('rsi_session');
+        
+        // Si NO hay sesión, mostrar contenido normal sin alertas
+        if (!sessionData) {
+            console.log('🔓 No hay sesión activa - Mostrar contenido normal');
+            return; // No hay sesión, permanecer en la página sin alertas
+        }
+        
+        // Si HAY sesión, mostrar SweetAlert de carga
+        let loadingAlert = null;
+        
+        try {
+            // Mostrar alerta de carga SOLO cuando hay sesión
+            loadingAlert = Swal.fire({
+                title: 'Verificando sesión...',
+                text: 'Por favor espera un momento',
+                icon: 'info',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            // Pequeño delay para que se vea la animación de carga (opcional)
+            await new Promise(resolve => setTimeout(resolve, 800));
+            
+            // Parsear los datos de sesión
+            const session = JSON.parse(sessionData);
+            
+            // Verificar que los datos sean válidos
+            if (!session || !session.rol) {
+                console.warn('⚠️ Sesión inválida - Mostrar contenido normal');
+                if (loadingAlert) {
+                    Swal.close();
+                }
+                return;
+            }
+            
+            // Determinar la ruta de redirección según el rol
+            let redirectPath = '';
+            let rolDisplay = '';
+            const currentPath = window.location.pathname;
+            
+            switch (session.rol) {
+                case 'partner':
+                    redirectPath = '/partner/dashboard';
+                    rolDisplay = 'Partner';
+                    break;
+                case 'customer':
+                    redirectPath = '/customer/dashboard';
+                    rolDisplay = 'Cliente';
+                    break;
+                case 'admin':
+                    redirectPath = '/admin/dashboard';
+                    rolDisplay = 'Administrador';
+                    break;
+                default:
+                    console.warn(`⚠️ Rol desconocido: ${session.rol} - Mostrar contenido normal`);
+                    if (loadingAlert) {
+                        Swal.close();
+                    }
+                    return;
+            }
+            
+            // Evitar redirección si ya estamos en el dashboard correspondiente
+            if (currentPath.includes(redirectPath)) {
+                console.log(`✅ Ya estás en ${redirectPath}`);
+                if (loadingAlert) {
+                    Swal.close();
+                }
+                return;
+            }
+            
+            // Cerrar el SweetAlert de carga
+            if (loadingAlert) {
+                Swal.close();
+            }
+            
+            // Mostrar SweetAlert de redirección
+            await Swal.fire({
+                title: `¡Bienvenido ${rolDisplay}!`,
+                text: `Redirigiendo a tu dashboard...`,
+                icon: 'success',
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                willClose: () => {
+                    // Redirigir después de cerrar el alert
+                    console.log(`🔄 Sesión activa detectada (${session.rol}) - Redirigiendo a ${redirectPath}`);
+                    window.location.href = redirectPath;
+                }
+            });
+            
+        } catch (error) {
+            console.error('❌ Error al verificar sesión:', error);
+            // Cerrar el SweetAlert de carga si existe
+            if (loadingAlert) {
+                Swal.close();
+            }
+            
+            // Mostrar error pero permanecer en la página
+            await Swal.fire({
+                title: 'Error',
+                text: 'Hubo un problema al verificar tu sesión',
+                icon: 'error',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        }
+        
+    } catch (error) {
+        console.error('❌ Error en checkSessionAndRedirect:', error);
+        // En caso de error, permanecer en la página sin alertas
+    }
 }
 
 /**
@@ -210,8 +340,7 @@ function initNumberGlow() {
  */
 function initGradientBorder() {
     const cards = document.querySelectorAll('.rsi-value-card, .rsi-card-elegant');
-    
-    
+    // Implementación pendiente...
 }
 
 /**

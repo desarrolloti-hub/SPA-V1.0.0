@@ -3,21 +3,16 @@
   "short_name": "RSI",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#E7E6E6",
+  "theme_color": "#E7E6E6",
   "icons": [
     {
-      "src": "/assets/icons/logoApp192x192.png",
+      "src": "/assets/icons/logoApp-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/assets/icons/logoApp256x256.png",
-      "sizes": "256x256",
-      "type": "image/png"
-    },
-    {
-      "src": "/assets/icons/logoApp512x512.png",
+      "src": "/assets/icons/logoApp-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }

@@ -1,0 +1,90 @@
+<!-- ========================================
+   VER PRODUCTO O SERVICIO
+   ======================================== -->
+
+<section class="rsi-producto-view-section">
+    <div class="rsi-container">
+        
+        <!-- Título -->
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Detalle</span> del Producto o Servicio
+        </h1>
+        <p class="rsi-page-subtitle">
+            Información completa del producto o servicio.
+        </p>
+
+        <!-- ===== TARJETA DE DETALLE ===== -->
+        <div class="rsi-view-card" id="viewCard">
+            
+            <!-- Cabecera con imagen y nombre -->
+            <div class="rsi-view-header">
+                <div class="rsi-view-image-container">
+                    <div id="viewImagePreview" class="rsi-view-image">
+                        <i class="fas fa-image" style="font-size: 2.5rem; color: var(--rsi-gray-300);"></i>
+                    </div>
+                </div>
+                <div class="rsi-view-title">
+                    <h2 id="viewNombre">-</h2>
+                    <div class="rsi-view-badges">
+                        <span id="viewEstado" class="rsi-badge-status">-</span>
+                        <span id="viewCategoria" class="rsi-badge rsi-badge-secondary">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Información principal -->
+            <div class="rsi-view-body">
+                <div class="rsi-view-grid">
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Nombre</span>
+                        <span class="rsi-view-value" id="viewNombreValue">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Precio Unitario</span>
+                        <span class="rsi-view-value" id="viewPrecio">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Categoría</span>
+                        <span class="rsi-view-value" id="viewCategoriaValue">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Estado</span>
+                        <span class="rsi-view-value" id="viewEstadoValue">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Línea de tiempo de auditoría -->
+            <div class="rsi-view-timeline">
+                <h3 class="rsi-timeline-title">
+                    <i class="fas fa-history"></i>
+                    Línea de Tiempo
+                </h3>
+                
+                <div class="rsi-timeline" id="timelineContainer">
+                    <!-- Se llena dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Botón de regresar -->
+            <div class="rsi-view-actions">
+                <button type="button" id="backBtn" class="rsi-btn-crud rsi-btn-crud-outline">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ========================================
+   LOADING OVERLAY
+   ======================================== -->
+<div id="loadingSpinner" class="rsi-loading-overlay" style="display: none;">
+    <div class="rsi-spinner"></div>
+</div>
+
+<!-- ========================================
+   ESTILOS - VISTA DETALLE
+   ======================================== -->

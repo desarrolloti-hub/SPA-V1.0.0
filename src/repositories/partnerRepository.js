@@ -117,7 +117,6 @@ export class NewCollaboratorRepository extends BaseRepository {
             { field: 'rol', operator: '==', value: 'partner' }
         ];
         
-        // Si hay término de búsqueda, usar búsqueda
         if (searchTerm && searchTerm.length > 0) {
             return await this.searchCollaboratorsPaginated(searchTerm, pageSize, page);
         }
@@ -142,8 +141,6 @@ export class NewCollaboratorRepository extends BaseRepository {
             const usersCollection = this._getCollection();
             const termLower = searchTerm.toLowerCase();
             
-            // Búsqueda en memoria (para conjuntos pequeños)
-            // Para conjuntos grandes, usar índices compuestos
             const allData = await this.getAllCollaborators(true);
             
             const filtered = allData.filter(c => {
@@ -169,7 +166,6 @@ export class NewCollaboratorRepository extends BaseRepository {
             return result;
         } catch (error) {
             console.error('❌ Error en búsqueda paginada:', error);
-            // Fallback: paginación normal sin búsqueda
             return await this.getPaginatedWithCache(pageSize, page, 
                 [{ field: 'rol', operator: '==', value: 'partner' }], 
                 'createdAt', 'desc'
@@ -253,6 +249,130 @@ export class NewCollaboratorRepository extends BaseRepository {
             { field: 'rol', operator: '==', value: 'partner' }
         ];
         return await this.getStatsWithCache(filters);
+    }
+
+    // ==========================================
+    // 🔥 NUEVOS MÉTODOS PARA NOTIFICACIONES
+    // ==========================================
+
+    /**
+     * 🔥 Guarda el token FCM en el documento del usuario
+     */
+    async saveFCMToken(uid, fcmToken, platform = 'web') {
+        try {
+            const usersCollection = this._getCollection();
+            const q = query(usersCollection, where('uid', '==', uid));
+            const snapshot = await getDocs(q);
+            
+            if (snapshot.empty) {
+                throw new Error('Usuario no encontrado');
+            }
+
+            const docRef = snapshot.docs[0].ref;
+            
+            await updateDoc(docRef, {
+                fcmToken: fcmToken,
+                fcmPlatform: platform,
+                notificationsEnabled: true,
+                fcmTokenUpdatedAt: new Date().toISOString()
+            });
+            
+            this.clearCache();
+            console.log('✅ Token FCM guardado en usuario:', uid);
+            return true;
+        } catch (error) {
+            console.error('❌ Error guardando FCM token:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * 🔥 Guarda la ubicación en el documento del usuario
+     */
+    async saveUserLocation(uid, location) {
+        try {
+            const usersCollection = this._getCollection();
+            const q = query(usersCollection, where('uid', '==', uid));
+            const snapshot = await getDocs(q);
+            
+            if (snapshot.empty) {
+                throw new Error('Usuario no encontrado');
+            }
+
+            const docRef = snapshot.docs[0].ref;
+            
+            await updateDoc(docRef, {
+                location: location,
+                locationEnabled: !!location,
+                locationUpdatedAt: new Date().toISOString()
+            });
+            
+            this.clearCache();
+            console.log('✅ Ubicación guardada en usuario:', uid);
+            return true;
+        } catch (error) {
+            console.error('❌ Error guardando ubicación:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * 🔥 Obtiene el estado de notificaciones del usuario
+     */
+    async getUserNotificationStatus(uid) {
+        try {
+            const usersCollection = this._getCollection();
+            const q = query(usersCollection, where('uid', '==', uid));
+            const snapshot = await getDocs(q);
+            
+            if (snapshot.empty) {
+                return null;
+            }
+
+            const data = snapshot.docs[0].data();
+            return {
+                fcmToken: data.fcmToken || null,
+                notificationsEnabled: data.notificationsEnabled || false,
+                locationEnabled: data.locationEnabled || false,
+                fcmPlatform: data.fcmPlatform || null,
+                location: data.location || null,
+                fcmTokenUpdatedAt: data.fcmTokenUpdatedAt || null,
+                locationUpdatedAt: data.locationUpdatedAt || null
+            };
+        } catch (error) {
+            console.error('❌ Error obteniendo estado:', error);
+            return null;
+        }
+    }
+
+    /**
+     * 🔥 Desactiva las notificaciones del usuario
+     */
+    async disableNotifications(uid) {
+        try {
+            const usersCollection = this._getCollection();
+            const q = query(usersCollection, where('uid', '==', uid));
+            const snapshot = await getDocs(q);
+            
+            if (snapshot.empty) {
+                throw new Error('Usuario no encontrado');
+            }
+
+            const docRef = snapshot.docs[0].ref;
+            
+            await updateDoc(docRef, {
+                fcmToken: '',
+                notificationsEnabled: false,
+                fcmTokenUpdatedAt: new Date().toISOString()
+            });
+            
+            this.clearCache();
+            console.log('✅ Notificaciones desactivadas para:', uid);
+            return true;
+        } catch (error) {
+            console.error('❌ Error desactivando notificaciones:', error);
+            throw error;
+        }
     }
 }
 

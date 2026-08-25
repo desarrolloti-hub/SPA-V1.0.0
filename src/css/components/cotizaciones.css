@@ -1,0 +1,661 @@
+/* ========================================
+   COTIZACIONES FORM - ESTILOS DE PRODUCTOS
+   ======================================== */
+
+/* ==========================================
+   BUSCADOR DE PRODUCTOS
+   ========================================== */
+
+.rsi-producto-search-container {
+    position: relative;
+    width: 100%;
+}
+
+.rsi-producto-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: var(--rsi-bg-card);
+    border: 2px solid var(--rsi-primary);
+    border-radius: var(--rsi-radius-md);
+    max-height: 220px;
+    overflow-y: auto;
+    box-shadow: var(--rsi-shadow-lg);
+    margin-top: 4px;
+    padding: var(--rsi-spacing-xs) 0;
+}
+
+.rsi-producto-dropdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    border-bottom: 1px solid var(--rsi-gray-100);
+}
+
+.rsi-producto-dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.rsi-producto-dropdown-item:hover {
+    background: var(--rsi-gray-100);
+}
+
+.rsi-producto-dropdown-item .producto-nombre {
+    font-weight: 500;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-producto-dropdown-item .producto-detalle {
+    font-size: 0.8rem;
+    color: var(--rsi-gray-500);
+}
+
+.rsi-producto-dropdown-item .producto-precio {
+    font-weight: 600;
+    color: var(--rsi-primary);
+}
+
+/* ==========================================
+   TABLA DE ITEMS
+   ========================================== */
+
+.rsi-table-container {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-md);
+    border: 1px solid var(--rsi-gray-200);
+    overflow: hidden;
+    margin-bottom: var(--rsi-spacing-lg);
+}
+
+.rsi-table-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
+    background: var(--rsi-gray-50);
+    border-bottom: 1px solid var(--rsi-gray-200);
+}
+
+.rsi-table-header-actions h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-table-header-actions h4 i {
+    color: var(--rsi-primary);
+}
+
+.rsi-btn-add-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--rsi-spacing-xs);
+    padding: 8px 16px;
+    background: var(--rsi-primary);
+    color: var(--rsi-white);
+    border: none;
+    border-radius: var(--rsi-radius-sm);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    font-family: var(--rsi-font-secondary);
+}
+
+.rsi-btn-add-item:hover {
+    background: var(--rsi-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-primary);
+}
+
+.rsi-btn-add-item i {
+    font-size: 0.8rem;
+}
+
+.rsi-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.rsi-items-table thead {
+    background: var(--rsi-gray-100);
+}
+
+.rsi-items-table thead th {
+    padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    text-align: left;
+    font-weight: 600;
+    color: var(--rsi-gray-600);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--rsi-gray-200);
+}
+
+.rsi-items-table tbody td {
+    padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    vertical-align: middle;
+    border-bottom: 1px solid var(--rsi-gray-200);
+}
+
+.rsi-items-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.rsi-items-table tbody tr:hover {
+    background: var(--rsi-gray-50);
+}
+
+/* Drag handle para mover items */
+.rsi-drag-handle {
+    cursor: grab;
+    color: var(--rsi-gray-400);
+    font-size: 1.1rem;
+    transition: color var(--rsi-transition-base);
+}
+
+.rsi-drag-handle:hover {
+    color: var(--rsi-primary);
+}
+
+.rsi-drag-handle:active {
+    cursor: grabbing;
+}
+
+/* Inputs dentro de la tabla */
+.rsi-items-table .rsi-item-input {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid var(--rsi-gray-300);
+    border-radius: var(--rsi-radius-sm);
+    font-size: 0.85rem;
+    background: var(--rsi-white);
+    transition: all var(--rsi-transition-base);
+    font-family: var(--rsi-font-secondary);
+}
+
+.rsi-items-table .rsi-item-input:focus {
+    border-color: var(--rsi-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(28, 25, 72, 0.1);
+}
+
+.rsi-items-table .rsi-item-input.input-error {
+    border-color: var(--rsi-danger);
+}
+
+.rsi-items-table .rsi-item-categoria {
+    padding: 6px 10px;
+    border: 1px solid var(--rsi-gray-300);
+    border-radius: var(--rsi-radius-sm);
+    font-size: 0.85rem;
+    background: var(--rsi-white);
+    width: 100%;
+    transition: all var(--rsi-transition-base);
+    font-family: var(--rsi-font-secondary);
+}
+
+.rsi-items-table .rsi-item-categoria:focus {
+    border-color: var(--rsi-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(28, 25, 72, 0.1);
+}
+
+.rsi-items-table .rsi-item-total {
+    font-weight: 600;
+    color: var(--rsi-primary);
+    font-size: 0.9rem;
+}
+
+/* Botón eliminar item */
+.rsi-btn-remove-item {
+    background: transparent;
+    border: none;
+    color: var(--rsi-gray-400);
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: var(--rsi-radius-sm);
+    transition: all var(--rsi-transition-base);
+    font-size: 1rem;
+}
+
+.rsi-btn-remove-item:hover {
+    color: var(--rsi-danger);
+    background: rgba(220, 53, 69, 0.1);
+}
+
+/* ==========================================
+   CONTENEDOR DE TOTALES
+   ========================================== */
+
+.rsi-totales-container {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-md);
+    border: 1px solid var(--rsi-gray-200);
+    padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
+    margin-bottom: var(--rsi-spacing-lg);
+    max-width: 400px;
+    margin-left: auto;
+}
+
+.rsi-totales-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--rsi-spacing-xs) 0;
+    font-size: 0.95rem;
+}
+
+.rsi-totales-row .rsi-totales-label {
+    color: var(--rsi-gray-600);
+    font-weight: 500;
+}
+
+.rsi-totales-row .rsi-totales-value {
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-totales-row input[type="number"] {
+    width: 80px;
+    padding: 4px 8px;
+    border: 1px solid var(--rsi-gray-300);
+    border-radius: var(--rsi-radius-sm);
+    font-size: 0.85rem;
+    text-align: right;
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-totales-row input[type="number"]:focus {
+    border-color: var(--rsi-primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(28, 25, 72, 0.1);
+}
+
+.rsi-totales-row label {
+    font-weight: 500;
+    color: var(--rsi-gray-600);
+    font-size: 0.95rem;
+}
+
+.rsi-totales-total {
+    border-top: 2px solid var(--rsi-primary);
+    padding-top: var(--rsi-spacing-sm);
+    margin-top: var(--rsi-spacing-xs);
+}
+
+.rsi-totales-total .rsi-totales-label {
+    font-weight: 700;
+    color: var(--rsi-primary);
+    font-size: 1.1rem;
+}
+
+.rsi-totales-total .rsi-totales-value {
+    font-weight: 700;
+    color: var(--rsi-primary);
+    font-size: 1.2rem;
+}
+
+/* ==========================================
+   DETALLE DE OPERACIONES
+   ========================================== */
+
+.rsi-detalle-operaciones {
+    font-size: 0.85rem;
+    color: var(--rsi-gray-500);
+}
+
+.rsi-detalle-operaciones small {
+    display: block;
+    padding: var(--rsi-spacing-xs) 0;
+}
+
+.rsi-detalle-operaciones .operacion-linea {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+}
+
+.rsi-detalle-operaciones .operacion-linea .etiqueta {
+    color: var(--rsi-gray-500);
+}
+
+.rsi-detalle-operaciones .operacion-linea .valor {
+    font-weight: 500;
+    color: var(--rsi-text-primary);
+}
+
+/* ==========================================
+   CONFIRMACIÓN - ITEMS
+   ========================================== */
+
+.rsi-confirmacion-card {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-lg);
+    padding: var(--rsi-spacing-lg);
+    border: 1px solid var(--rsi-gray-200);
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.rsi-confirmacion-card h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    margin: var(--rsi-spacing-md) 0 var(--rsi-spacing-sm) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-confirmacion-card h4:first-of-type {
+    margin-top: 0;
+}
+
+.rsi-confirmacion-item {
+    display: flex;
+    padding: var(--rsi-spacing-xs) 0;
+    gap: var(--rsi-spacing-sm);
+    font-size: 0.95rem;
+}
+
+.rsi-confirmacion-label {
+    font-weight: 600;
+    color: var(--rsi-gray-600);
+    min-width: 120px;
+}
+
+.rsi-confirmacion-value {
+    color: var(--rsi-text-primary);
+    font-weight: 500;
+}
+
+/* Items en confirmación */
+.rsi-confirm-item-list {
+    margin: var(--rsi-spacing-sm) 0;
+}
+
+.rsi-confirm-item-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--rsi-spacing-xs) var(--rsi-spacing-sm);
+    background: var(--rsi-gray-50);
+    border-radius: var(--rsi-radius-sm);
+    margin-bottom: var(--rsi-spacing-xs);
+    border: 1px solid var(--rsi-gray-100);
+    font-size: 0.9rem;
+}
+
+.rsi-confirm-item-row:last-child {
+    margin-bottom: 0;
+}
+
+.rsi-confirm-item-row .item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.rsi-confirm-item-row .item-desc {
+    font-weight: 500;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-confirm-item-row .item-detail {
+    font-size: 0.8rem;
+    color: var(--rsi-gray-500);
+}
+
+.rsi-confirm-item-row .item-price {
+    font-weight: 600;
+    color: var(--rsi-primary);
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 992px) {
+    .rsi-items-table {
+        font-size: 0.8rem;
+    }
+    
+    .rsi-items-table thead th,
+    .rsi-items-table tbody td {
+        padding: var(--rsi-spacing-xs) var(--rsi-spacing-sm);
+    }
+    
+    .rsi-items-table .rsi-item-input {
+        font-size: 0.8rem;
+        padding: 4px 6px;
+    }
+    
+    .rsi-totales-container {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .rsi-table-container {
+        overflow-x: auto;
+    }
+    
+    .rsi-items-table {
+        min-width: 700px;
+    }
+    
+    .rsi-table-header-actions {
+        flex-wrap: wrap;
+        gap: var(--rsi-spacing-sm);
+        padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    }
+    
+    .rsi-table-header-actions h4 {
+        font-size: 0.85rem;
+    }
+    
+    .rsi-btn-add-item {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .rsi-totales-container {
+        padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    }
+    
+    .rsi-confirmacion-item {
+        flex-direction: column;
+        gap: var(--rsi-spacing-xs);
+    }
+    
+    .rsi-confirmacion-label {
+        min-width: auto;
+        font-size: 0.85rem;
+    }
+    
+    .rsi-confirmacion-value {
+        font-size: 0.95rem;
+    }
+    
+    .rsi-confirm-item-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--rsi-spacing-xs);
+    }
+}
+
+@media (max-width: 576px) {
+    .rsi-items-table {
+        min-width: 600px;
+        font-size: 0.75rem;
+    }
+    
+    .rsi-items-table thead th,
+    .rsi-items-table tbody td {
+        padding: var(--rsi-spacing-xs);
+    }
+    
+    .rsi-items-table .rsi-item-input {
+        font-size: 0.75rem;
+        padding: 3px 5px;
+    }
+    
+    .rsi-totales-row {
+        font-size: 0.85rem;
+    }
+    
+    .rsi-totales-row input[type="number"] {
+        width: 65px;
+    }
+    
+    .rsi-totales-total .rsi-totales-label {
+        font-size: 1rem;
+    }
+    
+    .rsi-totales-total .rsi-totales-value {
+        font-size: 1rem;
+    }
+}
+
+/* ==========================================
+   MODO OSCURO
+   ========================================== */
+
+body.dark-mode .rsi-producto-dropdown {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-producto-dropdown-item {
+    border-bottom-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-producto-dropdown-item:hover {
+    background: var(--rsi-gray-800);
+}
+
+body.dark-mode .rsi-producto-dropdown-item .producto-nombre {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-table-container {
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-table-header-actions {
+    background: var(--rsi-gray-800);
+    border-bottom-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-table-header-actions h4 {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-items-table thead {
+    background: var(--rsi-gray-800);
+}
+
+body.dark-mode .rsi-items-table thead th {
+    color: var(--rsi-gray-400);
+    border-bottom-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-items-table tbody td {
+    border-bottom-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-items-table tbody tr:hover {
+    background: var(--rsi-gray-800);
+}
+
+body.dark-mode .rsi-items-table .rsi-item-input {
+    background: var(--rsi-bg-input);
+    border-color: var(--rsi-gray-400);
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-items-table .rsi-item-input:focus {
+    border-color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-items-table .rsi-item-categoria {
+    background: var(--rsi-bg-input);
+    border-color: var(--rsi-gray-400);
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-items-table .rsi-item-categoria:focus {
+    border-color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-totales-container {
+    border-color: var(--rsi-gray-300);
+    background: var(--rsi-bg-card);
+}
+
+body.dark-mode .rsi-totales-row .rsi-totales-label {
+    color: var(--rsi-gray-400);
+}
+
+body.dark-mode .rsi-totales-row input[type="number"] {
+    background: var(--rsi-bg-input);
+    border-color: var(--rsi-gray-400);
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-totales-row input[type="number"]:focus {
+    border-color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-confirmacion-card {
+    border-color: var(--rsi-gray-300);
+    background: var(--rsi-bg-card);
+}
+
+body.dark-mode .rsi-confirmacion-card h4 {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-confirmacion-label {
+    color: var(--rsi-gray-400);
+}
+
+body.dark-mode .rsi-confirmacion-value {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-confirm-item-row {
+    background: var(--rsi-bg-input);
+    border-color: var(--rsi-gray-300);
+}
+
+body.dark-mode .rsi-confirm-item-row .item-desc {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-confirm-item-row .item-detail {
+    color: var(--rsi-gray-400);
+}
+
+body.dark-mode .rsi-detalle-operaciones {
+    color: var(--rsi-gray-400);
+}
+
+body.dark-mode .rsi-detalle-operaciones .operacion-linea .etiqueta {
+    color: var(--rsi-gray-400);
+}
+
+body.dark-mode .rsi-detalle-operaciones .operacion-linea .valor {
+    color: var(--rsi-text-light);
+}

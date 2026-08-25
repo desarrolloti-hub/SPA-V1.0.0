@@ -1,0 +1,189 @@
+<!-- ========================================
+   PANEL CRUD - Gestión de Productos y Servicios
+   ======================================== -->
+
+<section class="rsi-productos-section">
+    <div class="rsi-container">
+        
+        <!-- Título -->
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Catálogo</span> de Productos y Servicios
+        </h1>
+        <p class="rsi-page-subtitle">
+            Administra todos los productos y servicios del sistema para usar en cotizaciones y facturas.
+        </p>
+
+        <!-- ===== PANEL CRUD ===== -->
+        <div class="rsi-panel-crud">
+            
+            <!-- Header -->
+            <div class="rsi-panel-header">
+                <h2>
+                    <i class="fas fa-boxes"></i>
+                    Productos y Servicios
+                    <span id="itemCount" class="rsi-badge rsi-badge-primary" style="font-size: 0.8rem;">0</span>
+                </h2>
+                <div class="rsi-panel-actions">
+                    <button id="refreshProductos" class="rsi-btn-crud rsi-btn-crud-outline">
+                        <i class="fas fa-sync"></i> Actualizar
+                    </button>
+                    <button id="btnNuevoProducto" >
+                        <a href="/partner/productosServicios" class="rsi-btn-crud rsi-btn-crud-primary">
+                            <i class="fas fa-plus"></i> Nuevo Producto
+                        </a>
+                    </button>
+                    <button id="btnNuevaCategoria">
+                        <a href="/partner/crudCategorias" class="rsi-btn-crud rsi-btn-crud-primary">
+                            <i class="fas fa-tags"></i> Categorías
+                        </a>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 🔥 BUSCADOR -->
+            <div class="rsi-search-container">
+                <div class="rsi-search-box">
+                    <div class="rsi-search-input-wrapper">
+                        <input 
+                            type="text" 
+                            id="searchProducto" 
+                            placeholder="Buscar por nombre o categoría..." 
+                            class="rsi-search-input"
+                            autocomplete="off"
+                        >
+                        <button id="clearSearchBtn" class="rsi-btn-clear-search" style="display: none;" title="Limpiar búsqueda">
+                            <i class="fas fa-times-circle"></i>
+                        </button>
+                    </div>
+                    <button id="searchProductoBtn" class="rsi-btn-search">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
+                </div>
+                
+                <!-- Resultados de búsqueda -->
+                <div id="searchResultsInfo" class="rsi-search-results-info" style="display: none;">
+                    <span id="searchResultsText"></span>
+                    <button id="clearSearchResults" class="rsi-btn-clear-results">
+                        <i class="fas fa-times"></i> Limpiar búsqueda
+                    </button>
+                </div>
+            </div>
+            <!-- Loading State -->
+            <div id="loadingState" class="rsi-loading-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Cargando productos...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="rsi-empty-state" style="display: none;">
+                <i class="fas fa-box-open"></i>
+                <h3 id="emptyStateTitle">No hay productos o servicios registrados</h3>
+                <p id="emptyStateText">Comienza agregando tu primer producto o servicio.</p>
+                <button onclick="window.openModal()" class="rsi-btn-crud rsi-btn-crud-primary">
+                    <i class="fas fa-plus"></i> Agregar producto
+                </button>
+            </div>
+
+            <!-- Tabla -->
+            <div class="rsi-table-wrapper" style="display: none;">
+                <table class="rsi-table">
+                    <thead>
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th>Categoría</th>
+                            <th>Estado</th>
+                            <th>Creado por</th>
+                            <th>Modificado por</th>
+                            <th style="text-align: center;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productosTableBody">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div id="paginationContainer" class="rsi-pagination" style="display: none;">
+                <div class="rsi-pagination-info">
+                    <span id="pageInfo">Página 1 de 1 (0 items)</span>
+                </div>
+                <div class="rsi-pagination-controls">
+                    <button id="prevPage" class="rsi-btn-page" disabled>
+                        <i class="fas fa-chevron-left"></i> Anterior
+                    </button>
+                    <button id="nextPage" class="rsi-btn-page" disabled>
+                        Siguiente <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ========================================
+   MODAL PARA CREAR/EDITAR PRODUCTO
+   ======================================== -->
+<div id="modalProducto" class="rsi-modal" style="display: none;">
+    <div class="rsi-modal-content" style="max-width: 550px;">
+        <div class="rsi-modal-header">
+            <h3 id="modalProductoTitle"><i class="fas fa-box"></i> Nuevo Producto/Servicio</h3>
+            <button class="rsi-modal-close" id="closeModalProducto">&times;</button>
+        </div>
+        <div class="rsi-modal-body">
+            <form id="productoForm">
+                <input type="hidden" id="productoId">
+                
+                <div class="rsi-form-group">
+                    <label for="nombre">Nombre *</label>
+                    <input type="text" id="nombre" class="rsi-form-input" placeholder="Ej: Cámara IP 2MP" required>
+                    <small id="errorNombre" class="rsi-form-error" style="color: var(--rsi-danger);"></small>
+                </div>
+
+                <div class="rsi-form-group">
+                    <label for="precioUnitario">Precio Unitario *</label>
+                    <div style="position: relative;">
+                        <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--rsi-gray-500);">$</span>
+                        <input type="number" id="precioUnitario" class="rsi-form-input" style="padding-left: 30px;" placeholder="0.00" step="0.01" min="0" required>
+                    </div>
+                    <small id="errorPrecio" class="rsi-form-error" style="color: var(--rsi-danger);"></small>
+                </div>
+
+                <div class="rsi-form-group">
+                    <label for="categoriaId">Categoría *</label>
+                    <select id="categoriaId" class="rsi-form-select" required>
+                        <option value="">Selecciona una categoría</option>
+                        <option value="Camaras">Cámaras</option>
+                        <option value="Sistemas">Sistemas</option>
+                        <option value="Accesorios">Accesorios</option>
+                        <option value="Servicios">Servicios</option>
+                        <option value="Otros">Otros</option>
+                    </select>
+                    <small id="errorCategoria" class="rsi-form-error" style="color: var(--rsi-danger);"></small>
+                </div>
+
+                <div class="rsi-form-group" style="display: flex; align-items: center; gap: var(--rsi-spacing-sm);">
+                    <label style="margin: 0; cursor: pointer;">
+                        <input type="checkbox" id="activo" checked>
+                        Activo
+                    </label>
+                </div>
+
+                <div class="rsi-modal-footer" style="display: flex; gap: var(--rsi-spacing-sm); justify-content: flex-end; margin-top: var(--rsi-spacing-md);">
+                    <button type="button" id="cancelModalProducto" class="rsi-btn-crud rsi-btn-crud-outline">Cancelar</button>
+                    <button type="submit" id="submitProductoBtn" class="rsi-btn-crud rsi-btn-crud-primary">
+                        <i class="fas fa-save"></i> Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Spinner Global -->
+<div id="loadingSpinner" class="rsi-loading-overlay" style="display: none;">
+    <div class="rsi-spinner"></div>
+</div>
