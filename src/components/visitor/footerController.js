@@ -5,11 +5,19 @@
 
 // Elementos DOM cacheados
 let elements = {};
+let isFooterListenerBound = false;
 
 /**
  * Inicializa el controlador del footer
  */
 export function initFooterController() {
+    if (!isFooterListenerBound && typeof document !== 'undefined') {
+        document.addEventListener('footerLoaded', () => {
+            initFooterController();
+        });
+        isFooterListenerBound = true;
+    }
+
     cacheElements();
     bindEvents();
     updateCurrentYear();

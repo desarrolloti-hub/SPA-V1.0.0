@@ -1,0 +1,142 @@
+<!-- ========================================
+   PARQUE VEHICULAR - RSI ENTERPRISE
+   Panel CRUD unificado de automóviles
+   ======================================== -->
+
+<section class="rsi-vehiculos-section">
+    <div class="rsi-container">
+        
+        <!-- Título -->
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Parque</span> Vehicular
+        </h1>
+        <p class="rsi-page-subtitle">
+            Administración de automóviles, control de disponibilidad y asignaciones operativas.
+        </p>
+
+        <!-- ===== PANEL CRUD ===== -->
+        <div class="rsi-panel-crud">
+            
+            <!-- Header del Panel -->
+            <div class="rsi-panel-header">
+                <h2>
+                    <i class="fas fa-car"></i>
+                    Automóviles Registrados
+                    <span id="vehiculoCount" class="rsi-badge rsi-badge-primary">0</span>
+                </h2>
+                <div class="rsi-panel-actions">
+                    <button id="btnRefreshVehiculos" class="rsi-btn-crud rsi-btn-crud-outline">
+                        <i class="fas fa-sync"></i> Actualizar
+                    </button>
+                    <a href="/partner/checklist-salida" class="rsi-btn-crud rsi-btn-crud-outline" data-link>
+                        <i class="fas fa-clipboard-check"></i> Nueva Salida
+                    </a>
+                    <a href="/partner/vehiculo-form" class="rsi-btn-crud rsi-btn-crud-primary" data-link>
+                        <i class="fas fa-plus"></i> Registrar Automóvil
+                    </a>
+                </div>
+            </div>
+
+            <!-- Buscador y Filtros -->
+            <div class="rsi-search-container">
+                <div class="rsi-search-box">
+                    <div class="rsi-search-input-wrapper">
+                        <i class="fas fa-search rsi-search-icon"></i>
+                        <input 
+                            type="text" 
+                            id="vehSearchInput" 
+                            placeholder="Buscar por número económico, placas, marca, modelo o conductor..." 
+                            class="rsi-search-input"
+                            autocomplete="off"
+                        >
+                        <button id="clearSearchBtn" class="rsi-btn-clear-search" style="display: none;" title="Limpiar búsqueda">
+                            <i class="fas fa-times-circle"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filtros desplegables alineados con panelCrud -->
+                <div class="rsi-filters-row" style="display: flex; gap: var(--rsi-spacing-md); flex-wrap: wrap; margin-top: var(--rsi-spacing-xs);">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label for="filterEstado" style="font-size: 0.85rem; font-weight: 600; color: var(--rsi-text-secondary);">Estado:</label>
+                        <select id="filterEstado" class="rsi-filter-select" style="padding: 7px 12px; border-radius: var(--rsi-radius-md); border: 1.5px solid var(--rsi-border-color); background: var(--rsi-bg-input); color: var(--rsi-text-primary); font-size: 0.88rem;">
+                            <option value="todos">Todos los estados</option>
+                            <option value="disponible">Disponibles</option>
+                            <option value="en_salida">En Salida / Ruta</option>
+                            <option value="salida_pendiente">Salida por Firmar</option>
+                            <option value="mantenimiento">Mantenimiento</option>
+                            <option value="inactivo">Inactivos</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label for="filterActivo" style="font-size: 0.85rem; font-weight: 600; color: var(--rsi-text-secondary);">Condición:</label>
+                        <select id="filterActivo" class="rsi-filter-select" style="padding: 7px 12px; border-radius: var(--rsi-radius-md); border: 1.5px solid var(--rsi-border-color); background: var(--rsi-bg-input); color: var(--rsi-text-primary); font-size: 0.88rem;">
+                            <option value="todos">Todos</option>
+                            <option value="true" selected>Solo Activos</option>
+                            <option value="false">Solo Inactivos</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estadísticas Unificadas -->
+            <div class="rsi-stats-container">
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" id="statTotalVehiculos">0</span>
+                    <span class="rsi-stat-label">Total Unidades</span>
+                </div>
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" style="color: var(--rsi-success);" id="statDisponibles">0</span>
+                    <span class="rsi-stat-label">Disponibles</span>
+                </div>
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" style="color: var(--rsi-accent);" id="statEnSalida">0</span>
+                    <span class="rsi-stat-label">En Ruta</span>
+                </div>
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" style="color: var(--rsi-warning);" id="statPorFirmar">0</span>
+                    <span class="rsi-stat-label">Por Firmar</span>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingStateVehiculos" class="rsi-loading-state" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Cargando parque vehicular...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyStateVehiculos" class="rsi-empty-state" style="display: none;">
+                <i class="fas fa-car-side"></i>
+                <h3>No hay automóviles registrados</h3>
+                <p>Comienza registrando el primer vehículo de la organización con su fotografía oficial.</p>
+                <a href="/partner/vehiculo-form" class="rsi-btn-crud rsi-btn-crud-primary" data-link>
+                    <i class="fas fa-plus"></i> Registrar primer vehículo
+                </a>
+            </div>
+
+            <!-- Tabla Unificada RSI -->
+            <div class="rsi-table-wrapper" id="vehiculosTableWrapper">
+                <table class="rsi-table">
+                    <thead>
+                        <tr>
+                            <th>No. Eco</th>
+                            <th>Placas</th>
+                            <th>Automóvil</th>
+                            <th>Año / Color</th>
+                            <th>Odómetro</th>
+                            <th>Combustible</th>
+                            <th>Conductor Asignado</th>
+                            <th>Estado</th>
+                            <th style="text-align: center;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vehiculosTableBody">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</section>

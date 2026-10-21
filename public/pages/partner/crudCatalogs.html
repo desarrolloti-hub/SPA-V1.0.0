@@ -1,0 +1,156 @@
+<!-- ========================================
+   PANEL CRUD - Gestión de Catálogos
+   ======================================== -->
+
+<section class="rsi-facturas-section">
+    <div class="rsi-container">
+        
+        <!-- Título -->
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Gestión</span> de Catálogos
+        </h1>
+        <p class="rsi-page-subtitle">
+            Administra todos los catálogos de productos y servicios.
+        </p>
+
+        <!-- ===== PANEL CRUD ===== -->
+        <div class="rsi-panel-crud">
+            
+            <!-- Header -->
+            <div class="rsi-panel-header">
+                <h2>
+                    <i class="fas fa-folder-open"></i>
+                    Catálogos Registrados
+                    <span id="catalogCount" class="rsi-badge rsi-badge-primary" style="font-size: 0.8rem;">0</span>
+                </h2>
+                <div class="rsi-panel-actions">
+                    <button id="refreshCatalogs" class="rsi-btn-crud rsi-btn-crud-outline">
+                        <i class="fas fa-sync"></i> Actualizar
+                    </button>
+                    <a href="/partner/catalogo" class="rsi-btn-crud rsi-btn-crud-primary">
+                        <i class="fas fa-plus"></i> Nuevo Catálogo
+                    </a>
+                </div>
+            </div>
+
+            <!-- Buscador -->
+            <div class="rsi-search-container">
+                <div class="rsi-search-box">
+                    <div class="rsi-search-input-wrapper">
+                        <input 
+                            type="text" 
+                            id="searchCatalog" 
+                            placeholder="Buscar por título o descripción..." 
+                            class="rsi-search-input"
+                            autocomplete="off"
+                        >
+                        <button id="clearSearchBtn" class="rsi-btn-clear-search" style="display: none;" title="Limpiar búsqueda">
+                            <i class="fas fa-times-circle"></i>
+                        </button>
+                    </div>
+                    <button id="searchCatalogBtn" class="rsi-btn-search">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
+                </div>
+                
+                <div id="searchResultsInfo" class="rsi-search-results-info" style="display: none;">
+                    <span id="searchResultsText"></span>
+                    <button id="clearSearchResults" class="rsi-btn-clear-results">
+                        <i class="fas fa-times"></i> Limpiar búsqueda
+                    </button>
+                </div>
+            </div>
+
+            <!-- Estadísticas -->
+            <div id="catalogStats" class="rsi-stats-container">
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" id="statTotal">0</span>
+                    <span class="rsi-stat-label">Total Catálogos</span>
+                </div>
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" style="color: var(--rsi-success);" id="statActivos">0</span>
+                    <span class="rsi-stat-label">Activos</span>
+                </div>
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" style="color: var(--rsi-gray-500);" id="statInactivos">0</span>
+                    <span class="rsi-stat-label">Deshabilitados</span>
+                </div>
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" style="color: var(--rsi-primary);" id="statProductos">0</span>
+                    <span class="rsi-stat-label">Total Productos</span>
+                </div>
+            </div>
+
+            <!-- Filtro por estatus -->
+            <div class="rsi-filter-tabs">
+                <button class="rsi-filter-tab active" data-filter="all">
+                    <i class="fas fa-list"></i> Todos
+                </button>
+                <button class="rsi-filter-tab" data-filter="active">
+                    <i class="fas fa-check-circle"></i> Activos
+                </button>
+                <button class="rsi-filter-tab" data-filter="inactive">
+                    <i class="fas fa-ban"></i> Deshabilitados
+                </button>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="rsi-loading-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Cargando catálogos...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="rsi-empty-state" style="display: none;">
+                <i class="fas fa-folder-open"></i>
+                <h3 id="emptyStateTitle">No hay catálogos registrados</h3>
+                <p id="emptyStateText">Comienza creando tu primer catálogo.</p>
+                <a href="/catalogos/nuevo" class="rsi-btn-crud rsi-btn-crud-primary">
+                    <i class="fas fa-plus"></i> Crear primer catálogo
+                </a>
+            </div>
+
+            <!-- Grid de catálogos -->
+            <div id="catalogsGrid" class="rsi-catalogs-grid" style="display: none;">
+                <!-- Se llena dinámicamente -->
+            </div>
+
+            <!-- Paginación -->
+            <div id="paginationContainer" class="rsi-pagination" style="display: none;">
+                <div class="rsi-pagination-info">
+                    <span id="pageInfo">Página 1 de 1 (0 items)</span>
+                </div>
+                <div class="rsi-pagination-controls">
+                    <button id="prevPage" class="rsi-btn-page" disabled>
+                        <i class="fas fa-chevron-left"></i> Anterior
+                    </button>
+                    <button id="nextPage" class="rsi-btn-page" disabled>
+                        Siguiente <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ===== MODAL DE DETALLE ===== -->
+<div id="detailModal" class="rsi-modal-overlay" style="display: none;">
+    <div class="rsi-modal" style="max-width: 800px;">
+        <div class="rsi-modal-header">
+            <h3><i class="fas fa-eye"></i> Detalle del Catálogo</h3>
+            <button type="button" class="rsi-modal-close" id="closeDetailModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="rsi-modal-body" id="detailModalBody">
+            <!-- Se llena dinámicamente -->
+        </div>
+        <div class="rsi-modal-footer">
+            <button type="button" class="rsi-btn-secondary" id="closeDetailFooter">Cerrar</button>
+            <button type="button" class="rsi-btn-primary" id="editFromDetail">
+                <i class="fas fa-edit"></i> Editar
+            </button>
+        </div>
+    </div>
+</div>

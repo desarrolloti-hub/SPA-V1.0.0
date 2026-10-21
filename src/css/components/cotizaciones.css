@@ -542,7 +542,7 @@ body.dark-mode .rsi-producto-dropdown-item {
 }
 
 body.dark-mode .rsi-producto-dropdown-item:hover {
-    background: var(--rsi-gray-800);
+    background: var(--rsi-bg-secondary);
 }
 
 body.dark-mode .rsi-producto-dropdown-item .producto-nombre {
@@ -554,7 +554,7 @@ body.dark-mode .rsi-table-container {
 }
 
 body.dark-mode .rsi-table-header-actions {
-    background: var(--rsi-gray-800);
+    background: var(--rsi-bg-secondary);
     border-bottom-color: var(--rsi-gray-300);
 }
 
@@ -563,7 +563,7 @@ body.dark-mode .rsi-table-header-actions h4 {
 }
 
 body.dark-mode .rsi-items-table thead {
-    background: var(--rsi-gray-800);
+    background: var(--rsi-bg-secondary);
 }
 
 body.dark-mode .rsi-items-table thead th {
@@ -576,7 +576,7 @@ body.dark-mode .rsi-items-table tbody td {
 }
 
 body.dark-mode .rsi-items-table tbody tr:hover {
-    background: var(--rsi-gray-800);
+    background: var(--rsi-bg-secondary);
 }
 
 body.dark-mode .rsi-items-table .rsi-item-input {

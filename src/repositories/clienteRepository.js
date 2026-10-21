@@ -204,6 +204,10 @@ export class ClienteRepository extends BaseRepository {
      * Verifica si existe un cliente con el mismo RFC
      */
     async existsClienteByRfc(rfc, excludeId = null) {
+        const rfcUpper = (rfc || '').trim().toUpperCase();
+        if (rfcUpper === 'XAXX010101000' || rfcUpper === 'XEXX010101000') {
+            return false;
+        }
         try {
             const q = query(
                 this._getCollection(),

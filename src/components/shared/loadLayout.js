@@ -3,7 +3,18 @@
    Carga layouts persistentes según autenticación
    ======================================== */
 
-import AuthService from '../../services/authService.js';
+/**
+ * Obtiene la sesión activa desde localStorage de forma segura
+ */
+function getActiveSession() {
+    try {
+        const session = localStorage.getItem('rsi_session');
+        return session ? JSON.parse(session) : null;
+    } catch (error) {
+        console.error('❌ Error leyendo sesión en loadLayout:', error);
+        return null;
+    }
+}
 
 /**
  * Determina qué layouts cargar según el usuario
@@ -16,18 +27,26 @@ function getLayoutPaths(user) {
             footer: '/components/visitor/footerVisitor.html'
         };
     }
-    // ✅ Si es partner
-    if (user.rol === 'partner') {
+    // Si es partner o admin (usuarios del sistema interno)
+    if (user.rol === 'partner' || user.rol === 'admin') {
         return {
             navbar: '/components/partner/navbarPartner.html',
             footer: '/components/partner/footerPartner.html'
         };
     }
 
-    // ✅ Si es usuario logueado (user, etc)
+    // Si es comprador (buyer/customer): navbar especializado manteniendo el footer comercial
+    if (user.rol === 'buyer' || user.rol === 'customer') {
+        return {
+            navbar: '/components/buyer/navbarBuyer.html',
+            footer: '/components/visitor/footerVisitor.html'
+        };
+    }
+
+    // Fallback seguro a layouts existentes de visitante para evitar 404 fatal
     return {
-        navbar: '/components/visitor/navbarUser.html',
-        footer: '/components/visitor/footerUser.html'
+        navbar: '/components/visitor/navbarVisitor.html',
+        footer: '/components/visitor/footerVisitor.html'
     };
 }
 
@@ -39,8 +58,7 @@ export async function loadLayout() {
     
     try {
         // Obtener usuario autenticado
-        const authService = new AuthService();
-        const session = authService.getSession();
+        const session = getActiveSession();
         
         console.log('👤 Usuario en sesión:', session ? session.email : 'No autenticado');
         console.log('👤 Rol:', session ? session.rol : 'N/A');

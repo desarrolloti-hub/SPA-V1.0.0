@@ -4,7 +4,7 @@
 
 /* Tarjeta base */
 .rsi-card {
-    background: var(--rsi-white);
+    background: var(--rsi-bg-card);
     border-radius: var(--rsi-radius-lg);
     overflow: hidden;
     transition: all var(--rsi-transition-base);
@@ -21,7 +21,7 @@
 }
 
 .rsi-card-border {
-    border: 1px solid var(--rsi-gray-200);
+    border: 1px solid var(--rsi-border-color);
 }
 
 .rsi-card-border:hover {
@@ -30,7 +30,7 @@
 
 /* Tarjeta con hover elegante */
 .rsi-card-elegant {
-    background: var(--rsi-white);
+    background: var(--rsi-bg-card);
     border-radius: var(--rsi-radius-lg);
     padding: var(--rsi-spacing-xl);
     text-align: center;
@@ -61,7 +61,7 @@
 
 /* Tarjeta de servicio */
 .rsi-service-card {
-    background: var(--rsi-white);
+    background: var(--rsi-bg-card);
     border-radius: var(--rsi-radius-lg);
     padding: var(--rsi-spacing-xl);
     text-align: center;
@@ -92,7 +92,7 @@
 
 /* Tarjeta de producto */
 .rsi-product-card {
-    background: var(--rsi-white);
+    background: var(--rsi-bg-card);
     border-radius: var(--rsi-radius-lg);
     overflow: hidden;
     transition: all var(--rsi-transition-base);
@@ -153,7 +153,7 @@
 
 /* Tarjeta de equipo */
 .rsi-team-card {
-    background: var(--rsi-white);
+    background: var(--rsi-bg-card);
     border-radius: var(--rsi-radius-lg);
     overflow: hidden;
     text-align: center;
@@ -201,7 +201,7 @@
 
 /* Tarjeta de testimonio */
 .rsi-testimonial-card {
-    background: var(--rsi-white);
+    background: var(--rsi-bg-card);
     border-radius: var(--rsi-radius-lg);
     padding: var(--rsi-spacing-xl);
     box-shadow: var(--rsi-shadow-md);
@@ -214,14 +214,14 @@
     top: 20px;
     left: 20px;
     font-size: 4rem;
-    color: var(--rsi-gray-200);
+    color: var(--rsi-border-color);
     font-family: serif;
 }
 
 .rsi-testimonial-text {
     font-size: 1rem;
     line-height: 1.7;
-    color: var(--rsi-gray-700);
+    color: var(--rsi-text-secondary);
     margin-bottom: var(--rsi-spacing-lg);
     font-style: italic;
 }

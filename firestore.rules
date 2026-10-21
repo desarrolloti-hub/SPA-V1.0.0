@@ -1,0 +1,116 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isAuthenticated() && request.auth.uid == uid;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.admin == true ||
+        request.auth.token.email == 'admin@rsienterprise.com' ||
+        get(/databases/$(database)/documents/usersRSI/$(request.auth.uid)).data.rol == 'admin'
+      );
+    }
+
+    // Reglas para Colección de Colaboradores (usersRSI)
+    match /usersRSI/{userId} {
+      allow read: if isAuthenticated();
+      allow create, update: if isAuthenticated() && (isOwner(userId) || isOwner(resource.data.uid) || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // Reglas para Control de Asistencias
+    match /asistencias/{asistenciaId} {
+      // Un colaborador solo puede leer sus propios registros; administradores pueden leer todos
+      allow read: if isAuthenticated() && (
+        resource.data.colaboradorUid == request.auth.uid || isAdmin()
+      );
+
+      // Un colaborador puede crear su entrada (si el colaboradorUid coincide con su auth.uid) o un admin
+      allow create: if isAuthenticated() && (
+        request.resource.data.colaboradorUid == request.auth.uid || isAdmin()
+      );
+
+      // Un colaborador puede actualizar su salida en su registro del día; un admin puede actualizar cualquier campo
+      allow update: if isAuthenticated() && (
+        (resource.data.colaboradorUid == request.auth.uid && request.resource.data.colaboradorUid == request.auth.uid) ||
+        isAdmin()
+      );
+
+      allow delete: if isAdmin();
+    }
+
+    // Reglas para Justificaciones de Inasistencia
+    match /justificaciones/{justificacionId} {
+      // Un colaborador solo puede leer sus propias justificaciones; administradores pueden leer todas
+      allow read: if isAuthenticated() && (
+        resource.data.colaboradorUid == request.auth.uid || isAdmin()
+      );
+
+      // Crear justificación: el colaborador solo puede crear registros a su nombre
+      allow create: if isAuthenticated() && (
+        request.resource.data.colaboradorUid == request.auth.uid || isAdmin()
+      );
+
+      // Actualizar/Resolver justificación: solo administradores autorizados pueden cambiar el estado o agregar comentarios de revisión
+      allow update: if isAdmin();
+
+      allow delete: if isAdmin();
+    }
+
+    // Reglas para Configuración de Asistencias y Horarios
+    match /configuracion/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // Reglas para Auditoría de Recordatorios
+    match /recordatoriosAsistencia/{recordatorioId} {
+      allow read, write: if isAdmin();
+    }
+
+    // Reglas para Carrusel de Inicio (Lectura pública para visitantes, escritura autenticada)
+    match /carrusel/{slideId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+
+    // Reglas para Ecommerce: Categorías, Marcas y Productos (Lectura pública, escritura colaboradores/admin)
+    match /ecommerceCategorias/{categoriaId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    match /ecommerceMarcas/{marcaId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    match /ecommerceProductos/{productoId} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Reglas para Carrito y Lista de Deseos (Cada comprador gestiona sus propios datos)
+    match /ecommerceCarritos/{userId} {
+      allow read, write: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+    }
+
+    match /ecommerceFavoritos/{userId} {
+      allow read, write: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+    }
+
+    // Reglas de fallback para módulos existentes
+    match /{document=**} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}

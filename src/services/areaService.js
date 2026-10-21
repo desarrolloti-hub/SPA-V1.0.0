@@ -303,6 +303,31 @@ export class AreaService {
     }
 
     /**
+     * Elimina una subárea de un área
+     * @param {string} areaId - ID del área
+     * @param {string} subareaId - ID o clave de la subárea
+     * @returns {Promise<{success: boolean, message: string}>}
+     */
+    async deleteSubarea(areaId, subareaId) {
+        try {
+            const uid = this._getCurrentUserUid();
+            if (!uid) {
+                throw new Error('Usuario no autenticado');
+            }
+
+            await this.repository.deleteSubarea(areaId, subareaId);
+
+            return {
+                success: true,
+                message: 'Subárea eliminada exitosamente'
+            };
+        } catch (error) {
+            console.error('❌ Error en deleteSubarea:', error);
+            throw error;
+        }
+    }
+
+    /**
      * Agrega un módulo a una subárea
      * @param {string} areaId - ID del área
      * @param {string} subareaId - ID de la subárea

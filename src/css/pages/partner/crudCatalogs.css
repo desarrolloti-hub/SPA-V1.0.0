@@ -1,0 +1,384 @@
+/* ========================================
+   CRUD CATALOGS STYLES - V2
+   Grid moderno tipo dashboard
+   ======================================== */
+
+/* ===== FILTER TABS ===== */
+.rsi-filter-tabs {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    background: var(--rsi-gray-100, #f3f4f6);
+    padding: 0.35rem;
+    border-radius: 12px;
+    width: fit-content;
+}
+
+.rsi-filter-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.1rem;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    color: var(--rsi-gray-600, #4b5563);
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+}
+
+.rsi-filter-tab:hover {
+    color: var(--rsi-gray-900, #111827);
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.rsi-filter-tab.active {
+    background: var(--rsi-bg-card);
+    color: var(--rsi-primary, #1c1948);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.rsi-filter-tab i {
+    font-size: 0.85rem;
+}
+
+/* ===== GRID DE CATÁLOGOS ===== */
+.rsi-catalogs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    animation: fadeInGrid 0.3s ease;
+}
+
+@keyframes fadeInGrid {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== CARD ===== */
+.rsi-catalog-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--rsi-bg-card);
+    border: 1px solid var(--rsi-border-color, #e5e7eb);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--rsi-shadow-sm);
+}
+
+.rsi-catalog-card:hover {
+    border-color: var(--rsi-primary);
+    box-shadow: 
+        0 12px 32px rgba(28, 25, 72, 0.12),
+        0 4px 12px rgba(28, 25, 72, 0.06);
+    transform: translateY(-4px);
+}
+
+/* Estado inactivo */
+.rsi-catalog-card-inactive {
+    opacity: 0.65;
+    filter: grayscale(30%);
+}
+
+.rsi-catalog-card-inactive:hover {
+    opacity: 0.9;
+    filter: grayscale(0%);
+}
+
+/* ===== COVER / IMAGEN ===== */
+.rsi-catalog-card-cover {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(135deg, #f5f5f7 0%, #e8e8ed 100%);
+    overflow: hidden;
+}
+
+.rsi-catalog-card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rsi-catalog-card:hover .rsi-catalog-card-cover img {
+    transform: scale(1.08);
+}
+
+/* Overlay degradado sobre la imagen */
+.rsi-catalog-card-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.02) 0%,
+        transparent 40%,
+        rgba(0, 0, 0, 0.35) 100%
+    );
+    pointer-events: none;
+}
+
+/* Placeholder cuando no hay imagen */
+.rsi-catalog-card-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--rsi-text-muted);
+    font-size: 3rem;
+    background: linear-gradient(135deg, var(--rsi-gray-100) 0%, var(--rsi-gray-200) 100%);
+}
+
+/* Badge de estado */
+.rsi-catalog-card-status {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 2;
+}
+
+.rsi-catalog-card-status .rsi-badge {
+    backdrop-filter: blur(10px);
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== BODY ===== */
+.rsi-catalog-card-body {
+    padding: 1.25rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.rsi-catalog-card-body h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.rsi-catalog-card-body > p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--rsi-text-muted);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 2.6em;
+}
+
+/* ===== META (chips) ===== */
+.rsi-catalog-card-meta {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--rsi-border-color);
+}
+
+.rsi-catalog-card-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.65rem;
+    background: var(--rsi-bg-secondary);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--rsi-text-secondary);
+}
+
+.rsi-catalog-card-meta span i {
+    font-size: 0.7rem;
+    color: var(--rsi-primary);
+    opacity: 0.85;
+}
+
+/* ===== AUDITORÍA ===== */
+.rsi-catalog-card-audit {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: auto;
+}
+
+.rsi-catalog-card-audit small {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--rsi-text-muted);
+    font-size: 0.7rem;
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+.rsi-catalog-card-audit small i {
+    font-size: 0.65rem;
+    width: 12px;
+    text-align: center;
+    opacity: 0.7;
+}
+
+/* ===== ACCIONES DE TARJETA DE CATÁLOGO ===== */
+.rsi-catalog-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.4rem;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--rsi-border-color);
+    background: var(--rsi-bg-secondary);
+}
+
+.rsi-catalog-card-actions .rsi-btn-icon {
+    background: var(--rsi-bg-card);
+    border: 1px solid var(--rsi-border-color);
+    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--rsi-text-secondary);
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.rsi-catalog-card-actions .rsi-btn-icon:hover {
+    background: var(--rsi-primary);
+    color: var(--rsi-btn-text-on-solid);
+    border-color: var(--rsi-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(28, 25, 72, 0.2);
+}
+
+.rsi-catalog-card-actions .rsi-btn-icon.rsi-btn-danger:hover {
+    background: var(--rsi-danger);
+    color: var(--rsi-btn-text-on-solid);
+    border-color: var(--rsi-danger);
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.25);
+}
+
+.rsi-catalog-card-actions .rsi-btn-icon.rsi-btn-success:hover {
+    background: var(--rsi-success);
+    color: var(--rsi-btn-text-on-solid);
+    border-color: var(--rsi-success);
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.25);
+}
+
+.rsi-badge-gray {
+    background: var(--rsi-bg-secondary);
+    color: var(--rsi-text-muted);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .rsi-catalogs-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .rsi-filter-tabs {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .rsi-filter-tab {
+        flex: 1;
+        justify-content: center;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
+}
+
+/* ===== DARK MODE ===== */
+body.dark-mode .rsi-catalog-card {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-border-color);
+}
+
+body.dark-mode .rsi-catalog-card:hover {
+    border-color: var(--rsi-primary);
+    box-shadow: 
+        0 12px 32px rgba(0, 0, 0, 0.4),
+        0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .rsi-catalog-card-body h3 {
+    color: var(--rsi-text-primary);
+}
+
+body.dark-mode .rsi-catalog-card-body > p {
+    color: var(--rsi-text-muted);
+}
+
+body.dark-mode .rsi-catalog-card-meta span {
+    background: var(--rsi-bg-secondary);
+    color: var(--rsi-text-secondary);
+}
+
+body.dark-mode .rsi-catalog-card-actions {
+    background: var(--rsi-bg-secondary);
+    border-color: var(--rsi-border-color);
+}
+
+body.dark-mode .rsi-catalog-card-actions .rsi-btn-icon {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-border-color);
+    color: var(--rsi-text-secondary);
+}
+
+body.dark-mode .rsi-catalog-card-actions .rsi-btn-icon:hover {
+    background: var(--rsi-primary);
+    color: var(--rsi-btn-text-on-solid);
+    border-color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-filter-tabs {
+    background: var(--rsi-bg-secondary);
+    border: 1px solid var(--rsi-border-color);
+}
+
+body.dark-mode .rsi-filter-tab {
+    color: var(--rsi-text-muted);
+}
+
+body.dark-mode .rsi-filter-tab:hover {
+    color: var(--rsi-text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .rsi-filter-tab.active {
+    background: var(--rsi-primary);
+    color: var(--rsi-btn-text-on-solid);
+}
+
+body.dark-mode .rsi-catalog-card-cover {
+    background: linear-gradient(135deg, var(--rsi-bg-secondary) 0%, var(--rsi-bg-primary) 100%);
+}
+
+body.dark-mode .rsi-catalog-card-placeholder {
+    color: var(--rsi-text-muted);
+    background: linear-gradient(135deg, var(--rsi-bg-secondary) 0%, var(--rsi-bg-primary) 100%);
+}

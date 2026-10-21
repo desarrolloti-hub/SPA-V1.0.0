@@ -172,7 +172,7 @@ body.dark-mode .maintenance-card h1 {
 body.dark-mode .back-btn {
     background: var(--rsi-gold-gradient);
 
-    color: #1a1a24;
+    color: var(--rsi-white);
 
     box-shadow: var(--rsi-shadow-gold);
 }

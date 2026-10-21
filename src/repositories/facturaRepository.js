@@ -14,7 +14,8 @@ import {
     doc,
     query,
     where,
-    orderBy
+    orderBy,
+    limit
 } from '../config/firebaseConfig.js';
 import BaseRepository from './baseRepository.js';
 
@@ -97,10 +98,12 @@ export class FacturaRepository extends BaseRepository {
 
     /**
      * Obtiene una factura por ID
+     * @param {string} facturaId - ID del documento
+     * @param {boolean} forceRefresh - Forzar lectura omitiendo caché
      */
-    async getFacturaById(facturaId) {
+    async getFacturaById(facturaId, forceRefresh = false) {
         try {
-            return await this.getById(facturaId);
+            return await this.getById(facturaId, forceRefresh);
         } catch (error) {
             console.error('❌ Error obteniendo factura:', error);
             return null;
@@ -137,6 +140,58 @@ export class FacturaRepository extends BaseRepository {
         } catch (error) {
             console.error('❌ Error obteniendo facturas por cotización:', error);
             return [];
+        }
+    }
+
+    /**
+     * Obtiene una factura por su folio/número de factura
+     * @param {string} facturaNumero - Número de factura (ej. 'FAC-20261012-001')
+     * @returns {Promise<Object|null>}
+     */
+    async getFacturaByFolio(facturaNumero) {
+        if (!facturaNumero) return null;
+        try {
+            const q = query(
+                this._getCollection(),
+                where('facturaNumero', '==', facturaNumero),
+                limit(1)
+            );
+            const snapshot = await getDocs(q);
+            if (snapshot.empty) return null;
+            const docSnap = snapshot.docs[0];
+            return {
+                id: docSnap.id,
+                ...docSnap.data()
+            };
+        } catch (error) {
+            console.error('❌ Error buscando factura por folio:', error);
+            return null;
+        }
+    }
+
+    /**
+     * Obtiene una factura por su ID de Facturama
+     * @param {string} facturamaId - ID asignado por Facturama
+     * @returns {Promise<Object|null>}
+     */
+    async getFacturaByFacturamaId(facturamaId) {
+        if (!facturamaId) return null;
+        try {
+            const q = query(
+                this._getCollection(),
+                where('facturamaId', '==', facturamaId),
+                limit(1)
+            );
+            const snapshot = await getDocs(q);
+            if (snapshot.empty) return null;
+            const docSnap = snapshot.docs[0];
+            return {
+                id: docSnap.id,
+                ...docSnap.data()
+            };
+        } catch (error) {
+            console.error('❌ Error buscando factura por Facturama ID:', error);
+            return null;
         }
     }
 
@@ -202,6 +257,46 @@ export class FacturaRepository extends BaseRepository {
         } catch (error) {
             console.error('❌ Error cambiando estatus:', error);
             throw new Error('Error al cambiar el estatus de la factura');
+        }
+    }
+
+    /**
+     * Actualiza el estado fiscal y los metadatos de cancelación de una factura
+     * @param {string} facturaId - ID del documento en Firestore
+     * @param {Object} data - Datos de cancelación y estatus resultante
+     */
+    async updateCancelacionFactura(facturaId, data) {
+        try {
+            const uid = this._getCurrentUserUid();
+            if (!uid) {
+                throw new Error('Usuario no autenticado');
+            }
+
+            const docRef = doc(db, this.collectionName, facturaId);
+            const updatePayload = {
+                estatus: data.estatus || 'cancelada',
+                cancelacion: {
+                    solicitada: true,
+                    fechaSolicitud: data.fechaSolicitud || new Date().toISOString(),
+                    motivo: data.motivo || '',
+                    folioSustitucion: data.folioSustitucion || '',
+                    status: data.status || '',
+                    mensaje: data.mensaje || '',
+                    acuseXmlUrl: data.acuseXmlUrl || '',
+                    acuseXmlPath: data.acuseXmlPath || '',
+                    solicitadoPor: uid
+                },
+                modificadoPor: uid,
+                updatedAt: new Date().toISOString()
+            };
+
+            await updateDoc(docRef, updatePayload);
+            this.clearCache();
+            console.log(`✅ Cancelación registrada para factura ${facturaId} (estatus: ${updatePayload.estatus})`);
+            return true;
+        } catch (error) {
+            console.error('❌ Error registrando cancelación de factura:', error);
+            throw new Error('Error al registrar la cancelación de la factura: ' + error.message);
         }
     }
 

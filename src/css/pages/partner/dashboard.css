@@ -1,662 +1,792 @@
-    /* ==========================================
-       SECCIÓN PRINCIPAL
-    ========================================== */
-    .rsi-dashboard-section {
-        padding: var(--rsi-spacing-2xl) 0;
-    }
+/* ==========================================
+   SECCIÓN PRINCIPAL DEL DASHBOARD
+========================================== */
+.rsi-dashboard-section {
+    padding: calc(var(--rsi-header-height) + var(--rsi-spacing-xl)) var(--rsi-spacing-lg) var(--rsi-spacing-3xl);
+    min-height: calc(100vh - var(--rsi-header-height));
+}
 
-    /* ==========================================
-       PERFIL Y ASISTENCIA (MÁS PEQUEÑO)
-    ========================================== */
-    .rsi-dashboard-profile {
-        margin-bottom: var(--rsi-spacing-xl);
-    }
+.rsi-dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--rsi-spacing-lg);
+    margin-bottom: var(--rsi-spacing-xl);
+    flex-wrap: wrap;
+}
 
-    .rsi-profile-card {
-        display: flex;
-        align-items: center;
-        gap: var(--rsi-spacing-lg);
-        padding: var(--rsi-spacing-lg);
-        background: var(--rsi-bg-card);
-        border-radius: var(--rsi-radius-xl);
-        border: 1px solid var(--rsi-gray-200);
-        box-shadow: var(--rsi-shadow-sm);
-        flex-wrap: wrap;
-    }
+.rsi-dashboard-header .rsi-page-title {
+    margin-bottom: var(--rsi-spacing-xs);
+}
 
-    .rsi-profile-avatar {
-        position: relative;
-        flex-shrink: 0;
-    }
+.rsi-dashboard-header .rsi-page-subtitle {
+    margin-bottom: 0;
+}
 
-    .rsi-profile-avatar img {
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 3px solid var(--rsi-primary);
-        box-shadow: var(--rsi-shadow-sm);
-    }
+.rsi-dashboard-header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    flex-wrap: wrap;
+}
 
-    .rsi-profile-status {
-        position: absolute;
-        bottom: 2px;
-        right: 2px;
-        font-size: 0.6rem;
-        background: var(--rsi-bg-card);
-        padding: 1px 8px;
-        border-radius: 20px;
-        border: 1px solid var(--rsi-gray-200);
-        color: var(--rsi-success);
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: var(--rsi-spacing-xs);
-        white-space: nowrap;
-    }
+/* ==========================================
+   PERFIL Y ASISTENCIA
+========================================== */
+.rsi-dashboard-profile {
+    margin-bottom: var(--rsi-spacing-xl);
+}
 
-    .rsi-profile-status i {
-        font-size: 0.4rem;
-        color: var(--rsi-success);
-    }
+.rsi-profile-card {
+    display: flex;
+    align-items: stretch;
+    gap: var(--rsi-spacing-xl);
+    padding: var(--rsi-spacing-xl);
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-xl);
+    border: 1px solid var(--rsi-border-color);
+    box-shadow: var(--rsi-shadow-sm);
+    flex-wrap: wrap;
+}
 
-    .rsi-profile-info {
-        flex: 1;
-        min-width: 150px;
-    }
+.rsi-profile-avatar {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
 
-    .rsi-profile-info h2 {
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: var(--rsi-text-primary);
-        margin: 0;
-    }
+.rsi-profile-avatar img {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--rsi-primary);
+    box-shadow: var(--rsi-shadow-sm);
+}
 
-    .rsi-profile-info p {
-        color: var(--rsi-gray-600);
-        margin: 2px 0;
-        font-size: 0.85rem;
-        display: flex;
-        align-items: center;
-        gap: var(--rsi-spacing-sm);
-    }
+.rsi-profile-status {
+    position: absolute;
+    bottom: 2px;
+    right: -2px;
+    font-size: 0.68rem;
+    background: var(--rsi-bg-card);
+    padding: 2px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--rsi-border-color);
+    color: var(--rsi-success-text);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    box-shadow: var(--rsi-shadow-sm);
+}
 
-    .rsi-profile-info p i {
-        width: 16px;
-        font-size: 0.8rem;
-        color: var(--rsi-primary);
-    }
+.rsi-profile-status i {
+    font-size: 0.45rem;
+    color: var(--rsi-success);
+}
 
-    .rsi-profile-attendance {
-        flex-shrink: 0;
-        min-width: 180px;
-    }
+.rsi-profile-info {
+    flex: 1;
+    min-width: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
 
-    .rsi-attendance-card {
-        background: var(--rsi-gray-50);
-        border-radius: var(--rsi-radius-lg);
-        padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
-        border: 1px solid var(--rsi-gray-200);
-        min-width: 180px;
-    }
+.rsi-profile-title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
 
-    .rsi-attendance-header {
-        display: flex;
-        align-items: center;
-        gap: var(--rsi-spacing-sm);
-        font-weight: 600;
-        color: var(--rsi-text-primary);
-        margin-bottom: var(--rsi-spacing-xs);
-        font-size: 0.85rem;
-    }
+.rsi-profile-info h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    margin: 0;
+}
 
-    .rsi-attendance-header i {
-        color: var(--rsi-primary);
-    }
+.rsi-profile-info p {
+    color: var(--rsi-text-secondary);
+    margin: 2px 0;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
 
-    .rsi-attendance-status {
-        margin: var(--rsi-spacing-xs) 0 var(--rsi-spacing-sm);
-    }
+.rsi-profile-info p i {
+    width: 18px;
+    font-size: 0.85rem;
+    color: var(--rsi-primary);
+    text-align: center;
+}
 
-    .rsi-btn-attendance {
-        width: 100%;
-        padding: 8px 16px;
-        background: var(--rsi-primary);
-        color: var(--rsi-white);
-        border: none;
-        border-radius: var(--rsi-radius-md);
-        font-weight: 600;
-        font-size: 0.8rem;
-        cursor: pointer;
-        transition: all var(--rsi-transition-base);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: var(--rsi-spacing-sm);
-    }
+.rsi-profile-attendance {
+    flex-shrink: 0;
+    min-width: 280px;
+}
 
-    .rsi-btn-attendance:hover {
-        background: var(--rsi-primary-dark);
-        transform: translateY(-2px);
-        box-shadow: var(--rsi-shadow-primary);
-    }
+.rsi-attendance-card {
+    background: var(--rsi-bg-secondary);
+    border-radius: var(--rsi-radius-lg);
+    padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
+    border: 1px solid var(--rsi-border-color);
+    display: flex;
+    flex-direction: column;
+    gap: var(--rsi-spacing-sm);
+    height: 100%;
+}
 
-    .rsi-btn-attendance:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        transform: none;
-    }
+.rsi-attendance-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--rsi-spacing-sm);
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+    font-size: 0.9rem;
+}
 
-    /* ==========================================
-       GRÁFICAS (3 EN UNA FILA)
-    ========================================== */
-    .rsi-dashboard-charts {
-        margin-bottom: var(--rsi-spacing-xl);
-    }
+.rsi-attendance-header i {
+    color: var(--rsi-primary);
+    margin-right: 4px;
+}
 
+.rsi-attendance-schedule {
+    font-size: 0.75rem;
+    color: var(--rsi-text-muted);
+    font-weight: 500;
+}
+
+.rsi-attendance-status {
+    margin: 2px 0;
+}
+
+.rsi-attendance-hours {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--rsi-spacing-sm);
+    padding: 8px 12px;
+    background: var(--rsi-bg-card);
+    border: 1px solid var(--rsi-border-color);
+    border-radius: var(--rsi-radius-md);
+    font-size: 0.8rem;
+}
+
+.rsi-attendance-hour-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.rsi-attendance-hour-item .hour-label {
+    color: var(--rsi-text-muted);
+    font-size: 0.72rem;
+}
+
+.rsi-attendance-hour-item .hour-value {
+    color: var(--rsi-text-primary);
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.rsi-attendance-summary-mini {
+    font-size: 0.78rem;
+    color: var(--rsi-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.rsi-attendance-summary-mini strong {
+    color: var(--rsi-text-primary);
+}
+
+.rsi-btn-attendance {
+    width: 100%;
+    padding: 10px 16px;
+    background: var(--rsi-primary);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-btn-attendance:hover:not(:disabled) {
+    background: var(--rsi-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-primary);
+}
+
+.rsi-btn-attendance.rsi-btn-attendance-exit {
+    background: #d97706;
+    color: #ffffff;
+}
+
+.rsi-btn-attendance.rsi-btn-attendance-exit:hover:not(:disabled) {
+    background: #b45309;
+}
+
+.rsi-btn-attendance:disabled,
+.rsi-btn-attendance.rsi-btn-disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    transform: none;
+    background: var(--rsi-gray-400);
+    color: var(--rsi-text-light);
+}
+
+/* ==========================================
+   GRÁFICAS (3 EN UNA FILA)
+========================================== */
+.rsi-dashboard-charts {
+    margin-bottom: var(--rsi-spacing-xl);
+}
+
+.rsi-chart-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--rsi-spacing-lg);
+}
+
+.rsi-chart-card {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-lg);
+    padding: var(--rsi-spacing-lg);
+    border: 1px solid var(--rsi-border-color);
+    box-shadow: var(--rsi-shadow-sm);
+}
+
+.rsi-chart-card h4 {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+    margin: 0 0 var(--rsi-spacing-md) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-chart-card h4 i {
+    color: var(--rsi-primary);
+    font-size: 0.95rem;
+}
+
+.rsi-chart-container {
+    position: relative;
+    height: 190px;
+    width: 100%;
+}
+
+.rsi-chart-empty-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--rsi-text-muted);
+    text-align: center;
+    gap: 8px;
+}
+
+.rsi-chart-empty-fallback i {
+    font-size: 1.8rem;
+}
+
+/* ==========================================
+   ESTADÍSTICAS
+========================================== */
+.rsi-dashboard-stats {
+    margin-bottom: var(--rsi-spacing-xl);
+}
+
+.rsi-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--rsi-spacing-lg);
+}
+
+.rsi-dashboard-stats .rsi-stat-card {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-md);
+    padding: var(--rsi-spacing-lg);
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-lg);
+    border: 1px solid var(--rsi-border-color);
+    box-shadow: var(--rsi-shadow-sm);
+    transition: all var(--rsi-transition-base);
+    text-align: left;
+}
+
+.rsi-dashboard-stats .rsi-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-md);
+}
+
+.rsi-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--rsi-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.rsi-stat-total .rsi-stat-icon {
+    background: var(--rsi-bg-secondary);
+    color: var(--rsi-primary);
+}
+
+.rsi-stat-pending .rsi-stat-icon {
+    background: var(--rsi-warning-light);
+    color: var(--rsi-warning-text);
+}
+
+.rsi-stat-in-progress .rsi-stat-icon {
+    background: var(--rsi-info-light);
+    color: var(--rsi-info-text);
+}
+
+.rsi-stat-completed .rsi-stat-icon {
+    background: var(--rsi-success-light);
+    color: var(--rsi-success-text);
+}
+
+.rsi-stat-content {
+    flex: 1;
+}
+
+.rsi-dashboard-stats .rsi-stat-number {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    display: block;
+    line-height: 1.2;
+    margin-bottom: 2px;
+}
+
+.rsi-dashboard-stats .rsi-stat-label {
+    font-size: 0.82rem;
+    color: var(--rsi-text-muted);
+    font-weight: 500;
+}
+
+/* ==========================================
+   TICKETS ASIGNADOS
+========================================== */
+.rsi-dashboard-tickets {
+    margin-top: var(--rsi-spacing-xl);
+}
+
+.rsi-tickets-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: var(--rsi-spacing-lg);
+    flex-wrap: wrap;
+    gap: var(--rsi-spacing-md);
+}
+
+.rsi-tickets-header h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    margin: 0 0 4px 0;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-tickets-header h3 i {
+    color: var(--rsi-primary);
+}
+
+.rsi-tickets-subtitle {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--rsi-text-muted);
+}
+
+.rsi-tickets-filters {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-xs);
+    flex-wrap: wrap;
+}
+
+.rsi-ticket-filter-btn {
+    padding: 7px 14px;
+    border-radius: var(--rsi-radius-md);
+    border: 1px solid var(--rsi-border-color);
+    background: var(--rsi-bg-card);
+    color: var(--rsi-text-secondary);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--rsi-transition-fast);
+}
+
+.rsi-ticket-filter-btn:hover {
+    border-color: var(--rsi-primary);
+    color: var(--rsi-primary);
+}
+
+.rsi-ticket-filter-btn.active {
+    background: var(--rsi-primary);
+    border-color: var(--rsi-primary);
+    color: #ffffff;
+}
+
+.rsi-tickets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: var(--rsi-spacing-lg);
+}
+
+.rsi-ticket-card {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-lg);
+    padding: var(--rsi-spacing-lg);
+    border: 1px solid var(--rsi-border-color);
+    box-shadow: var(--rsi-shadow-sm);
+    transition: all var(--rsi-transition-base);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.rsi-ticket-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+}
+
+.rsi-ticket-card.status-pending::before {
+    background: var(--rsi-warning);
+}
+
+.rsi-ticket-card.status-in-progress::before {
+    background: var(--rsi-info);
+}
+
+.rsi-ticket-card.status-completed::before {
+    background: var(--rsi-success);
+}
+
+.rsi-ticket-card.status-closed::before {
+    background: var(--rsi-gray-500);
+}
+
+.rsi-ticket-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--rsi-shadow-md);
+    border-color: var(--rsi-primary-light);
+}
+
+.rsi-ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--rsi-spacing-sm);
+    margin-bottom: var(--rsi-spacing-sm);
+}
+
+.rsi-ticket-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+}
+
+.rsi-ticket-title {
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    font-size: 1rem;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.rsi-ticket-id {
+    font-size: 0.74rem;
+    color: var(--rsi-primary);
+    font-family: var(--rsi-font-mono);
+    font-weight: 700;
+    background: var(--rsi-bg-secondary);
+    border: 1px solid var(--rsi-border-color);
+    padding: 2px 8px;
+    border-radius: var(--rsi-radius-sm);
+    align-self: flex-start;
+}
+
+.rsi-ticket-meta {
+    display: flex;
+    gap: var(--rsi-spacing-md);
+    margin-bottom: var(--rsi-spacing-sm);
+    flex-wrap: wrap;
+    font-size: 0.8rem;
+    color: var(--rsi-text-muted);
+}
+
+.rsi-ticket-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.rsi-ticket-meta i {
+    font-size: 0.75rem;
+    color: var(--rsi-primary);
+}
+
+.rsi-ticket-description {
+    color: var(--rsi-text-secondary);
+    font-size: 0.9rem;
+    margin: var(--rsi-spacing-sm) 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 42px;
+    line-height: 1.5;
+}
+
+.rsi-ticket-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--rsi-spacing-md);
+    padding-top: var(--rsi-spacing-sm);
+    border-top: 1px solid var(--rsi-border-color);
+    flex-wrap: wrap;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-ticket-priority {
+    font-size: 0.74rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rsi-ticket-priority.priority-low {
+    background: var(--rsi-success-light);
+    color: var(--rsi-success-text);
+}
+
+.rsi-ticket-priority.priority-medium {
+    background: var(--rsi-warning-light);
+    color: var(--rsi-warning-text);
+}
+
+.rsi-ticket-priority.priority-high {
+    background: var(--rsi-danger-light);
+    color: var(--rsi-danger-text);
+}
+
+.rsi-ticket-priority.priority-urgent {
+    background: var(--rsi-danger-light);
+    color: var(--rsi-danger-text);
+    border: 1px solid var(--rsi-danger);
+}
+
+.rsi-btn-ticket-detail {
+    padding: 7px 16px;
+    background: transparent;
+    color: var(--rsi-primary);
+    border: 1.5px solid var(--rsi-primary);
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-btn-ticket-detail:hover {
+    background: var(--rsi-primary);
+    color: #ffffff;
+}
+
+.rsi-tickets-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--rsi-spacing-3xl) var(--rsi-spacing-xl);
+    background: var(--rsi-bg-card);
+    border: 1px dashed var(--rsi-border-color);
+    border-radius: var(--rsi-radius-lg);
+    color: var(--rsi-text-muted);
+}
+
+.rsi-tickets-empty i {
+    font-size: 2.5rem;
+    color: var(--rsi-text-muted);
+    display: block;
+    margin-bottom: var(--rsi-spacing-md);
+}
+
+.rsi-tickets-empty h4 {
+    color: var(--rsi-text-primary);
+    margin: 0 0 6px 0;
+    font-size: 1.05rem;
+}
+
+.rsi-tickets-empty p {
+    font-size: 0.92rem;
+    margin: 0;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+@media (max-width: 992px) {
     .rsi-chart-row {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: var(--rsi-spacing-md);
-    }
-
-    .rsi-chart-card {
-        background: var(--rsi-bg-card);
-        border-radius: var(--rsi-radius-lg);
-        padding: var(--rsi-spacing-md);
-        border: 1px solid var(--rsi-gray-200);
-        box-shadow: var(--rsi-shadow-sm);
-    }
-
-    .rsi-chart-card h4 {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: var(--rsi-text-primary);
-        margin: 0 0 var(--rsi-spacing-sm) 0;
-        display: flex;
-        align-items: center;
-        gap: var(--rsi-spacing-sm);
-    }
-
-    .rsi-chart-card h4 i {
-        color: var(--rsi-primary);
-        font-size: 0.9rem;
-    }
-
-    .rsi-chart-container {
-        position: relative;
-        height: 160px;
-        width: 100%;
-    }
-
-    /* ==========================================
-       ESTADÍSTICAS
-    ========================================== */
-    .rsi-dashboard-stats {
-        margin-bottom: var(--rsi-spacing-xl);
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .rsi-stats-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: var(--rsi-spacing-md);
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .rsi-stat-card {
-        display: flex;
+    .rsi-profile-card {
+        flex-direction: column;
         align-items: center;
-        gap: var(--rsi-spacing-md);
-        padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
-        background: var(--rsi-bg-card);
-        border-radius: var(--rsi-radius-lg);
-        border: 1px solid var(--rsi-gray-200);
-        box-shadow: var(--rsi-shadow-sm);
-        transition: all var(--rsi-transition-base);
+        text-align: center;
     }
 
-    .rsi-stat-card:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--rsi-shadow-md);
-    }
-
-    .rsi-stat-icon {
-        width: 42px;
-        height: 42px;
-        border-radius: var(--rsi-radius-md);
-        display: flex;
-        align-items: center;
+    .rsi-profile-title-row {
         justify-content: center;
-        font-size: 1.2rem;
-        flex-shrink: 0;
     }
 
-    .rsi-stat-total .rsi-stat-icon {
-        background: rgba(28, 25, 72, 0.1);
-        color: var(--rsi-primary);
+    .rsi-profile-info p {
+        justify-content: center;
     }
 
-    .rsi-stat-pending .rsi-stat-icon {
-        background: rgba(255, 193, 7, 0.1);
-        color: var(--rsi-warning);
+    .rsi-profile-attendance {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .rsi-dashboard-section {
+        padding-left: var(--rsi-spacing-md);
+        padding-right: var(--rsi-spacing-md);
     }
 
-    .rsi-stat-in-progress .rsi-stat-icon {
-        background: rgba(23, 162, 184, 0.1);
-        color: var(--rsi-info);
-    }
-
-    .rsi-stat-completed .rsi-stat-icon {
-        background: rgba(40, 167, 69, 0.1);
-        color: var(--rsi-success);
-    }
-
-    .rsi-stat-content {
-        flex: 1;
-    }
-
-    .rsi-stat-number {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: var(--rsi-text-primary);
-        display: block;
-        line-height: 1.2;
-    }
-
-    .rsi-stat-label {
-        font-size: 0.8rem;
-        color: var(--rsi-gray-500);
-    }
-
-    /* ==========================================
-       TICKETS (TARJETAS MÁS GRANDES)
-    ========================================== */
-    .rsi-dashboard-tickets {
-        margin-top: var(--rsi-spacing-xl);
-    }
-
-    .rsi-tickets-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: var(--rsi-spacing-lg);
-        flex-wrap: wrap;
-        gap: var(--rsi-spacing-sm);
-    }
-
-    .rsi-tickets-header h3 {
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: var(--rsi-text-primary);
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: var(--rsi-spacing-sm);
-    }
-
-    .rsi-tickets-header h3 i {
-        color: var(--rsi-primary);
+    .rsi-chart-row {
+        grid-template-columns: 1fr;
     }
 
     .rsi-tickets-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-        gap: var(--rsi-spacing-lg);
+        grid-template-columns: 1fr;
     }
 
-    .rsi-ticket-card {
-        background: var(--rsi-bg-card);
-        border-radius: var(--rsi-radius-lg);
-        padding: var(--rsi-spacing-lg);
-        border: 1px solid var(--rsi-gray-200);
-        box-shadow: var(--rsi-shadow-sm);
-        transition: all var(--rsi-transition-base);
-        position: relative;
-        overflow: hidden;
+    .rsi-chart-container {
+        height: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .rsi-stats-grid {
+        grid-template-columns: 1fr;
     }
 
-    .rsi-ticket-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        height: 100%;
+    .rsi-dashboard-header {
+        flex-direction: column;
+        align-items: stretch;
     }
+}
 
-    .rsi-ticket-card.status-pending::before {
-        background: var(--rsi-warning);
-    }
+/* ==========================================
+   MODO OSCURO
+========================================== */
+body.dark-mode .rsi-profile-card,
+body.dark-mode .rsi-dashboard-stats .rsi-stat-card,
+body.dark-mode .rsi-chart-card,
+body.dark-mode .rsi-ticket-card {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-border-color);
+}
 
-    .rsi-ticket-card.status-in-progress::before {
-        background: var(--rsi-info);
-    }
+body.dark-mode .rsi-attendance-card {
+    background: var(--rsi-bg-secondary);
+    border-color: var(--rsi-border-color);
+}
 
-    .rsi-ticket-card.status-completed::before {
-        background: var(--rsi-success);
-    }
+body.dark-mode .rsi-attendance-hours {
+    background: var(--rsi-bg-input);
+    border-color: var(--rsi-border-color);
+}
 
-    .rsi-ticket-card.status-closed::before {
-        background: var(--rsi-text-light);
-    }
+body.dark-mode .rsi-ticket-id {
+    background: var(--rsi-bg-secondary);
+    border-color: var(--rsi-border-color);
+    color: var(--rsi-primary);
+}
 
-    .rsi-ticket-card:hover {
-        transform: translateY(-4px);
-        box-shadow: var(--rsi-shadow-md);
-    }
+body.dark-mode .rsi-btn-ticket-detail {
+    border-color: var(--rsi-primary);
+    color: var(--rsi-primary);
+}
 
-    .rsi-ticket-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: var(--rsi-spacing-sm);
-    }
+body.dark-mode .rsi-btn-ticket-detail:hover {
+    background: var(--rsi-primary);
+    color: #ffffff;
+}
 
-    .rsi-ticket-title {
-        font-weight: 600;
-        color: var(--rsi-text-primary);
-        font-size: 1rem;
-        margin: 0;
-        flex: 1;
-        margin-right: var(--rsi-spacing-sm);
-    }
+body.dark-mode .rsi-ticket-filter-btn {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-border-color);
+    color: var(--rsi-text-secondary);
+}
 
-    .rsi-ticket-id {
-        font-size: 0.7rem;
-        color: var(--rsi-gray-500);
-        font-family: monospace;
-        background: var(--rsi-gray-100);
-        padding: 2px 8px;
-        border-radius: var(--rsi-radius-sm);
-        flex-shrink: 0;
-    }
+body.dark-mode .rsi-ticket-filter-btn.active {
+    background: var(--rsi-primary);
+    border-color: var(--rsi-primary);
+    color: #ffffff;
+}
 
-    .rsi-ticket-meta {
-        display: flex;
-        gap: var(--rsi-spacing-md);
-        margin-bottom: var(--rsi-spacing-sm);
-        flex-wrap: wrap;
-        font-size: 0.8rem;
-        color: var(--rsi-gray-500);
-    }
+/* ==========================================
+   MÓDULO DE OPERACIONES DEL COLABORADOR
+========================================== */
+.rsi-ops-quick-card {
+    transition: transform var(--rsi-transition-base, 0.2s ease), box-shadow var(--rsi-transition-base, 0.2s ease), border-color var(--rsi-transition-base, 0.2s ease) !important;
+}
 
-    .rsi-ticket-meta span {
-        display: flex;
-        align-items: center;
-        gap: var(--rsi-spacing-xs);
-    }
+.rsi-ops-quick-card:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+    border-color: var(--rsi-primary, #1c1948) !important;
+}
 
-    .rsi-ticket-meta i {
-        font-size: 0.7rem;
-    }
-
-    .rsi-ticket-description {
-        color: var(--rsi-gray-600);
-        font-size: 0.9rem;
-        margin: var(--rsi-spacing-sm) 0;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        min-height: 42px;
-    }
-
-    .rsi-ticket-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: var(--rsi-spacing-md);
-        padding-top: var(--rsi-spacing-sm);
-        border-top: 1px solid var(--rsi-gray-100);
-        flex-wrap: wrap;
-        gap: var(--rsi-spacing-sm);
-    }
-
-    .rsi-ticket-priority {
-        font-size: 0.7rem;
-        font-weight: 600;
-        padding: 2px 10px;
-        border-radius: 20px;
-    }
-
-    .rsi-ticket-priority.priority-low {
-        background: rgba(40, 167, 69, 0.1);
-        color: var(--rsi-success);
-    }
-
-    .rsi-ticket-priority.priority-medium {
-        background: rgba(255, 193, 7, 0.1);
-        color: var(--rsi-warning);
-    }
-
-    .rsi-ticket-priority.priority-high {
-        background: rgba(220, 53, 69, 0.1);
-        color: var(--rsi-danger);
-    }
-
-    .rsi-ticket-priority.priority-urgent {
-        background: rgba(220, 53, 69, 0.2);
-        color: var(--rsi-danger);
-        animation: pulsePriority 1.5s ease-in-out infinite;
-    }
-
-    @keyframes pulsePriority {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.6; }
-    }
-
-    .rsi-btn-ticket-detail {
-        padding: 6px 16px;
-        background: transparent;
-        color: var(--rsi-primary);
-        border: 2px solid var(--rsi-primary);
-        border-radius: var(--rsi-radius-sm);
-        font-weight: 600;
-        font-size: 0.8rem;
-        cursor: pointer;
-        transition: all var(--rsi-transition-base);
-        display: flex;
-        align-items: center;
-        gap: var(--rsi-spacing-sm);
-    }
-
-    .rsi-btn-ticket-detail:hover {
-        background: var(--rsi-primary);
-        color: var(--rsi-white);
-    }
-
-    .rsi-tickets-empty {
-        grid-column: 1 / -1;
-        text-align: center;
-        padding: var(--rsi-spacing-2xl);
-        color: var(--rsi-gray-500);
-    }
-
-    .rsi-tickets-empty i {
-        font-size: 2.5rem;
-        color: var(--rsi-gray-300);
-        display: block;
-        margin-bottom: var(--rsi-spacing-md);
-    }
-
-    .rsi-tickets-empty p {
-        font-size: 0.95rem;
-        margin: 0;
-    }
-
-    /* ==========================================
-       RESPONSIVE
-    ========================================== */
-    @media (max-width: 1200px) {
-        .rsi-chart-row {
-            grid-template-columns: repeat(3, 1fr);
-        }
-    }
-
-    @media (max-width: 992px) {
-        .rsi-chart-row {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .rsi-stats-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .rsi-profile-card {
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .rsi-profile-info {
-            text-align: center;
-        }
-
-        .rsi-profile-info p {
-            justify-content: center;
-        }
-
-        .rsi-profile-attendance {
-            width: 100%;
-            max-width: 250px;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .rsi-chart-row {
-            grid-template-columns: 1fr;
-        }
-
-        .rsi-tickets-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .rsi-chart-container {
-            height: 180px;
-        }
-    }
-
-    @media (max-width: 576px) {
-        .rsi-stats-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .rsi-ticket-header {
-            flex-direction: column;
-            gap: var(--rsi-spacing-xs);
-        }
-
-        .rsi-profile-avatar img {
-            width: 60px;
-            height: 60px;
-        }
-
-        .rsi-profile-status {
-            font-size: 0.5rem;
-            padding: 1px 6px;
-        }
-
-        .rsi-stat-card {
-            padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
-        }
-
-        .rsi-stat-number {
-            font-size: 1.2rem;
-        }
-
-        .rsi-chart-container {
-            height: 150px;
-        }
-
-        .rsi-ticket-description {
-            -webkit-line-clamp: 2;
-            min-height: 36px;
-        }
-
-        .rsi-attendance-card {
-            min-width: auto;
-        }
-
-        .rsi-profile-attendance {
-            max-width: 100%;
-        }
-    }
-
-    /* ==========================================
-       MODO OSCURO
-    ========================================== */
-    body.dark-mode .rsi-profile-card {
-        background: var(--rsi-gray-300);
-        border-color: var(--rsi-gray-300);
-    }
-
-    body.dark-mode .rsi-profile-info h2 {
-        color: var(--rsi-text-light);
-    }
-
-    body.dark-mode .rsi-attendance-card {
-        background: var(--rsi-gray-300);
-        border-color: var(--rsi-gray-800);
-    }
-
-    body.dark-mode .rsi-attendance-header {
-        color: var(--rsi-text-light);
-    }
-
-    body.dark-mode .rsi-stat-card {
-        background: var(--rsi-bg-card);
-        border-color: var(--rsi-gray-300);
-    }
-
-    body.dark-mode .rsi-stat-number {
-        color: var(--rsi-text-light);
-    }
-
-    body.dark-mode .rsi-chart-card {
-        background: var(--rsi-bg-card);
-        border-color: var(--rsi-gray-300);
-    }
-
-    body.dark-mode .rsi-chart-card h4 {
-        color: var(--rsi-text-light);
-    }
-
-    body.dark-mode .rsi-ticket-card {
-        background: var(--rsi-bg-card);
-        border-color: var(--rsi-gray-300);
-    }
-
-    body.dark-mode .rsi-ticket-title {
-        color: var(--rsi-text-light);
-    }
-
-    body.dark-mode .rsi-ticket-description {
-        color: var(--rsi-text-light);
-    }
-
-    body.dark-mode .rsi-ticket-id {
-        background: var(--rsi-gray-400);
-        color: var(--rsi-text-light);
-    }
-
-    body.dark-mode .rsi-tickets-header h3 {
-        color: var(--rsi-text-light);
-    }
-
-    body.dark-mode .rsi-profile-status {
-        background: var(--rsi-gray-800);
-        border-color: var(--rsi-gray-300);
-    }
-
-    body.dark-mode .rsi-btn-ticket-detail {
-        border-color: var(--rsi-primary);
-        color: var(--rsi-primary);
-    }
-
-    body.dark-mode .rsi-btn-ticket-detail:hover {
-        background: var(--rsi-primary);
-        color: var(--rsi-white);
-    }
-
-    body.dark-mode .rsi-profile-info p {
-        color: var(--rsi-text-light);
-    }
+body.dark-mode .rsi-ops-quick-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+    border-color: var(--rsi-gold, #D4AF37) !important;
+}

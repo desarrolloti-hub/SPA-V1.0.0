@@ -1,0 +1,130 @@
+<!-- ========================================
+   BUYER DASHBOARD - RSI Enterprise
+   Panel privado del comprador / cliente
+   ======================================== -->
+
+<section class="rsi-facturas-section rsi-buyer-section" style="padding: 40px 0 80px;">
+    <div class="rsi-container">
+        
+        <!-- ENCABEZADO DE BIENVENIDA -->
+        <div class="rsi-carrusel-header-wrapper" style="margin-bottom: var(--rsi-spacing-xl);">
+            <div>
+                <span class="rsi-badge rsi-badge-primary" style="margin-bottom: var(--rsi-spacing-xs);">
+                    <i class="fas fa-user-check"></i> Área de Cliente
+                </span>
+                <h1 class="rsi-page-title">
+                    ¡Hola, <span class="rsi-text-gold" id="buyerGreetingName">Cliente</span>!
+                </h1>
+                <p class="rsi-page-subtitle">
+                    Bienvenido a tu panel de comprador. Aquí puedes gestionar tu carrito de pedidos, revisar tus equipos guardados en favoritos, actualizar tus datos de contacto y dar seguimiento a tus compras.
+                </p>
+            </div>
+            <div class="rsi-carrusel-header-actions">
+                <a href="/products" class="rsi-btn-crud rsi-btn-crud-primary" data-link>
+                    <i class="fas fa-store"></i> Explorar Catálogo
+                </a>
+                <button type="button" id="btnBuyerLogout" class="rsi-btn-crud rsi-btn-crud-outline" style="color: #ef4444; border-color: rgba(239,68,68,0.3);">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </div>
+        </div>
+
+        <!-- TARJETAS DE RESUMEN (KPIS) -->
+        <div class="rsi-stats-container" style="margin-bottom: var(--rsi-spacing-xl);">
+            <div class="rsi-stat-item">
+                <span class="rsi-stat-value" style="color: var(--rsi-gold, #c5a059);" id="statBuyerCartCount">0</span>
+                <span class="rsi-stat-label">Artículos en Carrito</span>
+            </div>
+            <div class="rsi-stat-item">
+                <span class="rsi-stat-value" style="color: #ef4444;" id="statBuyerWishlistCount">0</span>
+                <span class="rsi-stat-label">Favoritos Guardados</span>
+            </div>
+            <div class="rsi-stat-item">
+                <span class="rsi-stat-value" style="color: var(--rsi-success, #10b981);" id="statBuyerTotalCart">$0.00</span>
+                <span class="rsi-stat-label">Total en Carrito</span>
+            </div>
+            <div class="rsi-stat-item">
+                <span class="rsi-stat-value" style="color: var(--rsi-primary, #1c1948);" id="statBuyerRole">Cliente</span>
+                <span class="rsi-stat-label">Tipo de Cuenta</span>
+            </div>
+        </div>
+
+        <!-- ACCESOS RÁPIDOS Y MÓDULOS -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-bottom: 50px;">
+            
+            <!-- TARJETA 1: CARRITO -->
+            <div class="rsi-form-card" style="background: var(--rsi-card-bg, #ffffff); border-radius: 16px; padding: 24px; border: 1px solid var(--rsi-border-color, #e2e8f0); display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(197, 160, 89, 0.15); color: var(--rsi-gold); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 16px;">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3 style="margin: 0 0 8px; font-size: 1.2rem; font-weight: 700; color: var(--rsi-text-primary);">
+                        Carrito de Compras
+                    </h3>
+                    <p style="margin: 0 0 16px; font-size: 0.9rem; color: var(--rsi-gray-500); line-height: 1.5;">
+                        Revisa los equipos seleccionados, ajusta cantidades y genera la cotización o pedido formal.
+                    </p>
+                </div>
+                <a href="/buyer/cart" class="rsi-btn-crud rsi-btn-crud-primary" data-link style="width: 100%; justify-content: center; padding: 10px;">
+                    Ver mi Carrito <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>
+                </a>
+            </div>
+
+            <!-- TARJETA 2: LISTA DE DESEOS -->
+            <div class="rsi-form-card" style="background: var(--rsi-card-bg, #ffffff); border-radius: 16px; padding: 24px; border: 1px solid var(--rsi-border-color, #e2e8f0); display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(239, 68, 68, 0.12); color: #ef4444; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 16px;">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 style="margin: 0 0 8px; font-size: 1.2rem; font-weight: 700; color: var(--rsi-text-primary);">
+                        Lista de Deseos
+                    </h3>
+                    <p style="margin: 0 0 16px; font-size: 0.9rem; color: var(--rsi-gray-500); line-height: 1.5;">
+                        Equipos que te interesan guardados para consultar más tarde o cotizar con nuestro equipo.
+                    </p>
+                </div>
+                <a href="/buyer/wishlist" class="rsi-btn-crud rsi-btn-crud-secondary" data-link style="width: 100%; justify-content: center; padding: 10px;">
+                    Ver Favoritos <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>
+                </a>
+            </div>
+
+            <!-- TARJETA 3: PERFIL DE COMPRADOR -->
+            <div class="rsi-form-card" style="background: var(--rsi-card-bg, #ffffff); border-radius: 16px; padding: 24px; border: 1px solid var(--rsi-border-color, #e2e8f0); display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(59, 130, 246, 0.12); color: #3b82f6; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 16px;">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h3 style="margin: 0 0 8px; font-size: 1.2rem; font-weight: 700; color: var(--rsi-text-primary);">
+                        Mi Perfil y Facturación
+                    </h3>
+                    <p style="margin: 0 0 16px; font-size: 0.9rem; color: var(--rsi-gray-500); line-height: 1.5;">
+                        Consulta tus datos registrados de contacto, correo y configuración de la cuenta.
+                    </p>
+                </div>
+                <a href="/buyer/profile" class="rsi-btn-crud rsi-btn-crud-outline" data-link style="width: 100%; justify-content: center; padding: 10px;">
+                    Gestionar Perfil <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- SECCIÓN DE ARTÍCULOS EN FAVORITOS RECIENTES -->
+        <div class="rsi-panel-crud" style="padding: 24px; border-radius: 16px; background: var(--rsi-card-bg, #ffffff); border: 1px solid var(--rsi-border-color, #e2e8f0);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="margin: 0; font-size: 1.2rem; font-weight: 700;">
+                    <i class="fas fa-bookmark" style="color: var(--rsi-gold);"></i> Tus Equipos Guardados
+                </h3>
+                <a href="/buyer/wishlist" data-link style="font-size: 0.9rem; color: var(--rsi-gold); font-weight: 600; text-decoration: none;">
+                    Ver todos <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+
+            <div id="buyerRecentWishlistGrid" class="rsi-products-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px;">
+                <p style="color: var(--rsi-gray-400); font-size: 0.9rem; grid-column: 1 / -1; text-align: center; padding: 30px 0;">
+                    No tienes productos guardados en favoritos todavía. ¡Explora el catálogo y agrega los que te gusten!
+                </p>
+            </div>
+        </div>
+
+    </div>
+</section>

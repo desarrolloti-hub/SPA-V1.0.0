@@ -1,0 +1,363 @@
+<!-- ========================================
+   PANEL ADMINISTRATIVO DE ASISTENCIAS - RSI ENTERPRISE
+   Gestión y consulta de asistencias por periodos quincenales y mensuales
+   ======================================== -->
+
+<section class="rsi-asistencias-crud-section">
+    <div class="rsi-container">
+
+        <!-- Encabezado -->
+        <div class="rsi-header-wrapper" style="margin-bottom: 24px;">
+            <h1 class="rsi-page-title">
+                <span class="rsi-text-gold">Panel Administrativo</span> de Asistencias
+            </h1>
+            <p class="rsi-page-subtitle">
+                Supervisión general de puntualidad, asistencias, retardos, inasistencias y justificaciones por periodo.
+            </p>
+        </div>
+
+        <!-- Tarjetas de Métricas del Periodo -->
+        <div class="rsi-metrics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 24px;">
+            <div class="rsi-metric-card">
+                <div class="rsi-metric-icon" style="color: var(--rsi-primary);"><i class="fas fa-users"></i></div>
+                <div class="rsi-metric-content">
+                    <span class="rsi-metric-title">Colaboradores Activos</span>
+                    <h3 class="rsi-metric-val" id="metricaTotalColaboradores">0</h3>
+                </div>
+            </div>
+
+            <div class="rsi-metric-card">
+                <div class="rsi-metric-icon" style="color: #28a745;"><i class="fas fa-check-circle"></i></div>
+                <div class="rsi-metric-content">
+                    <span class="rsi-metric-title">Asistencias Puntuales</span>
+                    <h3 class="rsi-metric-val" id="metricaAsistencias">0</h3>
+                </div>
+            </div>
+
+            <div class="rsi-metric-card">
+                <div class="rsi-metric-icon" style="color: #ffc107;"><i class="fas fa-clock"></i></div>
+                <div class="rsi-metric-content">
+                    <span class="rsi-metric-title">Retardos</span>
+                    <h3 class="rsi-metric-val" id="metricaRetardos">0</h3>
+                </div>
+            </div>
+
+            <div class="rsi-metric-card">
+                <div class="rsi-metric-icon" style="color: #dc3545;"><i class="fas fa-user-times"></i></div>
+                <div class="rsi-metric-content">
+                    <span class="rsi-metric-title">Inasistencias</span>
+                    <h3 class="rsi-metric-val" id="metricaInasistencias">0</h3>
+                </div>
+            </div>
+
+            <div class="rsi-metric-card">
+                <div class="rsi-metric-icon" style="color: #17a2b8;"><i class="fas fa-hourglass-half"></i></div>
+                <div class="rsi-metric-content">
+                    <span class="rsi-metric-title">Justificaciones Pend.</span>
+                    <h3 class="rsi-metric-val" id="metricaJustificacionesPend">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL CRUD Y FILTROS POR PERIODO -->
+        <div class="rsi-panel-crud">
+
+            <!-- Encabezado del Panel -->
+            <div class="rsi-panel-header">
+                <h2>
+                    <i class="fas fa-clipboard-check"></i>
+                    <span id="tituloTablaAsistencias">Registros de Asistencia por Quincena</span>
+                    <span id="badgeTotalRegistros" class="rsi-badge rsi-badge-primary" style="font-size: 0.8rem;">0 registros</span>
+                </h2>
+                <div class="rsi-panel-actions">
+                    <div class="rsi-schedule-badge" title="Recordatorios automáticos programados de Lunes a Domingo a las 09:00 hrs y 12:00 hrs (Zona horaria de México)">
+                        <i class="fas fa-robot"></i>
+                        <span>Recordatorios: 09:00 y 12:00 hrs</span>
+                    </div>
+                    <button id="btnExportarExcelAsistencias" class="rsi-btn-crud rsi-btn-excel" title="Exportar tabla actual de asistencias a Excel">
+                        <i class="fas fa-file-excel"></i> Exportar a Excel
+                    </button>
+                    <button id="btnActualizarAdmin" class="rsi-btn-crud rsi-btn-crud-outline" title="Actualizar registros">
+                        <i class="fas fa-sync"></i> Actualizar
+                    </button>
+                    <a href="/partner/asistencia" class="rsi-btn-crud rsi-btn-crud-primary">
+                        <i class="fas fa-user-clock"></i> Mi Asistencia
+                    </a>
+                </div>
+            </div>
+
+            <!-- BARRA DE FILTROS AVANZADOS Y SELECTOR RÁPIDO DE QUINCENA -->
+            <div class="rsi-filters-container">
+                <div class="rsi-quincena-bar">
+                    <div class="rsi-quincena-tabs" id="quincenaQuickTabs">
+                        <button type="button" class="rsi-quincena-tab" data-quincena="primera">
+                            <i class="fas fa-calendar-day"></i> 1ª Quincena (Días 1 al 15)
+                        </button>
+                        <button type="button" class="rsi-quincena-tab" data-quincena="segunda">
+                            <i class="fas fa-calendar-week"></i> 2ª Quincena (Día 16 a fin de mes)
+                        </button>
+                        <button type="button" class="rsi-quincena-tab" data-quincena="todas">
+                            <i class="fas fa-calendar-alt"></i> Mes Completo
+                        </button>
+                    </div>
+                    <div class="rsi-quincena-hint">
+                        <i class="fas fa-hand-pointer"></i>
+                        <span>Haz clic en el <strong>nombre de cualquier colaborador</strong> para ver en específico todas sus asistencias.</span>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; align-items: flex-end; margin-top: 12px;">
+                    
+                    <!-- Filtro Año -->
+                    <div class="rsi-form-group" style="margin-bottom: 0;">
+                        <label for="filtroAnio" class="rsi-form-label" style="font-size: 0.8rem; margin-bottom: 4px;">Año:</label>
+                        <select id="filtroAnio" class="rsi-form-control" style="padding: 6px 10px; font-size: 0.88rem;">
+                            <!-- Dinámico -->
+                        </select>
+                    </div>
+
+                    <!-- Filtro Mes -->
+                    <div class="rsi-form-group" style="margin-bottom: 0;">
+                        <label for="filtroMes" class="rsi-form-label" style="font-size: 0.8rem; margin-bottom: 4px;">Mes:</label>
+                        <select id="filtroMes" class="rsi-form-control" style="padding: 6px 10px; font-size: 0.88rem;">
+                            <option value="1">Enero</option>
+                            <option value="2">Febrero</option>
+                            <option value="3">Marzo</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Mayo</option>
+                            <option value="6">Junio</option>
+                            <option value="7">Julio</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Noviembre</option>
+                            <option value="12">Diciembre</option>
+                        </select>
+                    </div>
+
+                    <!-- Filtro Quincena -->
+                    <div class="rsi-form-group" style="margin-bottom: 0;">
+                        <label for="filtroQuincena" class="rsi-form-label" style="font-size: 0.8rem; margin-bottom: 4px;">Periodo / Quincena:</label>
+                        <select id="filtroQuincena" class="rsi-form-control" style="padding: 6px 10px; font-size: 0.88rem;">
+                            <option value="todas">Mes Completo</option>
+                            <option value="primera">1ª Quincena (Días 1 al 15)</option>
+                            <option value="segunda">2ª Quincena (Día 16 a fin de mes)</option>
+                        </select>
+                    </div>
+
+                    <!-- Filtro Colaborador -->
+                    <div class="rsi-form-group" style="margin-bottom: 0;">
+                        <label for="filtroColaborador" class="rsi-form-label" style="font-size: 0.8rem; margin-bottom: 4px;">Colaborador (Partner):</label>
+                        <select id="filtroColaborador" class="rsi-form-control" style="padding: 6px 10px; font-size: 0.88rem;">
+                            <option value="todos">Todos los colaboradores</option>
+                        </select>
+                    </div>
+
+                    <!-- Filtro Estado Asistencia -->
+                    <div class="rsi-form-group" style="margin-bottom: 0;">
+                        <label for="filtroEstado" class="rsi-form-label" style="font-size: 0.8rem; margin-bottom: 4px;">Estado Asistencia:</label>
+                        <select id="filtroEstado" class="rsi-form-control" style="padding: 6px 10px; font-size: 0.88rem;">
+                            <option value="todos">Todos</option>
+                            <option value="asistencia_registrada">Puntual</option>
+                            <option value="retardo">Retardo</option>
+                            <option value="inasistencia">Inasistencia</option>
+                        </select>
+                    </div>
+
+                    <!-- Filtro Estado Justificación -->
+                    <div class="rsi-form-group" style="margin-bottom: 0;">
+                        <label for="filtroJustificacion" class="rsi-form-label" style="font-size: 0.8rem; margin-bottom: 4px;">Justificación:</label>
+                        <select id="filtroJustificacion" class="rsi-form-control" style="padding: 6px 10px; font-size: 0.88rem;">
+                            <option value="todos">Todas</option>
+                            <option value="pendiente">Pendiente de revisión</option>
+                            <option value="aprobada">Aprobada</option>
+                            <option value="rechazada">Rechazada</option>
+                            <option value="sin_justificacion">Sin justificar</option>
+                        </select>
+                    </div>
+
+                    <!-- Botón Aplicar Filtros -->
+                    <div style="display: flex; gap: 8px;">
+                        <button id="btnAplicarFiltros" class="rsi-btn-search" style="padding: 8px 16px; font-size: 0.88rem; flex: 1;">
+                            <i class="fas fa-filter"></i> Filtrar
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- EXPEDIENTE ESPECÍFICO DEL COLABORADOR SELECCIONADO -->
+            <div id="panelDetalleColaborador" class="rsi-colab-detail-panel" style="display: none;">
+                <div class="rsi-colab-detail-header">
+                    <div class="rsi-colab-detail-profile">
+                        <img id="detColabFoto" src="/assets/images/default-avatar.png" alt="Foto Colaborador" class="rsi-colab-detail-avatar">
+                        <div class="rsi-colab-detail-info">
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <h3 id="detColabNombre">Nombre del Colaborador</h3>
+                                <span id="detColabPeriodo" class="rsi-badge rsi-badge-primary">1ª Quincena</span>
+                            </div>
+                            <p id="detColabArea" class="rsi-colab-detail-meta"><i class="fas fa-sitemap"></i> Área General</p>
+                            <p id="detColabEmail" class="rsi-colab-detail-meta"><i class="fas fa-envelope"></i> correo@rsi.com</p>
+                        </div>
+                    </div>
+                    <div class="rsi-colab-detail-actions">
+                        <button type="button" id="btnVolverTodosColaboradores" class="rsi-btn-crud rsi-btn-crud-outline">
+                            <i class="fas fa-arrow-left"></i> Volver a todos los colaboradores
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Resumen Individual de Asistencias del Colaborador -->
+                <div class="rsi-colab-detail-kpis">
+                    <div class="rsi-colab-kpi-item">
+                        <span class="rsi-colab-kpi-label">Asistencias Puntuales</span>
+                        <strong class="rsi-colab-kpi-value" id="detMetricaPuntuales" style="color: #28a745;">0</strong>
+                        <small class="rsi-colab-kpi-sub" id="detMetricaTotalDias">En el periodo</small>
+                    </div>
+                    <div class="rsi-colab-kpi-item">
+                        <span class="rsi-colab-kpi-label">Retardos</span>
+                        <strong class="rsi-colab-kpi-value" id="detMetricaRetardos" style="color: #d97706;">0</strong>
+                        <small class="rsi-colab-kpi-sub" id="detMetricaMinutosRetardo">0 min acumulados</small>
+                    </div>
+                    <div class="rsi-colab-kpi-item">
+                        <span class="rsi-colab-kpi-label">Inasistencias</span>
+                        <strong class="rsi-colab-kpi-value" id="detMetricaInasistencias" style="color: #dc3545;">0</strong>
+                        <small class="rsi-colab-kpi-sub">Días sin asistencia</small>
+                    </div>
+                    <div class="rsi-colab-kpi-item">
+                        <span class="rsi-colab-kpi-label">Tiempo Laborado</span>
+                        <strong class="rsi-colab-kpi-value" id="detMetricaHoras" style="color: var(--rsi-primary);">0h 00m</strong>
+                        <small class="rsi-colab-kpi-sub">Entrada a Salida</small>
+                    </div>
+                    <div class="rsi-colab-kpi-item">
+                        <span class="rsi-colab-kpi-label">Justificaciones</span>
+                        <strong class="rsi-colab-kpi-value" id="detMetricaJustificaciones" style="color: #17a2b8;">0</strong>
+                        <small class="rsi-colab-kpi-sub" id="detMetricaJustSub">0 aprob. / 0 pend.</small>
+                    </div>
+                </div>
+
+                <!-- Lista de Justificaciones del Colaborador en el Periodo -->
+                <div id="detColabJustificacionesBox" class="rsi-colab-justificaciones-box" style="display: none;">
+                    <h4><i class="fas fa-file-medical-alt"></i> Justificaciones de Inasistencia del Colaborador en el Periodo</h4>
+                    <div id="detColabJustificacionesList" class="rsi-colab-justificaciones-list"></div>
+                </div>
+
+                <!-- Desglose detallado día por día exclusivo de este colaborador -->
+                <div id="detalleIndividualTableWrapper" class="rsi-colab-individual-breakdown" style="display: none; margin-top: 16px;">
+                    <h4 style="margin: 0 0 10px 0; font-size: 0.92rem; font-weight: 700; color: var(--rsi-text-primary);">
+                        <i class="fas fa-list-ul"></i> Desglose Diario de Asistencias de este Colaborador
+                    </h4>
+                    <div class="rsi-table-wrapper" style="max-height: 360px; overflow-y: auto;">
+                        <table class="rsi-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Horario Entrada</th>
+                                    <th>Horario Salida</th>
+                                    <th>Tiempo Laborado</th>
+                                    <th>Estado</th>
+                                    <th>Retardo</th>
+                                    <th>Ubicación GPS</th>
+                                    <th>Justificación de Inasistencia</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detalleIndividualTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingAdminState" class="rsi-loading-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Consultando asistencias del periodo seleccionado...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyAdminState" class="rsi-empty-state" style="display: none;">
+                <i class="fas fa-calendar-check"></i>
+                <h3>No hay colaboradores o registros para este filtro</h3>
+                <p>Prueba seleccionando otro mes, quincena o criterio de búsqueda.</p>
+            </div>
+
+            <!-- Tabla Matriz Quincenal de Asistencias (Primera columna: Colaborador | Siguientes columnas: Días de la Quincena) -->
+            <div class="rsi-table-wrapper rsi-matrix-table-wrapper" id="tablaAdminWrapper" style="display: none;">
+                <table class="rsi-table rsi-matrix-table" id="tablaAsistenciasAdmin">
+                    <thead>
+                        <tr id="asistenciasMatrixHeadRow">
+                            <th class="rsi-matrix-sticky-col">Colaborador (Partner)</th>
+                            <!-- Columnas de los días de la quincena generadas dinámicamente -->
+                        </tr>
+                    </thead>
+                    <tbody id="asistenciasAdminTableBody">
+                        <!-- Filas de colaboradores con sus días de la quincena -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ==========================================
+     MODAL: REVISIÓN DE JUSTIFICACIÓN (ADMIN)
+     ========================================== -->
+<div id="modalRevisionJustificacion" class="rsi-modal rsi-asistencia-modal-overlay" style="display: none;">
+    <div class="rsi-modal-content rsi-asistencia-modal-card" style="max-width: 640px;">
+        <div class="rsi-modal-header">
+            <h3><i class="fas fa-tasks"></i> Revisión y Validación de Justificante</h3>
+            <button type="button" class="rsi-modal-close" id="btnCerrarModalRevision" aria-label="Cerrar">&times;</button>
+        </div>
+
+        <div class="rsi-modal-body" id="modalRevisionBody">
+            <div class="rsi-loading-state" id="loadingRevisionData">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Cargando información de la justificación...</p>
+            </div>
+
+            <div id="contentRevisionData" style="display: none;">
+                <div class="rsi-revision-info-card">
+                    <div class="rsi-revision-row"><strong>Colaborador:</strong> <span id="revColaboradorNombre">--</span></div>
+                    <div class="rsi-revision-row"><strong>Fecha de inasistencia:</strong> <span id="revFechaInasistencia" class="rsi-badge rsi-badge-primary">--</span></div>
+                    <div class="rsi-revision-row"><strong>Fecha de envío:</strong> <span id="revFechaEnvio">--</span></div>
+                    <div class="rsi-revision-row"><strong>Estado actual:</strong> <span id="revEstadoBadge">--</span></div>
+                    <div class="rsi-revision-row" id="revAutorizadoPorRow" style="display: none;"><strong>Autorizado / Revisado por:</strong> <span id="revAutorizadoPor">--</span></div>
+                </div>
+
+                <div class="rsi-form-group">
+                    <label class="rsi-form-label">Motivo presentado por el colaborador:</label>
+                    <div id="revMotivo" class="rsi-revision-motivo-box"></div>
+                </div>
+
+                <div class="rsi-form-group" id="revEvidenciaContainer">
+                    <label class="rsi-form-label">Comprobante de evidencia:</label>
+                    <div id="revEvidenciaContent" class="rsi-revision-evidencia-box"></div>
+                </div>
+
+                <div class="rsi-form-group" style="margin-top: 14px;">
+                    <label for="revComentario" class="rsi-form-label">Comentario u Observaciones del Revisor:</label>
+                    <textarea id="revComentario" rows="3" class="rsi-form-input" placeholder="Escribe un comentario o motivo de la resolución (opcional para aprobación, recomendado para rechazo)..."></textarea>
+                </div>
+
+                <!-- Historial de revisiones anteriores si existen -->
+                <div id="revHistorialContainer" style="display: none; margin-top: 14px;">
+                    <label class="rsi-form-label" style="font-size: 0.82rem; color: var(--rsi-text-muted);">Historial de Auditoría:</label>
+                    <div id="revHistorialList" class="rsi-revision-auditoria-list"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rsi-modal-footer" id="modalRevisionFooter" style="display: flex; justify-content: space-between; align-items: center;">
+            <button type="button" class="rsi-btn-crud rsi-btn-crud-outline" id="btnCancelarRevision">Cerrar</button>
+            <div style="display: flex; gap: 8px;">
+                <button type="button" class="rsi-btn-crud rsi-btn-crud-danger" id="btnRechazarJustificacion">
+                    <i class="fas fa-times"></i> Rechazar
+                </button>
+                <button type="button" class="rsi-btn-crud rsi-btn-crud-success" id="btnAprobarJustificacion">
+                    <i class="fas fa-check"></i> Aprobar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

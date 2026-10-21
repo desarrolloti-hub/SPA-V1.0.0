@@ -88,12 +88,16 @@
     /* Estados */
     --rsi-success: #28a745;
     --rsi-success-light: #d4edda;
+    --rsi-success-text: #155724;
     --rsi-warning: #ffc107;
     --rsi-warning-light: #fff3cd;
+    --rsi-warning-text: #856404;
     --rsi-danger: #dc3545;
     --rsi-danger-light: #f8d7da;
+    --rsi-danger-text: #721c24;
     --rsi-info: #17a2b8;
     --rsi-info-light: #d1ecf1;
+    --rsi-info-text: #0c5460;
     
     /* Sombras - MODO CLARO */
     --rsi-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -111,7 +115,13 @@
     --rsi-transition-slow: 0.5s ease;
     --rsi-transition-slower: 0.8s ease;
     
-    /* Bordes */
+    /* Bordes y Líneas */
+    --rsi-border: var(--rsi-gray-200);
+    --rsi-border-color: var(--rsi-gray-200);
+    --rsi-card-bg: var(--rsi-bg-card);
+    --card-bg: var(--rsi-bg-card);
+    --border-color: var(--rsi-border-color);
+    --text-color: var(--rsi-text-primary);
     --rsi-radius-sm: 4px;
     --rsi-radius-md: 8px;
     --rsi-radius-lg: 12px;
@@ -122,8 +132,10 @@
     /* Tipografía */
     --rsi-font-primary: 'Poppins', sans-serif;
     --rsi-font-secondary: 'Montserrat', sans-serif;
+    --rsi-font-mono: 'Fira Code', 'Consolas', monospace;
     
-    /* Espaciados */
+    /* Dimensiones de layout y espaciados globales */
+    --rsi-header-height: 80px;
     --rsi-spacing-xs: 4px;
     --rsi-spacing-sm: 8px;
     --rsi-spacing-md: 16px;
@@ -132,6 +144,14 @@
     --rsi-spacing-2xl: 48px;
     --rsi-spacing-3xl: 64px;
     --rsi-spacing-4xl: 80px;
+
+    /* Tokens compartidos para paneles CRUD */
+    --rsi-crud-section-pt: calc(var(--rsi-header-height) + var(--rsi-spacing-xl));
+    --rsi-crud-section-pb: var(--rsi-spacing-3xl);
+    --rsi-crud-section-px: var(--rsi-spacing-xl);
+    --rsi-crud-panel-padding: var(--rsi-spacing-xl);
+    --rsi-crud-block-gap: var(--rsi-spacing-lg);
+    --rsi-btn-text-on-solid: #ffffff;
     
     /* Z-index */
     --rsi-z-dropdown: 1000;
@@ -143,36 +163,36 @@
 }
 
 /* ==========================================
-   MODO OSCURO
+   MODO OSCURO (CONTRASTE CALIBRADO WCAG AA)
    ========================================== */
 body.dark-mode {
     /* ==========================================
        COLORES PRIMARIOS - Modo Oscuro (Azules)
        ========================================== */
     --rsi-primary: #4a9eff;
-    --rsi-primary-dark: #1a7ad4;
+    --rsi-primary-dark: #257ce6;
     --rsi-primary-light: #7bb8ff;
-    --rsi-accent: #4a9eff;
-    --rsi-accent-dark: #1a7ad4;
-    --rsi-accent-light: #7bb8ff;
+    --rsi-accent: #5ca8ff;
+    --rsi-accent-dark: #257ce6;
+    --rsi-accent-light: #8fc5ff;
     
     /* ==========================================
-       COLORES DORADOS - Reemplazados por azules en modo oscuro
+       COLORES DORADOS / ACENTOS - Modo Oscuro
        ========================================== */
     --rsi-gold-base: #4a9eff;           /* Azul base */
     --rsi-gold-light: #7bb8ff;          /* Azul claro */
     --rsi-gold-bright: #b5d6ff;         /* Azul brillante */
     --rsi-gold-dark: #1a7ad4;           /* Azul oscuro */
-    --rsi-gold-old: #0d4b8a;            /* Azul profundo */
+    --rsi-gold-old: #1a5fb4;            /* Azul profundo */
     --rsi-gold-medium: #5ca8ff;         /* Azul medio */
     
     /* Gradientes azules - MODO OSCURO */
     --rsi-gold-gradient: linear-gradient(135deg, 
         var(--rsi-gold-old) 0%,
         var(--rsi-gold-base) 20%,
-        var(--rsi-gold-bright) 40%,
-        var(--rsi-gold-light) 60%,
-        var(--rsi-gold-base) 80%,
+        var(--rsi-gold-bright) 45%,
+        var(--rsi-gold-light) 65%,
+        var(--rsi-gold-base) 85%,
         var(--rsi-gold-old) 100%
     );
     
@@ -201,39 +221,63 @@ body.dark-mode {
     );
     
     /* ==========================================
-       COLORES NEUTROS - Modo Oscuro
+       COLORES NEUTROS - Modo Oscuro (Escala progresiva legible)
        ========================================== */
     --rsi-white: #1a1a24;
-    --rsi-gray-50: #1e1e2a;
-    --rsi-gray-100: #22222e;
-    --rsi-gray-200: #2a2a35;
-    --rsi-gray-300: #343540;
-    --rsi-gray-400: #3d3e4a;
-    --rsi-gray-500: #4a4b58;
-    --rsi-gray-600: #6a6b78;
-    --rsi-gray-700: #e4e4e4;
-    --rsi-gray-800: #b0b1bc;
-    --rsi-gray-900: #d0d1d8;
-    --rsi-black: #e8e9f0;
+    --rsi-gray-50: #1e1f2c;
+    --rsi-gray-100: #252736;
+    --rsi-gray-200: #2f3245;
+    --rsi-gray-300: #3e4259;
+    --rsi-gray-400: #858ca6;
+    --rsi-gray-500: #a3aac2;
+    --rsi-gray-600: #c4cadb;
+    --rsi-gray-700: #dfe3ef;
+    --rsi-gray-800: #eef1f8;
+    --rsi-gray-900: #f8f9fc;
+    --rsi-black: #f4f6fb;
     
     /* Colores de fondo - MODO OSCURO */
-    --rsi-bg-primary: #1a1a24;
-    --rsi-bg-secondary: #22222e;
-    --rsi-bg-card: #2a2a35;
-    --rsi-bg-input: #2a2a35;
+    --rsi-bg-primary: #151621;
+    --rsi-bg-secondary: #1e2030;
+    --rsi-bg-card: #25283a;
+    --rsi-bg-input: #1d1f2e;
     
     /* Colores de texto - MODO OSCURO */
-    --rsi-text-primary: #4a9eff;
-    --rsi-text-secondary: #b0b1bc;
-    --rsi-text-muted: #8a8b98;
-    --rsi-text-light: #e8e9f0;
+    --rsi-text-primary: #f1f3f9;
+    --rsi-text-secondary: #c9cfe0;
+    --rsi-text-muted: #9da4bd;
+    --rsi-text-light: #ffffff;
+    --rsi-btn-text-on-solid: #ffffff;
+    
+    /* Bordes y Líneas - MODO OSCURO */
+    --rsi-border: var(--rsi-gray-300);
+    --rsi-border-color: var(--rsi-gray-300);
+    --rsi-card-bg: var(--rsi-bg-card);
+    --card-bg: var(--rsi-bg-card);
+    --border-color: var(--rsi-border-color);
+    --text-color: var(--rsi-text-primary);
+    --input-bg: var(--rsi-bg-input);
+    
+    /* Estados - MODO OSCURO */
+    --rsi-success: #2ecc71;
+    --rsi-success-light: rgba(46, 204, 113, 0.18);
+    --rsi-success-text: #58d68d;
+    --rsi-warning: #f1c40f;
+    --rsi-warning-light: rgba(241, 196, 15, 0.18);
+    --rsi-warning-text: #f7dc6f;
+    --rsi-danger: #e74c3c;
+    --rsi-danger-light: rgba(231, 76, 60, 0.18);
+    --rsi-danger-text: #f1948a;
+    --rsi-info: #3498db;
+    --rsi-info-light: rgba(52, 152, 219, 0.18);
+    --rsi-info-text: #5dade2;
     
     /* Sombras - MODO OSCURO */
-    --rsi-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
-    --rsi-shadow-md: 0 5px 15px rgba(0, 0, 0, 0.4);
-    --rsi-shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
-    --rsi-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.6);
-    --rsi-shadow-primary: 0 4px 12px rgba(74, 158, 255, 0.15);
+    --rsi-shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.35);
+    --rsi-shadow-md: 0 6px 18px rgba(0, 0, 0, 0.45);
+    --rsi-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.55);
+    --rsi-shadow-xl: 0 20px 44px rgba(0, 0, 0, 0.65);
+    --rsi-shadow-primary: 0 4px 14px rgba(74, 158, 255, 0.25);
     --rsi-shadow-gold: 0 0 20px rgba(74, 158, 255, 0.25);
     --rsi-shadow-gold-lg: 0 0 35px rgba(74, 158, 255, 0.35);
     --rsi-shadow-gold-xl: 0 0 50px rgba(74, 158, 255, 0.45);

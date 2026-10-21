@@ -1,0 +1,79 @@
+<!-- ========================================
+   BUYER PROFILE VIEW - RSI Enterprise
+   Perfil y configuración del cliente
+   ======================================== -->
+
+<section class="rsi-facturas-section rsi-profile-section" style="padding: 40px 0 80px; min-height: 75vh;">
+    <div class="rsi-container">
+        
+        <!-- ENCABEZADO -->
+        <div class="rsi-carrusel-header-wrapper" style="margin-bottom: var(--rsi-spacing-xl);">
+            <div>
+                <span class="rsi-badge rsi-badge-primary" style="margin-bottom: var(--rsi-spacing-xs);">
+                    <i class="fas fa-user-circle"></i> Mi Cuenta
+                </span>
+                <h1 class="rsi-page-title">
+                    Perfil del <span class="rsi-text-gold">Comprador</span>
+                </h1>
+                <p class="rsi-page-subtitle">
+                    Gestiona tu información de contacto, credenciales y preferencias para agilizar tus compras y facturación electrónica.
+                </p>
+            </div>
+            <div class="rsi-carrusel-header-actions">
+                <a href="/buyer/dashboard" class="rsi-btn-crud rsi-btn-crud-secondary" data-link>
+                    <i class="fas fa-arrow-left"></i> Volver a Mi Área
+                </a>
+                <button type="button" id="btnProfileLogout" class="rsi-btn-crud rsi-btn-crud-outline" style="color: #ef4444; border-color: rgba(239,68,68,0.3);">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </div>
+        </div>
+
+        <!-- FORMULARIO DE PERFIL -->
+        <div style="max-width: 650px; margin: 0 auto;">
+            <div class="rsi-form-card" style="background: var(--rsi-card-bg, #ffffff); border-radius: 16px; padding: 32px; border: 1px solid var(--rsi-border-color, #e2e8f0); box-shadow: 0 4px 16px rgba(0,0,0,0.04);">
+                
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <img id="buyerProfileAvatar" src="/assets/images/default-avatar.png" alt="Avatar" style="width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid var(--rsi-gold, #c5a059); margin-bottom: 12px;" />
+                    <h2 id="buyerProfileName" style="margin: 0 0 4px; font-size: 1.3rem; font-weight: 700; color: var(--rsi-text-primary);">
+                        Nombre del Cliente
+                    </h2>
+                    <span id="buyerProfileEmail" style="font-size: 0.9rem; color: var(--rsi-gray-500);">
+                        cliente@ejemplo.com
+                    </span>
+                </div>
+
+                <hr style="border: none; border-top: 1px solid var(--rsi-border-color); margin: 20px 0;" />
+
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <div>
+                        <label style="display: block; font-weight: 600; font-size: 0.85rem; color: var(--rsi-gray-600); margin-bottom: 6px;">
+                            Identificador de Usuario (UID)
+                        </label>
+                        <input type="text" id="buyerProfileUid" class="rsi-input" readonly style="width: 100%; border-radius: 8px; padding: 10px 14px; background: var(--rsi-bg-body); color: var(--rsi-gray-500);" />
+                    </div>
+
+                    <div>
+                        <label style="display: block; font-weight: 600; font-size: 0.85rem; color: var(--rsi-gray-600); margin-bottom: 6px;">
+                            Rol en la Plataforma
+                        </label>
+                        <span class="rsi-badge rsi-badge-primary" style="font-size: 0.85rem;">
+                            <i class="fas fa-check"></i> Comprador / Cliente Registrado (buyer)
+                        </span>
+                    </div>
+
+                    <div>
+                        <label style="display: block; font-weight: 600; font-size: 0.85rem; color: var(--rsi-gray-600); margin-bottom: 6px;">
+                            Soporte y Garantías
+                        </label>
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--rsi-gray-500); line-height: 1.5;">
+                            Para solicitar asistencia sobre tus compras o aclaraciones de facturación, comunícate con nuestro equipo técnico mediante la línea de soporte o a través de nuestros canales oficiales.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>

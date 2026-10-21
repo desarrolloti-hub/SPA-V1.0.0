@@ -75,34 +75,48 @@ export class BaseRepository {
         });
     }
 
-   // baseRepository.js - Método clearCache corregido
-
-/**
- * Limpia la caché
- */
-clearCache() {
-    // Limpiar caché de búsqueda
-    if (this.cache.search) {
-        this.cache.search = {};
-    }
-    // Limpiar caché por ID
-    if (this.cache.byId) {
-        this.cache.byId = {};
-    }
-    // Limpiar caché general
-    if (this.cache.all) {
-        this.cache.all = null;
-    }
-    // Limpiar cualquier otra caché
-    if (this.cache) {
-        Object.keys(this.cache).forEach(key => {
-            if (key !== 'search' && key !== 'byId' && key !== 'all') {
-                this.cache[key] = null;
+    /**
+     * Limpia entradas de caché cuyo prefijo coincida
+     * @param {string} prefix - Prefijo de la clave de caché
+     */
+    _clearCacheByPrefix(prefix) {
+        if (!this.cache) return;
+        Object.values(this.cache).forEach(cacheMap => {
+            if (cacheMap instanceof Map) {
+                for (const key of Array.from(cacheMap.keys())) {
+                    if (String(key).includes(prefix)) {
+                        cacheMap.delete(key);
+                    }
+                }
+            } else if (cacheMap && typeof cacheMap === 'object') {
+                for (const key of Object.keys(cacheMap)) {
+                    if (String(key).includes(prefix)) {
+                        delete cacheMap[key];
+                    }
+                }
             }
         });
+        console.log(`🧹 Cache limpiada con prefijo: ${prefix}`);
     }
-    console.log('🗑️ Caché limpiada');
-}
+
+    /**
+     * Limpia la caché preservando las estructuras Map
+     */
+    clearCache() {
+        if (this.cache) {
+            Object.values(this.cache).forEach(cacheMap => {
+                if (cacheMap instanceof Map) {
+                    cacheMap.clear();
+                } else if (cacheMap && typeof cacheMap === 'object') {
+                    Object.keys(cacheMap).forEach(key => delete cacheMap[key]);
+                }
+            });
+        }
+        if (this.pendingRequests && typeof this.pendingRequests.clear === 'function') {
+            this.pendingRequests.clear();
+        }
+        console.log('🗑️ Caché limpiada');
+    }
 
     /**
      * Evita duplicación de requests

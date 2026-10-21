@@ -24,21 +24,38 @@
 
 @import url('./components/formSteps.css');
 @import url('./components/sweetAlert.css');
-@import url('./components/switches.css');
+/* @import url('./components/switches.css'); - Archivo vacío */
 @import url('./components/panelCrud.css');
 @import url('./components/facturas.css');
+@import url('./components/cotizaciones.css');
+@import url('./components/cleinteModal.css');
+@import url('./components/carousel.css');
 /* Pages */
 @import url('./pages/home.css');
+@import url('./pages/login.css');
 @import url('./pages/products.css');
 @import url('./pages/404.css');
 @import url('./pages/aboutus.css');
 @import url('./pages/contact.css');
+@import url('./pages/catalogsPublicStyles.css');
+@import url('./pages/viewCatalogPublic.css');
 @import url('./pages/partner/newPartner.css');
 @import url('./pages/partner/areas.css');
 @import url('./pages/partner/dashboard.css');
 @import url('./pages/partner/profile.css');
 @import url('./pages/partner/details.css');
-
+@import url('./pages/partner/facturas.css');
+@import url('./pages/services.css');
+@import url('./pages/partner/catalog.css');
+@import url('./pages/partner/crudCatalogs.css');
+@import url('./pages/partner/viewCatalog.css');
+@import url('./pages/partner/asistencia.css');
+@import url('./pages/partner/reembolsos.css');
+@import url('./pages/partner/ticketAtencion.css');
+@import url('./pages/partner/vehiculos.css');
+@import url('./pages/partner/estadisticas.css');
+@import url('./pages/partner/carrusel.css');
+@import url('./pages/partner/clienteForm.css');
 /* Utilidades (opcional) */
 /* @import url('utils/helpers.css'); */
 /* @import url('utils/responsive.css'); */

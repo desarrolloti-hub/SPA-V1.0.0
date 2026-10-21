@@ -1,67 +1,57 @@
 <!-- ========================================
-   REGISTRO DE CLIENTE - Formulario por pasos
+   REGISTRO / EDICIÓN DE CLIENTE - RSI Enterprise
+   Formulario por pasos con soporte de RFC genérico (SAT)
    ======================================== -->
 
 <section class="rsi-cliente-section">
     <div class="rsi-container">
         
-        <!-- Título -->
-        <h1 class="rsi-page-title">
-            <span class="rsi-text-gold">Registro</span> de Cliente
-        </h1>
-        <p class="rsi-page-subtitle">
-            Completa todos los datos para registrar un nuevo cliente en el sistema.
-        </p>
+        <!-- Barra de navegación superior -->
+        <div class="rsi-form-top-bar">
+            <a href="/partner/crudClientes" class="rsi-btn-back" data-link>
+                <i class="fas fa-arrow-left"></i> Volver a Clientes
+            </a>
+        </div>
 
-        <!-- ===== FORMULARIO POR PASOS ===== -->
-        <form id="clienteForm" class="rsi-form-steps rsi-form-steps-compact" autocomplete="off">
+        <!-- Cabecera de la página -->
+        <div class="rsi-cliente-header">
+            <h1 class="rsi-page-title" id="clientePageTitle">
+                <span class="rsi-text-gold">Registro</span> de Cliente
+            </h1>
+            <p class="rsi-page-subtitle" id="clientePageSubtitle">
+                Completa los datos fiscales, domicilio y contacto para dar de alta o actualizar al cliente en el sistema.
+            </p>
+        </div>
 
-            <!-- Indicador de pasos -->
-            <div class="rsi-steps-indicator" style="display: none;">
-                <div class="rsi-step-dot">
-                    <span class="rsi-step-number active" data-step="1">1</span>
-                    <span class="rsi-step-label active" data-step="1">Datos SAT</span>
-                </div>
-                <div class="rsi-step-line" data-step="1"></div>
-                
-                <div class="rsi-step-dot">
-                    <span class="rsi-step-number" data-step="2">2</span>
-                    <span class="rsi-step-label" data-step="2">Domicilio</span>
-                </div>
-                <div class="rsi-step-line" data-step="2"></div>
-                
-                <div class="rsi-step-dot">
-                    <span class="rsi-step-number" data-step="3">3</span>
-                    <span class="rsi-step-label" data-step="3">Contacto</span>
-                </div>
-            </div>
+        <!-- Tarjeta principal del formulario -->
+        <div class="rsi-cliente-form-card">
 
-            <!-- ===== SELECCIÓN DE MÉTODO ===== -->
-            <div class="rsi-method-selection">
-                <h3>¿Cómo deseas ingresar los datos?</h3>
-                <div class="rsi-method-grid">
-                    <button type="button" id="methodManual" class="rsi-method-btn">
+            <!-- Conmutador de método (Manual / Cargar SAT PDF) -->
+            <div class="rsi-method-toggle-container">
+                <div class="rsi-method-toggle-group">
+                    <button type="button" id="methodManual" class="rsi-method-toggle-btn active" title="Llenar formulario paso a paso">
                         <i class="fas fa-keyboard"></i>
                         <span>Ingreso Manual</span>
-                        <small>Completa los datos uno por uno</small>
                     </button>
-                    <button type="button" id="methodPdf" class="rsi-method-btn">
+                    <button type="button" id="methodPdf" class="rsi-method-toggle-btn" title="Extraer datos desde Constancia SAT en PDF">
                         <i class="fas fa-file-pdf"></i>
                         <span>Cargar Constancia SAT</span>
-                        <small>Extrae los datos automáticamente</small>
                     </button>
                 </div>
             </div>
 
-            <!-- ===== UPLOADER PDF CON DRAG AND DROP ===== -->
-            <div id="pdfUploader" style="display: none;">
+            <!-- Cargador PDF con Drag & Drop (opcional / expandible) -->
+            <div id="pdfUploader" class="rsi-pdf-uploader-wrapper" style="display: none;">
                 <div class="rsi-pdf-uploader">
                     <div class="rsi-pdf-header">
                         <i class="fas fa-file-pdf"></i>
                         <div>
-                            <h4>Sube tu Constancia de Situación Fiscal</h4>
-                            <p>Arrastra y suelta tu archivo PDF o selecciona uno</p>
+                            <h4>Cargar Constancia de Situación Fiscal (SAT)</h4>
+                            <p>Arrastra tu constancia en PDF o selecciónala para extraer y auto-completar los datos fiscales y domicilio.</p>
                         </div>
+                        <button type="button" id="btnClosePdfUploader" class="rsi-btn-icon-close" title="Ocultar cargador de PDF">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
                     
                     <div class="rsi-pdf-dropzone" id="pdfDropzone">
@@ -72,264 +62,390 @@
                             <div class="rsi-pdf-file-wrapper">
                                 <label for="pdfFile" class="rsi-pdf-file-label">
                                     <i class="fas fa-folder-open"></i>
-                                    Seleccionar archivo
+                                    Seleccionar archivo PDF
                                 </label>
                                 <input type="file" id="pdfFile" accept=".pdf">
                             </div>
                         </div>
-                        <div id="pdfStatus" class="rsi-pdf-status">📄 Ningún archivo seleccionado</div>
+                        <div id="pdfStatus" class="rsi-pdf-status">
+                            <i class="fas fa-file-pdf"></i> Ningún archivo seleccionado
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Contenedor de pasos -->
-            <div class="rsi-steps-container">
+            <!-- ===== FORMULARIO POR PASOS ===== -->
+            <form id="clienteForm" class="rsi-form-steps" autocomplete="off">
 
-                <!-- ===== PASO 1: DATOS SAT ===== -->
-                <div class="rsi-step-panel active" data-step="1" style="display: none;">
-                    <div class="rsi-step-header">
-                        <div class="rsi-step-icon">
-                            <i class="fas fa-file-invoice"></i>
-                        </div>
-                        <h3>Datos de la Constancia SAT</h3>
-                        <p>Información fiscal del cliente</p>
+                <!-- Indicador de pasos -->
+                <div class="rsi-steps-indicator">
+                    <div class="rsi-step-dot">
+                        <span class="rsi-step-number active" data-step="1">1</span>
+                        <span class="rsi-step-label active" data-step="1">Datos Fiscales</span>
                     </div>
-
-                    <div class="rsi-step-body">
-                        <div class="rsi-form-row">
-                            <div class="rsi-form-group">
-                                <label for="rfc">RFC <span class="rsi-required">*</span></label>
-                                <div class="rsi-input-wrapper">
-                                    <i class="fas fa-id-card rsi-input-icon"></i>
-                                    <input type="text" id="rfc" placeholder="Ej: ABC123456789" required maxlength="13">
-                                </div>
-                                <div class="rsi-form-error-message"></div>
-                            </div>
-                            <div class="rsi-form-group">
-                                <label for="razonSocial">Razón Social <span class="rsi-required">*</span></label>
-                                <div class="rsi-input-wrapper">
-                                    <i class="fas fa-building rsi-input-icon"></i>
-                                    <input type="text" id="razonSocial" placeholder="Nombre de la empresa" required>
-                                </div>
-                                <div class="rsi-form-error-message"></div>
-                            </div>
-                        </div>
-
-                        <div class="rsi-form-row">
-                            <div class="rsi-form-group">
-                                <label for="nombreComercial">Nombre Comercial</label>
-                                <div class="rsi-input-wrapper">
-                                    <i class="fas fa-store rsi-input-icon"></i>
-                                    <input type="text" id="nombreComercial" placeholder="Nombre comercial">
-                                </div>
-                                <div class="rsi-form-error-message"></div>
-                            </div>
-                            <div class="rsi-form-group">
-                                <label for="regimen">Régimen Fiscal</label>
-                                <div class="rsi-input-wrapper">
-                                    <i class="fas fa-scale-balanced rsi-input-icon"></i>
-                                    <input type="text" id="regimen" placeholder="Busca el régimen fiscal" list="regimenesList">
-                                    <datalist id="regimenesList">
-                                        <!-- Se llena dinámicamente con JS -->
-                                    </datalist>
-                                </div>
-                                <div class="rsi-form-error-message"></div>
-                            </div>
-                        </div>
-
-                        <!-- Código del régimen -->
-                        <div class="rsi-form-group" id="regimenCodigoContainer" style="display: none;">
-                            <label for="regimenCodigoDisplay">Código del Régimen</label>
-                            <div class="rsi-input-wrapper">
-                                <i class="fas fa-hashtag rsi-input-icon"></i>
-                                <input type="text" id="regimenCodigoDisplay" placeholder="Código numérico" readonly style="background: var(--rsi-gray-100);">
-                            </div>
-                            <small style="color: var(--rsi-gray-500); font-size: 0.8rem;">Código asignado por el SAT para este régimen</small>
-                        </div>
+                    <div class="rsi-step-line" data-step="1"></div>
+                    
+                    <div class="rsi-step-dot">
+                        <span class="rsi-step-number" data-step="2">2</span>
+                        <span class="rsi-step-label" data-step="2">Domicilio</span>
                     </div>
-
-                    <div class="rsi-step-actions">
-                        <button class="rsi-btn-prev" disabled>Anterior</button>
-                        <button class="rsi-btn-next" data-next="2">Siguiente <i class="fas fa-arrow-right"></i></button>
+                    <div class="rsi-step-line" data-step="2"></div>
+                    
+                    <div class="rsi-step-dot">
+                        <span class="rsi-step-number" data-step="3">3</span>
+                        <span class="rsi-step-label" data-step="3">Contacto</span>
                     </div>
-                    <div class="rsi-step-counter">Paso <span>1</span> de 3</div>
                 </div>
 
-                <!-- ===== PASO 2: DOMICILIO ===== -->
-                <div class="rsi-step-panel" data-step="2" style="display: none;">
-                    <div class="rsi-step-header">
-                        <div class="rsi-step-icon">
-                            <i class="fas fa-map-pin"></i>
+                <!-- Contenedor de paneles -->
+                <div class="rsi-steps-container">
+
+                    <!-- ===== PASO 1: DATOS FISCALES (SAT) ===== -->
+                    <div class="rsi-step-panel active" data-step="1">
+                        <div class="rsi-step-header">
+                            <div class="rsi-step-icon">
+                                <i class="fas fa-file-invoice"></i>
+                            </div>
+                            <h3>Datos Fiscales del Cliente</h3>
+                            <p>Selecciona el tipo de RFC e ingresa la información requerida por el SAT</p>
                         </div>
-                        <h3>Domicilio del Cliente</h3>
-                        <p>Dirección fiscal del cliente</p>
+
+                        <div class="rsi-step-body">
+
+                            <!-- Selector de tipo de RFC -->
+                            <div class="rsi-rfc-type-container">
+                                <label class="rsi-form-label-bold">
+                                    Tipo de Identificación Fiscal <span class="rsi-required">*</span>
+                                </label>
+                                <div class="rsi-rfc-type-grid" role="radiogroup" aria-label="Tipo de RFC">
+                                    
+                                    <!-- Opción 1: RFC Específico -->
+                                    <label class="rsi-rfc-type-card active" id="cardRfcEspecifico">
+                                        <input type="radio" name="rfcTipoOpcion" id="tipoRfcEspecifico" value="especifico" checked>
+                                        <div class="rsi-rfc-type-card-indicator">
+                                            <i class="fas fa-check-circle"></i>
+                                        </div>
+                                        <div class="rsi-rfc-type-content">
+                                            <div class="rsi-rfc-type-title">
+                                                <i class="fas fa-id-card"></i>
+                                                <strong>RFC Específico</strong>
+                                            </div>
+                                            <span class="rsi-rfc-type-desc">Persona Física o Moral con su propio RFC fiscal</span>
+                                        </div>
+                                    </label>
+
+                                    <!-- Opción 2: Público en General Nacional -->
+                                    <label class="rsi-rfc-type-card" id="cardRfcNacional">
+                                        <input type="radio" name="rfcTipoOpcion" id="tipoRfcNacional" value="nacional">
+                                        <div class="rsi-rfc-type-card-indicator">
+                                            <i class="fas fa-check-circle"></i>
+                                        </div>
+                                        <div class="rsi-rfc-type-content">
+                                            <div class="rsi-rfc-type-title">
+                                                <i class="fas fa-users"></i>
+                                                <strong>Público General</strong>
+                                                <span class="rsi-rfc-badge rsi-rfc-badge-nacional">Nacional</span>
+                                            </div>
+                                            <span class="rsi-rfc-type-desc">Cliente sin RFC nacional &bull; <code>XAXX010101000</code></span>
+                                        </div>
+                                    </label>
+
+                                    <!-- Opción 3: Extranjero -->
+                                    <label class="rsi-rfc-type-card" id="cardRfcExtranjero">
+                                        <input type="radio" name="rfcTipoOpcion" id="tipoRfcExtranjero" value="extranjero">
+                                        <div class="rsi-rfc-type-card-indicator">
+                                            <i class="fas fa-check-circle"></i>
+                                        </div>
+                                        <div class="rsi-rfc-type-content">
+                                            <div class="rsi-rfc-type-title">
+                                                <i class="fas fa-globe-americas"></i>
+                                                <strong>Extranjero</strong>
+                                                <span class="rsi-rfc-badge rsi-rfc-badge-extranjero">Global</span>
+                                            </div>
+                                            <span class="rsi-rfc-type-desc">Cliente residente en el extranjero &bull; <code>XEXX010101000</code></span>
+                                        </div>
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <!-- Fila: RFC y Razón Social -->
+                            <div class="rsi-form-row">
+                                <div class="rsi-form-group">
+                                    <div class="rsi-label-with-badge">
+                                        <label for="rfc">RFC <span class="rsi-required">*</span></label>
+                                        <span id="rfcTypeBadge" class="rsi-rfc-status-badge" style="display: none;"></span>
+                                    </div>
+                                    <div class="rsi-input-wrapper">
+                                        <i class="fas fa-id-card rsi-input-icon"></i>
+                                        <input type="text" id="rfc" placeholder="Ej: ABC123456789" required maxlength="13">
+                                    </div>
+                                    <small id="rfcHelpText" class="rsi-field-help">Introduce las 12 o 13 posiciones del RFC con homoclave.</small>
+                                    <div class="rsi-form-error-message"></div>
+                                </div>
+                                <div class="rsi-form-group">
+                                    <label for="razonSocial" id="labelRazonSocial">Razón Social o Nombre Completo <span class="rsi-required">*</span></label>
+                                    <div class="rsi-input-wrapper">
+                                        <i class="fas fa-building rsi-input-icon"></i>
+                                        <input type="text" id="razonSocial" placeholder="Nombre de la empresa o cliente" required>
+                                    </div>
+                                    <div class="rsi-form-error-message"></div>
+                                </div>
+                            </div>
+
+                            <!-- Fila: Nombre Comercial y Régimen -->
+                            <div class="rsi-form-row">
+                                <div class="rsi-form-group">
+                                    <label for="nombreComercial">Nombre Comercial</label>
+                                    <div class="rsi-input-wrapper">
+                                        <i class="fas fa-store rsi-input-icon"></i>
+                                        <input type="text" id="nombreComercial" placeholder="Nombre comercial o alias (opcional)">
+                                    </div>
+                                    <div class="rsi-form-error-message"></div>
+                                </div>
+                                <div class="rsi-form-group">
+                                    <label for="regimen">Régimen Fiscal <span class="rsi-required">*</span></label>
+                                    <div class="rsi-input-wrapper">
+                                        <i class="fas fa-scale-balanced rsi-input-icon"></i>
+                                        <input type="text" id="regimen" placeholder="Busca o selecciona el régimen fiscal" list="regimenesList" required>
+                                        <datalist id="regimenesList">
+                                            <!-- Se llena dinámicamente con JS -->
+                                        </datalist>
+                                    </div>
+                                    <div class="rsi-form-error-message"></div>
+                                </div>
+                            </div>
+
+                            <!-- Código del régimen SAT -->
+                            <div class="rsi-form-group" id="regimenCodigoContainer" style="display: none;">
+                                <label for="regimenCodigoDisplay">Código SAT del Régimen</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-hashtag rsi-input-icon"></i>
+                                    <input type="text" id="regimenCodigoDisplay" placeholder="Código numérico" readonly class="rsi-input-readonly">
+                                </div>
+                                <small class="rsi-field-help">Clave asignada por el catálogo oficial del SAT para este régimen.</small>
+                            </div>
+
+                        </div>
+
+                        <div class="rsi-step-actions">
+                            <a href="/partner/crudClientes" class="rsi-btn-cancel" data-link>
+                                <i class="fas fa-times"></i> Cancelar
+                            </a>
+                            <button class="rsi-btn-next" data-next="2">
+                                Siguiente <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                        <div class="rsi-step-counter">Paso <span>1</span> de 3</div>
                     </div>
 
-                    <div class="rsi-step-body">
-                        <div class="rsi-form-row">
-                            <div class="rsi-form-group">
-                                <label for="codigoPostal">Código Postal <span class="rsi-required">*</span></label>
-                                <div class="rsi-input-wrapper">
-                                    <i class="fas fa-envelope rsi-input-icon"></i>
-                                    <input type="text" id="codigoPostal" placeholder="Ej: 12345" required maxlength="5">
-                                </div>
-                                <div class="rsi-form-error-message"></div>
+                    <!-- ===== PASO 2: DOMICILIO ===== -->
+                    <div class="rsi-step-panel" data-step="2" style="display: none;">
+                        <div class="rsi-step-header">
+                            <div class="rsi-step-icon">
+                                <i class="fas fa-map-marked-alt"></i>
                             </div>
-                            <div class="rsi-form-group">
-                                <label for="tipoVialidad">Tipo de Vialidad</label>
-                                <div class="rsi-input-wrapper">
-                                    <i class="fas fa-road rsi-input-icon"></i>
-                                    <input type="text" id="tipoVialidad" placeholder="Ej: Calle, Avenida, Cerrada">
-                                </div>
-                                <div class="rsi-form-error-message"></div>
-                            </div>
+                            <h3>Domicilio Fiscal</h3>
+                            <p>Dirección registrada ante el SAT para emisión de comprobantes</p>
                         </div>
 
-                        <div class="rsi-form-group">
-                            <label for="nombreVialidad">Nombre de Vialidad <span class="rsi-required">*</span></label>
-                            <div class="rsi-input-wrapper">
-                                <i class="fas fa-map-signs rsi-input-icon"></i>
-                                <input type="text" id="nombreVialidad" placeholder="Nombre de la calle" required>
+                        <div class="rsi-step-body">
+                            <div class="rsi-form-row">
+                                <div class="rsi-form-group">
+                                    <label for="codigoPostal">Código Postal <span class="rsi-required">*</span></label>
+                                    <div class="rsi-input-wrapper">
+                                        <i class="fas fa-envelope rsi-input-icon"></i>
+                                        <input type="text" id="codigoPostal" placeholder="Ej: 06000" required maxlength="5">
+                                    </div>
+                                    <div class="rsi-form-error-message"></div>
+                                </div>
+                                <div class="rsi-form-group">
+                                    <label for="tipoVialidad">Tipo de Vialidad</label>
+                                    <div class="rsi-input-wrapper">
+                                        <i class="fas fa-road rsi-input-icon"></i>
+                                        <input type="text" id="tipoVialidad" placeholder="Ej: Calle, Avenida, Cerrada, Calzada">
+                                    </div>
+                                    <div class="rsi-form-error-message"></div>
+                                </div>
                             </div>
-                            <div class="rsi-form-error-message"></div>
-                        </div>
 
-                        <div class="rsi-form-row">
                             <div class="rsi-form-group">
-                                <label for="numeroExterior">Número Exterior</label>
+                                <label for="nombreVialidad">Nombre de Vialidad (Calle) <span class="rsi-required">*</span></label>
                                 <div class="rsi-input-wrapper">
-                                    <i class="fas fa-hashtag rsi-input-icon"></i>
-                                    <input type="text" id="numeroExterior" placeholder="Ej: 123">
+                                    <i class="fas fa-map-signs rsi-input-icon"></i>
+                                    <input type="text" id="nombreVialidad" placeholder="Nombre de la calle o avenida" required>
                                 </div>
                                 <div class="rsi-form-error-message"></div>
                             </div>
+
+                            <div class="rsi-form-row">
+                                <div class="rsi-form-group">
+                                    <label for="numeroExterior">Número Exterior</label>
+                                    <div class="rsi-input-wrapper">
+                                        <i class="fas fa-hashtag rsi-input-icon"></i>
+                                        <input type="text" id="numeroExterior" placeholder="Ej: 123 o S/N">
+                                    </div>
+                                    <div class="rsi-form-error-message"></div>
+                                </div>
+                                <div class="rsi-form-group">
+                                    <label for="numeroInterior">Número Interior</label>
+                                    <div class="rsi-input-wrapper">
+                                        <i class="fas fa-door-closed rsi-input-icon"></i>
+                                        <input type="text" id="numeroInterior" placeholder="Ej: A, Piso 2, Int. 4">
+                                    </div>
+                                    <div class="rsi-form-error-message"></div>
+                                </div>
+                            </div>
+
                             <div class="rsi-form-group">
-                                <label for="numeroInterior">Número Interior</label>
+                                <label for="colonia">Colonia <span class="rsi-required">*</span></label>
                                 <div class="rsi-input-wrapper">
-                                    <i class="fas fa-hashtag rsi-input-icon"></i>
-                                    <input type="text" id="numeroInterior" placeholder="Ej: A, 1B">
+                                    <i class="fas fa-location-dot rsi-input-icon"></i>
+                                    <input type="text" id="colonia" placeholder="Nombre de la colonia o fraccionamiento" required>
                                 </div>
                                 <div class="rsi-form-error-message"></div>
                             </div>
-                        </div>
 
-                        <div class="rsi-form-group">
-                            <label for="colonia">Colonia <span class="rsi-required">*</span></label>
-                            <div class="rsi-input-wrapper">
-                                <i class="fas fa-location-dot rsi-input-icon"></i>
-                                <input type="text" id="colonia" placeholder="Nombre de la colonia" required>
-                            </div>
-                            <div class="rsi-form-error-message"></div>
-                        </div>
-
-                        <div class="rsi-form-row">
-                            <div class="rsi-form-group">
-                                <label for="localidad">Localidad</label>
-                                <div class="rsi-input-wrapper">
-                                    <i class="fas fa-city rsi-input-icon"></i>
-                                    <input type="text" id="localidad" placeholder="Localidad">
+                            <div class="rsi-form-row">
+                                <div class="rsi-form-group">
+                                    <label for="localidad">Localidad</label>
+                                    <div class="rsi-input-wrapper">
+                                        <i class="fas fa-city rsi-input-icon"></i>
+                                        <input type="text" id="localidad" placeholder="Localidad o población">
+                                    </div>
+                                    <div class="rsi-form-error-message"></div>
                                 </div>
-                                <div class="rsi-form-error-message"></div>
-                            </div>
-                            <div class="rsi-form-group">
-                                <label for="municipio">Municipio <span class="rsi-required">*</span></label>
-                                <div class="rsi-input-wrapper">
-                                    <i class="fas fa-city rsi-input-icon"></i>
-                                    <input type="text" id="municipio" placeholder="Municipio" required>
+                                <div class="rsi-form-group">
+                                    <label for="municipio">Municipio / Alcaldía <span class="rsi-required">*</span></label>
+                                    <div class="rsi-input-wrapper">
+                                        <i class="fas fa-landmark rsi-input-icon"></i>
+                                        <input type="text" id="municipio" placeholder="Municipio o alcaldía" required>
+                                    </div>
+                                    <div class="rsi-form-error-message"></div>
                                 </div>
-                                <div class="rsi-form-error-message"></div>
                             </div>
-                        </div>
 
-                        <div class="rsi-form-row">
                             <div class="rsi-form-group">
                                 <label for="estado">Estado <span class="rsi-required">*</span></label>
                                 <div class="rsi-input-wrapper">
                                     <i class="fas fa-flag rsi-input-icon"></i>
-                                    <input type="text" id="estado" placeholder="Estado" required>
+                                    <input type="text" id="estado" placeholder="Estado (ej. Ciudad de México, Jalisco)" required>
                                 </div>
                                 <div class="rsi-form-error-message"></div>
+                            </div>
+
+                            <div class="rsi-form-row">
+                                <div class="rsi-form-group">
+                                    <label for="entreCalle">Entre Calle</label>
+                                    <div class="rsi-input-wrapper">
+                                        <i class="fas fa-arrows-alt-h rsi-input-icon"></i>
+                                        <input type="text" id="entreCalle" placeholder="Primera calle de referencia">
+                                    </div>
+                                    <div class="rsi-form-error-message"></div>
+                                </div>
+                                <div class="rsi-form-group">
+                                    <label for="yCalle">Y Calle</label>
+                                    <div class="rsi-input-wrapper">
+                                        <i class="fas fa-arrows-alt-h rsi-input-icon"></i>
+                                        <input type="text" id="yCalle" placeholder="Segunda calle de referencia">
+                                    </div>
+                                    <div class="rsi-form-error-message"></div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="rsi-form-row">
-                            <div class="rsi-form-group">
-                                <label for="entreCalle">Entre Calle</label>
-                                <div class="rsi-input-wrapper">
-                                    <i class="fas fa-road rsi-input-icon"></i>
-                                    <input type="text" id="entreCalle" placeholder="Calle 1">
-                                </div>
-                                <div class="rsi-form-error-message"></div>
-                            </div>
-                            <div class="rsi-form-group">
-                                <label for="yCalle">Y Calle</label>
-                                <div class="rsi-input-wrapper">
-                                    <i class="fas fa-road rsi-input-icon"></i>
-                                    <input type="text" id="yCalle" placeholder="Calle 2">
-                                </div>
-                                <div class="rsi-form-error-message"></div>
-                            </div>
+                        <div class="rsi-step-actions">
+                            <button class="rsi-btn-prev" data-prev="1"><i class="fas fa-arrow-left"></i> Anterior</button>
+                            <button class="rsi-btn-next" data-next="3">Siguiente <i class="fas fa-arrow-right"></i></button>
                         </div>
+                        <div class="rsi-step-counter">Paso <span>2</span> de 3</div>
                     </div>
 
-                    <div class="rsi-step-actions">
-                        <button class="rsi-btn-prev" data-prev="1"><i class="fas fa-arrow-left"></i> Anterior</button>
-                        <button class="rsi-btn-next" data-next="3">Siguiente <i class="fas fa-arrow-right"></i></button>
+                    <!-- ===== PASO 3: CONTACTO Y CONFIRMACIÓN ===== -->
+                    <div class="rsi-step-panel" data-step="3" style="display: none;">
+                        <div class="rsi-step-header">
+                            <div class="rsi-step-icon">
+                                <i class="fas fa-address-book"></i>
+                            </div>
+                            <h3>Información de Contacto y Resumen</h3>
+                            <p>Datos de comunicación para envío de cotizaciones y facturas electrónicas</p>
+                        </div>
+
+                        <div class="rsi-step-body">
+                            <div class="rsi-form-row">
+                                <div class="rsi-form-group">
+                                    <label for="telefonoMovil">Teléfono Móvil <span class="rsi-required">*</span></label>
+                                    <div class="rsi-input-wrapper">
+                                        <i class="fas fa-mobile-alt rsi-input-icon"></i>
+                                        <input type="tel" id="telefonoMovil" placeholder="10 dígitos (ej: 5512345678)" required>
+                                    </div>
+                                    <div class="rsi-form-error-message"></div>
+                                </div>
+                                <div class="rsi-form-group">
+                                    <label for="telefonoFijo">Teléfono Fijo</label>
+                                    <div class="rsi-input-wrapper">
+                                        <i class="fas fa-phone rsi-input-icon"></i>
+                                        <input type="tel" id="telefonoFijo" placeholder="Teléfono de oficina (opcional)">
+                                    </div>
+                                    <div class="rsi-form-error-message"></div>
+                                </div>
+                            </div>
+
+                            <div class="rsi-form-group">
+                                <label for="email">Correo Electrónico <span class="rsi-required">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-envelope rsi-input-icon"></i>
+                                    <input type="email" id="email" placeholder="cliente@empresa.com" required>
+                                </div>
+                                <small class="rsi-field-help">A esta cuenta se enviarán cotizaciones, avisos y comprobantes fiscales (XML y PDF).</small>
+                                <div class="rsi-form-error-message"></div>
+                            </div>
+
+                            <!-- Tarjeta de Resumen -->
+                            <div class="rsi-cliente-summary-card" id="clienteSummaryCard">
+                                <div class="rsi-summary-header">
+                                    <i class="fas fa-clipboard-check"></i>
+                                    <h4>Resumen del Registro</h4>
+                                </div>
+                                <div class="rsi-summary-grid">
+                                    <div class="rsi-summary-item">
+                                        <span class="rsi-summary-label">RFC:</span>
+                                        <strong id="summaryRfc" class="rsi-summary-val">-</strong>
+                                    </div>
+                                    <div class="rsi-summary-item">
+                                        <span class="rsi-summary-label">Tipo de Identificación:</span>
+                                        <span id="summaryTipoRfc" class="rsi-summary-val">-</span>
+                                    </div>
+                                    <div class="rsi-summary-item rsi-summary-item-full">
+                                        <span class="rsi-summary-label">Razón Social / Nombre:</span>
+                                        <strong id="summaryRazonSocial" class="rsi-summary-val">-</strong>
+                                    </div>
+                                    <div class="rsi-summary-item rsi-summary-item-full">
+                                        <span class="rsi-summary-label">Régimen Fiscal:</span>
+                                        <span id="summaryRegimen" class="rsi-summary-val">-</span>
+                                    </div>
+                                    <div class="rsi-summary-item rsi-summary-item-full">
+                                        <span class="rsi-summary-label">Domicilio Fiscal:</span>
+                                        <span id="summaryDomicilio" class="rsi-summary-val">-</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="rsi-step-actions">
+                            <button class="rsi-btn-prev" data-prev="2"><i class="fas fa-arrow-left"></i> Anterior</button>
+                            <button class="rsi-btn-submit-step" id="submitCliente">
+                                <i class="fas fa-user-plus"></i> Registrar Cliente
+                            </button>
+                        </div>
+                        <div class="rsi-step-counter">Paso <span>3</span> de 3</div>
                     </div>
-                    <div class="rsi-step-counter">Paso <span>2</span> de 3</div>
+
                 </div>
+            </form>
 
-                <!-- ===== PASO 3: CONTACTO ===== -->
-                <div class="rsi-step-panel" data-step="3" style="display: none;">
-                    <div class="rsi-step-header">
-                        <div class="rsi-step-icon">
-                            <i class="fas fa-phone"></i>
-                        </div>
-                        <h3>Información de Contacto</h3>
-                        <p>Datos de contacto del cliente</p>
-                    </div>
-
-                    <div class="rsi-step-body">
-                        <div class="rsi-form-row">
-                            <div class="rsi-form-group">
-                                <label for="telefonoMovil">Teléfono Móvil <span class="rsi-required">*</span></label>
-                                <div class="rsi-input-wrapper">
-                                    <i class="fas fa-mobile-alt rsi-input-icon"></i>
-                                    <input type="tel" id="telefonoMovil" placeholder="55 1234 5678" required>
-                                </div>
-                                <div class="rsi-form-error-message"></div>
-                            </div>
-                            <div class="rsi-form-group">
-                                <label for="telefonoFijo">Teléfono Fijo</label>
-                                <div class="rsi-input-wrapper">
-                                    <i class="fas fa-phone rsi-input-icon"></i>
-                                    <input type="tel" id="telefonoFijo" placeholder="55 1234 5678">
-                                </div>
-                                <div class="rsi-form-error-message"></div>
-                            </div>
-                        </div>
-
-                        <div class="rsi-form-group">
-                            <label for="email">Correo Electrónico <span class="rsi-required">*</span></label>
-                            <div class="rsi-input-wrapper">
-                                <i class="fas fa-envelope rsi-input-icon"></i>
-                                <input type="email" id="email" placeholder="cliente@empresa.com" required>
-                            </div>
-                            <div class="rsi-form-error-message"></div>
-                        </div>
-                    </div>
-
-                    <div class="rsi-step-actions">
-                        <button class="rsi-btn-prev" data-prev="2"><i class="fas fa-arrow-left"></i> Anterior</button>
-                        <button class="rsi-btn-submit-step" id="submitCliente">
-                            <i class="fas fa-save"></i> Registrar Cliente
-                        </button>
-                    </div>
-                    <div class="rsi-step-counter">Paso <span>3</span> de 3</div>
-                </div>
-
-            </div>
-        </form>
+        </div>
 
     </div>
 </section>

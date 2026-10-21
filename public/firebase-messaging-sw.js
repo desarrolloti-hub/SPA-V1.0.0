@@ -31,26 +31,15 @@ const messaging = firebase.messaging();
 messaging.onBackgroundMessage((payload) => {
     console.log('[Service Worker] Mensaje en background:', payload);
 
-    const notificationTitle = payload.notification?.title || '📨 Nueva notificación';
+    const notificationTitle = payload.notification?.title || payload.data?.titulo || 'Nuevo ticket asignado';
     const notificationOptions = {
-        body: payload.notification?.body || 'Tienes un nuevo mensaje',
-        icon: payload.notification?.icon || '/logo192.png',
-        badge: '/badge.png',
+        body: payload.notification?.body || payload.data?.mensaje || 'Se te ha asignado un nuevo ticket',
+        icon: payload.notification?.icon || '/assets/icons/logoApp.png',
+        badge: '/assets/icons/logoApp.png',
         data: payload.data || {},
-        actions: [
-            {
-                action: 'open',
-                title: 'Abrir'
-            },
-            {
-                action: 'close',
-                title: 'Cerrar'
-            }
-        ],
         vibrate: [200, 100, 200],
         requireInteraction: true,
-        // Personalizar según los datos
-        tag: payload.data?.tag || 'default',
+        tag: payload.data?.ticketId || payload.data?.idTicket || 'ticket-notification',
         renotify: true
     };
 
@@ -67,36 +56,51 @@ self.addEventListener('notificationclick', (event) => {
 
     event.notification.close();
 
-    const clickAction = event.action;
     const notificationData = event.notification.data || {};
 
-    if (clickAction === 'open' || !clickAction) {
-        // Determinar la URL a abrir
-        let urlToOpen = notificationData?.url || '/';
-        
-        // Si hay un ID específico, construir URL
-        if (notificationData?.entityId && notificationData?.entityType) {
-            urlToOpen = `/${notificationData.entityType}/${notificationData.entityId}`;
-        }
+    // Determinar la ruta relativa y URL absoluta a abrir (siempre dominio oficial rsienterprise.com)
+    const BASE_DOMAIN = 'https://rsienterprise.com';
+    let urlToOpen = notificationData?.url;
+    const ticketId = notificationData?.ticketId || notificationData?.idTicket;
 
-        event.waitUntil(
-            clients.matchAll({
-                type: 'window',
-                includeUncontrolled: true
-            }).then((windowClients) => {
-                // Buscar si ya hay una ventana abierta con esa URL
-                for (const client of windowClients) {
-                    if (client.url.includes(urlToOpen) && 'focus' in client) {
-                        return client.focus();
-                    }
-                }
-                // Si no, abrir nueva
-                if (clients.openWindow) {
-                    return clients.openWindow(urlToOpen);
-                }
-            })
-        );
+    if (!urlToOpen || urlToOpen.includes('/partner/ticketView')) {
+        if (ticketId) {
+            urlToOpen = `${BASE_DOMAIN}/partner/ticketAtencion?id=${ticketId}`;
+        } else {
+            urlToOpen = `${BASE_DOMAIN}/partner/crudTickets`;
+        }
     }
+
+    const fullUrlToOpen = urlToOpen.startsWith('http') 
+        ? urlToOpen 
+        : new URL(urlToOpen, BASE_DOMAIN).href;
+
+    event.waitUntil(
+        clients.matchAll({
+            type: 'window',
+            includeUncontrolled: true
+        }).then((windowClients) => {
+            // Buscar si ya hay una pestaña abierta de la aplicación
+            for (const client of windowClients) {
+                if (client.url.startsWith(self.location.origin) && 'focus' in client) {
+                    client.focus();
+                    client.postMessage({
+                        type: 'FCM_NAVIGATE',
+                        url: urlToOpen,
+                        ticketId: notificationData?.ticketId || notificationData?.idTicket
+                    });
+                    if ('navigate' in client && client.url !== fullUrlToOpen) {
+                        return client.navigate(fullUrlToOpen);
+                    }
+                    return;
+                }
+            }
+            // Si no hay ventana abierta, abrir una nueva
+            if (clients.openWindow) {
+                return clients.openWindow(fullUrlToOpen);
+            }
+        })
+    );
 });
 
 // ==========================================

@@ -1,0 +1,426 @@
+/* ========================================
+   SERVICES PAGE - RSI Enterprise
+   ======================================== */
+
+/* ==========================================
+   INTRO / HERO PEQUEÑO (opcional, después del carrusel)
+   ========================================== */
+.rsi-services-intro {
+    padding: var(--rsi-spacing-4xl) 0 var(--rsi-spacing-3xl);
+    background: var(--rsi-bg-primary);
+    text-align: center;
+}
+
+.rsi-services-intro .rsi-section-title {
+    margin-bottom: var(--rsi-spacing-md);
+}
+
+.rsi-services-intro .rsi-section-subtitle {
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ==========================================
+   LISTA DE SERVICIOS
+   ========================================== */
+.rsi-services-list {
+    padding: var(--rsi-spacing-3xl) 0 var(--rsi-spacing-4xl);
+    background: var(--rsi-bg-primary);
+}
+
+/* ==========================================
+   ITEM DE SERVICIO (fila alternada)
+   ========================================== */
+.rsi-service-item {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-3xl);
+    padding: var(--rsi-spacing-3xl) 0;
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+.rsi-service-item.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Separador sutil entre items */
+.rsi-service-item + .rsi-service-item {
+    border-top: 1px solid var(--rsi-gray-200);
+}
+
+body.dark-mode .rsi-service-item + .rsi-service-item {
+    border-top-color: var(--rsi-gray-300);
+}
+
+/* ==========================================
+   IMAGEN DEL SERVICIO
+   ========================================== */
+.rsi-service-image {
+    flex: 1;
+    min-width: 0;
+    border-radius: var(--rsi-radius-xl);
+    overflow: hidden;
+    box-shadow: var(--rsi-shadow-lg);
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: var(--rsi-gray-100);
+}
+
+.rsi-service-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.rsi-service-item:hover .rsi-service-image img {
+    transform: scale(1.05);
+}
+
+/* Decoración: acento dorado/azul */
+.rsi-service-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        transparent 0%,
+        transparent 60%,
+        rgba(28, 25, 72, 0.15) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* ==========================================
+   CONTENIDO DEL SERVICIO
+   ========================================== */
+.rsi-service-content {
+    flex: 1;
+    min-width: 0;
+    padding: var(--rsi-spacing-md) 0;
+}
+
+/* Numeración del servicio */
+.rsi-service-number {
+    display: inline-block;
+    font-family: var(--rsi-font-secondary);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--rsi-primary);
+    opacity: 0.6;
+    margin-bottom: var(--rsi-spacing-md);
+    position: relative;
+    padding-left: 40px;
+}
+
+.rsi-service-number::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 2px;
+    background: var(--rsi-primary);
+    opacity: 0.5;
+}
+
+body.dark-mode .rsi-service-number {
+    color: var(--rsi-gold-base);
+}
+
+body.dark-mode .rsi-service-number::before {
+    background: var(--rsi-gold-gradient);
+    opacity: 1;
+}
+
+/* Icono del servicio */
+.rsi-service-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--rsi-radius-md);
+    background: var(--rsi-gray-100);
+    color: var(--rsi-primary);
+    font-size: 1.5rem;
+    margin-bottom: var(--rsi-spacing-lg);
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-service-item:hover .rsi-service-icon {
+    background: var(--rsi-gold-gradient);
+    color: var(--rsi-black);
+    transform: translateY(-3px);
+    box-shadow: var(--rsi-shadow-gold);
+}
+
+body.dark-mode .rsi-service-icon {
+    background: var(--rsi-bg-card);
+    color: var(--rsi-gold-base);
+}
+
+/* Título */
+.rsi-service-title {
+    font-family: var(--rsi-font-secondary);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 var(--rsi-spacing-md);
+    color: var(--rsi-text-primary);
+}
+
+body.dark-mode .rsi-service-title {
+    color: var(--rsi-gold-base);
+}
+
+/* Descripción */
+.rsi-service-description {
+    font-family: var(--rsi-font-primary);
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--rsi-gray-600);
+    margin: 0 0 var(--rsi-spacing-lg);
+}
+
+body.dark-mode .rsi-service-description {
+    color: var(--rsi-gray-600);
+}
+
+/* Lista de features (opcional) */
+.rsi-service-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--rsi-spacing-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--rsi-spacing-sm);
+}
+
+.rsi-service-features li {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    font-size: 0.95rem;
+    color: var(--rsi-gray-700);
+}
+
+.rsi-service-features li i {
+    color: var(--rsi-primary);
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+body.dark-mode .rsi-service-features li i {
+    color: var(--rsi-gold-base);
+}
+
+/* Botón del servicio */
+.rsi-service-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    padding: 12px 28px;
+    background: transparent;
+    color: var(--rsi-primary) !important;
+    border: 2px solid var(--rsi-primary);
+    border-radius: var(--rsi-radius-full);
+    font-family: var(--rsi-font-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-service-btn:hover {
+    background: var(--rsi-primary);
+    color: var(--rsi-white) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-primary);
+}
+
+.rsi-service-btn i {
+    transition: transform var(--rsi-transition-base);
+}
+
+.rsi-service-btn:hover i {
+    transform: translateX(4px);
+}
+
+/* Modo oscuro */
+body.dark-mode .rsi-service-btn {
+    border-color: var(--rsi-gold-base);
+    color: var(--rsi-gold-base) !important;
+}
+
+body.dark-mode .rsi-service-btn:hover {
+    background: var(--rsi-gold-gradient);
+    border-color: transparent;
+    color: var(--rsi-black) !important;
+    box-shadow: var(--rsi-shadow-gold);
+}
+
+/* ==========================================
+   ALTERNANCIA DE LADOS
+   ========================================== */
+/* Item normal: imagen izquierda, contenido derecha */
+.rsi-service-item {
+    /* ya definido arriba */
+}
+
+/* Item invertido: contenido izquierda, imagen derecha */
+.rsi-service-item.rsi-service-reverse {
+    flex-direction: row-reverse;
+}
+
+/* ==========================================
+   CTA FINAL
+   ========================================== */
+.rsi-services-cta {
+    padding: var(--rsi-spacing-4xl) 0;
+    background: linear-gradient(135deg, var(--rsi-primary) 0%, var(--rsi-primary-dark) 100%);
+    color: var(--rsi-white);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.rsi-services-cta::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 70%;
+    height: 200%;
+    background: radial-gradient(ellipse, rgba(143, 148, 251, 0.1) 0%, transparent 70%);
+    transform: rotate(15deg);
+    pointer-events: none;
+}
+
+.rsi-services-cta .rsi-section-title {
+    color: var(--rsi-white);
+    position: relative;
+    z-index: 1;
+}
+
+.rsi-services-cta .rsi-section-subtitle {
+    color: rgba(255, 255, 255, 0.85);
+    position: relative;
+    z-index: 1;
+}
+
+.rsi-services-cta .rsi-cta-button {
+    position: relative;
+    z-index: 1;
+}
+
+/* Modo oscuro */
+body.dark-mode .rsi-services-cta {
+    background: linear-gradient(135deg,
+        var(--rsi-primary-dark) 0%,
+        rgba(74, 158, 255, 0.15) 50%,
+        var(--rsi-primary-dark) 100%
+    );
+    border-top: 1px solid rgba(74, 158, 255, 0.2);
+    border-bottom: 1px solid rgba(74, 158, 255, 0.2);
+}
+
+body.dark-mode .rsi-services-cta .rsi-section-title {
+    color: var(--rsi-gold-base);
+}
+
+body.dark-mode .rsi-services-cta .rsi-section-subtitle {
+    color: var(--rsi-gray-600);
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+@media (max-width: 992px) {
+    .rsi-service-item,
+    .rsi-service-item.rsi-service-reverse {
+        flex-direction: column;
+        gap: var(--rsi-spacing-xl);
+        padding: var(--rsi-spacing-2xl) 0;
+        text-align: center;
+    }
+
+    .rsi-service-image {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        aspect-ratio: 16 / 10;
+    }
+
+    .rsi-service-content {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .rsi-service-number {
+        padding-left: 0;
+        padding-top: 20px;
+    }
+
+    .rsi-service-number::before {
+        left: 50%;
+        top: 0;
+        transform: translateX(-50%);
+    }
+
+    .rsi-service-features {
+        align-items: center;
+    }
+
+    .rsi-service-btn {
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .rsi-service-image {
+        aspect-ratio: 4 / 3;
+    }
+
+    .rsi-service-title {
+        font-size: 1.4rem;
+    }
+
+    .rsi-service-description {
+        font-size: 0.95rem;
+    }
+
+    .rsi-service-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.25rem;
+    }
+}
+
+/* ==========================================
+   ACCESIBILIDAD: reduce motion
+   ========================================== */
+@media (prefers-reduced-motion: reduce) {
+    .rsi-service-item {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .rsi-service-image img {
+        transition: none;
+    }
+}

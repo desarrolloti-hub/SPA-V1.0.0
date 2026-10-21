@@ -1,0 +1,383 @@
+<section class="rsi-estadisticas-section">
+    <div class="rsi-container">
+        
+        <!-- ==========================================
+           ENCABEZADO DE PÁGINA Y FILTROS
+           ========================================== -->
+        <div class="rsi-stats-header-wrapper">
+            <div class="rsi-stats-header-info">
+                <span class="rsi-badge rsi-badge-primary" style="margin-bottom: var(--rsi-spacing-xs);">
+                    <i class="fas fa-chart-line"></i> Métricas y Productividad
+                </span>
+                <h1 class="rsi-page-title">
+                    <span class="rsi-text-gold">Estadísticas</span> y Rendimiento
+                </h1>
+                <p class="rsi-page-subtitle">
+                    Indicadores clave de desempeño (KPIs), ranking de solucionadores y análisis individual de colaboradores en atención de tickets.
+                </p>
+            </div>
+            <div class="rsi-stats-header-actions">
+                <button type="button" id="btnRecargarEstadisticas" class="rsi-btn-crud rsi-btn-crud-secondary" title="Actualizar datos">
+                    <i class="fas fa-sync-alt"></i> Actualizar
+                </button>
+            </div>
+        </div>
+
+        <!-- ==========================================
+           BARRA DE FILTROS TEMPORALES (AÑO Y MES)
+           ========================================== -->
+        <div class="rsi-stats-filters-card">
+            <div class="rsi-stats-filters-grid">
+                <!-- Filtro Año -->
+                <div class="rsi-stats-filter-group">
+                    <label for="filtroAnio" class="rsi-stats-filter-label">
+                        <i class="fas fa-calendar-alt"></i> Año:
+                    </label>
+                    <select id="filtroAnio" class="rsi-stats-select">
+                        <!-- Opciones dinámicas generadas por controlador -->
+                    </select>
+                </div>
+
+                <!-- Filtro Mes -->
+                <div class="rsi-stats-filter-group">
+                    <label for="filtroMes" class="rsi-stats-filter-label">
+                        <i class="fas fa-calendar-day"></i> Mes:
+                    </label>
+                    <select id="filtroMes" class="rsi-stats-select">
+                        <option value="todos">Todos los meses</option>
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                </div>
+
+                <!-- Filtro Tipo de Ticket -->
+                <div class="rsi-stats-filter-group">
+                    <label for="filtroTipo" class="rsi-stats-filter-label">
+                        <i class="fas fa-tag"></i> Tipo:
+                    </label>
+                    <select id="filtroTipo" class="rsi-stats-select">
+                        <option value="todos">Todos los tipos</option>
+                        <option value="operativo">Operativo (Clientes / Campo)</option>
+                        <option value="administracion">Administrativo / Interno</option>
+                    </select>
+                </div>
+
+                <!-- Acciones de Filtro -->
+                <div class="rsi-stats-filter-buttons">
+                    <button type="button" id="btnAplicarFiltros" class="rsi-btn-crud rsi-btn-crud-primary">
+                        <i class="fas fa-filter"></i> Aplicar Filtros
+                    </button>
+                    <button type="button" id="btnLimpiarFiltros" class="rsi-btn-crud rsi-btn-crud-outline" title="Restablecer filtros">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Etiqueta del Periodo Activo -->
+            <div class="rsi-periodo-badge-row">
+                <span class="rsi-periodo-badge">
+                    <i class="fas fa-info-circle"></i> Periodo analizado: <strong id="textoPeriodoActivo">Cargando...</strong>
+                </span>
+                <span class="rsi-periodo-total" id="textoTotalTicketsPeriodo">
+                    0 tickets encontrados
+                </span>
+            </div>
+        </div>
+
+        <!-- ==========================================
+           LOADING & EMPTY STATES
+           ========================================== -->
+        <div id="statsLoadingState" class="rsi-loading-state" style="margin: 40px 0;">
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+            <p style="margin-top: 10px;">Procesando métricas y KPIs de rendimiento...</p>
+        </div>
+
+        <div id="statsMainContent" style="display: none;">
+
+            <!-- ==========================================
+               FILA DE KPIS GLOBALES DEL PERIODO
+               ========================================== -->
+            <div class="rsi-kpis-grid">
+                <!-- KPI 1: Total Tickets -->
+                <div class="rsi-kpi-card">
+                    <div class="rsi-kpi-icon total">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <div class="rsi-kpi-content">
+                        <span class="rsi-kpi-label">Tickets en Periodo</span>
+                        <strong class="rsi-kpi-value" id="kpiTotalTickets">0</strong>
+                        <span class="rsi-kpi-desc">Total registrados</span>
+                    </div>
+                </div>
+
+                <!-- KPI 2: Resueltos -->
+                <div class="rsi-kpi-card">
+                    <div class="rsi-kpi-icon resueltos">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="rsi-kpi-content">
+                        <span class="rsi-kpi-label">Tickets Resueltos</span>
+                        <strong class="rsi-kpi-value" id="kpiResueltos" style="color: var(--rsi-success);">0</strong>
+                        <span class="rsi-kpi-desc" id="kpiResueltosSub">Estado finalizado</span>
+                    </div>
+                </div>
+
+                <!-- KPI 3: Tasa de Resolución -->
+                <div class="rsi-kpi-card">
+                    <div class="rsi-kpi-icon tasa">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="rsi-kpi-content">
+                        <span class="rsi-kpi-label">Efectividad Global</span>
+                        <strong class="rsi-kpi-value" id="kpiTasaResolucion">0%</strong>
+                        <div class="rsi-kpi-progress">
+                            <div class="rsi-kpi-progress-bar" id="kpiTasaProgressBar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KPI 4: En Proceso / Pendientes -->
+                <div class="rsi-kpi-card">
+                    <div class="rsi-kpi-icon activos">
+                        <i class="fas fa-hourglass-half"></i>
+                    </div>
+                    <div class="rsi-kpi-content">
+                        <span class="rsi-kpi-label">Tickets Activos</span>
+                        <strong class="rsi-kpi-value" id="kpiActivos" style="color: var(--rsi-warning);">0</strong>
+                        <span class="rsi-kpi-desc" id="kpiActivosDetalle">0 proceso / 0 pend.</span>
+                    </div>
+                </div>
+
+                <!-- KPI 5: Tiempo Promedio -->
+                <div class="rsi-kpi-card">
+                    <div class="rsi-kpi-icon tiempo">
+                        <i class="fas fa-stopwatch"></i>
+                    </div>
+                    <div class="rsi-kpi-content">
+                        <span class="rsi-kpi-label">Tiempo Promedio Cierre</span>
+                        <strong class="rsi-kpi-value" id="kpiTiempoPromedio">0 hrs</strong>
+                        <span class="rsi-kpi-desc">Desde inicio a fin</span>
+                    </div>
+                </div>
+
+                <!-- KPI 6: Evidencias Fotográficas -->
+                <div class="rsi-kpi-card">
+                    <div class="rsi-kpi-icon evidencias">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <div class="rsi-kpi-content">
+                        <span class="rsi-kpi-label">Reportes con Evidencias</span>
+                        <strong class="rsi-kpi-value" id="kpiConEvidencias">0</strong>
+                        <span class="rsi-kpi-desc" id="kpiConEvidenciasPorc">0% de resueltos</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================
+               PODIO: TOP 3 SOLUCIONADORES
+               ========================================== -->
+            <section class="rsi-top-solucionadores-section">
+                <div class="rsi-section-header">
+                    <div>
+                        <h2 class="rsi-section-title">
+                            <i class="fas fa-trophy" style="color: #f59e0b;"></i> Top 3 Solucionadores de Tickets
+                        </h2>
+                        <span class="rsi-section-subtitle">
+                            Colaboradores con mayor volumen de tickets resueltos con éxito en el periodo seleccionado.
+                        </span>
+                    </div>
+                </div>
+
+                <div class="rsi-podium-grid" id="podiumContainer">
+                    <!-- Renderizado dinámico por estadisticasController -->
+                </div>
+            </section>
+
+            <!-- ==========================================
+               GRÁFICAS DE INTELIGENCIA OPERATIVA (CHART.JS)
+               ========================================== -->
+            <div class="rsi-charts-double-grid">
+                <!-- Gráfico 1: Tendencia Mensual -->
+                <div class="rsi-chart-box">
+                    <div class="rsi-chart-header">
+                        <div>
+                            <h3 class="rsi-chart-title">
+                                <i class="fas fa-chart-bar"></i> Volumen Mensual de Tickets
+                            </h3>
+                            <span class="rsi-chart-subtitle">Comparativa de tickets creados vs resueltos durante el año</span>
+                        </div>
+                    </div>
+                    <div class="rsi-canvas-container">
+                        <canvas id="chartMensualTendencia"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfico 2: Distribución por Estados -->
+                <div class="rsi-chart-box">
+                    <div class="rsi-chart-header">
+                        <div>
+                            <h3 class="rsi-chart-title">
+                                <i class="fas fa-chart-pie"></i> Distribución de Estados
+                            </h3>
+                            <span class="rsi-chart-subtitle">Proporción de tickets por estado en el periodo</span>
+                        </div>
+                    </div>
+                    <div class="rsi-canvas-container donut">
+                        <canvas id="chartEstadosDonut"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================
+               TABLA GENERAL DE RENDIMIENTO POR COLABORADOR
+               ========================================== -->
+            <section class="rsi-panel-crud" style="margin-top: var(--rsi-spacing-xl);">
+                <div class="rsi-panel-header">
+                    <div>
+                        <h2>
+                            <i class="fas fa-users-cog"></i> Tabla de Rendimiento por Colaborador
+                        </h2>
+                        <p style="margin: 4px 0 0 0; color: var(--rsi-text-secondary); font-size: 0.88rem;">
+                            Haz clic en <strong>"Ver Rendimiento"</strong> o en la fila de cualquier colaborador para analizar su expediente individual de productividad.
+                        </p>
+                    </div>
+                    <div class="rsi-table-search-inline">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="inputBuscarColaboradorTabla" placeholder="Buscar colaborador..." />
+                    </div>
+                </div>
+
+                <!-- Contenedor con scroll de tabla responsive optimizada -->
+                <div class="rsi-table-wrapper">
+                    <table class="rsi-table">
+                        <thead>
+                            <tr>
+                                <th>Colaborador</th>
+                                <th>Área / Puesto</th>
+                                <th style="text-align: center;">Asignados</th>
+                                <th style="text-align: center;">Resueltos</th>
+                                <th style="text-align: center;">En Proceso</th>
+                                <th style="text-align: center;">Pendientes</th>
+                                <th style="text-align: center;">Efectividad</th>
+                                <th style="text-align: center;">Tiempo Promedio</th>
+                                <th style="text-align: center;">Expediente</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaColaboradoresBody">
+                            <!-- Se puebla dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="rsi-table-footer-meta">
+                    <span id="tablaColaboradoresCount">Mostrando 0 colaboradores</span>
+                </div>
+            </section>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ==========================================
+   MODAL DE RENDIMIENTO INDIVIDUAL DEL COLABORADOR
+   ========================================== -->
+<div class="rsi-modal-backdrop" id="modalExpedienteColaborador" style="display: none;">
+    <div class="rsi-modal-dialog-large">
+        <div class="rsi-modal-header">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="rsi-colab-modal-avatar-wrapper" id="modalColabAvatar">
+                    <!-- Foto Base64 o Iniciales -->
+                </div>
+                <div>
+                    <h3 id="modalColabNombre" style="margin: 0; font-size: 1.15rem; color: var(--rsi-text-primary);">Colaborador</h3>
+                    <span id="modalColabPuestoArea" style="font-size: 0.82rem; color: var(--rsi-text-secondary);">-</span>
+                </div>
+            </div>
+            <button type="button" class="rsi-modal-close" id="btnCerrarModalExpediente" aria-label="Cerrar modal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="rsi-modal-body">
+            <!-- Barra informativa del periodo en el modal -->
+            <div class="rsi-modal-periodo-tag">
+                <i class="fas fa-calendar-check"></i> Métricas del periodo: <strong id="modalColabPeriodoTexto">-</strong>
+            </div>
+
+            <!-- KPIs individuales del colaborador -->
+            <div class="rsi-colab-detail-kpis" style="margin-bottom: var(--rsi-spacing-lg);">
+                <div class="rsi-colab-kpi-item">
+                    <span class="rsi-colab-kpi-label">Total Asignados</span>
+                    <strong class="rsi-colab-kpi-value" id="modalKpiAsignados">0</strong>
+                    <small class="rsi-colab-kpi-sub" id="modalKpiResponsableSub">0 como responsable</small>
+                </div>
+                <div class="rsi-colab-kpi-item">
+                    <span class="rsi-colab-kpi-label">Tickets Resueltos</span>
+                    <strong class="rsi-colab-kpi-value" id="modalKpiResueltos" style="color: var(--rsi-success);">0</strong>
+                    <small class="rsi-colab-kpi-sub" id="modalKpiTasaSub">0% efectividad</small>
+                </div>
+                <div class="rsi-colab-kpi-item">
+                    <span class="rsi-colab-kpi-label">En Curso</span>
+                    <strong class="rsi-colab-kpi-value" id="modalKpiEnCurso" style="color: var(--rsi-warning);">0</strong>
+                    <small class="rsi-colab-kpi-sub" id="modalKpiPendientesSub">0 pendientes</small>
+                </div>
+                <div class="rsi-colab-kpi-item">
+                    <span class="rsi-colab-kpi-label">Tiempo Promedio</span>
+                    <strong class="rsi-colab-kpi-value" id="modalKpiTiempoPromedio">0 hrs</strong>
+                    <small class="rsi-colab-kpi-sub">Por ticket resuelto</small>
+                </div>
+                <div class="rsi-colab-kpi-item">
+                    <span class="rsi-colab-kpi-label">Aceptados con GPS</span>
+                    <strong class="rsi-colab-kpi-value" id="modalKpiGps" style="color: var(--rsi-info);">0</strong>
+                    <small class="rsi-colab-kpi-sub">Geolocalizados</small>
+                </div>
+                <div class="rsi-colab-kpi-item">
+                    <span class="rsi-colab-kpi-label">Con Reporte PDF</span>
+                    <strong class="rsi-colab-kpi-value" id="modalKpiReportePdf">0</strong>
+                    <small class="rsi-colab-kpi-sub">En Firebase Storage</small>
+                </div>
+            </div>
+
+            <!-- Listado de Tickets Asignados al Colaborador en el Periodo -->
+            <h4 style="font-size: 0.95rem; margin: var(--rsi-spacing-md) 0 var(--rsi-spacing-xs) 0; color: var(--rsi-text-primary); display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-list-ul"></i> Tickets Atendidos en el Periodo
+            </h4>
+
+            <div class="rsi-table-wrapper" style="max-height: 280px; overflow-y: auto;">
+                <table class="rsi-table" style="font-size: 0.82rem;">
+                    <thead>
+                        <tr>
+                            <th>No. Ticket</th>
+                            <th>Título</th>
+                            <th>Tipo</th>
+                            <th>Prioridad</th>
+                            <th>Estado</th>
+                            <th>Tiempo</th>
+                            <th style="text-align: center;">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalColabTicketsBody">
+                        <!-- Llenado dinámico -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="rsi-modal-footer">
+            <button type="button" class="rsi-btn-crud rsi-btn-crud-secondary" id="btnCerrarModalExpedienteFooter">
+                Cerrar Expediente
+            </button>
+        </div>
+    </div>
+</div>

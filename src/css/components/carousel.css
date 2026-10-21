@@ -1,0 +1,459 @@
+/* ========================================
+   CARRUSEL FULLSCREEN - RSI Enterprise
+   Componente reutilizable
+   ======================================== */
+
+.rsi-carousel {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 95px);
+    height: calc(100dvh - 95px);
+    min-height: 540px;
+    max-height: 920px;
+    overflow: hidden;
+    background: #13103a;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==========================================
+   TRACK DE SLIDES
+   ========================================== */
+.rsi-carousel-track {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    transition: transform var(--rsi-carousel-duration, 800ms) cubic-bezier(0.77, 0, 0.175, 1);
+    will-change: transform;
+}
+
+/* ==========================================
+   SLIDE INDIVIDUAL
+   ========================================== */
+.rsi-carousel-slide {
+    position: relative;
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.rsi-carousel-slide-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Overlay oscuro para legibilidad del texto */
+.rsi-carousel-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(10, 10, 26, 0.78) 0%,
+        rgba(10, 10, 26, 0.48) 50%,
+        rgba(10, 10, 26, 0.68) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Overlay aún más ligero cuando NO hay contenido */
+.rsi-carousel-slide--image-only::after {
+    background: linear-gradient(
+        135deg,
+        rgba(10, 10, 26, 0.35) 0%,
+        rgba(10, 10, 26, 0.2) 50%,
+        rgba(10, 10, 26, 0.35) 100%
+    );
+}
+
+/* ==========================================
+   CONTENIDO DEL SLIDE (texto + botón)
+   ========================================== */
+.rsi-carousel-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 8% 120px;
+    max-width: 960px;
+    color: #ffffff;
+}
+
+.rsi-carousel-content--center {
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* ==========================================
+   TIPOGRAFÍA
+   ========================================== */
+.rsi-carousel-title {
+    font-family: var(--rsi-font-secondary);
+    font-size: clamp(2rem, 4.5vw, 3.75rem);
+    font-weight: 700;
+    line-height: 1.12;
+    margin: 0 0 var(--rsi-spacing-lg);
+    color: #ffffff;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.rsi-carousel-description {
+    font-family: var(--rsi-font-primary);
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    line-height: 1.7;
+    margin: 0 0 var(--rsi-spacing-xl);
+    color: rgba(255, 255, 255, 0.92);
+    max-width: 620px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+/* ==========================================
+   BOTÓN
+   ========================================== */
+.rsi-carousel-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    padding: 15px 38px;
+    background: linear-gradient(135deg, #257ce6 0%, #4a9eff 100%);
+    color: #ffffff !important;
+    border: none;
+    border-radius: var(--rsi-radius-full);
+    font-family: var(--rsi-font-primary);
+    font-weight: 600;
+    font-size: 0.98rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    box-shadow: 0 8px 28px rgba(37, 124, 230, 0.4);
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.rsi-carousel-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 36px rgba(74, 158, 255, 0.55);
+    background: linear-gradient(135deg, #1a66c7 0%, #3d91f5 100%);
+    color: #ffffff !important;
+}
+
+.rsi-carousel-button i {
+    transition: transform var(--rsi-transition-base);
+}
+
+.rsi-carousel-button:hover i {
+    transform: translateX(5px);
+}
+
+/* Modo claro - botón primario */
+body:not(.dark-mode) .rsi-carousel-button {
+    background: #ffffff;
+    color: #1c1948 !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+body:not(.dark-mode) .rsi-carousel-button:hover {
+    background: var(--rsi-accent);
+    color: #ffffff !important;
+    box-shadow: 0 12px 40px rgba(143, 148, 251, 0.45);
+}
+
+/* ==========================================
+   ANIMACIONES DE ENTRADA DEL SLIDE ACTIVO
+   ========================================== */
+.rsi-carousel-slide.is-active .rsi-carousel-title {
+    animation: carouselTextIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
+}
+
+.rsi-carousel-slide.is-active .rsi-carousel-description {
+    animation: carouselTextIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+}
+
+.rsi-carousel-slide.is-active .rsi-carousel-button {
+    animation: carouselTextIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.6s forwards;
+}
+
+@keyframes carouselTextIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   INDICADORES (dots)
+   ========================================== */
+.rsi-carousel-indicators {
+    position: absolute;
+    bottom: 85px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.28);
+    border-radius: var(--rsi-radius-full);
+    backdrop-filter: blur(10px);
+}
+
+.rsi-carousel-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.45);
+    cursor: pointer;
+    transition: all var(--rsi-transition-base);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.rsi-carousel-dot:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.2);
+}
+
+.rsi-carousel-dot.is-active {
+    width: 30px;
+    border-radius: var(--rsi-radius-full);
+    background: var(--rsi-gold-gradient);
+}
+
+/* Modo claro */
+body:not(.dark-mode) .rsi-carousel-dot.is-active {
+    background: #ffffff;
+}
+
+/* ==========================================
+   FLECHAS DE NAVEGACIÓN
+   ========================================== */
+.rsi-carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(15, 18, 36, 0.35);
+    color: #ffffff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--rsi-transition-base);
+    backdrop-filter: blur(10px);
+    opacity: 0;
+}
+
+.rsi-carousel:hover .rsi-carousel-arrow {
+    opacity: 1;
+}
+
+.rsi-carousel-arrow:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.7);
+    color: #ffffff;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.rsi-carousel-arrow--prev {
+    left: 24px;
+}
+
+.rsi-carousel-arrow--next {
+    right: 24px;
+}
+
+/* ==========================================
+   SCROLL INDICATOR - "Desliza hacia abajo"
+   ========================================== */
+.rsi-carousel-scroll {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    z-index: 10;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: var(--rsi-font-primary);
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 400;
+    pointer-events: none;
+    animation: scrollIndicatorFade 2.5s ease-in-out infinite;
+}
+
+.rsi-carousel-scroll-text {
+    opacity: 0.8;
+}
+
+.rsi-carousel-scroll-line {
+    width: 1px;
+    height: 24px;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.6) 0%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    position: relative;
+    overflow: hidden;
+}
+
+.rsi-carousel-scroll-line::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--rsi-gold-gradient);
+    animation: scrollLineMove 2s ease-in-out infinite;
+}
+
+@keyframes scrollIndicatorFade {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes scrollLineMove {
+    0% {
+        top: -100%;
+    }
+    100% {
+        top: 100%;
+    }
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+@media (max-width: 992px) {
+    .rsi-carousel-content {
+        padding: 0 6%;
+        padding-top: 90px;
+        padding-bottom: 140px;
+        align-items: center;
+        text-align: center;
+    }
+
+    .rsi-carousel-description {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .rsi-carousel-arrow {
+        width: 42px;
+        height: 42px;
+        font-size: 1rem;
+    }
+
+    .rsi-carousel-arrow--prev {
+        left: 12px;
+    }
+
+    .rsi-carousel-arrow--next {
+        right: 12px;
+    }
+
+    .rsi-carousel-indicators {
+        bottom: 90px;
+    }
+
+    .rsi-carousel-scroll {
+        bottom: 24px;
+        font-size: 0.65rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .rsi-carousel-content {
+        padding: 0 5%;
+        padding-top: 80px;
+        padding-bottom: 160px;
+    }
+
+    .rsi-carousel-title {
+        font-size: clamp(1.6rem, 8vw, 2.2rem);
+    }
+
+    .rsi-carousel-description {
+        font-size: 0.95rem;
+    }
+
+    .rsi-carousel-button {
+        padding: 14px 32px;
+        font-size: 0.9rem;
+    }
+
+    .rsi-carousel-indicators {
+        bottom: 80px;
+        gap: 8px;
+        padding: 6px 12px;
+    }
+
+    .rsi-carousel-dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    .rsi-carousel-dot.is-active {
+        width: 24px;
+    }
+
+    /* Ocultar flechas en mobile, usar swipe */
+    .rsi-carousel-arrow {
+        display: none;
+    }
+}
+
+/* Reducir movimiento para accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    .rsi-carousel-track,
+    .rsi-carousel-title,
+    .rsi-carousel-description,
+    .rsi-carousel-button {
+        transition: none !important;
+        animation: none !important;
+    }
+
+    .rsi-carousel-scroll,
+    .rsi-carousel-scroll-line::after {
+        animation: none !important;
+    }
+}

@@ -1,26 +1,55 @@
 /* ========================================
-   CONTACTO PAGE - Solo específico
+   CONTACT STYLES - RSI Enterprise México
+   Homologado con el Sistema Visual del Home
    ======================================== */
 
-.rsi-contact-section {
-    background-color: var(--rsi-bg-secondary);
-}
-
 /* ==========================================
-   TÍTULOS
+   1. HERO SECTION
    ========================================== */
-
-.rsi-contact-title {
-    font-family: var(--rsi-font-secondary);
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--rsi-text-primary);
+.rsi-contact-hero {
+    padding: calc(var(--rsi-spacing-4xl) + 20px) 0 var(--rsi-spacing-4xl);
+    background: linear-gradient(135deg, var(--rsi-primary) 0%, var(--rsi-primary-dark) 100%);
+    color: var(--rsi-white);
     text-align: center;
-    margin-bottom: var(--rsi-spacing-lg);
-    line-height: 1.3;
+    position: relative;
+    overflow: hidden;
 }
 
-.rsi-contact-title .rsi-text-gold {
+.rsi-contact-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 70%;
+    height: 200%;
+    background: radial-gradient(ellipse, rgba(143, 148, 251, 0.12) 0%, transparent 70%);
+    transform: rotate(15deg);
+    pointer-events: none;
+}
+
+.rsi-contact-hero-content {
+    max-width: 860px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.rsi-contact-hero .rsi-section-badge {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--rsi-white);
+    border-color: rgba(255, 255, 255, 0.22);
+}
+
+.rsi-contact-hero-title {
+    font-family: var(--rsi-font-secondary);
+    font-size: 3.2rem;
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: var(--rsi-spacing-lg);
+    color: var(--rsi-white);
+}
+
+.rsi-contact-hero-title .rsi-text-gold {
     background: var(--rsi-gold-gradient);
     -webkit-background-clip: text;
     background-clip: text;
@@ -28,97 +57,143 @@
     display: inline-block;
 }
 
-.rsi-contact-subtitle {
-    font-size: 1.15rem;
-    color: var(--rsi-gray-600);
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto var(--rsi-spacing-2xl);
+.rsi-contact-hero-subtitle {
+    font-size: 1.18rem;
     line-height: 1.7;
+    opacity: 0.92;
+    margin: 0 auto;
+    max-width: 740px;
+    color: var(--rsi-white);
 }
 
 /* ==========================================
-   UBICACIONES - GRID DE TARJETAS
+   2. SUCURSALES / UBICACIONES
    ========================================== */
+.rsi-locations-section {
+    padding: var(--rsi-spacing-4xl) 0;
+    background: var(--rsi-bg-primary, #ffffff);
+}
+
+.rsi-locations-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto var(--rsi-spacing-3xl);
+}
 
 .rsi-locations-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-    gap: var(--rsi-spacing-xl);
-    margin-bottom: var(--rsi-spacing-4xl);
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: var(--rsi-spacing-2xl);
 }
 
 .rsi-location-card {
-    background: var(--rsi-bg-card);
-    border-radius: var(--rsi-radius-lg);
+    background: var(--rsi-bg-card, #ffffff);
+    border-radius: var(--rsi-radius-xl);
     overflow: hidden;
     box-shadow: var(--rsi-shadow-md);
-    transition: all var(--rsi-transition-base);
-    border: 1px solid var(--rsi-gray-200);
+    border: 1px solid var(--rsi-border-color);
+    transition: transform var(--rsi-transition-base), box-shadow var(--rsi-transition-base), border-color var(--rsi-transition-base);
+    display: flex;
+    flex-direction: column;
 }
 
 .rsi-location-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
     box-shadow: var(--rsi-shadow-xl);
-    border-color: var(--rsi-primary);
+    border-color: var(--rsi-accent);
 }
 
 .rsi-location-header {
-    background: linear-gradient(135deg, var(--rsi-primary), var(--rsi-primary-dark));
+    background: linear-gradient(135deg, var(--rsi-primary) 0%, var(--rsi-primary-dark) 100%);
     color: var(--rsi-white);
-    padding: var(--rsi-spacing-lg) var(--rsi-spacing-xl);
+    padding: var(--rsi-spacing-xl);
+    position: relative;
+}
+
+.rsi-location-badge-top {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: rgba(255, 255, 255, 0.18);
+    color: var(--rsi-white);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: var(--rsi-radius-full);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.rsi-badge-usa {
+    background: rgba(143, 148, 251, 0.25);
+}
+
+.rsi-location-title-box {
     display: flex;
     align-items: center;
-    gap: var(--rsi-spacing-md);
+    gap: 14px;
 }
 
-.rsi-location-header i {
+.rsi-location-title-box i {
     font-size: 1.8rem;
-    color: var(--rsi-gold-base);
+    color: var(--rsi-accent-light);
 }
 
-.rsi-location-header h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
+.rsi-location-title-box h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--rsi-white);
     margin: 0;
+}
+
+.rsi-location-city {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.85);
 }
 
 .rsi-location-body {
     padding: var(--rsi-spacing-xl);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
 .rsi-location-body p {
-    margin-bottom: var(--rsi-spacing-sm);
-    color: var(--rsi-gray-700);
+    margin-bottom: var(--rsi-spacing-md);
+    color: var(--rsi-text-primary);
     font-size: 0.95rem;
     display: flex;
-    align-items: center;
-    gap: var(--rsi-spacing-sm);
+    align-items: flex-start;
+    gap: 12px;
+    line-height: 1.5;
 }
 
 .rsi-location-body p i {
-    width: 20px;
     color: var(--rsi-primary);
-    font-size: 1rem;
+    font-size: 1.05rem;
+    margin-top: 3px;
+    flex-shrink: 0;
 }
 
 .rsi-location-body a {
     color: var(--rsi-primary);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     transition: color var(--rsi-transition-base);
 }
 
 .rsi-location-body a:hover {
-    color: var(--rsi-accent);
+    color: var(--rsi-accent-dark);
     text-decoration: underline;
 }
 
 .rsi-location-map {
-    margin-top: var(--rsi-spacing-md);
-    border-radius: var(--rsi-radius-md);
+    margin: var(--rsi-spacing-md) 0 var(--rsi-spacing-lg);
+    border-radius: var(--rsi-radius-lg);
     overflow: hidden;
     box-shadow: var(--rsi-shadow-sm);
+    border: 1px solid var(--rsi-border-color);
 }
 
 .rsi-location-map iframe {
@@ -128,195 +203,430 @@
     display: block;
 }
 
+.rsi-location-footer {
+    margin-top: auto;
+    padding-top: var(--rsi-spacing-sm);
+}
+
+.rsi-location-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 16px;
+    border-radius: var(--rsi-radius-md);
+    border: 1px solid var(--rsi-primary);
+    color: var(--rsi-primary);
+    font-weight: 600;
+    font-size: 0.92rem;
+    text-decoration: none;
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-location-btn:hover {
+    background: var(--rsi-primary);
+    color: var(--rsi-white) !important;
+}
+
 /* ==========================================
-   INFORMACIÓN DE CONTACTO
+   3. FORMULARIO DE CONTACTO
    ========================================== */
+.rsi-contact-form-section {
+    padding: var(--rsi-spacing-4xl) 0;
+    background: linear-gradient(180deg, var(--rsi-bg-primary, #ffffff) 0%, var(--rsi-bg-secondary, #f8f9fa) 100%);
+}
+
+.rsi-form-card {
+    background: var(--rsi-bg-card, #ffffff);
+    border-radius: var(--rsi-radius-2xl, 24px);
+    padding: var(--rsi-spacing-3xl);
+    box-shadow: var(--rsi-shadow-lg);
+    border: 1px solid var(--rsi-border-color);
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.rsi-form-header {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto var(--rsi-spacing-2xl);
+}
+
+.rsi-form-header h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--rsi-primary);
+    margin-bottom: var(--rsi-spacing-sm);
+}
+
+.rsi-form-header p {
+    color: var(--rsi-gray-600);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.rsi-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--rsi-spacing-lg);
+}
+
+.rsi-form-group {
+    margin-bottom: var(--rsi-spacing-lg);
+}
+
+.rsi-form-group label {
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+    margin-bottom: 6px;
+}
+
+.rsi-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.rsi-input-icon {
+    position: absolute;
+    left: 16px;
+    color: var(--rsi-gray-400);
+    font-size: 1rem;
+    pointer-events: none;
+    transition: color var(--rsi-transition-base);
+}
+
+.rsi-form-group input,
+.rsi-form-group select,
+.rsi-form-group textarea {
+    width: 100%;
+    padding: 12px 16px 12px 46px;
+    border-radius: var(--rsi-radius-md);
+    border: 1px solid var(--rsi-border-color);
+    background: var(--rsi-bg-primary, #ffffff);
+    color: var(--rsi-text-primary);
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: border-color var(--rsi-transition-base), box-shadow var(--rsi-transition-base);
+}
+
+.rsi-form-group textarea {
+    padding-top: 14px;
+    resize: vertical;
+}
+
+.rsi-form-group input:focus,
+.rsi-form-group select:focus,
+.rsi-form-group textarea:focus {
+    outline: none;
+    border-color: var(--rsi-primary);
+    box-shadow: 0 0 0 3px rgba(28, 25, 72, 0.12);
+}
+
+.rsi-form-group input:focus + .rsi-input-icon,
+.rsi-input-wrapper:focus-within .rsi-input-icon {
+    color: var(--rsi-primary);
+}
+
+.rsi-form-error-message {
+    display: none;
+    font-size: 0.82rem;
+    color: #e53e3e;
+    margin-top: 4px;
+}
+
+.rsi-form-group.has-error input,
+.rsi-form-group.has-error select,
+.rsi-form-group.has-error textarea {
+    border-color: #e53e3e;
+}
+
+.rsi-form-group.has-error .rsi-form-error-message {
+    display: block;
+}
+
+.rsi-form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--rsi-spacing-xl);
+}
+
+.rsi-form-submit-btn {
+    padding: 14px 42px;
+    font-size: 1.05rem;
+    border-radius: var(--rsi-radius-full);
+}
+
+/* ==========================================
+   4. CANALES DIRECTOS DE CONTACTO
+   ========================================== */
+.rsi-channels-section {
+    padding: var(--rsi-spacing-4xl) 0;
+    background: var(--rsi-bg-primary, #ffffff);
+}
+
+.rsi-channels-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto var(--rsi-spacing-3xl);
+}
 
 .rsi-contact-info-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: var(--rsi-spacing-xl);
-    margin-top: var(--rsi-spacing-3xl);
 }
 
 .rsi-contact-info-item {
-    background: var(--rsi-bg-card);
-    border-radius: var(--rsi-radius-lg);
-    padding: var(--rsi-spacing-xl);
+    background: var(--rsi-bg-card, #ffffff);
+    border-radius: var(--rsi-radius-xl);
+    padding: var(--rsi-spacing-2xl) var(--rsi-spacing-xl);
     text-align: center;
-    box-shadow: var(--rsi-shadow-sm);
-    border: 1px solid var(--rsi-gray-200);
-    transition: all var(--rsi-transition-base);
+    box-shadow: var(--rsi-shadow-md);
+    border: 1px solid var(--rsi-border-color);
+    transition: transform var(--rsi-transition-base), box-shadow var(--rsi-transition-base);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .rsi-contact-info-item:hover {
     transform: translateY(-5px);
-    box-shadow: var(--rsi-shadow-md);
-    border-color: var(--rsi-primary);
+    box-shadow: var(--rsi-shadow-xl);
+    border-color: var(--rsi-accent);
 }
 
-.rsi-contact-info-item .rsi-info-icon {
-    font-size: 2.5rem;
-    background: var(--rsi-gold-gradient);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin-bottom: var(--rsi-spacing-md);
-    display: inline-block;
+.rsi-info-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--rsi-radius-lg);
+    background: linear-gradient(135deg, var(--rsi-primary) 0%, var(--rsi-primary-light) 100%);
+    color: var(--rsi-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: var(--rsi-spacing-lg);
+    box-shadow: 0 6px 16px rgba(28, 25, 72, 0.15);
 }
 
 .rsi-contact-info-item h4 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--rsi-text-primary);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--rsi-primary);
     margin-bottom: var(--rsi-spacing-sm);
 }
 
 .rsi-contact-info-item p {
-    color: var(--rsi-gray-700);
-    font-size: 0.95rem;
-    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+    margin: 0 0 4px 0;
 }
 
-.rsi-contact-info-item a {
+.rsi-contact-info-item p a {
     color: var(--rsi-primary);
     text-decoration: none;
-    font-weight: 500;
+    transition: color var(--rsi-transition-base);
 }
 
-.rsi-contact-info-item a:hover {
-    color: var(--rsi-accent);
+.rsi-contact-info-item p a:hover {
+    color: var(--rsi-accent-dark);
+    text-decoration: underline;
+}
+
+.rsi-info-note {
+    font-size: 0.85rem;
+    color: var(--rsi-gray-500);
+    margin-top: 4px;
 }
 
 /* ==========================================
-   RESPONSIVE
+   5. RESEÑAS GOOGLE EN CONTACTO
    ========================================== */
+.rsi-contact-reviews-section {
+    padding: var(--rsi-spacing-3xl) 0 var(--rsi-spacing-4xl);
+    background: linear-gradient(180deg, var(--rsi-bg-primary) 0%, var(--rsi-bg-secondary) 100%);
+}
 
+.rsi-contact-reviews-card {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-2xl);
+    padding: var(--rsi-spacing-3xl) var(--rsi-spacing-2xl);
+    box-shadow: var(--rsi-shadow-md);
+    border: 1px solid var(--rsi-border-color);
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.rsi-contact-reviews-card .rsi-stars {
+    color: #fbbc04;
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    font-size: 1.4rem;
+    margin-bottom: var(--rsi-spacing-md);
+}
+
+.rsi-contact-reviews-card h3 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--rsi-primary);
+    margin-bottom: var(--rsi-spacing-sm);
+}
+
+.rsi-contact-reviews-card p {
+    font-size: 1rem;
+    color: var(--rsi-gray-600);
+    max-width: 580px;
+    margin: 0 auto var(--rsi-spacing-xl);
+    line-height: 1.6;
+}
+
+/* ==========================================
+   MODO OSCURO - CONTACTO
+   ========================================== */
+body.dark-mode .rsi-locations-section,
+body.dark-mode .rsi-channels-section {
+    background: var(--rsi-bg-primary);
+}
+
+body.dark-mode .rsi-contact-form-section,
+body.dark-mode .rsi-contact-reviews-section {
+    background: linear-gradient(180deg, var(--rsi-bg-primary) 0%, var(--rsi-bg-secondary) 100%);
+}
+
+body.dark-mode .rsi-contact-hero {
+    background: linear-gradient(135deg, var(--rsi-bg-secondary) 0%, var(--rsi-bg-primary) 100%);
+    border-bottom: 1px solid var(--rsi-border-color);
+}
+
+body.dark-mode .rsi-location-card,
+body.dark-mode .rsi-form-card,
+body.dark-mode .rsi-contact-info-item,
+body.dark-mode .rsi-contact-reviews-card {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-border-color);
+}
+
+body.dark-mode .rsi-location-card:hover,
+body.dark-mode .rsi-contact-info-item:hover {
+    border-color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-location-body p {
+    color: var(--rsi-text-secondary);
+}
+
+body.dark-mode .rsi-location-body p i {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-location-body a,
+body.dark-mode .rsi-contact-info-item p a {
+    color: var(--rsi-primary-light);
+}
+
+body.dark-mode .rsi-location-btn {
+    border-color: var(--rsi-primary);
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-location-btn:hover {
+    background: var(--rsi-primary);
+    color: #ffffff !important;
+}
+
+body.dark-mode .rsi-form-header h2,
+body.dark-mode .rsi-contact-info-item h4,
+body.dark-mode .rsi-contact-reviews-card h3 {
+    color: var(--rsi-text-primary);
+}
+
+body.dark-mode .rsi-form-header p,
+body.dark-mode .rsi-contact-reviews-card p {
+    color: var(--rsi-text-secondary);
+}
+
+body.dark-mode .rsi-form-group label {
+    color: var(--rsi-text-primary);
+}
+
+body.dark-mode .rsi-form-group input,
+body.dark-mode .rsi-form-group select,
+body.dark-mode .rsi-form-group textarea {
+    background: var(--rsi-bg-input, #1d1f2e);
+    border-color: var(--rsi-border-color);
+    color: var(--rsi-text-primary);
+}
+
+body.dark-mode .rsi-form-group input:focus,
+body.dark-mode .rsi-form-group select:focus,
+body.dark-mode .rsi-form-group textarea:focus {
+    border-color: var(--rsi-primary);
+    box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.2);
+}
+
+body.dark-mode .rsi-info-icon {
+    background: linear-gradient(135deg, var(--rsi-primary-dark) 0%, var(--rsi-primary) 100%);
+    color: #ffffff;
+}
+
+body.dark-mode .rsi-contact-info-item p {
+    color: var(--rsi-text-primary);
+}
+
+/* ==========================================
+   RESPONSIVE - CONTACTO
+   ========================================== */
 @media (max-width: 992px) {
-    .rsi-contact-title {
-        font-size: 2.2rem;
+    .rsi-contact-hero-title {
+        font-size: 2.6rem;
     }
-    
+
     .rsi-locations-grid {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 768px) {
-    .rsi-contact-section {
-        padding: calc(var(--rsi-spacing-3xl) + 40px) 0 var(--rsi-spacing-3xl);
+    .rsi-contact-hero {
+        padding: calc(var(--rsi-spacing-3xl) + 20px) 0 var(--rsi-spacing-3xl);
     }
-    
-    .rsi-contact-title {
-        font-size: 1.8rem;
+
+    .rsi-contact-hero-title {
+        font-size: 2.1rem;
     }
-    
-    .rsi-contact-subtitle {
-        font-size: 1rem;
+
+    .rsi-contact-hero-subtitle {
+        font-size: 1.05rem;
     }
-    
-    .rsi-locations-grid {
+
+    .rsi-form-card {
+        padding: var(--rsi-spacing-2xl) var(--rsi-spacing-lg);
+    }
+
+    .rsi-form-row {
         grid-template-columns: 1fr;
-        gap: var(--rsi-spacing-lg);
-    }
-    
-    .rsi-location-map iframe {
-        height: 180px;
-    }
-    
-    .rsi-contact-info-grid {
-        grid-template-columns: 1fr 1fr;
+        gap: 0;
     }
 }
 
 @media (max-width: 576px) {
-    .rsi-contact-title {
-        font-size: 1.5rem;
+    .rsi-contact-hero-title {
+        font-size: 1.8rem;
     }
-    
-    .rsi-contact-subtitle {
-        font-size: 0.95rem;
+
+    .rsi-form-header h2 {
+        font-size: 1.6rem;
     }
-    
-    .rsi-contact-info-grid {
-        grid-template-columns: 1fr;
+
+    .rsi-form-submit-btn {
+        width: 100%;
     }
-    
-    .rsi-location-header {
-        padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
-    }
-    
-    .rsi-location-header h3 {
-        font-size: 1rem;
-    }
-    
-    .rsi-location-body {
-        padding: var(--rsi-spacing-lg);
-    }
-    
-    .rsi-location-body p {
-        font-size: 0.9rem;
-    }
-    
-    .rsi-location-map iframe {
-        height: 160px;
-    }
-}
-
-/* ==========================================
-   MODO OSCURO
-   ========================================== */
-
-body.dark-mode .rsi-contact-section {
-    background-color: var(--rsi-bg-secondary);
-}
-
-body.dark-mode .rsi-contact-title {
-    color: var(--rsi-primary);
-}
-
-body.dark-mode .rsi-contact-subtitle {
-    color: var(--rsi-gray-600);
-}
-
-body.dark-mode .rsi-location-card {
-    background: var(--rsi-bg-card);
-    border-color: var(--rsi-gray-300);
-}
-
-body.dark-mode .rsi-location-card:hover {
-    border-color: var(--rsi-gold-base);
-}
-
-body.dark-mode .rsi-location-header {
-    background: linear-gradient(135deg, var(--rsi-primary-dark), #0a0a1a);
-}
-
-body.dark-mode .rsi-location-body p {
-    color: var(--rsi-gray-600);
-}
-
-body.dark-mode .rsi-location-body a {
-    color: var(--rsi-primary);
-}
-
-body.dark-mode .rsi-contact-info-item {
-    background: var(--rsi-bg-card);
-    border-color: var(--rsi-gray-300);
-}
-
-body.dark-mode .rsi-contact-info-item h4 {
-    color: var(--rsi-primary);
-}
-
-body.dark-mode .rsi-contact-info-item p {
-    color: var(--rsi-gray-600);
-}
-
-body.dark-mode .rsi-contact-info-item a {
-    color: var(--rsi-primary);
-}
-
-body.dark-mode .rsi-contact-info-item:hover {
-    border-color: var(--rsi-gold-base);
 }

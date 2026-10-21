@@ -1232,8 +1232,8 @@ body.dark-mode .rsi-step-actions .rsi-btn-prev:hover {
 }
 
 body.dark-mode .rsi-step-actions .rsi-btn-next {
-    background: var(--rsi-gold-gradient);
-    color: var(--rsi-black);
+    background: linear-gradient(135deg, var(--rsi-primary), var(--rsi-primary-dark));
+    color: var(--rsi-btn-text-on-solid, #ffffff);
 }
 
 body.dark-mode .rsi-step-actions .rsi-btn-next:hover {
@@ -1241,8 +1241,8 @@ body.dark-mode .rsi-step-actions .rsi-btn-next:hover {
 }
 
 body.dark-mode .rsi-step-actions .rsi-btn-submit-step {
-    background: var(--rsi-gold-gradient);
-    color: var(--rsi-black);
+    background: linear-gradient(135deg, var(--rsi-primary), var(--rsi-primary-dark));
+    color: var(--rsi-btn-text-on-solid, #ffffff);
 }
 
 /* Modo oscuro - Componentes reutilizables */
@@ -1340,7 +1340,7 @@ body.dark-mode .rsi-switch-group {
 
 body.dark-mode .rsi-switch-group:hover {
     border-color: var(--rsi-gray-400);
-    background: var(--rsi-gray-800);
+    background: var(--rsi-bg-secondary);
 }
 
 body.dark-mode .rsi-switch-label {
@@ -1768,13 +1768,13 @@ body.dark-mode .rsi-pdf-header p {
 }
 
 body.dark-mode .rsi-pdf-dropzone {
-    background: var(--rsi-gray-800);
-    border-color: var(--rsi-gray-600);
+    background: var(--rsi-bg-input);
+    border-color: var(--rsi-gray-400);
 }
 
 body.dark-mode .rsi-pdf-dropzone:hover {
     border-color: var(--rsi-primary);
-    background: var(--rsi-gray-700);
+    background: var(--rsi-bg-secondary);
 }
 
 body.dark-mode .rsi-pdf-dropzone.dragover {
@@ -1902,11 +1902,11 @@ body.dark-mode .rsi-form-group label {
     .rsi-file-upload-area p {
         margin: var(--rsi-spacing-sm) 0;
         font-weight: 500;
-        color: var(--text-color);
+        color: var(--rsi-text-primary);
     }
 
     .rsi-file-upload-area small {
-        color: var(--rsi-gray-500);
+        color: var(--rsi-text-muted);
         font-size: 0.8rem;
     }
 
@@ -1922,14 +1922,14 @@ body.dark-mode .rsi-form-group label {
         font-weight: 500;
         font-size: 0.85rem;
         cursor: pointer;
-        transition: var(--rsi-transition);
+        transition: var(--rsi-transition-base);
         margin-top: var(--rsi-spacing-sm);
         align-self: flex-start;
     }
 
     .rsi-btn-remove-image:hover {
         background: var(--rsi-danger);
-        color: white;
+        color: var(--rsi-text-light);
     }
  
     /* ========== CONFIRMACIÓN - IMAGEN CENTRADA Y PEQUEÑA ========== */
@@ -1940,9 +1940,9 @@ body.dark-mode .rsi-form-group label {
     justify-content: center;
     gap: var(--rsi-spacing-xs);
     padding: var(--rsi-spacing-sm);
-    border: 1px dashed var(--rsi-gray-300);
+    border: 1px dashed var(--rsi-border-color);
     border-radius: var(--rsi-radius-md);
-    background: var(--card-bg);
+    background: var(--rsi-bg-card);
     min-height: 80px;
     max-width: 150px;
     margin: 0 auto;

@@ -1,0 +1,215 @@
+<!-- ========================================
+   MIS SALIDAS Y FIRMAS - RSI ENTERPRISE
+   Panel personal para ver salidas asignadas y firmar la aceptación
+   Homologado con panelCrud.css, details.css y variables.css
+   ======================================== -->
+
+<section class="rsi-tickets-section">
+    <div class="rsi-container">
+
+        <!-- Encabezado de Página -->
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Mis Salidas</span> y Firmas de Vehículos
+        </h1>
+        <p class="rsi-page-subtitle">
+            Consulta los automóviles asignados bajo tu responsabilidad y realiza la firma electrónica de aceptación para autorizar su salida operativa.
+        </p>
+
+        <!-- Tarjetas de Métricas Personales -->
+        <div class="rsi-stats-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--rsi-spacing-md); margin-bottom: var(--rsi-spacing-lg);">
+            <div class="rsi-stat-item" style="background: var(--rsi-bg-card); border: 1px solid var(--rsi-border-color); border-radius: var(--rsi-radius-lg); padding: var(--rsi-spacing-md); text-align: center;">
+                <span class="rsi-stat-value" id="statMisTotal" style="font-size: 1.8rem; font-weight: 700; color: var(--rsi-text-primary);">0</span>
+                <span class="rsi-stat-label" style="font-size: 0.8rem; color: var(--rsi-text-secondary); text-transform: uppercase;">Total Asignadas</span>
+            </div>
+            <div class="rsi-stat-item" style="background: var(--rsi-bg-card); border: 1.5px solid var(--rsi-warning); border-radius: var(--rsi-radius-lg); padding: var(--rsi-spacing-md); text-align: center;">
+                <span class="rsi-stat-value" id="statMisPendientes" style="font-size: 1.8rem; font-weight: 700; color: var(--rsi-warning);">0</span>
+                <span class="rsi-stat-label" style="font-size: 0.8rem; color: var(--rsi-warning); font-weight: 600; text-transform: uppercase;">Pendientes de Firma</span>
+            </div>
+            <div class="rsi-stat-item" style="background: var(--rsi-bg-card); border: 1px solid var(--rsi-border-color); border-radius: var(--rsi-radius-lg); padding: var(--rsi-spacing-md); text-align: center;">
+                <span class="rsi-stat-value" id="statMisEnRuta" style="font-size: 1.8rem; font-weight: 700; color: var(--rsi-primary);">0</span>
+                <span class="rsi-stat-label" style="font-size: 0.8rem; color: var(--rsi-text-secondary); text-transform: uppercase;">En Ruta / Activas</span>
+            </div>
+            <div class="rsi-stat-item" style="background: var(--rsi-bg-card); border: 1px solid var(--rsi-border-color); border-radius: var(--rsi-radius-lg); padding: var(--rsi-spacing-md); text-align: center;">
+                <span class="rsi-stat-value" id="statMisConcluidas" style="font-size: 1.8rem; font-weight: 700; color: var(--rsi-success);">0</span>
+                <span class="rsi-stat-label" style="font-size: 0.8rem; color: var(--rsi-text-secondary); text-transform: uppercase;">Concluidas</span>
+            </div>
+        </div>
+
+        <!-- ===== PANEL PRINCIPAL CRUD ===== -->
+        <div class="rsi-panel-crud">
+
+            <!-- Encabezado del Panel -->
+            <div class="rsi-panel-header" style="flex-wrap: wrap; gap: var(--rsi-spacing-md);">
+                <h2>
+                    <i class="fas fa-file-signature"></i>
+                    Salidas Asignadas a Mi Persona
+                    <span id="misSalidasCount" class="rsi-badge rsi-badge-primary">0</span>
+                </h2>
+                <div class="rsi-panel-actions">
+                    <button id="btnRefreshMisSalidas" class="rsi-btn-crud rsi-btn-crud-outline">
+                        <i class="fas fa-sync"></i> Actualizar
+                    </button>
+                    <a href="/partner/vehiculos" class="rsi-btn-crud rsi-btn-crud-outline" data-link>
+                        <i class="fas fa-car"></i> Parque Vehicular
+                    </a>
+                </div>
+            </div>
+
+            <!-- Buscador y Filtros -->
+            <div class="rsi-search-container">
+                <div class="rsi-search-box">
+                    <div class="rsi-search-input-wrapper">
+                        <i class="fas fa-search rsi-search-icon"></i>
+                        <input 
+                            type="text" 
+                            id="misSalidasSearchInput" 
+                            placeholder="Buscar por folio, placas, número económico o modelo..." 
+                            class="rsi-search-input"
+                            autocomplete="off"
+                        >
+                    </div>
+                </div>
+
+                <div class="rsi-filters-row" style="display: flex; gap: var(--rsi-spacing-md); align-items: center; margin-top: var(--rsi-spacing-xs); flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label for="filtroEstadoMisSalidas" style="font-size: 0.85rem; font-weight: 600; color: var(--rsi-text-secondary);">Estado:</label>
+                        <select id="filtroEstadoMisSalidas" class="rsi-filter-select" style="padding: 7px 12px; border-radius: var(--rsi-radius-md); border: 1.5px solid var(--rsi-border-color); background: var(--rsi-bg-input); color: var(--rsi-text-primary); font-size: 0.88rem;">
+                            <option value="todos">Todas las salidas</option>
+                            <option value="pendiente_aceptacion" selected>Pendientes de mi firma</option>
+                            <option value="aceptada">En ruta / Aceptadas</option>
+                            <option value="concluida">Concluidas</option>
+                            <option value="cancelada">Canceladas</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingStateMisSalidas" class="rsi-loading-state" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Cargando tus salidas asignadas...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyStateMisSalidas" class="rsi-empty-state" style="display: none;">
+                <i class="fas fa-car-side"></i>
+                <h3>No tienes salidas asignadas</h3>
+                <p id="emptyStateMisSalidasMsg">No se encontraron salidas vehiculares registradas para tu cuenta con el filtro seleccionado.</p>
+            </div>
+
+            <!-- Tabla de Mis Salidas -->
+            <div class="rsi-table-wrapper" id="misSalidasTableWrapper">
+                <table class="rsi-table">
+                    <thead>
+                        <tr>
+                            <th>Folio</th>
+                            <th>Vehículo</th>
+                            <th>Inspector / Revisor</th>
+                            <th>Odómetro Salida</th>
+                            <th>Fecha Registro</th>
+                            <th>Estado</th>
+                            <th style="text-align: center;">Acción de Firma</th>
+                        </tr>
+                    </thead>
+                    <tbody id="misSalidasTableBody">
+                        <!-- Generación dinámica -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ========================================
+   MODAL PARA FIRMAR SALIDA VEHICULAR
+   ======================================== -->
+<div class="rsi-modal" id="modalFirmarSalida" style="display: none;">
+    <div class="rsi-modal-content" style="max-width: 680px;">
+        <div class="rsi-modal-header">
+            <h3 id="modalFirmarTitle">
+                <i class="fas fa-file-signature"></i> Firma de Aceptación de Salida Vehicular
+            </h3>
+            <button type="button" class="rsi-modal-close" id="btnCloseModalFirmar">&times;</button>
+        </div>
+        <div class="rsi-modal-body">
+            
+            <!-- Resumen de la Salida a Firmar -->
+            <div id="firmaSalidaResumen" style="background: var(--rsi-bg-secondary); border: 1px solid var(--rsi-border-color); border-radius: var(--rsi-radius-md); padding: var(--rsi-spacing-md); margin-bottom: var(--rsi-spacing-lg);">
+                <!-- Dinámico -->
+            </div>
+
+            <!-- Lienzo de Firma Digital -->
+            <div style="margin-bottom: var(--rsi-spacing-lg);">
+                <label style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-weight: 600; color: var(--rsi-text-primary); font-size: 0.9rem;">
+                    <span><i class="fas fa-pen-nib" style="color: var(--rsi-primary);"></i> Dibuja tu firma en el lienzo (Obligatorio):</span>
+                    <button type="button" id="btnClearFirmaCanvas" class="rsi-btn-action rsi-btn-action-outline" style="padding: 3px 10px; font-size: 0.78rem;">
+                        <i class="fas fa-eraser"></i> Limpiar firma
+                    </button>
+                </label>
+                <div style="border: 2px dashed var(--rsi-border-color); border-radius: var(--rsi-radius-md); background: #ffffff; padding: 4px; display: flex; justify-content: center;">
+                    <canvas id="canvasFirmaReceptor" width="560" height="200" style="touch-action: none; cursor: crosshair; width: 100%; max-width: 560px; height: 180px; display: block;"></canvas>
+                </div>
+                <small style="color: var(--rsi-text-muted); font-size: 0.78rem; display: block; margin-top: 4px;">
+                    Puedes firmar usando el dedo en pantalla táctil o el puntero del ratón.
+                </small>
+            </div>
+
+            <!-- Observaciones del Receptor (Opcional) -->
+            <div class="rsi-form-group" style="margin-bottom: var(--rsi-spacing-lg);">
+                <label for="firmaObservacionesReceptor" class="rsi-form-label" style="font-size: 0.88rem; font-weight: 600;">
+                    Observaciones o comentarios adicionales del receptor (Opcional):
+                </label>
+                <textarea 
+                    id="firmaObservacionesReceptor" 
+                    rows="2" 
+                    class="rsi-form-control" 
+                    placeholder="Escribe alguna observación o condición particular detectada al recibir el vehículo..."
+                    style="font-size: 0.88rem; resize: vertical;"
+                ></textarea>
+            </div>
+
+            <!-- Declaración de Conformidad -->
+            <div style="background: rgba(212, 175, 55, 0.08); border: 1.5px solid rgba(212, 175, 55, 0.3); border-radius: var(--rsi-radius-md); padding: 12px 14px; margin-bottom: var(--rsi-spacing-md);">
+                <label style="display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 0.85rem; color: var(--rsi-text-primary); line-height: 1.4;">
+                    <input type="checkbox" id="chkDeclaracionAceptacion" style="margin-top: 3px; width: 18px; height: 18px; accent-color: var(--rsi-primary);" />
+                    <span>
+                        <strong>Declaración de Responsabilidad:</strong> He revisado las condiciones del automóvil, el nivel de combustible, el odómetro y las evidencias fotográficas adjuntas. Acepto el resguardo de la unidad bajo las políticas de RSI Enterprise.
+                    </span>
+                </label>
+            </div>
+
+        </div>
+        <div class="rsi-modal-actions" style="justify-content: flex-end; gap: 10px;">
+            <button type="button" class="rsi-btn-action rsi-btn-action-secondary" id="btnCancelModalFirmar">
+                Cancelar
+            </button>
+            <button type="button" class="rsi-btn-action rsi-btn-action-primary" id="btnConfirmarFirma">
+                <i class="fas fa-check-circle"></i> Confirmar y Firmar Salida
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================
+   MODAL DE DETALLE Y EVIDENCIAS DE SALIDA
+   ======================================== -->
+<div class="rsi-modal" id="modalDetalleSalidaPropia" style="display: none;">
+    <div class="rsi-modal-content" style="max-width: 800px;">
+        <div class="rsi-modal-header">
+            <h3 id="modalDetallePropiaTitle">
+                <i class="fas fa-clipboard-check"></i> Detalle de la Salida Vehicular
+            </h3>
+            <button type="button" class="rsi-modal-close" id="btnCloseModalDetallePropia">&times;</button>
+        </div>
+        <div class="rsi-modal-body" id="modalDetallePropiaContent">
+            <!-- Renderizado dinámico -->
+        </div>
+        <div class="rsi-modal-actions" style="justify-content: flex-end;">
+            <button type="button" class="rsi-btn-action rsi-btn-action-secondary" id="btnCerrarModalDetallePropia">
+                Cerrar
+            </button>
+        </div>
+    </div>
+</div>

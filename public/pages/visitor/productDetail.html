@@ -1,0 +1,211 @@
+<!-- ========================================
+   PRODUCT DETAIL VIEW - RSI Enterprise
+   Ficha técnica con galería, buscador en vivo, marca oficial y productos relacionados
+   ======================================== -->
+
+<section class="rsi-product-detail-section" style="padding: 18px 0 40px; min-height: 70vh;">
+    <div class="rsi-container">
+
+        <!-- BARRA SUPERIOR: BREADCRUMB, BUSCADOR EN VIVO Y COMPARTIR (z-index alto para dropdown flotante) -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--rsi-border-color, #e2e8f0); position: relative; z-index: 100;">
+            
+            <!-- Breadcrumb -->
+            <nav class="rsi-breadcrumb" style="font-size: 0.82rem; color: var(--rsi-gray-500); display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                <a href="/" data-link style="color: var(--rsi-gray-500); text-decoration: none;"><i class="fas fa-home"></i> Inicio</a>
+                <span>/</span>
+                <a href="/products" data-link style="color: var(--rsi-gray-500); text-decoration: none;">Productos</a>
+                <span>/</span>
+                <span id="bcCategoria" style="color: var(--rsi-gold, #c5a059); font-weight: 600;">Categoría</span>
+                <span>/</span>
+                <span id="bcProducto" style="color: var(--rsi-text-primary); max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Producto</span>
+            </nav>
+
+            <!-- Buscador en tiempo real con sugerencias flotantes -->
+            <div class="rsi-products-search-wrapper" style="max-width: 380px; width: 100%; margin: 0; position: relative; z-index: 102;">
+                <div class="rsi-products-search" style="padding: 7px 14px; font-size: 0.85rem;">
+                    <i class="fas fa-search" style="font-size: 0.85rem;"></i>
+                    <input type="text" id="inputDetailSearch" placeholder="Buscar otro equipo o modelo..." autocomplete="off" style="font-size: 0.85rem;">
+                    <button type="button" id="btnClearDetailSearch" style="display: none; background: none; border: none; color: var(--rsi-gray-400); cursor: pointer;" title="Limpiar">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
+                </div>
+                <!-- Desplegable flotante de sugerencias -->
+                <div class="rsi-search-suggestions-dropdown" id="detailSearchSuggestions"></div>
+            </div>
+
+            <!-- Botón Compartir Catálogo / Producto -->
+            <button type="button" id="btnShareProduct" class="rsi-btn-gold" style="padding: 7px 16px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 8px; border-radius: 20px; cursor: pointer;">
+                <i class="fas fa-share-alt"></i> Compartir Producto
+            </button>
+        </div>
+
+        <!-- SPINNER DE CARGA -->
+        <div id="productDetailLoading" style="text-align: center; padding: 50px 0;">
+            <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--rsi-gold, #c5a059); margin-bottom: 12px;"></i>
+            <p style="font-size: 1rem; color: var(--rsi-gray-500);">Cargando información del producto...</p>
+        </div>
+
+        <!-- CONTENIDO PRINCIPAL DEL DETALLE -->
+        <div id="productDetailContent" style="display: none;">
+            
+            <!-- BLOQUE PRINCIPAL: GALERÍA + COMPRA -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; margin-bottom: 32px;">
+                
+                <!-- COLUMNA 1: GALERÍA DE IMÁGENES -->
+                <div>
+                    <!-- Imagen Grande Principal -->
+                    <div style="border-radius: 12px; overflow: hidden; background: #ffffff; border: 1px solid var(--rsi-border-color, #e2e8f0); height: 340px; display: flex; align-items: center; justify-content: center; position: relative; box-shadow: 0 4px 14px rgba(0,0,0,0.04); padding: 16px;">
+                        <img id="detailMainImage" src="/assets/images/placeholder.jpg" alt="Producto" style="max-height: 100%; max-width: 100%; object-fit: contain; transition: transform 0.3s ease;" />
+                        <span id="detailBadgeDestacado" class="rsi-badge rsi-badge-gold" style="position: absolute; top: 12px; left: 12px; display: none;">
+                            <i class="fas fa-star"></i> Destacado
+                        </span>
+                    </div>
+
+                    <!-- Fila de Miniaturas -->
+                    <div id="detailThumbnailsRow" style="display: flex; gap: 8px; margin-top: 10px; overflow-x: auto; padding-bottom: 4px;"></div>
+                </div>
+
+                <!-- COLUMNA 2: INFORMACIÓN DE COMPRA Y MARCA -->
+                <div style="display: flex; flex-direction: column; justify-content: space-between;">
+                    
+                    <div>
+                        <!-- Fila de Marca con Logotipo y Categoría -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span id="detailCategoria" class="rsi-badge rsi-badge-primary" style="font-size: 0.75rem;">Categoría</span>
+                                <div id="detailMarcaWrapper" style="display: flex; align-items: center; gap: 6px;">
+                                    <img id="detailMarcaLogo" src="" alt="Marca" class="rsi-detail-brand-logo" style="display: none;" />
+                                    <span id="detailMarcaNombre" style="font-size: 0.85rem; font-weight: 700; color: var(--rsi-gray-600);"></span>
+                                </div>
+                            </div>
+
+                            <span id="detailStockBadge" class="rsi-badge rsi-badge-success" style="font-size: 0.78rem;">
+                                <i class="fas fa-check-circle"></i> En existencia
+                            </span>
+                        </div>
+
+                        <!-- Título del producto -->
+                        <h1 id="detailTitulo" style="margin: 0 0 8px; font-size: clamp(1.3rem, 2.2vw, 1.8rem); font-weight: 800; color: var(--rsi-text-primary); line-height: 1.25;">
+                            Nombre del Producto
+                        </h1>
+
+                        <!-- Modelo, SKU y SAT en línea compacta -->
+                        <div style="font-size: 0.8rem; color: var(--rsi-gray-400); margin-bottom: 16px; display: flex; gap: 14px; flex-wrap: wrap;">
+                            <span id="detailModelo">Modelo: <code>—</code></span>
+                            <span id="detailSku">SKU: <code>—</code></span>
+                            <span id="detailClaveSat">SAT: <code>43211500</code></span>
+                        </div>
+
+                        <!-- Caja de Precio y Botones de Compra Compacta -->
+                        <div style="background: var(--rsi-bg-card, #ffffff); border-radius: 12px; padding: 18px; border: 1px solid var(--rsi-border-color, #e2e8f0); margin-bottom: 18px; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px;">
+                                <div>
+                                    <span style="font-size: 0.78rem; color: var(--rsi-gray-400); display: block;">Precio con IVA incluido:</span>
+                                    <span id="detailPrecio" style="font-size: 1.8rem; font-weight: 800; color: var(--rsi-gold, #c5a059);">$0.00</span>
+                                    <small style="font-size: 0.85rem; color: var(--rsi-gray-400); font-weight: 600;">MXN</small>
+                                </div>
+                                <span id="detailDisponibilidadTexto" style="font-size: 0.8rem; color: var(--rsi-gray-500);"></span>
+                            </div>
+
+                            <!-- Selector de Cantidad y Botones de Compra -->
+                            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                                <div style="display: flex; align-items: center; border: 1px solid var(--rsi-border-color); border-radius: 8px; overflow: hidden; background: var(--rsi-bg-body);">
+                                    <button type="button" id="btnQtyMinus" style="padding: 8px 12px; border: none; background: none; cursor: pointer; font-weight: 700;">-</button>
+                                    <input type="number" id="inputQty" value="1" min="1" max="99" style="width: 44px; text-align: center; border: none; background: none; font-weight: 600; outline: none; font-size: 0.9rem;" />
+                                    <button type="button" id="btnQtyPlus" style="padding: 8px 12px; border: none; background: none; cursor: pointer; font-weight: 700;">+</button>
+                                </div>
+
+                                <button type="button" id="btnAddToCart" class="rsi-btn-crud rsi-btn-crud-primary" style="flex: 2; min-width: 160px; padding: 10px 18px; font-size: 0.92rem; justify-content: center;">
+                                    <i class="fas fa-shopping-cart"></i> Agregar al Carrito
+                                </button>
+
+                                <button type="button" id="btnAddToWishlist" class="rsi-btn-crud rsi-btn-crud-outline" style="padding: 10px 14px; font-size: 0.92rem;" title="Guardar en lista de deseos">
+                                    <i class="far fa-heart" id="iconWishlist"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Garantías y Beneficios en formato compacto -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.8rem; color: var(--rsi-gray-600); border-top: 1px solid var(--rsi-border-color, #e2e8f0); padding-top: 12px;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-shield-alt" style="color: var(--rsi-gold, #c5a059);"></i> Garantía oficial de 1 año
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-truck" style="color: var(--rsi-gold, #c5a059);"></i> Envíos a todo México
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-file-invoice" style="color: var(--rsi-gold, #c5a059);"></i> Facturación CFDI 4.0
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-headset" style="color: var(--rsi-gold, #c5a059);"></i> Soporte certificado RSI
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- SECCIÓN MEJORADA DE DESCRIPCIÓN Y ESPECIFICACIONES -->
+            <div style="background: var(--rsi-bg-card, #ffffff); border-radius: 12px; padding: 24px; border: 1px solid var(--rsi-border-color, #e2e8f0); margin-bottom: 32px; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+                <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px;">
+                    
+                    <!-- Bloque Descripción -->
+                    <div>
+                        <h3 style="margin: 0 0 10px; font-size: 1.15rem; font-weight: 700; color: var(--rsi-text-primary); display: flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-align-left" style="color: var(--rsi-gold, #c5a059);"></i> Descripción del Equipo
+                        </h3>
+                        <p id="detailDescripcion" style="color: var(--rsi-gray-600); line-height: 1.6; font-size: 0.92rem; margin: 0 0 16px;">
+                            Descripción detallada del equipo.
+                        </p>
+
+                        <!-- Ficha Técnica Descargable -->
+                        <div id="detailPdfBlock" style="display: none; padding: 12px 16px; border-radius: 8px; background: rgba(197, 160, 89, 0.06); border: 1px solid rgba(197, 160, 89, 0.2); align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-file-pdf fa-lg" style="color: #ef4444;"></i>
+                                <div>
+                                    <strong style="font-size: 0.88rem; color: var(--rsi-text-primary); display: block;" id="detailPdfNombre">Ficha Técnica Oficial.pdf</strong>
+                                    <small style="font-size: 0.75rem; color: var(--rsi-gray-500);" id="detailPdfTamano">0 KB</small>
+                                </div>
+                            </div>
+                            <a href="#" id="detailPdfDownloadBtn" target="_blank" class="rsi-btn-crud rsi-btn-crud-primary" style="text-decoration: none; padding: 6px 14px; font-size: 0.82rem;">
+                                <i class="fas fa-download"></i> Descargar PDF
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Bloque Características Principales -->
+                    <div>
+                        <h3 style="margin: 0 0 10px; font-size: 1.15rem; font-weight: 700; color: var(--rsi-text-primary); display: flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-list-check" style="color: var(--rsi-gold, #c5a059);"></i> Características Clave
+                        </h3>
+                        <ul id="detailCaracteristicasList" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px;">
+                            <!-- Viñetas inyectadas dinámicamente -->
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- SECCIÓN DE PRODUCTOS RELACIONADOS CON LA CATEGORÍA -->
+            <div id="detailRelatedSection" style="margin-top: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--rsi-text-primary);">
+                            Otros productos en <span id="txtRelacionadosCategoriaNombre" class="rsi-text-gold">esta categoría</span>
+                        </h3>
+                        <small style="color: var(--rsi-gray-500); font-size: 0.8rem;">Equipos complementarios y de la misma línea técnica</small>
+                    </div>
+                    <a href="/products" data-link style="color: var(--rsi-gold, #c5a059); text-decoration: none; font-weight: 600; font-size: 0.85rem;">
+                        Ver todo el catálogo <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+
+                <!-- Grid de productos relacionados con el diseño compacto -->
+                <div class="rsi-products-grid" id="detailRelatedGrid"></div>
+            </div>
+
+        </div>
+
+    </div>
+</section>

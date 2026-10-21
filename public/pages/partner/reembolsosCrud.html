@@ -1,0 +1,599 @@
+<!-- ========================================
+   PANEL DE REEMBOLSOS A COLABORADORES - RSI ENTERPRISE
+   Permite gestionar reembolsos de todos los colaboradores,
+   hacer reembolsos directos a otros colaboradores y aplicar
+   devoluciones Totales o Parciales con evidencia y trazabilidad.
+   ======================================== -->
+
+<section class="rsi-reembolsos-crud-section">
+    <div class="rsi-container">
+
+        <!-- Encabezado Principal -->
+        <div class="rsi-reembolso-header" style="margin-bottom: 24px;">
+            <div>
+                <h1 class="rsi-page-title">
+                    <span class="rsi-text-gold">Panel de Reembolsos</span> a Colaboradores
+                </h1>
+                <p class="rsi-page-subtitle">
+                    Administra solicitudes de gastos, realiza reembolsos directos a otros colaboradores y aplica devoluciones totales o parciales.
+                </p>
+            </div>
+            <div class="rsi-reembolso-header-actions">
+                <button type="button" id="btnAbrirModalReembolsoColaborador" class="rsi-btn-crud rsi-btn-crud-success">
+                    <i class="fas fa-user-plus"></i> Hacer Reembolso a Colaborador
+                </button>
+                <a href="/partner/reembolso" class="rsi-btn-crud rsi-btn-crud-primary" data-link>
+                    <i class="fas fa-plus-circle"></i> Hacer Reembolso Propio
+                </a>
+                <a href="/partner/reembolsos" class="rsi-btn-crud rsi-btn-crud-outline" data-link>
+                    <i class="fas fa-wallet"></i> Mis Reembolsos
+                </a>
+            </div>
+        </div>
+
+        <!-- Tarjetas de Métricas Financieras del Periodo -->
+        <div class="rsi-metrics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(195px, 1fr)); gap: 16px; margin-bottom: 24px;">
+            <div class="rsi-metric-card">
+                <div class="rsi-metric-icon" style="color: var(--rsi-primary);"><i class="fas fa-file-invoice-dollar"></i></div>
+                <div class="rsi-metric-content">
+                    <span class="rsi-metric-title">Total Solicitado</span>
+                    <h3 class="rsi-metric-val" id="admMetricaSolicitado">$0.00</h3>
+                </div>
+            </div>
+
+            <div class="rsi-metric-card">
+                <div class="rsi-metric-icon" style="color: #28a745;"><i class="fas fa-hand-holding-usd"></i></div>
+                <div class="rsi-metric-content">
+                    <span class="rsi-metric-title">Total Devuelto / Pagado</span>
+                    <h3 class="rsi-metric-val" id="admMetricaDevuelto">$0.00</h3>
+                </div>
+            </div>
+
+            <div class="rsi-metric-card">
+                <div class="rsi-metric-icon" style="color: #dc3545;"><i class="fas fa-coins"></i></div>
+                <div class="rsi-metric-content">
+                    <span class="rsi-metric-title">Saldo por Devolver</span>
+                    <h3 class="rsi-metric-val" id="admMetricaSaldoPendiente">$0.00</h3>
+                </div>
+            </div>
+
+            <div class="rsi-metric-card">
+                <div class="rsi-metric-icon" style="color: #ffc107;"><i class="fas fa-chart-pie"></i></div>
+                <div class="rsi-metric-content">
+                    <span class="rsi-metric-title">Pendientes / Parciales</span>
+                    <h3 class="rsi-metric-val" id="admMetricaPendientesParciales">0 / 0</h3>
+                </div>
+            </div>
+
+            <div class="rsi-metric-card">
+                <div class="rsi-metric-icon" style="color: #17a2b8;"><i class="fas fa-check-double"></i></div>
+                <div class="rsi-metric-content">
+                    <span class="rsi-metric-title">Liquidados al 100%</span>
+                    <h3 class="rsi-metric-val" id="admMetricaLiquidados">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANEL CRUD PRINCIPAL -->
+        <div class="rsi-panel-crud">
+
+            <!-- Header del Panel -->
+            <div class="rsi-panel-header">
+                <h2>
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span id="tituloTablaReembolsosAdmin">Control de Reembolsos y Devoluciones</span>
+                    <span id="badgeTotalReembolsosAdmin" class="rsi-badge rsi-badge-primary" style="font-size: 0.8rem;">0 registros</span>
+                </h2>
+                <div class="rsi-panel-actions">
+                    <button type="button" id="btnExportarExcelReembolsos" class="rsi-btn-crud rsi-btn-excel" title="Exportar tabla a Excel">
+                        <i class="fas fa-file-excel"></i> Exportar a Excel
+                    </button>
+                    <button type="button" id="btnActualizarReembolsosAdmin" class="rsi-btn-crud rsi-btn-crud-outline" title="Actualizar registros">
+                        <i class="fas fa-sync"></i> Actualizar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Barra de Filtros y Selector Rápido de Periodo -->
+            <div class="rsi-filters-container">
+                <div class="rsi-quincena-bar">
+                    <div class="rsi-quincena-tabs" id="rmbQuincenaQuickTabs">
+                        <button type="button" class="rsi-quincena-tab active" data-quincena="todas">
+                            <i class="fas fa-calendar-alt"></i> Mes Completo
+                        </button>
+                        <button type="button" class="rsi-quincena-tab" data-quincena="primera">
+                            <i class="fas fa-calendar-day"></i> 1ª Quincena (1 al 15)
+                        </button>
+                        <button type="button" class="rsi-quincena-tab" data-quincena="segunda">
+                            <i class="fas fa-calendar-week"></i> 2ª Quincena (16 a fin de mes)
+                        </button>
+                    </div>
+                    <div class="rsi-quincena-hint">
+                        <i class="fas fa-hand-pointer"></i>
+                        <span>Haz clic en el <strong>nombre del colaborador</strong> para ver su expediente de reembolsos o usa <strong>Devolver</strong> para pagos totales o parciales.</span>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: 12px; align-items: flex-end; margin-top: 12px;">
+                    <!-- Año -->
+                    <div class="rsi-form-group" style="margin-bottom: 0;">
+                        <label for="filtroRmbAdminAnio" class="rsi-form-label" style="font-size: 0.8rem; margin-bottom: 4px;">Año:</label>
+                        <select id="filtroRmbAdminAnio" class="rsi-form-control" style="padding: 6px 10px; font-size: 0.88rem;"></select>
+                    </div>
+
+                    <!-- Mes -->
+                    <div class="rsi-form-group" style="margin-bottom: 0;">
+                        <label for="filtroRmbAdminMes" class="rsi-form-label" style="font-size: 0.8rem; margin-bottom: 4px;">Mes:</label>
+                        <select id="filtroRmbAdminMes" class="rsi-form-control" style="padding: 6px 10px; font-size: 0.88rem;">
+                            <option value="1">Enero</option>
+                            <option value="2">Febrero</option>
+                            <option value="3">Marzo</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Mayo</option>
+                            <option value="6">Junio</option>
+                            <option value="7">Julio</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Noviembre</option>
+                            <option value="12">Diciembre</option>
+                        </select>
+                    </div>
+
+                    <!-- Colaborador -->
+                    <div class="rsi-form-group" style="margin-bottom: 0;">
+                        <label for="filtroRmbAdminColaborador" class="rsi-form-label" style="font-size: 0.8rem; margin-bottom: 4px;">Colaborador:</label>
+                        <select id="filtroRmbAdminColaborador" class="rsi-form-control" style="padding: 6px 10px; font-size: 0.88rem;">
+                            <option value="todos">Todos los colaboradores</option>
+                        </select>
+                    </div>
+
+                    <!-- Estado -->
+                    <div class="rsi-form-group" style="margin-bottom: 0;">
+                        <label for="filtroRmbAdminEstado" class="rsi-form-label" style="font-size: 0.8rem; margin-bottom: 4px;">Estado Reembolso:</label>
+                        <select id="filtroRmbAdminEstado" class="rsi-form-control" style="padding: 6px 10px; font-size: 0.88rem;">
+                            <option value="todos">Todos</option>
+                            <option value="pendiente">Pendiente de devolución</option>
+                            <option value="parcial">En Reembolso Parcial</option>
+                            <option value="liquidado">Liquidado Total (100%)</option>
+                            <option value="rechazado">Rechazado</option>
+                        </select>
+                    </div>
+
+                    <!-- Tipo de Devolución -->
+                    <div class="rsi-form-group" style="margin-bottom: 0;">
+                        <label for="filtroRmbAdminModalidad" class="rsi-form-label" style="font-size: 0.8rem; margin-bottom: 4px;">Forma Devolución:</label>
+                        <select id="filtroRmbAdminModalidad" class="rsi-form-control" style="padding: 6px 10px; font-size: 0.88rem;">
+                            <option value="todos">Todas (Total y Parcial)</option>
+                            <option value="total">Devolución Total</option>
+                            <option value="parcial">Devolución Parcial (Abonos)</option>
+                        </select>
+                    </div>
+
+                    <!-- Botón Filtrar -->
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" id="btnFiltrarReembolsosAdmin" class="rsi-btn-search" style="padding: 8px 16px; font-size: 0.88rem; flex: 1;">
+                            <i class="fas fa-filter"></i> Filtrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXPEDIENTE INDIVIDUAL DEL COLABORADOR SELECCIONADO -->
+            <div id="panelDetalleColaboradorRmb" class="rsi-colab-detail-panel" style="display: none;">
+                <div class="rsi-colab-detail-header">
+                    <div class="rsi-colab-detail-profile">
+                        <img id="detRmbColabFoto" src="/assets/images/default-avatar.png" alt="Avatar" class="rsi-colab-detail-avatar">
+                        <div class="rsi-colab-detail-info">
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <h3 id="detRmbColabNombre">Nombre del Colaborador</h3>
+                                <span class="rsi-badge rsi-badge-primary">Expediente de Reembolsos</span>
+                            </div>
+                            <p id="detRmbColabArea" class="rsi-colab-detail-meta"><i class="fas fa-sitemap"></i> Área General</p>
+                            <p id="detRmbColabEmail" class="rsi-colab-detail-meta"><i class="fas fa-envelope"></i> correo@rsienterprise.com</p>
+                        </div>
+                    </div>
+
+                    <div class="rsi-colab-detail-kpis">
+                        <div class="rsi-colab-kpi">
+                            <span class="rsi-colab-kpi-val" id="detRmbColabSolicitado" style="color: var(--rsi-primary);">$0.00</span>
+                            <span class="rsi-colab-kpi-lbl">Solicitado</span>
+                        </div>
+                        <div class="rsi-colab-kpi">
+                            <span class="rsi-colab-kpi-val" id="detRmbColabDevuelto" style="color: #28a745;">$0.00</span>
+                            <span class="rsi-colab-kpi-lbl">Devuelto</span>
+                        </div>
+                        <div class="rsi-colab-kpi">
+                            <span class="rsi-colab-kpi-val" id="detRmbColabPendiente" style="color: #dc3545;">$0.00</span>
+                            <span class="rsi-colab-kpi-lbl">Por Devolver</span>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button type="button" id="btnHacerReembolsoDirectoColab" class="rsi-btn-crud rsi-btn-crud-success">
+                            <i class="fas fa-hand-holding-usd"></i> Nuevo Reembolso a este Colaborador
+                        </button>
+                        <button type="button" id="btnCerrarExpedienteColabRmb" class="rsi-btn-crud rsi-btn-crud-outline">
+                            <i class="fas fa-users"></i> Ver Todos
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estado de Carga -->
+            <div id="loadingReembolsosAdmin" class="rsi-loading-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Cargando reembolsos de colaboradores...</p>
+            </div>
+
+            <!-- Estado Vacío -->
+            <div id="emptyReembolsosAdmin" class="rsi-empty-state" style="display: none;">
+                <i class="fas fa-hand-holding-usd"></i>
+                <h3>No se encontraron reembolsos en este periodo</h3>
+                <p>Puedes registrar un reembolso a un colaborador o ajustar los filtros seleccionados.</p>
+                <button type="button" id="btnEmptyCrearRmbColab" class="rsi-btn-crud rsi-btn-crud-success" style="margin-top: 12px;">
+                    <i class="fas fa-user-plus"></i> Hacer Reembolso a Colaborador
+                </button>
+            </div>
+
+            <!-- Tabla General de Reembolsos de Colaboradores -->
+            <div class="rsi-table-wrapper" id="tablaReembolsosAdminWrapper" style="display: none;">
+                <table class="rsi-table">
+                    <thead>
+                        <tr>
+                            <th>Colaborador</th>
+                            <th>Folio / Fecha</th>
+                            <th>Concepto y Motivo</th>
+                            <th style="text-align: center;">Evidencia</th>
+                            <th style="text-align: right;">Solicitado</th>
+                            <th>Devuelto / Progreso</th>
+                            <th style="text-align: right;">Saldo Pendiente</th>
+                            <th>Estado / Modalidad</th>
+                            <th style="text-align: center;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reembolsosAdminTableBody">
+                        <!-- Llenado dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================
+     MODAL 1: HACER REEMBOLSO A OTRO COLABORADOR
+     ========================================== -->
+<div id="modalReembolsoColaborador" class="rsi-modal rsi-asistencia-modal-overlay" style="display: none;">
+    <div class="rsi-modal-content rsi-asistencia-modal-card rsi-reembolso-modal-card">
+        <div class="rsi-modal-header">
+            <h3><i class="fas fa-user-plus"></i> Hacer Reembolso a Colaborador</h3>
+            <button type="button" class="rsi-modal-close" id="btnCerrarModalRmbColab" aria-label="Cerrar">&times;</button>
+        </div>
+
+        <form id="formReembolsoColaborador" class="rsi-modal-form" novalidate>
+            <div class="rsi-modal-body">
+                <div class="rsi-modal-hint-box">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Selecciona al colaborador, captura el <strong>monto</strong>, <strong>motivo</strong> y la <strong>evidencia fotográfica</strong>. También puedes registrar de inmediato si la devolución se entrega de forma <strong>Total</strong> o <strong>Parcial</strong>.</span>
+                </div>
+
+                <!-- Selección del Colaborador -->
+                <div class="rsi-form-group">
+                    <label for="rmbColabSelect" class="rsi-form-label">
+                        Colaborador Beneficiario <span class="rsi-required">*</span>
+                    </label>
+                    <select id="rmbColabSelect" class="rsi-form-control" required>
+                        <option value="">Selecciona un colaborador...</option>
+                    </select>
+                </div>
+
+                <!-- Monto y Fecha -->
+                <div class="rsi-reembolso-row-2">
+                    <div class="rsi-form-group">
+                        <label for="rmbColabMonto" class="rsi-form-label">
+                            Monto Total del Reembolso ($ MXN) <span class="rsi-required">*</span>
+                        </label>
+                        <div class="rsi-input-wrapper rsi-currency-input-wrapper">
+                            <span class="rsi-currency-prefix">$</span>
+                            <input
+                                type="number"
+                                id="rmbColabMonto"
+                                class="rsi-form-control rsi-input-currency"
+                                placeholder="0.00"
+                                min="1"
+                                max="1000000"
+                                step="0.01"
+                                required
+                            >
+                            <span class="rsi-currency-suffix">MXN</span>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="rmbColabFecha" class="rsi-form-label">
+                            Fecha del Gasto <span class="rsi-required">*</span>
+                        </label>
+                        <input type="date" id="rmbColabFecha" class="rsi-form-control" required>
+                    </div>
+                </div>
+
+                <!-- Categoría y Referencia -->
+                <div class="rsi-reembolso-row-2">
+                    <div class="rsi-form-group">
+                        <label for="rmbColabCategoria" class="rsi-form-label">Categoría del Gasto</label>
+                        <select id="rmbColabCategoria" class="rsi-form-control">
+                            <option value="viaticos_transporte">Viáticos y Transporte</option>
+                            <option value="combustible_casetas">Combustible y Casetas</option>
+                            <option value="material_herramientas">Material y Herramientas Operativas</option>
+                            <option value="hospedaje_alimentos">Hospedaje y Alimentación</option>
+                            <option value="papeleria_insumos">Papelería e Insumos</option>
+                            <option value="emergencia_operativa">Gasto Operativo / Emergencia</option>
+                            <option value="otro">Otro Concepto</option>
+                        </select>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="rmbColabReferencia" class="rsi-form-label">Referencia / No. Ticket (Opcional)</label>
+                        <input type="text" id="rmbColabReferencia" class="rsi-form-control" placeholder="Ej. Nota #104, Servicio Cliente..." maxlength="120">
+                    </div>
+                </div>
+
+                <!-- Motivo -->
+                <div class="rsi-form-group">
+                    <label for="rmbColabMotivo" class="rsi-form-label">
+                        Motivo del Reembolso <span class="rsi-required">*</span>
+                    </label>
+                    <textarea
+                        id="rmbColabMotivo"
+                        rows="3"
+                        class="rsi-form-control"
+                        placeholder="Describe el motivo del gasto realizado por o para el colaborador..."
+                        minlength="5"
+                        maxlength="1200"
+                        required
+                    ></textarea>
+                </div>
+
+                <!-- Evidencia Fotográfica del Gasto -->
+                <div class="rsi-form-group">
+                    <label class="rsi-form-label">
+                        Evidencia Fotográfica del Gasto / Comprobante <span class="rsi-required">*</span>
+                    </label>
+                    <div class="rsi-evidencia-upload-actions">
+                        <button type="button" id="btnCamaraRmbColab" class="rsi-btn-crud rsi-btn-crud-primary" style="padding: 8px 14px; font-size: 0.85rem;">
+                            <i class="fas fa-camera"></i> Tomar Foto
+                        </button>
+                        <button type="button" id="btnGaleriaRmbColab" class="rsi-btn-crud rsi-btn-crud-outline" style="padding: 8px 14px; font-size: 0.85rem;">
+                            <i class="fas fa-upload"></i> Subir Imagen o PDF
+                        </button>
+                        <input type="file" id="inputCamaraRmbColab" accept="image/*" capture="environment" style="display: none;">
+                        <input type="file" id="inputArchivoRmbColab" accept="image/jpeg,image/png,image/webp,application/pdf" style="display: none;">
+                    </div>
+                    <div id="previewRmbColabEvidencia" class="rsi-reembolso-preview-card" style="display: none; margin-top: 10px;">
+                        <div class="rsi-reembolso-preview-header">
+                            <span id="previewRmbColabNombre" style="font-weight: 600; font-size: 0.85rem;">evidencia.jpg</span>
+                            <button type="button" id="btnQuitarRmbColabEvidencia" class="rsi-btn-crud rsi-btn-crud-danger" style="padding: 4px 10px; font-size: 0.78rem;">
+                                <i class="fas fa-trash"></i> Quitar
+                            </button>
+                        </div>
+                        <div id="previewRmbColabBody" class="rsi-reembolso-preview-body"></div>
+                    </div>
+                </div>
+
+                <!-- Opciones de Devolución al Registrar (Pendiente, Devolución Total o Devolución Parcial) -->
+                <div class="rsi-reembolso-devolucion-box">
+                    <div class="rsi-form-group" style="margin-bottom: 10px;">
+                        <label class="rsi-form-label" style="margin-bottom: 8px;">
+                            <i class="fas fa-hand-holding-usd"></i> ¿Cómo deseas procesar la devolución de este reembolso?
+                        </label>
+                        <div class="rsi-devolucion-radio-pills">
+                            <label class="rsi-radio-pill active">
+                                <input type="radio" name="accionDevolucionInicial" value="total" checked>
+                                <i class="fas fa-check-double"></i> Devolver Total (100% ahora)
+                            </label>
+                            <label class="rsi-radio-pill">
+                                <input type="radio" name="accionDevolucionInicial" value="parcial">
+                                <i class="fas fa-chart-pie"></i> Devolver Parcial (Abono ahora)
+                            </label>
+                            <label class="rsi-radio-pill">
+                                <input type="radio" name="accionDevolucionInicial" value="pendiente">
+                                <i class="fas fa-clock"></i> Dejar Pendiente de Pago
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="bloqueCamposDevolucionInicial">
+                        <div class="rsi-reembolso-row-2">
+                            <div class="rsi-form-group" id="grupoMontoInicialParcial" style="display: none;">
+                                <label for="rmbColabMontoInicial" class="rsi-form-label">
+                                    Monto Parcial a Devolver Hoy ($ MXN) <span class="rsi-required">*</span>
+                                </label>
+                                <input
+                                    type="number"
+                                    id="rmbColabMontoInicial"
+                                    class="rsi-form-control"
+                                    placeholder="0.00"
+                                    min="1"
+                                    step="0.01"
+                                >
+                                <small class="rsi-form-help" id="helpSaldoRestanteInicial">Saldo pendiente restante: $0.00 MXN</small>
+                            </div>
+
+                            <div class="rsi-form-group">
+                                <label for="rmbColabMetodoPago" class="rsi-form-label">Método de Devolución</label>
+                                <select id="rmbColabMetodoPago" class="rsi-form-control">
+                                    <option value="transferencia">Transferencia Bancaria (SPEI)</option>
+                                    <option value="efectivo">Efectivo / Caja Chica</option>
+                                    <option value="deposito">Depósito en Cuenta</option>
+                                    <option value="nomina">Dispersión en Nómina</option>
+                                    <option value="otro">Otro Medio</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rsi-modal-footer">
+                <button type="button" class="rsi-btn-crud rsi-btn-crud-outline" id="btnCancelarModalRmbColab">Cancelar</button>
+                <button type="submit" class="rsi-btn-crud rsi-btn-crud-success" id="btnSubmitRmbColab">
+                    <i class="fas fa-check-circle"></i> Guardar Reembolso a Colaborador
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ==========================================
+     MODAL 2: DEVOLVER REEMBOLSO (TOTAL O PARCIAL) Y VER HISTORIAL
+     ========================================== -->
+<div id="modalDevolverReembolso" class="rsi-modal rsi-asistencia-modal-overlay" style="display: none;">
+    <div class="rsi-modal-content rsi-asistencia-modal-card rsi-reembolso-modal-card">
+        <div class="rsi-modal-header">
+            <h3>
+                <i class="fas fa-hand-holding-usd"></i>
+                Gestión y Devolución de Reembolso <span id="devModalFolio" class="rsi-text-gold"></span>
+            </h3>
+            <button type="button" class="rsi-modal-close" id="btnCerrarModalDevolverRmb" aria-label="Cerrar">&times;</button>
+        </div>
+
+        <div class="rsi-modal-body">
+            <!-- Resumen del Colaborador y del Gasto -->
+            <div id="devModalResumenHeader" class="rsi-reembolso-modal-summary"></div>
+
+            <!-- Tarjetas de Saldos en Vivo -->
+            <div class="rsi-reembolso-balance-strip">
+                <div class="rsi-balance-box">
+                    <span>Monto Solicitado</span>
+                    <strong id="devModalMontoSolicitado">$0.00</strong>
+                </div>
+                <div class="rsi-balance-box rsi-balance-paid">
+                    <span>Ya Devuelto</span>
+                    <strong id="devModalMontoDevuelto">$0.00</strong>
+                </div>
+                <div class="rsi-balance-box rsi-balance-pending">
+                    <span>Saldo Pendiente</span>
+                    <strong id="devModalSaldoPendiente">$0.00</strong>
+                </div>
+            </div>
+
+            <!-- Evidencia Fotográfica del Gasto (con Zoom) -->
+            <div class="rsi-form-group" style="margin-top: 14px;">
+                <label class="rsi-form-label"><i class="fas fa-camera"></i> Evidencia Fotográfica del Gasto (Haz clic en la imagen para hacer Zoom):</label>
+                <div id="devModalEvidenciaContainer" class="rsi-reembolso-evidencia-viewer"></div>
+            </div>
+
+            <!-- Formulario para Aplicar Devolución Total o Parcial (Visible si tiene saldo pendiente y no está rechazado) -->
+            <form id="formAplicarDevolucion" novalidate style="margin-top: 16px;">
+                <div class="rsi-reembolso-devolucion-box">
+                    <h4 style="margin: 0 0 12px 0; color: var(--rsi-text-primary); font-size: 1rem;">
+                        <i class="fas fa-cash-register"></i> Aplicar Nueva Devolución (Total o Parcial)
+                    </h4>
+
+                    <!-- Selector de Forma de Devolución -->
+                    <div class="rsi-devolucion-mode-grid" style="margin-bottom: 14px;">
+                        <label class="rsi-devolucion-mode-card active" id="cardDevModalTotal">
+                            <input type="radio" name="tipoDevolucionModal" value="total" checked>
+                            <div class="rsi-devolucion-mode-icon"><i class="fas fa-check-double"></i></div>
+                            <div class="rsi-devolucion-mode-info">
+                                <strong>Devolución Total (Liquidar 100%)</strong>
+                                <span id="subtextoDevTotal">Cubrir el total del saldo pendiente en un solo pago.</span>
+                            </div>
+                        </label>
+
+                        <label class="rsi-devolucion-mode-card" id="cardDevModalParcial">
+                            <input type="radio" name="tipoDevolucionModal" value="parcial">
+                            <div class="rsi-devolucion-mode-icon"><i class="fas fa-chart-pie"></i></div>
+                            <div class="rsi-devolucion-mode-info">
+                                <strong>Devolución Parcial (Abono)</strong>
+                                <span>Devolver una parte hoy y conservar el saldo restante para futuros abonos.</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Monto a Devolver y Botones de Porcentaje Rápido -->
+                    <div class="rsi-reembolso-row-2">
+                        <div class="rsi-form-group">
+                            <label for="devModalInputMonto" class="rsi-form-label">
+                                Monto a Devolver en esta Operación ($ MXN) <span class="rsi-required">*</span>
+                            </label>
+                            <div class="rsi-input-wrapper rsi-currency-input-wrapper">
+                                <span class="rsi-currency-prefix">$</span>
+                                <input
+                                    type="number"
+                                    id="devModalInputMonto"
+                                    class="rsi-form-control rsi-input-currency"
+                                    step="0.01"
+                                    min="0.01"
+                                    required
+                                    readonly
+                                >
+                                <span class="rsi-currency-suffix">MXN</span>
+                            </div>
+                            <div id="devModalQuickPercentBtns" class="rsi-quick-percent-bar" style="display: none;">
+                                <button type="button" class="rsi-chip-percent" data-percent="0.25">25%</button>
+                                <button type="button" class="rsi-chip-percent" data-percent="0.50">50%</button>
+                                <button type="button" class="rsi-chip-percent" data-percent="0.75">75%</button>
+                            </div>
+                            <small id="devModalCalculoRestante" class="rsi-form-help" style="font-weight: 600; color: var(--rsi-success);">
+                                Nuevo saldo pendiente tras este pago: $0.00 MXN
+                            </small>
+                        </div>
+
+                        <div class="rsi-form-group">
+                            <label for="devModalMetodoPago" class="rsi-form-label">Método de Pago / Devolución</label>
+                            <select id="devModalMetodoPago" class="rsi-form-control">
+                                <option value="transferencia">Transferencia Bancaria (SPEI)</option>
+                                <option value="efectivo">Efectivo / Caja Chica</option>
+                                <option value="deposito">Depósito en Cuenta</option>
+                                <option value="nomina">Dispersión en Nómina</option>
+                                <option value="otro">Otro Medio</option>
+                            </select>
+
+                            <label for="devModalReferenciaPago" class="rsi-form-label" style="margin-top: 10px;">Folio / Referencia Bancaria (Opcional)</label>
+                            <input type="text" id="devModalReferenciaPago" class="rsi-form-control" placeholder="Ej. Rastreo SPEI, Recibo #..." maxlength="100">
+                        </div>
+                    </div>
+
+                    <!-- Comentario y Comprobante de Pago Opcional -->
+                    <div class="rsi-reembolso-row-2">
+                        <div class="rsi-form-group" style="margin-bottom: 0;">
+                            <label for="devModalComentario" class="rsi-form-label">Nota o Comentario de la Devolución</label>
+                            <textarea id="devModalComentario" rows="2" class="rsi-form-control" placeholder="Ej. Primer abono parcial autorizado / Liquidación total..."></textarea>
+                        </div>
+
+                        <div class="rsi-form-group" style="margin-bottom: 0;">
+                            <label for="devModalArchivoComprobante" class="rsi-form-label">Comprobante de Pago / Transferencia (Opcional)</label>
+                            <input type="file" id="devModalArchivoComprobante" class="rsi-form-control" accept="image/jpeg,image/png,image/webp,application/pdf">
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 16px;">
+                        <button type="button" id="btnRechazarReembolsoModal" class="rsi-btn-crud rsi-btn-crud-danger">
+                            <i class="fas fa-ban"></i> Rechazar Solicitud
+                        </button>
+                        <button type="submit" id="btnConfirmarDevolucionModal" class="rsi-btn-crud rsi-btn-crud-success">
+                            <i class="fas fa-check-circle"></i> Confirmar y Registrar Devolución
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Historial de Abonos y Devoluciones Aplicadas -->
+            <div style="margin-top: 20px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 0.96rem; color: var(--rsi-text-primary);">
+                    <i class="fas fa-history"></i> Historial de Devoluciones y Abonos
+                </h4>
+                <div id="devModalHistorialContainer"></div>
+            </div>
+        </div>
+
+        <div class="rsi-modal-footer">
+            <button type="button" class="rsi-btn-crud rsi-btn-crud-outline" id="btnCerrarFooterDevolverRmb">
+                <i class="fas fa-times"></i> Cerrar Ventana
+            </button>
+        </div>
+    </div>
+</div>

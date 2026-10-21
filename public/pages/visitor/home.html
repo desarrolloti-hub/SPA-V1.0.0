@@ -1,95 +1,266 @@
 <!-- ========================================
-   HOME VIEW - RSI Enterprise
-   Con animaciones lazy
+   HOME VIEW - RSI Enterprise México
+   Soluciones Integrales de Seguridad Electrónica,
+   Telecomunicaciones, Automatización y Reseñas Google
    ======================================== -->
 
-<!-- Sección Nosotros -->
-<section class="rsi-about-section rsi-reveal">
+<!-- 1. Sección Hero: Carrusel Principal Fullscreen -->
+<section class="rsi-home-hero" aria-label="Soluciones integrales de seguridad electrónica RSI Enterprise México">
+    <div id="homeCarousel"></div>
+</section>
+
+<!-- 2. Sección Quiénes Somos / Soluciones Integrales -->
+<section class="rsi-about-section rsi-reveal" id="sobre-nosotros" aria-labelledby="aboutSectionTitle">
     <div class="rsi-container">
         <div class="rsi-section-content">
             <div class="rsi-text-content">
-                <h2 class="rsi-section-title">Sobre Nosotros</h2>
-                <p class="rsi-section-description">Con más de 10 años de experiencia, RSI Enterprise se ha consolidado como líder en soluciones de seguridad electrónica en México. Nuestra misión es brindar tranquilidad a través de tecnología confiable.</p>
-                <a href="/nosotros" data-link class="rsi-primary-btn">Conócenos <i class="fas fa-arrow-right"></i></a>
+                <span class="rsi-section-badge">
+                    <i class="fas fa-shield-alt" aria-hidden="true"></i> Trayectoria y Confianza
+                </span>
+                <h2 id="aboutSectionTitle" class="rsi-section-title">Soluciones Integrales en Seguridad Electrónica y Telecomunicaciones</h2>
+                <p class="rsi-section-description">
+                    Con más de 10 años de experiencia en México, en <strong>RSI Enterprise</strong> nos dedicamos a proteger lo que más importa: tu familia, tus colaboradores, tu patrimonio y tus operaciones comerciales.
+                </p>
+                <p class="rsi-section-description">
+                    Combinamos ingeniería especializada, tecnología de vanguardia y atención personalizada para diseñar, instalar y mantener sistemas robustos adaptados a hogares, residenciales, comercios, corporativos e industrias.
+                </p>
+                <div class="rsi-about-actions">
+                    <a href="/nosotros" data-link class="rsi-primary-btn">
+                        Conoce más sobre nosotros <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </a>
+                    <a href="/contacto" data-link class="rsi-secondary-btn">
+                        Solicitar asesoría <i class="fas fa-phone-alt" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
             <div class="rsi-image-wrapper rsi-reveal rsi-delay-2">
-                <img src="/assets/images/home/nosotros.png" alt="Equipo RSI Enterprise">
+                <img src="/assets/images/home/nosotros.png" alt="Ingenieros y técnicos expertos de RSI Enterprise México" loading="lazy">
             </div>
         </div>
     </div>
 </section>
 
-<!-- Sección Valores -->
-<section class="rsi-value-section rsi-reveal">
+<!-- 3. Sección Todo a lo que nos dedicamos: Especialidades Tecnológicas -->
+<section class="rsi-solutions-section rsi-reveal" id="soluciones" aria-labelledby="solutionsSectionTitle">
     <div class="rsi-container">
-        <h2 class="rsi-section-title">¿Por qué elegir RSI Enterprise?</h2>
-        <p class="rsi-section-subtitle">Soluciones de seguridad que marcan la diferencia</p>
-        
-        <div class="rsi-value-grid rsi-stagger-reveal">
-            <div class="rsi-value-card">
-                <div class="rsi-value-icon">
-                    <i class="fas fa-shield-alt"></i>
+        <div class="rsi-solutions-header">
+            <span class="rsi-section-badge">
+                <i class="fas fa-cogs" aria-hidden="true"></i> Áreas de Especialización
+            </span>
+            <h2 id="solutionsSectionTitle" class="rsi-section-title">¿A qué nos dedicamos?</h2>
+            <p class="rsi-section-subtitle">
+                Brindamos una gama completa de soluciones tecnológicas avanzadas para salvaguardar inmuebles, optimizar operaciones y garantizar continuidad operativa.
+            </p>
+        </div>
+
+        <div class="rsi-solutions-grid">
+            <!-- Solución 1: CCTV y Videovigilancia Inteligente -->
+            <article class="rsi-solution-card">
+                <div class="rsi-solution-icon">
+                    <i class="fas fa-video" aria-hidden="true"></i>
                 </div>
-                <h3 class="rsi-card-title">Protección Integral</h3>
-                <p class="rsi-card-text">Sistemas completos que cubren todas las necesidades de seguridad para tu hogar o negocio.</p>
+                <h3 class="rsi-solution-title">Videovigilancia CCTV Inteligente con IA</h3>
+                <p class="rsi-solution-desc">
+                    Diseño e instalación de sistemas de cámaras IP y analógicas de alta definición (4K Ultra HD), visión nocturna a color ColorVu, reconocimiento facial, cruce de línea perimetral, analítica de video con inteligencia artificial y acceso remoto 24/7 desde smartphones y computadoras.
+                </p>
+                <ul class="rsi-solution-list">
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Cámaras domo, bala, PTZ y térmicas</li>
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Detección perimetral y lectura de placas (LPR)</li>
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Grabación en NVR/DVR con respaldo seguro</li>
+                </ul>
+                <a href="/services" data-link class="rsi-solution-link">
+                    Ver servicio de CCTV <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                </a>
+            </article>
+
+            <!-- Solución 2: Alarmas Contra Intrusión -->
+            <article class="rsi-solution-card">
+                <div class="rsi-solution-icon">
+                    <i class="fas fa-bell" aria-hidden="true"></i>
+                </div>
+                <h3 class="rsi-solution-title">Sistemas de Alarmas Contra Robo e Intrusión</h3>
+                <p class="rsi-solution-desc">
+                    Protección perimetral e interior con centrales de alarma híbridas e inalámbricas de última generación. Sensores infrarrojos antimascotas, contactos magnéticos en puertas y ventanas, detectores de ruptura de cristal y sirenas de alto decibelio con alerta instantánea.
+                </p>
+                <ul class="rsi-solution-list">
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Paneles certificados cableados e inalámbricos</li>
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Notificación inmediata push, llamada y SMS</li>
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Botones de pánico y emergencias médicas</li>
+                </ul>
+                <a href="/services" data-link class="rsi-solution-link">
+                    Ver alarmas inteligentes <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                </a>
+            </article>
+
+            <!-- Solución 3: Control de Acceso Biométrico y Vehicular -->
+            <article class="rsi-solution-card">
+                <div class="rsi-solution-icon">
+                    <i class="fas fa-fingerprint" aria-hidden="true"></i>
+                </div>
+                <h3 class="rsi-solution-title">Control de Acceso Biométrico y Vehicular</h3>
+                <p class="rsi-solution-desc">
+                    Restricción y control de flujos de personas y vehículos mediante terminales biométricas con reconocimiento facial sin contacto, lectura de huella digital, tarjetas RFID/NFC, chapas electromagnéticas, torniquetes peatonales y barreras vehiculares de alto tráfico.
+                </p>
+                <ul class="rsi-solution-list">
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Registro exacto de asistencia y horarios</li>
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Barreras vehiculares con antenas de largo alcance (TAG)</li>
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Control de visitantes por código QR temporal</li>
+                </ul>
+                <a href="/services" data-link class="rsi-solution-link">
+                    Ver control de acceso <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                </a>
+            </article>
+
+            <!-- Solución 4: Detección Contra Incendio -->
+            <article class="rsi-solution-card">
+                <div class="rsi-solution-icon">
+                    <i class="fas fa-fire-extinguisher" aria-hidden="true"></i>
+                </div>
+                <h3 class="rsi-solution-title">Detección y Sistemas Contra Incendio</h3>
+                <p class="rsi-solution-desc">
+                    Sistemas integrales de detección temprana de humo, calor y gases. Implementamos paneles direccionables y convencionales, estaciones manuales de jalón, sirenas estroboscópicas y módulos de control para evacuación rápida, en estricto cumplimiento con Protección Civil.
+                </p>
+                <ul class="rsi-solution-list">
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Detectores fotoeléctricos y térmicos certificados</li>
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Integración con sistemas de evacuación y puertas</li>
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Cumplimiento con normas oficiales mexicanas (NOM)</li>
+                </ul>
+                <a href="/services" data-link class="rsi-solution-link">
+                    Ver sistemas contra incendio <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                </a>
+            </article>
+
+            <!-- Solución 5: Redes y Cableado Estructurado -->
+            <article class="rsi-solution-card">
+                <div class="rsi-solution-icon">
+                    <i class="fas fa-network-wired" aria-hidden="true"></i>
+                </div>
+                <h3 class="rsi-solution-title">Redes, Telecomunicaciones y Fibra Óptica</h3>
+                <p class="rsi-solution-desc">
+                    Diseño y tendido de cableado estructurado en categorías Cat 6 y Cat 6A, enlaces de fibra óptica monomodo y multimodo, instalación y peinado de racks y gabinetes en sites de cómputo, switches administrables PoE, enlaces inalámbricos punto a punto y telefonía IP.
+                </p>
+                <ul class="rsi-solution-list">
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Certificación de puntos de red con equipo Fluke</li>
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Racks organizados, etiquetados y con respaldo UPS</li>
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Enlaces Wi-Fi empresariales y punto a punto</li>
+                </ul>
+                <a href="/services" data-link class="rsi-solution-link">
+                    Ver soluciones de red <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                </a>
+            </article>
+
+            <!-- Solución 6: Automatización y Domótica -->
+            <article class="rsi-solution-card">
+                <div class="rsi-solution-icon">
+                    <i class="fas fa-home" aria-hidden="true"></i>
+                </div>
+                <h3 class="rsi-solution-title">Automatización, Domótica y Cerraduras Digitales</h3>
+                <p class="rsi-solution-desc">
+                    Transformamos hogares y oficinas en espacios inteligentes. Automatización de portones y accesos, cerraduras digitales de alta seguridad con apertura por huella, código y app móvil, control inteligente de iluminación y monitoreo centralizado desde una sola plataforma.
+                </p>
+                <ul class="rsi-solution-list">
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Cerraduras digitales inteligentes Wi-Fi y Bluetooth</li>
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Automatización de portones corredizos y abatibles</li>
+                    <li><i class="fas fa-check-circle" aria-hidden="true"></i> Escenarios programados de confort y seguridad</li>
+                </ul>
+                <a href="/services" data-link class="rsi-solution-link">
+                    Ver domótica y automatización <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                </a>
+            </article>
+        </div>
+    </div>
+</section>
+
+<!-- 4. Sección Servicios Profesionales de Ingeniería -->
+<section class="rsi-services-section rsi-reveal" id="servicios-profesionales" aria-labelledby="servicesSectionTitle">
+    <div class="rsi-container">
+        <div class="rsi-section-content">
+            <div class="rsi-text-content">
+                <span class="rsi-section-badge">
+                    <i class="fas fa-tools" aria-hidden="true"></i> Servicio Integral
+                </span>
+                <h2 id="servicesSectionTitle" class="rsi-section-title">Acompañamiento Integral en Cada Etapa</h2>
+                <p class="rsi-section-description">
+                    No solo vendemos equipo: te brindamos un servicio técnico llave en mano desde el primer diagnóstico hasta el soporte continuo posterior a la entrega.
+                </p>
+                
+                <div class="rsi-service-pillars">
+                    <div class="rsi-pillar-item">
+                        <i class="fas fa-clipboard-check" aria-hidden="true"></i>
+                        <div>
+                            <h4>1. Levantamiento Técnico en Sitio</h4>
+                            <p>Inspeccionamos tu inmueble para detectar puntos ciegos y diseñar la solución exacta sin costo de diagnóstico.</p>
+                        </div>
+                    </div>
+                    <div class="rsi-pillar-item">
+                        <i class="fas fa-certificate" aria-hidden="true"></i>
+                        <div>
+                            <h4>2. Instalación Certificada</h4>
+                            <p>Técnicos calificados que garantizan instalaciones estéticas, cableado normado y puesta en marcha impecable.</p>
+                        </div>
+                    </div>
+                    <div class="rsi-pillar-item">
+                        <i class="fas fa-headset" aria-hidden="true"></i>
+                        <div>
+                            <h4>3. Monitoreo y Reacción 24/7</h4>
+                            <p>Vigilancia y soporte técnico los 365 días del año para responder de inmediato ante cualquier eventualidad.</p>
+                        </div>
+                    </div>
+                    <div class="rsi-pillar-item">
+                        <i class="fas fa-wrench" aria-hidden="true"></i>
+                        <div>
+                            <h4>4. Pólizas de Mantenimiento</h4>
+                            <p>Mantenimiento preventivo y correctivo para prolongar la vida útil de tus equipos y evitar fallas imprevistas.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rsi-services-actions">
+                    <a href="/services" data-link class="rsi-primary-btn">
+                        Conocer Todos los Servicios <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
-            
-            <div class="rsi-value-card">
-                <div class="rsi-value-icon">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <h3 class="rsi-card-title">Tecnología Avanzada</h3>
-                <p class="rsi-card-text">Equipos de última generación con inteligencia artificial y análisis en tiempo real.</p>
-            </div>
-            
-            <div class="rsi-value-card">
-                <div class="rsi-value-icon">
-                    <i class="fas fa-certificate"></i>
-                </div>
-                <h3 class="rsi-card-title">Certificaciones</h3>
-                <p class="rsi-card-text">Profesionales certificados y equipos con los más altos estándares de calidad.</p>
-            </div>
-            
-            <div class="rsi-value-card">
-                <div class="rsi-value-icon">
-                    <i class="fas fa-headset"></i>
-                </div>
-                <h3 class="rsi-card-title">Soporte 24/7</h3>
-                <p class="rsi-card-text">Asistencia técnica inmediata cuando la necesites, los 365 días del año.</p>
-            </div>
-            
-            <div class="rsi-value-card">
-                <div class="rsi-value-icon">
-                    <i class="fas fa-lock"></i>
-                </div>
-                <h3 class="rsi-card-title">Privacidad Garantizada</h3>
-                <p class="rsi-card-text">Tus datos están seguros con nuestros sistemas de encriptación de última generación.</p>
+            <div class="rsi-image-wrapper rsi-reveal-left rsi-delay-2">
+                <img src="/assets/images/home/monitoreo.png" alt="Centro de monitoreo y soporte de seguridad 24/7" loading="lazy">
             </div>
         </div>
     </div>
 </section>
 
-<!-- Sección Productos -->
-<section class="rsi-products-section rsi-reveal">
+<!-- 5. Sección Catálogo de Productos y Marcas Certificadas -->
+<section class="rsi-products-section rsi-reveal" id="productos-destacados" aria-labelledby="productsSectionTitle">
     <div class="rsi-container">
         <div class="rsi-section-content rsi-reverse">
             <div class="rsi-text-content">
-                <h2 class="rsi-section-title">Productos de Seguridad</h2>
-                <p class="rsi-section-description">Descubre nuestra gama completa de dispositivos de seguridad electrónica de última generación. Desde cámaras de vigilancia hasta sistemas de alarma, tenemos todo lo que necesitas para proteger lo que más te importa.</p>
-                <a href="/products" data-link class="rsi-primary-btn">Ver Productos <i class="fas fa-arrow-right"></i></a>
+                <span class="rsi-section-badge">
+                    <i class="fas fa-microchip" aria-hidden="true"></i> Tecnología Homologada
+                </span>
+                <h2 id="productsSectionTitle" class="rsi-section-title">Equipos Certificados y Marcas Líderes</h2>
+                <p class="rsi-section-description">
+                    Trabajamos exclusivamente con fabricantes reconocidos a nivel internacional en el sector de seguridad electrónica, garantizando calidad, disponibilidad de refacciones y soporte directo del fabricante.
+                </p>
+                <p class="rsi-section-description">
+                    Cámaras 4K, grabadores NVR/DVR, sensores, chapas magnéticas, cerraduras digitales y accesorios con garantía por escrito de fábrica e instalación.
+                </p>
+                <div class="rsi-products-actions">
+                    <a href="/products" data-link class="rsi-primary-btn">
+                        Explorar Catálogo de Productos <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
             <div class="rsi-image-wrapper rsi-reveal-right rsi-delay-2">
-                <img src="/assets/images/home/electronica.png" alt="Productos de seguridad">
+                <img src="/assets/images/home/electronica.png" alt="Dispositivos y equipos de seguridad electrónica RSI Enterprise" loading="lazy">
             </div>
         </div>
     </div>
 </section>
 
-<!-- Sección Estadísticas -->
-<section class="rsi-stats-section rsi-reveal">
+<!-- 6. Sección Estadísticas / Métricas de Confianza -->
+<section class="rsi-stats-section rsi-reveal" aria-labelledby="statsSectionTitle">
     <div class="rsi-container">
-        <h2 class="rsi-section-title">Tu seguridad es nuestra prioridad</h2>
-        <p class="rsi-section-subtitle">Más de 10 años protegiendo lo que más importa</p>
+        <h2 id="statsSectionTitle" class="rsi-section-title">Tu seguridad es nuestra prioridad</h2>
+        <p class="rsi-section-subtitle">Más de una década de compromiso protegiendo lo que más importa en México</p>
         
         <div class="rsi-stats-grid rsi-stagger-reveal">
             <div class="rsi-stat-card">
@@ -102,7 +273,7 @@
             </div>
             <div class="rsi-stat-card">
                 <span class="rsi-stat-number" data-count="24">24/7</span>
-                <p class="rsi-stat-label">Soporte técnico</p>
+                <p class="rsi-stat-label">Soporte y monitoreo</p>
             </div>
             <div class="rsi-stat-card">
                 <span class="rsi-stat-number" data-count="10">10+</span>
@@ -110,47 +281,112 @@
             </div>
         </div>
         
-        <button class="rsi-cta-button rsi-reveal rsi-delay-3" id="ctaCotizarBtn">Cotiza tu sistema</button>
+        <a href="/contacto" data-link class="rsi-cta-button rsi-reveal rsi-delay-3" id="ctaCotizarBtn">
+            Cotiza tu sistema sin compromiso <i class="fas fa-file-invoice-dollar" aria-hidden="true"></i>
+        </a>
     </div>
 </section>
 
-<!-- Sección Servicios -->
-<section class="rsi-services-section rsi-reveal">
+<!-- 7. Sección Proceso de Trabajo: Cómo te protegemos -->
+<section class="rsi-process-section rsi-reveal" aria-labelledby="processSectionTitle">
     <div class="rsi-container">
-        <div class="rsi-section-content">
-            <div class="rsi-text-content">
-                <h2 class="rsi-section-title">Servicios Profesionales</h2>
-                <p class="rsi-section-description">Nuestros expertos ofrecen instalación profesional, mantenimiento preventivo y monitoreo 24/7. Garantizamos sistemas de seguridad que funcionan cuando más los necesitas.</p>
-                <a href="/services" data-link class="rsi-primary-btn">Conocer Servicios <i class="fas fa-arrow-right"></i></a>
+        <div class="rsi-process-header">
+            <span class="rsi-section-badge">
+                <i class="fas fa-project-diagram" aria-hidden="true"></i> Paso a Paso
+            </span>
+            <h2 id="processSectionTitle" class="rsi-section-title">¿Cómo trabajamos para protegerte?</h2>
+            <p class="rsi-section-subtitle">Un proceso claro, transparente y sin complicaciones desde el primer contacto</p>
+        </div>
+
+        <div class="rsi-process-grid">
+            <div class="rsi-process-card">
+                <div class="rsi-process-step">01</div>
+                <div class="rsi-process-icon"><i class="fas fa-search-location" aria-hidden="true"></i></div>
+                <h3 class="rsi-process-title">Diagnóstico en Sitio</h3>
+                <p class="rsi-process-desc">Visitamos tu inmueble para analizar puntos vulnerables, requerimientos técnicos y expectativas.</p>
             </div>
-            <div class="rsi-image-wrapper rsi-reveal-left rsi-delay-2">
-                <img src="/assets/images/home/monitoreo.png" alt="Servicios de seguridad">
+
+            <div class="rsi-process-card">
+                <div class="rsi-process-step">02</div>
+                <div class="rsi-process-icon"><i class="fas fa-drafting-compass" aria-hidden="true"></i></div>
+                <h3 class="rsi-process-title">Propuesta a la Medida</h3>
+                <p class="rsi-process-desc">Diseñamos una cotización detallada con la tecnología adecuada y opciones según tu presupuesto.</p>
+            </div>
+
+            <div class="rsi-process-card">
+                <div class="rsi-process-step">03</div>
+                <div class="rsi-process-icon"><i class="fas fa-tools" aria-hidden="true"></i></div>
+                <h3 class="rsi-process-title">Instalación Certificada</h3>
+                <p class="rsi-process-desc">Realizamos la instalación limpia, profesional y en los tiempos acordados, con garantía por escrito.</p>
+            </div>
+
+            <div class="rsi-process-card">
+                <div class="rsi-process-step">04</div>
+                <div class="rsi-process-icon"><i class="fas fa-user-shield" aria-hidden="true"></i></div>
+                <h3 class="rsi-process-title">Capacitación y Soporte</h3>
+                <p class="rsi-process-desc">Te enseñamos a utilizar tus aplicaciones y te respaldamos permanentemente con soporte técnico 24/7.</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Sección Blog -->
-<section class="rsi-blog-section rsi-reveal">
+<!-- 8. Sección Reseñas Google (Elfsight y enlace directo a Google Maps) -->
+<section class="rsi-reviews-section rsi-reveal" id="resenas-clientes" aria-labelledby="reviewsSectionTitle">
     <div class="rsi-container">
-        <div class="rsi-section-content rsi-reverse">
-            <div class="rsi-text-content">
-                <h2 class="rsi-section-title">Blog de Seguridad</h2>
-                <p class="rsi-section-description">Mantente informado con nuestros artículos sobre tendencias en seguridad, consejos prácticos y análisis de productos. Conoce las mejores prácticas para proteger tu hogar o negocio.</p>
-                <a href="/blogs" data-link class="rsi-primary-btn">Visitar Blog <i class="fas fa-arrow-right"></i></a>
+        <div class="rsi-reviews-header">
+            <span class="rsi-reviews-badge">
+                <i class="fab fa-google" aria-hidden="true"></i> Reseñas Verificadas de Google
+            </span>
+            <h2 id="reviewsSectionTitle" class="rsi-section-title">Lo que dicen nuestros clientes</h2>
+            <p class="rsi-section-subtitle">
+                Calificación excelente en Google respaldada por familias, comercios y corporativos en todo México
+            </p>
+            <div class="rsi-reviews-rating-summary">
+                <div class="rsi-stars" aria-label="Calificación 5 estrellas de 5">
+                    <i class="fas fa-star" aria-hidden="true"></i>
+                    <i class="fas fa-star" aria-hidden="true"></i>
+                    <i class="fas fa-star" aria-hidden="true"></i>
+                    <i class="fas fa-star" aria-hidden="true"></i>
+                    <i class="fas fa-star" aria-hidden="true"></i>
+                </div>
+                <span class="rsi-rating-text">5.0 de 5 estrellas en Google Maps</span>
             </div>
-            <div class="rsi-image-wrapper rsi-reveal-right rsi-delay-2">
-                <img src="/assets/icons/logo.png" alt="Blog RSI Enterprise">
+        </div>
+
+        <!-- Widget oficial Elfsight Google Reviews -->
+        <div class="rsi-reviews-widget-card">
+            <div class="elfsight-app-111c7a7e-1138-43ce-9a28-5b8cd6cbcf10"></div>
+            
+            <!-- Respaldo / Acceso directo a Google Maps si el widget de terceros tarda en cargar o se usa bloqueador -->
+            <div class="rsi-reviews-direct-link">
+                <a href="https://maps.google.com/?cid=16455769269265573941&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="rsi-secondary-btn rsi-reviews-btn"
+                   aria-label="Abrir perfil de Enterprise México y leer reseñas en Google Maps">
+                    <i class="fab fa-google" aria-hidden="true"></i> Ver y dejar reseña en Google Maps <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                </a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Sección Reseñas Google -->
-<section class="rsi-reviews-section rsi-reveal">
+<!-- 9. CTA Banner Final -->
+<section class="rsi-final-cta-section rsi-reveal" aria-labelledby="finalCtaTitle">
     <div class="rsi-container">
-        <h2 class="rsi-section-title">Lo que dicen nuestros clientes</h2>
-        <p class="rsi-section-subtitle">Calificación excelente en Google</p>
-        <div class="elfsight-app-111c7a7e-1138-43ce-9a28-5b8cd6cbcf10" data-elfsight-app-lazy></div>
+        <div class="rsi-final-cta-card">
+            <h2 id="finalCtaTitle" class="rsi-final-cta-title">¿Listo para proteger tu hogar o empresa con tecnología de vanguardia?</h2>
+            <p class="rsi-final-cta-subtitle">
+                Contáctanos hoy mismo. Uno de nuestros ingenieros te asesorará sin costo y con una solución diseñada a tu medida.
+            </p>
+            <div class="rsi-final-cta-buttons">
+                <a href="/contacto" data-link class="rsi-cta-button">
+                    Solicitar Cotización Inmediata <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                </a>
+                <a href="tel:5551391533" class="rsi-cta-phone-btn">
+                    <i class="fas fa-phone-alt" aria-hidden="true"></i> Llamar al 5551391533
+                </a>
+            </div>
+        </div>
     </div>
 </section>

@@ -1,0 +1,95 @@
+<!-- ========================================
+   PANEL CRUD - Categorías Ecommerce (RSI Enterprise)
+   ======================================== -->
+
+<section class="rsi-facturas-section rsi-carrusel-section">
+    <div class="rsi-container">
+        
+        <!-- ENCABEZADO DE PÁGINA -->
+        <div class="rsi-carrusel-header-wrapper">
+            <div>
+                <span class="rsi-badge rsi-badge-primary" style="margin-bottom: var(--rsi-spacing-xs);">
+                    <i class="fas fa-tags"></i> Ecommerce / Catálogo
+                </span>
+                <h1 class="rsi-page-title">
+                    <span class="rsi-text-gold">Categorías</span> de Productos
+                </h1>
+                <p class="rsi-page-subtitle">
+                    Organiza y administra las familias y categorías del catálogo comercial. Las categorías activas se reflejan automáticamente en el menú público y en los filtros de la tienda.
+                </p>
+            </div>
+            <div class="rsi-carrusel-header-actions">
+                <a href="/products" target="_blank" class="rsi-btn-crud rsi-btn-crud-secondary" title="Ver catálogo público">
+                    <i class="fas fa-external-link-alt"></i> Ver Tienda
+                </a>
+                <button type="button" id="btnRecargarCategorias" class="rsi-btn-crud rsi-btn-crud-outline" title="Recargar">
+                    <i class="fas fa-sync-alt"></i> Actualizar
+                </button>
+                <a href="/ecommerce/categoria-form" class="rsi-btn-crud rsi-btn-crud-primary" data-link>
+                    <i class="fas fa-plus"></i> Nueva Categoría
+                </a>
+            </div>
+        </div>
+
+        <!-- TARJETAS DE MÉTRICAS -->
+        <div class="rsi-stats-container" style="margin-bottom: var(--rsi-spacing-lg);">
+            <div class="rsi-stat-item">
+                <span class="rsi-stat-value" id="statTotalCategorias">0</span>
+                <span class="rsi-stat-label">Total Categorías</span>
+            </div>
+            <div class="rsi-stat-item">
+                <span class="rsi-stat-value" style="color: var(--rsi-success, #10b981);" id="statActivas">0</span>
+                <span class="rsi-stat-label">Activas en Catálogo</span>
+            </div>
+            <div class="rsi-stat-item">
+                <span class="rsi-stat-value" style="color: var(--rsi-gray-500, #94a3b8);" id="statInactivas">0</span>
+                <span class="rsi-stat-label">Inactivas</span>
+            </div>
+            <div class="rsi-stat-item">
+                <span class="rsi-stat-value" style="color: var(--rsi-gold, #c5a059);" id="statTotalProductosEnCats">0</span>
+                <span class="rsi-stat-label">Productos Vinculados</span>
+            </div>
+        </div>
+
+        <!-- BARRA DE BÚSQUEDA Y FILTROS -->
+        <div class="rsi-carrusel-toolbar" style="margin-bottom: var(--rsi-spacing-md); display: flex; gap: 12px; flex-wrap: wrap; justify-content: space-between; align-items: center;">
+            <div style="flex: 1; min-width: 260px; max-width: 450px; position: relative;">
+                <i class="fas fa-search" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--rsi-gray-400);"></i>
+                <input type="text" id="inputBuscarCategoria" placeholder="Buscar categoría por nombre o descripción..." class="rsi-input" style="padding-left: 38px; width: 100%; border-radius: 8px;" />
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button type="button" class="rsi-btn-crud rsi-btn-crud-secondary filter-cat-btn is-active" data-filter="all">Todas</button>
+                <button type="button" class="rsi-btn-crud rsi-btn-crud-outline filter-cat-btn" data-filter="active">Activas</button>
+                <button type="button" class="rsi-btn-crud rsi-btn-crud-outline filter-cat-btn" data-filter="inactive">Inactivas</button>
+            </div>
+        </div>
+
+        <!-- TABLA / LISTADO -->
+        <div class="rsi-panel-crud" style="padding: 0; overflow: hidden; border-radius: 12px; background: var(--rsi-card-bg, #ffffff); border: 1px solid var(--rsi-border-color, #e2e8f0);">
+            <div class="table-responsive">
+                <table class="rsi-table" id="tablaCategorias" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="width: 70px; text-align: center;">Orden</th>
+                            <th style="width: 90px; text-align: center;">Imagen</th>
+                            <th>Nombre / Slug</th>
+                            <th>Descripción</th>
+                            <th style="width: 120px; text-align: center;">Productos</th>
+                            <th style="width: 110px; text-align: center;">Estado</th>
+                            <th style="width: 150px; text-align: right;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="categoriasTbody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px; color: var(--rsi-gray-400);">
+                                <i class="fas fa-spinner fa-spin fa-2x"></i>
+                                <p style="margin-top: 10px;">Cargando categorías...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</section>

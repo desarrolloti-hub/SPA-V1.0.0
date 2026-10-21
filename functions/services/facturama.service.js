@@ -727,33 +727,20 @@ class FacturamaService {
         try {
 
             console.log(
-                `🚫 Cancelando factura: ${id}`
+                `🚫 Cancelando factura en Facturama: ${id} (motivo: ${motivo})`
             );
 
+            let endpoint = `/cfdi/${id}?type=issued&motive=${encodeURIComponent(motivo)}`;
 
-            const data = {
-
-                Motivo: motivo
-
-            };
-
-
-            if (
-                folioSustitucion
-            ) {
-
-                data.FolioSustitucion =
-                    folioSustitucion;
-
+            if (motivo === "01" && folioSustitucion) {
+                endpoint += `&uuidReplacement=${encodeURIComponent(folioSustitucion)}`;
             }
-
 
             return await this.request(
                 "DELETE",
-                `/3/cfdis/${id}`,
-                data
+                endpoint,
+                null
             );
-
 
         } catch (error) {
 
@@ -767,6 +754,68 @@ class FacturamaService {
         }
 
     }
+
+
+    // ============================================================
+    // CONSULTAR FACTURA
+    // ============================================================
+
+    async obtenerFactura(id) {
+
+        try {
+
+            console.log(
+                `📄 Consultando CFDI en Facturama: ${id}`
+            );
+
+            return await this.request(
+                "GET",
+                `/cfdi/${id}?type=issued`
+            );
+
+        } catch (error) {
+
+            console.error(
+                `❌ Error consultando factura ${id}:`,
+                error.message
+            );
+
+            throw error;
+
+        }
+
+    }
+
+    // ============================================================
+    // LISTAR FACTURAS EMITIDAS
+    // ============================================================
+
+    async listarFacturasEmitidas() {
+
+        try {
+
+            console.log(
+                `📄 Listando facturas emitidas en Facturama`
+            );
+
+            return await this.request(
+                "GET",
+                `/cfdi?type=issued`
+            );
+
+        } catch (error) {
+
+            console.error(
+                `❌ Error listando facturas emitidas:`,
+                error.message
+            );
+
+            throw error;
+
+        }
+
+    }
+
 
 
     // ============================================================

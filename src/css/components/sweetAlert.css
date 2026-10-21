@@ -127,7 +127,7 @@
 .swal2-confirm:hover {
     transform: translateY(-2px) !important;
     box-shadow: var(--rsi-shadow-lg) !important;
-    background: linear-gradient(135deg, var(--rsi-primary-dark), #0a0828) !important;
+    background: linear-gradient(135deg, var(--rsi-primary-dark), var(--rsi-black)) !important;
 }
 
 .swal2-confirm:active {
@@ -165,7 +165,7 @@
 /* ✅ Botón Deny (Eliminar) */
 .swal2-deny {
     background: var(--rsi-danger) !important;
-    color: var(--rsi-white) !important;
+    color: var(--rsi-text-light) !important;
     border: none !important;
     border-radius: var(--rsi-radius-md) !important;
     font-family: var(--rsi-font-secondary) !important;
@@ -177,7 +177,7 @@
 }
 
 .swal2-deny:hover {
-    background: #c82333 !important;
+    filter: brightness(0.9) !important;
     transform: translateY(-2px) !important;
     box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3) !important;
 }
@@ -330,13 +330,14 @@ body.dark-mode .swal2-html-container {
 }
 
 body.dark-mode .swal2-confirm {
-    background: var(--rsi-gold-gradient) !important;
-    color: var(--rsi-black) !important;
+    background: linear-gradient(135deg, var(--rsi-primary), var(--rsi-primary-dark)) !important;
+    color: var(--rsi-btn-text-on-solid, #ffffff) !important;
     box-shadow: var(--rsi-shadow-gold) !important;
 }
 
 body.dark-mode .swal2-confirm:hover {
-    background: var(--rsi-gold-gradient-hover) !important;
+    background: linear-gradient(135deg, var(--rsi-primary-light), var(--rsi-primary)) !important;
+    color: var(--rsi-btn-text-on-solid, #ffffff) !important;
     box-shadow: var(--rsi-shadow-gold-lg) !important;
 }
 
@@ -356,11 +357,11 @@ body.dark-mode .swal2-cancel:hover {
 
 body.dark-mode .swal2-deny {
     background: var(--rsi-danger) !important;
-    color: var(--rsi-white) !important;
+    color: var(--rsi-text-light) !important;
 }
 
 body.dark-mode .swal2-deny:hover {
-    background: #c82333 !important;
+    filter: brightness(0.9) !important;
 }
 
 body.dark-mode .swal2-input,

@@ -125,11 +125,15 @@ export class NewCollaboratorService {
     }
 
     /**
-     * Obtiene un colaborador por ID (con caché)
+     * Obtiene un colaborador por ID o UID (con caché)
      */
     async getCollaboratorById(docId, forceRefresh = false) {
         try {
-            return await this.repository.getCollaboratorById(docId, forceRefresh);
+            let collaborator = await this.repository.getCollaboratorById(docId, forceRefresh);
+            if (!collaborator) {
+                collaborator = await this.repository.getCollaboratorByUid(docId, forceRefresh);
+            }
+            return collaborator;
         } catch (error) {
             console.error('❌ Error en getCollaboratorById:', error);
             return null;

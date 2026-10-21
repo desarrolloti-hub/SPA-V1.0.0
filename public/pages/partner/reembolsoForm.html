@@ -1,0 +1,285 @@
+<!-- ========================================
+   VISTA: SOLICITAR / HACER REEMBOLSO PROPIO - RSI ENTERPRISE
+   Permite registrar un reembolso propio indicando monto, motivo,
+   modalidad de devolución (total o parcial) y evidencia fotográfica.
+   ======================================== -->
+
+<section class="rsi-reembolso-form-section">
+    <div class="rsi-container">
+
+        <!-- Encabezado y Accesos Rápidos -->
+        <div class="rsi-reembolso-header">
+            <div>
+                <h1 class="rsi-page-title">
+                    <span class="rsi-text-gold">Nuevo Reembolso</span> Propio
+                </h1>
+                <p class="rsi-page-subtitle">
+                    Registra el monto erogado, el motivo del gasto y adjunta la evidencia fotográfica de tu comprobante.
+                </p>
+            </div>
+            <div class="rsi-reembolso-header-actions">
+                <a href="/partner/reembolsos" class="rsi-btn-crud rsi-btn-crud-outline" data-link>
+                    <i class="fas fa-wallet"></i> Ver Mis Reembolsos
+                </a>
+                <a href="/hr/reembolsos" class="rsi-btn-crud rsi-btn-crud-primary" data-link>
+                    <i class="fas fa-users-cog"></i> Panel Colaboradores
+                </a>
+            </div>
+        </div>
+
+        <!-- Tarjeta del Solicitante -->
+        <div class="rsi-reembolso-applicant-card">
+            <div class="rsi-reembolso-applicant-profile">
+                <img src="/assets/images/default-avatar.png" alt="Avatar" id="rmbSolicitanteAvatar" class="rsi-reembolso-avatar">
+                <div>
+                    <span class="rsi-reembolso-badge-role"><i class="fas fa-user-check"></i> Solicitante del Reembolso</span>
+                    <h3 id="rmbSolicitanteNombre">Cargando colaborador...</h3>
+                    <p id="rmbSolicitanteArea"><i class="fas fa-sitemap"></i> Área General</p>
+                    <span id="rmbSolicitanteEmail" class="rsi-reembolso-email"><i class="fas fa-envelope"></i> correo@rsienterprise.com</span>
+                </div>
+            </div>
+            <div class="rsi-reembolso-policy-banner">
+                <i class="fas fa-info-circle"></i>
+                <div>
+                    <strong>Política de Devolución Total o Parcial:</strong>
+                    <span>Tu reembolso podrá ser liquidado en una sola exhibición (<strong>Total</strong>) o mediante abonos progresivos (<strong>Parcial</strong>) hasta cubrir el 100% del monto autorizado.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Layout Principal: Formulario + Resumen en Vivo -->
+        <div class="rsi-reembolso-form-grid">
+
+            <!-- Columna Izquierda: Formulario de Captura -->
+            <div class="rsi-panel-crud" style="margin-top: 0;">
+                <div class="rsi-panel-header">
+                    <h2>
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        Datos del Gasto y Evidencia Fotográfica
+                    </h2>
+                </div>
+
+                <form id="formReembolsoPropio" novalidate>
+
+                    <!-- Fila 1: Monto Solicitado y Fecha del Gasto -->
+                    <div class="rsi-reembolso-row-2">
+                        <div class="rsi-form-group">
+                            <label for="rmbMontoSolicitado" class="rsi-form-label">
+                                Monto a Reembolsar ($ MXN) <span class="rsi-required">*</span>
+                            </label>
+                            <div class="rsi-input-wrapper rsi-currency-input-wrapper">
+                                <span class="rsi-currency-prefix">$</span>
+                                <input
+                                    type="number"
+                                    id="rmbMontoSolicitado"
+                                    name="montoSolicitado"
+                                    class="rsi-form-control rsi-input-currency"
+                                    placeholder="0.00"
+                                    min="1"
+                                    max="1000000"
+                                    step="0.01"
+                                    required
+                                >
+                                <span class="rsi-currency-suffix">MXN</span>
+                            </div>
+                            <small class="rsi-form-help">Ingresa el importe exacto amparado por tu comprobante o nota.</small>
+                        </div>
+
+                        <div class="rsi-form-group">
+                            <label for="rmbFechaGasto" class="rsi-form-label">
+                                Fecha del Gasto <span class="rsi-required">*</span>
+                            </label>
+                            <input
+                                type="date"
+                                id="rmbFechaGasto"
+                                name="fechaGasto"
+                                class="rsi-form-control"
+                                required
+                            >
+                            <small class="rsi-form-help">Fecha en la que realizaste el pago o compra.</small>
+                        </div>
+                    </div>
+
+                    <!-- Fila 2: Categoría y Referencia de Ticket/Factura -->
+                    <div class="rsi-reembolso-row-2">
+                        <div class="rsi-form-group">
+                            <label for="rmbCategoria" class="rsi-form-label">
+                                Categoría del Gasto <span class="rsi-required">*</span>
+                            </label>
+                            <select id="rmbCategoria" name="categoria" class="rsi-form-control" required>
+                                <option value="viaticos_transporte">Viáticos y Transporte</option>
+                                <option value="combustible_casetas">Combustible y Casetas</option>
+                                <option value="material_herramientas">Material y Herramientas Operativas</option>
+                                <option value="hospedaje_alimentos">Hospedaje y Alimentación</option>
+                                <option value="papeleria_insumos">Papelería e Insumos</option>
+                                <option value="emergencia_operativa">Gasto Operativo / Emergencia</option>
+                                <option value="otro">Otro Concepto</option>
+                            </select>
+                        </div>
+
+                        <div class="rsi-form-group">
+                            <label for="rmbReferencia" class="rsi-form-label">
+                                No. de Ticket / Factura / Referencia (Opcional)
+                            </label>
+                            <input
+                                type="text"
+                                id="rmbReferencia"
+                                name="referenciaComprobante"
+                                class="rsi-form-control"
+                                placeholder="Ej. Ticket #4821, Factura A-102 o Servicio RSI"
+                                maxlength="120"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Fila 3: Modalidad de Devolución -->
+                    <div class="rsi-form-group">
+                        <label class="rsi-form-label">
+                            Modalidad de Devolución Solicitada <span class="rsi-required">*</span>
+                        </label>
+                        <div class="rsi-devolucion-mode-grid">
+                            <label class="rsi-devolucion-mode-card active" id="cardModeTotal">
+                                <input type="radio" name="modalidadSolicitada" value="total" checked>
+                                <div class="rsi-devolucion-mode-icon"><i class="fas fa-check-double"></i></div>
+                                <div class="rsi-devolucion-mode-info">
+                                    <strong>Devolución Total (100%)</strong>
+                                    <span>Reembolso íntegro en una sola exhibición (sujeto a disponibilidad o abonos).</span>
+                                </div>
+                            </label>
+
+                            <label class="rsi-devolucion-mode-card" id="cardModeParcial">
+                                <input type="radio" name="modalidadSolicitada" value="parcial">
+                                <div class="rsi-devolucion-mode-icon"><i class="fas fa-chart-pie"></i></div>
+                                <div class="rsi-devolucion-mode-info">
+                                    <strong>Abierto a Devolución Parcial</strong>
+                                    <span>Permite recibir anticipos o pagos parciales hasta liquidar el monto total.</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Fila 4: Motivo Detallado -->
+                    <div class="rsi-form-group">
+                        <label for="rmbMotivo" class="rsi-form-label">
+                            Motivo y Descripción Detallada del Reembolso <span class="rsi-required">*</span>
+                        </label>
+                        <textarea
+                            id="rmbMotivo"
+                            name="motivo"
+                            rows="4"
+                            class="rsi-form-control"
+                            placeholder="Describe claramente el motivo del gasto, proyecto, cliente o actividad operativa relacionada..."
+                            minlength="5"
+                            maxlength="1200"
+                            required
+                        ></textarea>
+                        <div class="rsi-char-counter"><span id="rmbMotivoCount">0</span>/1200 caracteres</div>
+                    </div>
+
+                    <!-- Fila 5: Evidencia Fotográfica Obligatoria -->
+                    <div class="rsi-form-group">
+                        <label class="rsi-form-label">
+                            Evidencia Fotográfica del Gasto / Comprobante <span class="rsi-required">*</span>
+                        </label>
+
+                        <div class="rsi-evidencia-upload-actions">
+                            <button type="button" id="btnCamaraReembolsoPropio" class="rsi-btn-crud rsi-btn-crud-primary">
+                                <i class="fas fa-camera"></i> Tomar Fotografía
+                            </button>
+                            <button type="button" id="btnGaleriaReembolsoPropio" class="rsi-btn-crud rsi-btn-crud-outline">
+                                <i class="fas fa-image"></i> Seleccionar Imagen o PDF
+                            </button>
+                            <!-- Input cámara directa -->
+                            <input
+                                type="file"
+                                id="inputCamaraReembolsoPropio"
+                                accept="image/*"
+                                capture="environment"
+                                style="display: none;"
+                            >
+                            <!-- Input galería / archivos -->
+                            <input
+                                type="file"
+                                id="inputArchivoReembolsoPropio"
+                                accept="image/jpeg,image/png,image/webp,application/pdf"
+                                style="display: none;"
+                            >
+                        </div>
+
+                        <div class="rsi-file-dropzone" id="dropzoneReembolsoPropio">
+                            <div class="rsi-file-dropzone-content">
+                                <i class="fas fa-camera-retro rsi-file-icon"></i>
+                                <span class="rsi-file-title">Arrastra aquí la fotografía de tu ticket/comprobante o usa los botones superiores</span>
+                                <span class="rsi-file-subtitle">Formatos soportados: JPG, PNG, WEBP o PDF (Máx. 8 MB) — Puedes hacer clic en la imagen para hacer Zoom</span>
+                            </div>
+                        </div>
+
+                        <!-- Previsualización de la Evidencia Cargada -->
+                        <div id="previewContainerReembolsoPropio" class="rsi-reembolso-preview-card" style="display: none;">
+                            <div class="rsi-reembolso-preview-header">
+                                <div>
+                                    <i class="fas fa-check-circle" style="color: var(--rsi-success);"></i>
+                                    <strong id="previewNombreReembolsoPropio">evidencia.jpg</strong>
+                                    <span id="previewTamanoReembolsoPropio" class="rsi-text-muted"></span>
+                                </div>
+                                <button type="button" id="btnQuitarEvidenciaPropio" class="rsi-btn-crud rsi-btn-crud-danger" style="padding: 5px 12px; font-size: 0.8rem;">
+                                    <i class="fas fa-trash-alt"></i> Quitar
+                                </button>
+                            </div>
+                            <div id="previewBodyReembolsoPropio" class="rsi-reembolso-preview-body">
+                                <!-- Imagen renderizada aquí con soporte de Zoom global -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Acción del Formulario -->
+                    <div class="rsi-reembolso-form-footer">
+                        <a href="/partner/reembolsos" class="rsi-btn-crud rsi-btn-crud-outline" data-link>
+                            <i class="fas fa-arrow-left"></i> Cancelar y Volver
+                        </a>
+                        <button type="submit" id="btnGuardarReembolsoPropio" class="rsi-btn-crud rsi-btn-crud-success" style="padding: 12px 26px; font-size: 0.98rem;">
+                            <i class="fas fa-paper-plane"></i> Registrar Mi Solicitud de Reembolso
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Columna Derecha: Resumen Financiero en Tiempo Real -->
+            <aside class="rsi-reembolso-summary-aside">
+                <div class="rsi-reembolso-summary-card">
+                    <div class="rsi-reembolso-summary-header">
+                        <i class="fas fa-receipt"></i>
+                        <h3>Resumen de tu Reembolso</h3>
+                    </div>
+                    <div class="rsi-reembolso-summary-amount">
+                        <span>Monto Solicitado</span>
+                        <strong id="resumenMontoVivo">$0.00 MXN</strong>
+                    </div>
+                    <ul class="rsi-reembolso-summary-list">
+                        <li>
+                            <span>Categoría:</span>
+                            <strong id="resumenCategoriaVivo">Viáticos y Transporte</strong>
+                        </li>
+                        <li>
+                            <span>Fecha del Gasto:</span>
+                            <strong id="resumenFechaVivo">--</strong>
+                        </li>
+                        <li>
+                            <span>Modalidad:</span>
+                            <strong id="resumenModalidadVivo">Devolución Total (100%)</strong>
+                        </li>
+                        <li>
+                            <span>Evidencia Fotográfica:</span>
+                            <strong id="resumenEvidenciaVivo" class="rsi-text-danger">Pendiente de adjuntar</strong>
+                        </li>
+                    </ul>
+                    <div class="rsi-reembolso-summary-note">
+                        <i class="fas fa-shield-alt"></i>
+                        <p>Una vez registrado, podrás dar seguimiento en <strong>Mis Reembolsos</strong> a cada abono parcial o liquidación total junto con sus comprobantes.</p>
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+</section>

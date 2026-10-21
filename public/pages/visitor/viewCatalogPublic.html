@@ -1,0 +1,84 @@
+<!-- ========================================
+   VIEW CATALOG PUBLIC - Detalle estilo services
+   ======================================== -->
+
+<section class="rsi-vc-section">
+
+    <!-- ===== ESTADO: LOADING ===== -->
+    <div id="vcLoading" class="rsi-vc-loading">
+        <div class="rsi-vc-spinner"></div>
+        <p>Cargando catálogo...</p>
+    </div>
+
+    <!-- ===== ESTADO: ERROR ===== -->
+    <div id="vcError" class="rsi-vc-error is-hidden">
+        <div class="rsi-container">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>No se pudo cargar el catálogo</h3>
+            <p id="vcErrorText">El catálogo no existe o fue eliminado.</p>
+            <a href="/catalogos" data-link class="rsi-btn-gold">
+                <i class="fas fa-arrow-left"></i> Volver a catálogos
+            </a>
+        </div>
+    </div>
+
+    <!-- ===== ESTADO: CONTENIDO ===== -->
+    <div id="vcContent" class="is-hidden">
+
+        <!-- HERO con imagen de portada del catálogo -->
+        <section class="rsi-vc-hero">
+            <div class="rsi-vc-hero-bg" id="vcHeroBg"></div>
+            <div class="rsi-vc-hero-overlay"></div>
+            <div class="rsi-vc-hero-content rsi-container">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: var(--rsi-spacing-md);">
+                    <a href="/catalogos" data-link class="rsi-vc-back" style="margin-bottom: 0;">
+                        <i class="fas fa-arrow-left"></i> Volver a catálogos
+                    </a>
+                    <button type="button" id="btnShareCurrentCatalog" class="rsi-btn-gold" style="padding: 7px 16px; font-size: 0.85rem; display: inline-flex; align-items: center; gap: 8px; border-radius: 20px; cursor: pointer;">
+                        <i class="fas fa-share-alt"></i> Compartir Catálogo
+                    </button>
+                </div>
+
+                <h1 class="rsi-vc-hero-title" id="vcHeroTitle">—</h1>
+                <p class="rsi-vc-hero-description" id="vcHeroDescription">—</p>
+                <div class="rsi-vc-hero-meta" id="vcHeroMeta"></div>
+            </div>
+        </section>
+
+        <!-- LISTA DE PRODUCTOS (alternados) -->
+        <section class="rsi-vc-products">
+            <div class="rsi-container" id="vcProductsList">
+                <!-- Se llena dinámicamente -->
+            </div>
+
+            <!-- Empty: sin productos -->
+            <div class="rsi-container rsi-vc-empty is-hidden" id="vcNoProducts">
+                <i class="fas fa-box-open"></i>
+                <h3>Este catálogo aún no tiene productos</h3>
+                <p>Vuelve pronto para descubrir novedades.</p>
+            </div>
+        </section>
+
+        <!-- CTA final -->
+        <section class="rsi-vc-cta">
+            <div class="rsi-container">
+                <h2 class="rsi-vc-hero-title">
+                    ¿Quieres más información?
+                </h2>
+                <p class="rsi-section-subtitle">
+                    Contáctanos por WhatsApp y te ayudamos a encontrar la mejor solución.
+                </p>
+                <a
+                    href="https://wa.me/525551391533?text=Hola,%20me%20interesa%20recibir%20más%20información%20sobre%20sus%20productos"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="rsi-btn-gold rsi-vc-cta-btn"
+                >
+                    <i class="fab fa-whatsapp"></i> Contactar por WhatsApp
+                </a>
+            </div>
+        </section>
+
+    </div>
+
+</section>

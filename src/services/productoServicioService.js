@@ -273,6 +273,35 @@ export class ProductoServicioService {
     clearCache() {
         this.repository.clearCache();
     }
+
+    /**
+     * Busca claves y conceptos en el catálogo SAT
+     * @param {string} searchTerm
+     * @param {number} maxResults
+     * @returns {Promise<Array<{clave: string, descripcion: string, id: string}>>}
+     */
+    async searchSatCatalog(searchTerm, maxResults = 15) {
+        try {
+            return await this.repository.searchSatCatalog(searchTerm, maxResults);
+        } catch (error) {
+            console.error('❌ Error en searchSatCatalog:', error);
+            return [];
+        }
+    }
+
+    /**
+     * Obtiene un registro del catálogo SAT por clave
+     * @param {string} clave
+     * @returns {Promise<{clave: string, descripcion: string, id: string}|null>}
+     */
+    async getSatProductByClave(clave) {
+        try {
+            return await this.repository.getSatProductByClave(clave);
+        } catch (error) {
+            console.error('❌ Error en getSatProductByClave:', error);
+            return null;
+        }
+    }
 }
 
 export default ProductoServicioService;

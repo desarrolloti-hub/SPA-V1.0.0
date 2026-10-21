@@ -9,7 +9,8 @@ import {
     getDoc,
     updateDoc,
     doc,
-    setDoc
+    setDoc,
+    runTransaction
 } from '../config/firebaseConfig.js';
 import BaseRepository from './baseRepository.js';
 
@@ -47,27 +48,29 @@ export class ContadorCotizacionRepository extends BaseRepository {
     }
 
     /**
-     * Incrementa el contador de un tipo específico en 1
+     * Incrementa el contador de un tipo específico en 1 de forma atómica transaccional
      */
     async incrementContador(tipo) {
         try {
             const docRef = doc(db, this.collectionName, tipo);
-            const docSnap = await getDoc(docRef);
-            
-            let nuevoCount = 1;
-            if (docSnap.exists()) {
-                nuevoCount = (docSnap.data().count || 0) + 1;
-                await updateDoc(docRef, { count: nuevoCount });
-            } else {
-                await setDoc(docRef, { count: 1 });
-            }
+            const nuevoCount = await runTransaction(db, async (transaction) => {
+                const docSnap = await transaction.get(docRef);
+                let count = 1;
+                if (docSnap.exists()) {
+                    count = (docSnap.data().count || 0) + 1;
+                    transaction.update(docRef, { count });
+                } else {
+                    transaction.set(docRef, { count: 1 });
+                }
+                return count;
+            });
             
             this.clearCache();
-            console.log(`✅ Contador ${tipo} incrementado a: ${nuevoCount}`);
+            console.log(`✅ Contador ${tipo} incrementado atómicamente a: ${nuevoCount}`);
             return nuevoCount;
         } catch (error) {
-            console.error('❌ Error incrementando contador:', error);
-            throw new Error('Error al incrementar el contador');
+            console.error('❌ Error incrementando contador atómicamente:', error);
+            throw new Error('Error al incrementar el contador: ' + error.message);
         }
     }
 

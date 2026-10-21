@@ -340,6 +340,30 @@ export class AreaRepository extends BaseRepository {
     }
 
     /**
+     * Elimina una subárea de un área
+     * @param {string} areaId - ID del área
+     * @param {string} subareaId - ID o clave de la subárea
+     * @returns {Promise<boolean>}
+     */
+    async deleteSubarea(areaId, subareaId) {
+        try {
+            const area = await this.getAreaById(areaId);
+            if (!area) {
+                throw new Error('Área no encontrada');
+            }
+            const subareas = { ...(area.subareas || {}) };
+            delete subareas[subareaId];
+            await this.updateArea(areaId, { subareas });
+            this.clearCache();
+            console.log(`✅ Subárea ${subareaId} eliminada del área ${areaId}`);
+            return true;
+        } catch (error) {
+            console.error('❌ Error eliminando subárea:', error);
+            throw new Error('Error al eliminar subárea: ' + error.message);
+        }
+    }
+
+    /**
      * Agrega un módulo a una subárea
      */
     async addModuloToSubarea(areaId, subareaId, moduloData) {

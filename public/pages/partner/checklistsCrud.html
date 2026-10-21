@@ -1,0 +1,131 @@
+<!-- ========================================
+   HISTORIAL GENERAL DE CHECKLISTS Y SALIDAS VEHICULARES - RSI ENTERPRISE
+   Panel CRUD unificado homologado con panelCrud.css y variables.css
+   ======================================== -->
+
+<section class="rsi-vehiculos-section">
+    <div class="rsi-container">
+
+        <!-- Título de Página -->
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Historial</span> de Salidas Vehiculares
+        </h1>
+        <p class="rsi-page-subtitle">
+            Bitácora integral de inspecciones pre-salida, evidencias fotográficas con sello y firmas digitales.
+        </p>
+
+        <!-- ===== PANEL CRUD RSI ===== -->
+        <div class="rsi-panel-crud">
+
+            <!-- Encabezado del Panel -->
+            <div class="rsi-panel-header">
+                <h2>
+                    <i class="fas fa-clipboard-list"></i>
+                    Salidas e Inspecciones Registradas
+                    <span id="chkCount" class="rsi-badge rsi-badge-primary">0</span>
+                </h2>
+                <div class="rsi-panel-actions">
+                    <button id="btnRefreshChecklists" class="rsi-btn-crud rsi-btn-crud-outline">
+                        <i class="fas fa-sync"></i> Actualizar
+                    </button>
+                    <a href="/partner/vehiculos" class="rsi-btn-crud rsi-btn-crud-outline" data-link>
+                        <i class="fas fa-car"></i> Parque Vehicular
+                    </a>
+                    <a href="/partner/checklist-salida" class="rsi-btn-crud rsi-btn-crud-primary" data-link>
+                        <i class="fas fa-plus"></i> Nueva Salida
+                    </a>
+                </div>
+            </div>
+
+            <!-- Buscador y Filtros -->
+            <div class="rsi-search-container">
+                <div class="rsi-search-box">
+                    <div class="rsi-search-input-wrapper">
+                        <i class="fas fa-search rsi-search-icon"></i>
+                        <input 
+                            type="text" 
+                            id="chkSearchInput" 
+                            placeholder="Buscar por folio, placas, no. económico, conductor o inspector..." 
+                            class="rsi-search-input"
+                            autocomplete="off"
+                        >
+                    </div>
+                </div>
+
+                <div class="rsi-filters-row" style="display: flex; gap: var(--rsi-spacing-md); align-items: center; margin-top: var(--rsi-spacing-xs); flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <label for="filterChkEstado" style="font-size: 0.85rem; font-weight: 600; color: var(--rsi-text-secondary);">Estado:</label>
+                        <select id="filterChkEstado" class="rsi-filter-select" style="padding: 7px 12px; border-radius: var(--rsi-radius-md); border: 1.5px solid var(--rsi-border-color); background: var(--rsi-bg-input); color: var(--rsi-text-primary); font-size: 0.88rem;">
+                            <option value="todos">Todos los estados</option>
+                            <option value="pendiente_aceptacion">Pendientes de Firma</option>
+                            <option value="aceptada">Aceptadas / En Ruta</option>
+                            <option value="concluida">Concluidas</option>
+                            <option value="cancelada">Canceladas</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingStateChecklists" class="rsi-loading-state" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Cargando bitácora de inspecciones...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyStateChecklists" class="rsi-empty-state" style="display: none;">
+                <i class="fas fa-clipboard-check"></i>
+                <h3>No hay salidas registradas</h3>
+                <p>No se encontraron registros de salidas con los criterios de búsqueda aplicados.</p>
+                <a href="/partner/checklist-salida" class="rsi-btn-crud rsi-btn-crud-primary" data-link>
+                    <i class="fas fa-plus"></i> Registrar Nueva Salida
+                </a>
+            </div>
+
+            <!-- Tabla Unificada de Checklists -->
+            <div class="rsi-table-wrapper" id="checklistsTableWrapper">
+                <table class="rsi-table">
+                    <thead>
+                        <tr>
+                            <th>Folio</th>
+                            <th>Vehículo</th>
+                            <th>Conductor Asignado</th>
+                            <th>Inspector / Revisor</th>
+                            <th>Odómetro Salida</th>
+                            <th>Fecha / Hora</th>
+                            <th>Estado y Firma</th>
+                            <th style="text-align: center;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="checklistsTableBody">
+                        <!-- Generación dinámica -->
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ========================================
+   MODAL DE DETALLE COMPLETO DE SALIDA (RSI MODAL)
+   ======================================== -->
+<div class="rsi-modal" id="modalGeneralChecklistDetalle" style="display: none;">
+    <div class="rsi-modal-content" style="max-width: 850px;">
+        <div class="rsi-modal-header">
+            <h3 id="modalGenChecklistTitle">
+                <i class="fas fa-file-signature"></i> Detalle de Inspección de Salida
+            </h3>
+            <button type="button" class="rsi-modal-close" id="btnCloseModalGenChecklist">&times;</button>
+        </div>
+        <div class="rsi-modal-body" id="modalGenChecklistContent">
+            <!-- Renderizado dinámico -->
+        </div>
+        <div class="rsi-modal-actions" style="justify-content: flex-end;">
+            <button type="button" class="rsi-btn-action rsi-btn-action-secondary" id="btnCerrarModalGenChecklist">
+                Cerrar
+            </button>
+        </div>
+    </div>
+</div>

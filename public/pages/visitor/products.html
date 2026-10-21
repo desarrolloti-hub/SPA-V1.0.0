@@ -1,0 +1,78 @@
+<!-- ========================================
+   PRODUCTS VIEW - RSI Enterprise
+   Catálogo interactivo conectado a Firestore
+   ======================================== -->
+
+<!-- Hero / Encabezado Compacto -->
+<section class="rsi-products-hero">
+    <div class="rsi-container">
+        <span class="rsi-products-eyebrow">Catálogo Oficial</span>
+        <h1 class="rsi-products-hero-title">
+            Productos de <span class="rsi-text-gold">Seguridad y Telecomunicaciones</span>
+        </h1>
+
+        <!-- Buscador en tiempo real con Autocomplete permanente -->
+        <div class="rsi-products-search-wrapper">
+            <div class="rsi-products-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="inputPublicSearch" placeholder="Buscar cámaras, alarmas, marcas, modelos o SKU..." autocomplete="off">
+                <button type="button" id="btnClearSearch" style="display: none; background: none; border: none; color: var(--rsi-gray-400); cursor: pointer;" title="Limpiar búsqueda">
+                    <i class="fas fa-times-circle"></i>
+                </button>
+            </div>
+            <!-- Desplegable flotante de coincidencias en vivo -->
+            <div class="rsi-search-suggestions-dropdown" id="searchSuggestionsDropdown"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Filtros de categoría dinámicos -->
+<section class="rsi-products-filters">
+    <div class="rsi-container">
+        <div class="rsi-products-filters-row" id="categoriesFiltersContainer">
+            <button class="rsi-filter-btn is-active" data-category="all">
+                <i class="fas fa-th"></i> Todos
+            </button>
+            <!-- Las categorías activas se inyectan dinámicamente -->
+        </div>
+    </div>
+</section>
+
+<!-- Grid de productos -->
+<section class="rsi-products-grid-section">
+    <div class="rsi-container">
+        
+        <!-- Barra de control de resultados y ordenamiento -->
+        <div class="rsi-products-grid-header">
+            <div>
+                <h2 class="rsi-products-grid-title" id="txtCatalogoTitulo">Todos los productos</h2>
+                <span class="rsi-products-grid-count" id="txtProductosContador">Cargando catálogo...</span>
+            </div>
+            
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <!-- Filtro por Marca -->
+                <select id="selectPublicMarca" class="rsi-input" style="border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; min-width: 140px; background: var(--rsi-bg-card);">
+                    <option value="all">Todas las Marcas</option>
+                </select>
+
+                <!-- Ordenamiento -->
+                <select id="selectPublicSort" class="rsi-input" style="border-radius: 8px; padding: 6px 12px; font-size: 0.85rem; min-width: 150px; background: var(--rsi-bg-card);">
+                    <option value="featured">Destacados primero</option>
+                    <option value="recent">Más recientes</option>
+                    <option value="price_asc">Precio: Menor a Mayor</option>
+                    <option value="price_desc">Precio: Mayor a Menor</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Grid Container -->
+        <div class="rsi-products-grid" id="publicProductsGrid">
+            <!-- Spinner inicial -->
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--rsi-gray-400);">
+                <i class="fas fa-spinner fa-spin fa-2x" style="color: var(--rsi-gold, #c5a059); margin-bottom: 12px;"></i>
+                <p style="font-size: 1rem; font-weight: 500;">Cargando equipos disponibles...</p>
+            </div>
+        </div>
+
+    </div>
+</section>

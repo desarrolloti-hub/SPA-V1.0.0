@@ -6,37 +6,41 @@
 let eventListeners = [];
 let clockInterval = null;
 
+let isFooterListenerBound = false;
+
 /**
  * Inicializa el controlador del footer partner
  */
 export function initFooterPartnerController() {
     console.log('📋 Inicializando Footer Partner Controller');
     
-    // ✅ Buscar el footer del partner
+    // Registrar escucha de recarga del footer una sola vez a nivel de documento
+    if (!isFooterListenerBound) {
+        document.addEventListener('footerLoaded', () => {
+            console.log('🔄 Footer Partner recargado');
+            cleanup();
+            setTimeout(initFooterPartnerController, 50);
+        });
+        isFooterListenerBound = true;
+    }
+
+    // Buscar el footer del partner
     const footer = document.querySelector('.rsi-footer-partner');
     
     if (!footer) {
-        console.warn('⚠️ Footer Partner no encontrado en el DOM, reintentando...');
-        setTimeout(() => {
-            initFooterPartnerController();
-        }, 300);
+        // En vistas públicas o layouts de visitante, el footer de partner no está en el DOM
+        // No reprogramar un bucle infinito; salimos limpiamente.
         return;
     }
 
     console.log('✅ Footer Partner encontrado');
+    cleanup();
     
-    // ✅ Inicializar funcionalidades
+    // Inicializar funcionalidades
     initYear();
     initClock(); // ⏰ RELOJ EN TIEMPO REAL
     initSocialLinks();
     initScrollTop();
-    
-    // ✅ Escuchar recarga del footer
-    document.addEventListener('footerLoaded', () => {
-        console.log('🔄 Footer Partner recargado');
-        cleanup();
-        setTimeout(initFooterPartnerController, 50);
-    });
     
     console.log('✅ Footer Partner Controller listo');
 }

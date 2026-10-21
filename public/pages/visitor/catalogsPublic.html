@@ -1,0 +1,66 @@
+<!-- ========================================
+   CATÁLOGOS PÚBLICOS - Solo lectura
+   ======================================== -->
+
+<section class="rsi-public-section">
+    <div class="rsi-public-container">
+
+        <!-- HEADER -->
+        <header class="rsi-public-header">
+            <h1 class="rsi-public-title">
+                Nuestros <span class="rsi-text-gold">Catálogos</span>
+            </h1>
+            <p class="rsi-public-subtitle">
+                Explora los productos y servicios que tenemos para ti.
+            </p>
+        </header>
+
+        <!-- BUSCADOR -->
+        <div class="rsi-public-search">
+            <i class="fas fa-search rsi-public-search-icon"></i>
+            <input 
+                type="text" 
+                id="publicSearch"
+                class="rsi-public-search-input"
+                placeholder="Buscar catálogo..."
+                autocomplete="off"
+            >
+            <button id="publicSearchClear" class="rsi-public-search-clear is-hidden">
+                <i class="fas fa-times-circle"></i>
+            </button>
+        </div>
+
+        <!-- CONTENEDOR DE RESULTADOS (grid / empty / loading) -->
+        <div id="publicResults" class="rsi-public-results">
+
+            <!-- Estado: cargando -->
+            <div id="publicLoading" class="rsi-public-state rsi-public-loading">
+                <div class="rsi-public-spinner"></div>
+                <p>Cargando catálogos...</p>
+            </div>
+
+            <!-- Estado: sin catálogos -->
+            <div id="publicEmpty" class="rsi-public-state rsi-public-empty is-hidden">
+                <i class="fas fa-folder-open"></i>
+                <h3 id="publicEmptyTitle">Aún no hay catálogos disponibles</h3>
+                <p id="publicEmptyText">Vuelve pronto para descubrir nuestros productos.</p>
+            </div>
+
+            <!-- Grid -->
+            <div id="publicGrid" class="rsi-public-grid is-hidden"></div>
+
+        </div>
+
+        <!-- PAGINACIÓN -->
+        <div id="publicPagination" class="rsi-public-pagination is-hidden">
+            <button id="publicPrev" class="rsi-public-page-btn">
+                <i class="fas fa-chevron-left"></i> Anterior
+            </button>
+            <span id="publicPageInfo" class="rsi-public-page-info">Página 1 de 1</span>
+            <button id="publicNext" class="rsi-public-page-btn">
+                Siguiente <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+    </div>
+</section>

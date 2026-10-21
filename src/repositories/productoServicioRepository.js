@@ -299,6 +299,233 @@ export class ProductoServicioRepository extends BaseRepository {
             return [];
         }
     }
+
+    /**
+     * Busca claves y conceptos en el catálogo SAT
+     * Soporta búsqueda por clave exacta, prefijo de clave, descripción y fallback
+     * @param {string} searchTerm
+     * @param {number} maxResults
+     * @returns {Promise<Array<{clave: string, descripcion: string, id: string}>>}
+     */
+    async searchSatCatalog(searchTerm, maxResults = 15) {
+        if (!searchTerm || searchTerm.length < 2) {
+            return [];
+        }
+
+        try {
+            const cleanTerm = searchTerm.trim();
+            const numericTerm = cleanTerm.replace(/[^0-9]/g, '');
+            const colRef = collection(db, 'catalogoSAT');
+            let results = [];
+
+            // 1. Clave exacta
+            if (numericTerm.length >= 1) {
+                const exactQuery = query(
+                    colRef,
+                    where('c_ClaveProdServ', '==', numericTerm),
+                    limit(1)
+                );
+                const exactSnapshot = await getDocs(exactQuery);
+                exactSnapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    results.push({
+                        clave: data.c_ClaveProdServ || docSnap.id,
+                        descripcion: data.Descripción || data.Descripcion || data.nombre || '',
+                        id: docSnap.id
+                    });
+                });
+
+                if (results.length > 0) {
+                    return results;
+                }
+            }
+
+            // 2. Prefijo de clave
+            if (numericTerm.length >= 2) {
+                const prefixQuery = query(
+                    colRef,
+                    where('c_ClaveProdServ', '>=', numericTerm),
+                    where('c_ClaveProdServ', '<=', numericTerm + '\uf8ff'),
+                    limit(maxResults)
+                );
+                const prefixSnapshot = await getDocs(prefixQuery);
+                prefixSnapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const clave = data.c_ClaveProdServ || docSnap.id;
+                    if (!results.some(r => r.clave === clave)) {
+                        results.push({
+                            clave: clave,
+                            descripcion: data.Descripción || data.Descripcion || data.nombre || '',
+                            id: docSnap.id
+                        });
+                    }
+                });
+
+                if (results.length > 0) {
+                    return results.slice(0, maxResults);
+                }
+            }
+
+            // 3. Prefijo de descripción
+            if (cleanTerm.length >= 2) {
+                const descQuery = query(
+                    colRef,
+                    where('Descripción', '>=', cleanTerm),
+                    where('Descripción', '<=', cleanTerm + '\uf8ff'),
+                    limit(maxResults)
+                );
+                const descSnapshot = await getDocs(descQuery);
+                descSnapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const clave = data.c_ClaveProdServ || docSnap.id;
+                    if (!results.some(r => r.clave === clave)) {
+                        results.push({
+                            clave: clave,
+                            descripcion: data.Descripción || data.Descripcion || data.nombre || '',
+                            id: docSnap.id
+                        });
+                    }
+                });
+
+                if (results.length > 0) {
+                    return results.slice(0, maxResults);
+                }
+            }
+
+            // 4. Búsqueda flexible / fallback
+            const flexQuery = query(colRef, limit(50));
+            const flexSnapshot = await getDocs(flexQuery);
+            const termLower = cleanTerm.toLowerCase();
+            const flexResults = [];
+
+            flexSnapshot.forEach(docSnap => {
+                const data = docSnap.data();
+                const clave = String(data.c_ClaveProdServ || docSnap.id);
+                const descripcion = data.Descripción || data.Descripcion || data.nombre || '';
+
+                if (descripcion.toLowerCase().includes(termLower) ||
+                    clave.includes(numericTerm) ||
+                    clave.includes(cleanTerm)) {
+                    flexResults.push({
+                        clave: clave,
+                        descripcion: descripcion,
+                        id: docSnap.id
+                    });
+                }
+            });
+
+            if (flexResults.length === 0 && cleanTerm.length >= 2) {
+                try {
+                    const docSnap = await getDoc(doc(db, 'catalogoSAT', cleanTerm));
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        flexResults.push({
+                            clave: String(data.c_ClaveProdServ || docSnap.id),
+                            descripcion: data.Descripción || data.Descripcion || data.nombre || '',
+                            id: docSnap.id
+                        });
+                    }
+                } catch (e) {}
+            }
+
+            flexResults.sort((a, b) => a.clave.localeCompare(b.clave));
+            return flexResults.slice(0, maxResults);
+
+        } catch (error) {
+            console.error('❌ Error buscando en catálogo SAT:', error);
+            try {
+                return await this._fallbackSatSearch(searchTerm, maxResults);
+            } catch (fallbackErr) {
+                console.error('❌ Error en fallback de catálogo SAT:', fallbackErr);
+                return [];
+            }
+        }
+    }
+
+    /**
+     * Búsqueda fallback para catálogo SAT sin índices
+     */
+    async _fallbackSatSearch(searchTerm, maxResults = 15) {
+        const colRef = collection(db, 'catalogoSAT');
+        const q = query(colRef, limit(40));
+        const snapshot = await getDocs(q);
+        const termLower = searchTerm.toLowerCase().trim();
+        const numericTerm = termLower.replace(/[^0-9]/g, '');
+        const results = [];
+
+        snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            const clave = String(data.c_ClaveProdServ || docSnap.id);
+            const descripcion = data.Descripción || data.Descripcion || data.nombre || '';
+            const descLower = descripcion.toLowerCase();
+
+            if ((numericTerm && (clave === numericTerm || clave.includes(numericTerm))) ||
+                descLower.includes(termLower)) {
+                results.push({
+                    clave: clave,
+                    descripcion: descripcion,
+                    id: docSnap.id
+                });
+            }
+        });
+
+        if (results.length === 0) {
+            try {
+                const docSnap = await getDoc(doc(db, 'catalogoSAT', searchTerm));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    results.push({
+                        clave: String(data.c_ClaveProdServ || docSnap.id),
+                        descripcion: data.Descripción || data.Descripcion || data.nombre || '',
+                        id: docSnap.id
+                    });
+                }
+            } catch (e) {}
+        }
+
+        return results.slice(0, maxResults);
+    }
+
+    /**
+     * Obtiene un producto/clave del catálogo SAT por clave exacta
+     * @param {string} clave
+     * @returns {Promise<{clave: string, descripcion: string, id: string}|null>}
+     */
+    async getSatProductByClave(clave) {
+        if (!clave) return null;
+        try {
+            const cleanClave = String(clave).replace(/[^0-9]/g, '');
+            const colRef = collection(db, 'catalogoSAT');
+            const q = query(colRef, where('c_ClaveProdServ', '==', cleanClave), limit(1));
+            const snapshot = await getDocs(q);
+
+            if (!snapshot.empty) {
+                const docSnap = snapshot.docs[0];
+                const data = docSnap.data();
+                return {
+                    clave: data.c_ClaveProdServ || docSnap.id,
+                    descripcion: data.Descripción || data.Descripcion || data.nombre || '',
+                    id: docSnap.id
+                };
+            }
+
+            // Buscar por ID del doc
+            const docSnap = await getDoc(doc(db, 'catalogoSAT', cleanClave));
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                return {
+                    clave: data.c_ClaveProdServ || docSnap.id,
+                    descripcion: data.Descripción || data.Descripcion || data.nombre || '',
+                    id: docSnap.id
+                };
+            }
+
+            return null;
+        } catch (error) {
+            console.error('❌ Error obteniendo producto SAT por clave:', error);
+            return null;
+        }
+    }
 }
 
 export default ProductoServicioRepository;

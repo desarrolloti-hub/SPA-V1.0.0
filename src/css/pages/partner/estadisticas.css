@@ -1,0 +1,695 @@
+/* ==========================================================================
+   ESTADÍSTICAS Y RENDIMIENTO OPERATIVO - RSI Enterprise
+   Estilos para KPIs, Podio Top 3, Gráficas y Expediente de Colaboradores
+   ========================================================================== */
+
+.rsi-estadisticas-section {
+    padding: var(--rsi-spacing-2xl) 0 var(--rsi-spacing-3xl);
+    min-height: calc(100vh - 180px);
+    background-color: var(--rsi-bg-secondary);
+}
+
+.rsi-stats-header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: var(--rsi-spacing-md);
+    margin-bottom: var(--rsi-spacing-lg);
+}
+
+.rsi-stats-header-info {
+    flex: 1;
+    min-width: 280px;
+}
+
+/* ==========================================
+   BARRA DE FILTROS TEMPORALES
+   ========================================== */
+.rsi-stats-filters-card {
+    background: var(--rsi-bg-card);
+    border: 1px solid var(--rsi-border-color);
+    border-radius: var(--rsi-radius-xl);
+    padding: var(--rsi-spacing-lg);
+    box-shadow: var(--rsi-shadow-sm);
+    margin-bottom: var(--rsi-spacing-xl);
+}
+
+.rsi-stats-filters-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--rsi-spacing-md);
+}
+
+.rsi-stats-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 170px;
+}
+
+.rsi-stats-filter-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--rsi-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rsi-stats-select {
+    padding: 9px 14px;
+    border: 1.5px solid var(--rsi-border-color);
+    border-radius: var(--rsi-radius-md);
+    background: var(--rsi-bg-card);
+    color: var(--rsi-text-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--rsi-transition-fast);
+}
+
+.rsi-stats-select:focus {
+    outline: none;
+    border-color: var(--rsi-primary);
+    box-shadow: 0 0 0 3px rgba(28, 25, 72, 0.15);
+}
+
+.rsi-stats-filter-buttons {
+    display: flex;
+    gap: var(--rsi-spacing-xs);
+    align-items: center;
+}
+
+.rsi-periodo-badge-row {
+    margin-top: var(--rsi-spacing-md);
+    padding-top: var(--rsi-spacing-sm);
+    border-top: 1px dashed var(--rsi-border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--rsi-spacing-sm);
+    font-size: 0.85rem;
+}
+
+.rsi-periodo-badge {
+    color: var(--rsi-text-primary);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rsi-periodo-total {
+    font-weight: 600;
+    color: var(--rsi-primary);
+}
+
+/* ==========================================
+   KPIS GLOBALES GRID
+   ========================================== */
+.rsi-kpis-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: var(--rsi-spacing-md);
+    margin-bottom: var(--rsi-spacing-xl);
+}
+
+.rsi-kpi-card {
+    background: var(--rsi-bg-card);
+    border: 1px solid var(--rsi-border-color);
+    border-radius: var(--rsi-radius-lg);
+    padding: var(--rsi-spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-md);
+    box-shadow: var(--rsi-shadow-sm);
+    transition: transform var(--rsi-transition-fast), box-shadow var(--rsi-transition-fast);
+}
+
+.rsi-kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-md);
+}
+
+.rsi-kpi-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: var(--rsi-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.rsi-kpi-icon.total { background: rgba(59, 130, 246, 0.12); color: #2563eb; }
+.rsi-kpi-icon.resueltos { background: rgba(16, 185, 129, 0.12); color: #059669; }
+.rsi-kpi-icon.tasa { background: rgba(245, 158, 11, 0.12); color: #d97706; }
+.rsi-kpi-icon.activos { background: rgba(239, 68, 68, 0.12); color: #dc2626; }
+.rsi-kpi-icon.tiempo { background: rgba(139, 92, 246, 0.12); color: #7c3aed; }
+.rsi-kpi-icon.evidencias { background: rgba(14, 165, 233, 0.12); color: #0284c7; }
+
+.rsi-kpi-content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.rsi-kpi-label {
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--rsi-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.rsi-kpi-value {
+    font-size: 1.45rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--rsi-text-primary);
+    margin: 2px 0;
+}
+
+.rsi-kpi-desc {
+    font-size: 0.72rem;
+    color: var(--rsi-text-secondary);
+}
+
+.rsi-kpi-progress {
+    width: 100%;
+    height: 5px;
+    background: var(--rsi-gray-200);
+    border-radius: 3px;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.rsi-kpi-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #f59e0b, #10b981);
+    border-radius: 3px;
+    transition: width 0.6s ease;
+}
+
+/* ==========================================
+   SECCIÓN PODIO: TOP 3 SOLUCIONADORES
+   ========================================== */
+.rsi-top-solucionadores-section {
+    margin-bottom: var(--rsi-spacing-2xl);
+}
+
+.rsi-podium-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--rsi-spacing-lg);
+    margin-top: var(--rsi-spacing-md);
+}
+
+.rsi-podium-card {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-xl);
+    padding: var(--rsi-spacing-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    box-shadow: var(--rsi-shadow-md);
+    border: 2px solid transparent;
+    transition: transform var(--rsi-transition-base), box-shadow var(--rsi-transition-base);
+    overflow: hidden;
+}
+
+.rsi-podium-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--rsi-shadow-lg);
+}
+
+/* Oro - 1er Lugar */
+.rsi-podium-card.oro {
+    border-color: #f59e0b;
+    background: linear-gradient(180deg, rgba(245, 158, 11, 0.06) 0%, var(--rsi-bg-card) 60%);
+    order: 2; /* Centro en desktop si se desea podio tradicional */
+}
+
+/* Plata - 2do Lugar */
+.rsi-podium-card.plata {
+    border-color: #94a3b8;
+    background: linear-gradient(180deg, rgba(148, 163, 184, 0.06) 0%, var(--rsi-bg-card) 60%);
+    order: 1;
+}
+
+/* Bronce - 3er Lugar */
+.rsi-podium-card.bronce {
+    border-color: #d97706;
+    background: linear-gradient(180deg, rgba(217, 119, 6, 0.05) 0%, var(--rsi-bg-card) 60%);
+    order: 3;
+}
+
+.rsi-podium-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: var(--rsi-radius-full);
+}
+
+.rsi-podium-card.oro .rsi-podium-badge {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+}
+
+.rsi-podium-card.plata .rsi-podium-badge {
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+}
+
+.rsi-podium-card.bronce .rsi-podium-badge {
+    background: #ffedd5;
+    color: #9a3412;
+    border: 1px solid #fdba74;
+}
+
+.rsi-podium-crown {
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+}
+
+.rsi-podium-card.oro .rsi-podium-crown { color: #f59e0b; }
+.rsi-podium-card.plata .rsi-podium-crown { color: #64748b; }
+.rsi-podium-card.bronce .rsi-podium-crown { color: #b45309; }
+
+.rsi-podium-avatar-wrapper {
+    width: 74px;
+    height: 74px;
+    border-radius: 50%;
+    margin-bottom: var(--rsi-spacing-sm);
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.rsi-podium-avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ffffff;
+}
+
+.rsi-podium-avatar-wrapper .avatar-fallback {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--rsi-primary), var(--rsi-accent));
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.3rem;
+    border: 3px solid #ffffff;
+}
+
+.rsi-podium-card.oro .rsi-podium-avatar-wrapper img,
+.rsi-podium-card.oro .rsi-podium-avatar-wrapper .avatar-fallback {
+    border-color: #f59e0b;
+}
+
+.rsi-podium-card.plata .rsi-podium-avatar-wrapper img,
+.rsi-podium-card.plata .rsi-podium-avatar-wrapper .avatar-fallback {
+    border-color: #94a3b8;
+}
+
+.rsi-podium-card.bronce .rsi-podium-avatar-wrapper img,
+.rsi-podium-card.bronce .rsi-podium-avatar-wrapper .avatar-fallback {
+    border-color: #d97706;
+}
+
+.rsi-podium-colab-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    margin: 0 0 2px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.rsi-podium-colab-area {
+    font-size: 0.8rem;
+    color: var(--rsi-text-secondary);
+    margin-bottom: var(--rsi-spacing-md);
+}
+
+.rsi-podium-stats-row {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    background: var(--rsi-bg-secondary);
+    border-radius: var(--rsi-radius-md);
+    padding: 10px;
+    margin-bottom: var(--rsi-spacing-md);
+}
+
+.rsi-podium-stat-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.rsi-podium-stat-col strong {
+    font-size: 1.15rem;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-podium-stat-col span {
+    font-size: 0.72rem;
+    color: var(--rsi-text-secondary);
+}
+
+.rsi-podium-btn-expediente {
+    width: 100%;
+    padding: 8px 14px;
+    font-size: 0.82rem;
+}
+
+/* ==========================================
+   GRÁFICAS DE CHART.JS
+   ========================================== */
+.rsi-charts-double-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--rsi-spacing-lg);
+    margin-bottom: var(--rsi-spacing-2xl);
+}
+
+.rsi-chart-box {
+    background: var(--rsi-bg-card);
+    border: 1px solid var(--rsi-border-color);
+    border-radius: var(--rsi-radius-xl);
+    padding: var(--rsi-spacing-lg);
+    box-shadow: var(--rsi-shadow-sm);
+    display: flex;
+    flex-direction: column;
+}
+
+.rsi-chart-header {
+    margin-bottom: var(--rsi-spacing-md);
+    padding-bottom: var(--rsi-spacing-xs);
+    border-bottom: 1px solid var(--rsi-border-color);
+}
+
+.rsi-chart-title {
+    margin: 0;
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rsi-chart-subtitle {
+    font-size: 0.78rem;
+    color: var(--rsi-text-secondary);
+}
+
+.rsi-canvas-container {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    flex: 1;
+}
+
+.rsi-canvas-container.donut {
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==========================================
+   TABLA DE RENDIMIENTO POR COLABORADOR
+   ========================================== */
+.rsi-table-search-inline {
+    position: relative;
+    min-width: 240px;
+}
+
+.rsi-table-search-inline i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--rsi-text-secondary);
+    font-size: 0.85rem;
+}
+
+.rsi-table-search-inline input {
+    width: 100%;
+    padding: 7px 12px 7px 32px;
+    border: 1px solid var(--rsi-border-color);
+    border-radius: var(--rsi-radius-md);
+    background: var(--rsi-bg-secondary);
+    color: var(--rsi-text-primary);
+    font-size: 0.85rem;
+}
+
+.rsi-table-search-inline input:focus {
+    outline: none;
+    border-color: var(--rsi-primary);
+    background: var(--rsi-bg-card);
+}
+
+.rsi-colab-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rsi-colab-avatar-cell {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--rsi-primary), var(--rsi-accent));
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.82rem;
+    border: 1px solid var(--rsi-border-color);
+}
+
+.rsi-colab-avatar-cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.rsi-colab-info-cell {
+    display: flex;
+    flex-direction: column;
+}
+
+.rsi-colab-info-cell strong {
+    font-size: 0.88rem;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-colab-info-cell small {
+    font-size: 0.74rem;
+    color: var(--rsi-text-secondary);
+}
+
+.rsi-eff-bar-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+}
+
+.rsi-eff-bar {
+    width: 60px;
+    height: 6px;
+    background: var(--rsi-gray-200);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.rsi-eff-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.4s ease;
+}
+
+.rsi-eff-bar-fill.high { background: #10b981; }
+.rsi-eff-bar-fill.mid { background: #f59e0b; }
+.rsi-eff-bar-fill.low { background: #ef4444; }
+
+.rsi-table-footer-meta {
+    padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    border-top: 1px solid var(--rsi-border-color);
+    font-size: 0.8rem;
+    color: var(--rsi-text-secondary);
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ==========================================
+   MODAL DE EXPEDIENTE DEL COLABORADOR
+   ========================================== */
+.rsi-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 10, 20, 0.65);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--rsi-spacing-md);
+}
+
+.rsi-modal-dialog-large {
+    background: var(--rsi-bg-card);
+    border: 1px solid var(--rsi-border-color);
+    border-radius: var(--rsi-radius-xl);
+    width: 100%;
+    max-width: 840px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--rsi-shadow-2xl);
+    animation: modalScaleIn 0.25s ease-out;
+    overflow: hidden;
+}
+
+@keyframes modalScaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.rsi-modal-header {
+    padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
+    border-bottom: 1px solid var(--rsi-border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rsi-colab-modal-avatar-wrapper {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid var(--rsi-primary);
+    background: linear-gradient(135deg, var(--rsi-primary), var(--rsi-accent));
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.rsi-colab-modal-avatar-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.rsi-modal-close {
+    background: transparent;
+    border: none;
+    font-size: 1.25rem;
+    color: var(--rsi-text-secondary);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+    transition: all var(--rsi-transition-fast);
+}
+
+.rsi-modal-close:hover {
+    color: var(--rsi-danger);
+    background: var(--rsi-bg-secondary);
+}
+
+.rsi-modal-body {
+    padding: var(--rsi-spacing-lg);
+    overflow-y: auto;
+    flex: 1;
+}
+
+.rsi-modal-periodo-tag {
+    background: var(--rsi-bg-secondary);
+    border: 1px solid var(--rsi-border-color);
+    border-radius: var(--rsi-radius-md);
+    padding: 8px 14px;
+    font-size: 0.84rem;
+    color: var(--rsi-text-primary);
+    margin-bottom: var(--rsi-spacing-md);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rsi-modal-footer {
+    padding: var(--rsi-spacing-sm) var(--rsi-spacing-lg);
+    border-top: 1px solid var(--rsi-border-color);
+    display: flex;
+    justify-content: flex-end;
+    background: var(--rsi-bg-secondary);
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+@media (max-width: 992px) {
+    .rsi-podium-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .rsi-podium-card.oro { order: 1; }
+    .rsi-podium-card.plata { order: 2; }
+    .rsi-podium-card.bronce { order: 3; }
+
+    .rsi-charts-double-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .rsi-stats-filters-grid {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .rsi-stats-filter-buttons {
+        width: 100%;
+    }
+    
+    .rsi-stats-filter-buttons button {
+        flex: 1;
+    }
+}

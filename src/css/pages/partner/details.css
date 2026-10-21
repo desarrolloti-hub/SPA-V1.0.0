@@ -5,10 +5,10 @@
     .rsi-view-card {
         max-width: 900px;
         margin: 0 auto;
-        background: var(--card-bg);
+        background: var(--rsi-bg-card);
         border-radius: var(--rsi-radius-xl);
-        box-shadow: var(--shadow-lg);
-        border: 1px solid var(--border-color);
+        box-shadow: var(--rsi-shadow-lg);
+        border: 1px solid var(--rsi-border-color);
         overflow: hidden;
         position: relative;
     }
@@ -40,8 +40,8 @@
         align-items: center;
         gap: var(--rsi-spacing-xl);
         padding: var(--rsi-spacing-xl) var(--rsi-spacing-2xl);
-        border-bottom: 1px solid var(--border-color);
-        background: var(--rsi-gray-50);
+        border-bottom: 1px solid var(--rsi-border-color);
+        background: var(--rsi-bg-secondary);
     }
 
     .rsi-view-image-container {
@@ -52,13 +52,13 @@
         width: 100px;
         height: 100px;
         border-radius: var(--rsi-radius-lg);
-        border: 2px solid var(--border-color);
+        border: 2px solid var(--rsi-border-color);
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        background: var(--card-bg);
-        transition: var(--rsi-transition);
+        background: var(--rsi-bg-card);
+        transition: var(--rsi-transition-base);
     }
 
     .rsi-view-image img {
@@ -79,7 +79,7 @@
     .rsi-view-title h2 {
         font-size: 1.5rem;
         font-weight: 700;
-        color: var(--text-color);
+        color: var(--rsi-text-primary);
         margin: 0 0 var(--rsi-spacing-sm) 0;
         word-break: break-word;
     }
@@ -101,15 +101,15 @@
     }
 
     .rsi-view-badges .rsi-badge-status.activo {
-        background: rgba(46, 204, 113, 0.15);
-        color: #2ecc71;
-        border: 1px solid rgba(46, 204, 113, 0.3);
+        background: var(--rsi-success-light);
+        color: var(--rsi-success-text);
+        border: 1px solid var(--rsi-success);
     }
 
     .rsi-view-badges .rsi-badge-status.inactivo {
-        background: rgba(231, 76, 60, 0.15);
-        color: #e74c3c;
-        border: 1px solid rgba(231, 76, 60, 0.3);
+        background: var(--rsi-danger-light);
+        color: var(--rsi-danger-text);
+        border: 1px solid var(--rsi-danger);
     }
 
     .rsi-view-badges .rsi-badge {
@@ -121,7 +121,7 @@
 
     .rsi-view-badges .rsi-badge-secondary {
         background: var(--rsi-gray-200);
-        color: var(--text-color);
+        color: var(--rsi-text-secondary);
     }
 
     /* ==========================================
@@ -143,7 +143,7 @@
         flex-direction: column;
         gap: var(--rsi-spacing-xs);
         padding: var(--rsi-spacing-sm) 0;
-        border-bottom: 1px solid var(--rsi-gray-100);
+        border-bottom: 1px solid var(--rsi-border-color);
     }
 
     .rsi-view-item:last-child {
@@ -153,7 +153,7 @@
     .rsi-view-label {
         font-size: 0.8rem;
         font-weight: 600;
-        color: var(--rsi-gray-500);
+        color: var(--rsi-text-muted);
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
@@ -161,7 +161,7 @@
     .rsi-view-value {
         font-size: 1rem;
         font-weight: 500;
-        color: var(--text-color);
+        color: var(--rsi-text-primary);
         word-break: break-word;
     }
 
@@ -176,14 +176,14 @@
     
     .rsi-view-timeline {
         padding: var(--rsi-spacing-xl) var(--rsi-spacing-2xl);
-        border-top: 1px solid var(--border-color);
-        background: var(--rsi-gray-50);
+        border-top: 1px solid var(--rsi-border-color);
+        background: var(--rsi-bg-secondary);
     }
 
     .rsi-timeline-title {
         font-size: 1.1rem;
         font-weight: 700;
-        color: var(--text-color);
+        color: var(--rsi-text-primary);
         margin: 0 0 var(--rsi-spacing-lg) 0;
         display: flex;
         align-items: center;
@@ -233,9 +233,9 @@
         height: 12px;
         border-radius: 50%;
         background: var(--rsi-gray-300);
-        border: 2px solid var(--card-bg);
+        border: 2px solid var(--rsi-bg-card);
         z-index: 2;
-        transition: var(--rsi-transition);
+        transition: var(--rsi-transition-base);
     }
 
     /* Diferentes colores según el tipo de evento */
@@ -263,7 +263,7 @@
         justify-content: center;
         font-size: 0.6rem;
         z-index: 3;
-        color: white;
+        color: var(--rsi-text-light);
     }
 
     .rsi-timeline-icon.creacion {
@@ -280,16 +280,16 @@
 
     .rsi-timeline-content {
         flex: 1;
-        background: var(--card-bg);
+        background: var(--rsi-bg-card);
         padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
         border-radius: var(--rsi-radius-md);
-        border: 1px solid var(--border-color);
-        transition: var(--rsi-transition);
+        border: 1px solid var(--rsi-border-color);
+        transition: var(--rsi-transition-base);
     }
 
     .rsi-timeline-content:hover {
         border-color: var(--rsi-primary);
-        box-shadow: var(--shadow-sm);
+        box-shadow: var(--rsi-shadow-sm);
     }
 
     .rsi-timeline-content-header {
@@ -306,7 +306,7 @@
         gap: var(--rsi-spacing-sm);
         font-weight: 600;
         font-size: 0.95rem;
-        color: var(--text-color);
+        color: var(--rsi-text-primary);
     }
 
     .rsi-timeline-event i {
@@ -365,7 +365,7 @@
 
     .rsi-timeline-details .value {
         font-weight: 500;
-        color: var(--text-color);
+        color: var(--rsi-text-primary);
     }
 
     .rsi-timeline-details .value.changed {
@@ -378,11 +378,11 @@
     
     .rsi-view-actions {
         padding: var(--rsi-spacing-lg) var(--rsi-spacing-2xl);
-        border-top: 1px solid var(--border-color);
+        border-top: 1px solid var(--rsi-border-color);
         display: flex;
         justify-content: flex-end;
         gap: var(--rsi-spacing-md);
-        background: var(--card-bg);
+        background: var(--rsi-bg-card);
     }
 
     .rsi-view-actions .rsi-btn-crud {
@@ -395,19 +395,19 @@
         font-weight: 600;
         font-size: 0.95rem;
         cursor: pointer;
-        transition: var(--rsi-transition);
+        transition: var(--rsi-transition-base);
         text-decoration: none;
     }
 
     .rsi-view-actions .rsi-btn-crud-outline {
         background: transparent;
-        color: var(--text-color);
-        border: 1px solid var(--border-color);
+        color: var(--rsi-text-primary);
+        border: 1px solid var(--rsi-border-color);
     }
 
     .rsi-view-actions .rsi-btn-crud-outline:hover {
-        background: var(--rsi-gray-100);
-        border-color: var(--rsi-gray-300);
+        background: var(--rsi-bg-secondary);
+        border-color: var(--rsi-border-color);
     }
 
     /* ==========================================
@@ -438,7 +438,7 @@
         border-top-color: var(--rsi-primary);
         border-radius: 50%;
         animation: rsi-spin 0.8s linear infinite;
-        background: var(--card-bg);
+        background: var(--rsi-bg-card);
         padding: 0.5rem;
     }
 
@@ -568,56 +568,56 @@
        ========================================== */
     
     body.dark-mode .rsi-view-card {
-        background: var(--card-bg);
-        border-color: var(--border-color);
+        background: var(--rsi-bg-card);
+        border-color: var(--rsi-border-color);
     }
 
     body.dark-mode .rsi-view-header {
-        background: var(--rsi-gray-800);
-        border-color: var(--border-color);
+        background: var(--rsi-bg-secondary);
+        border-color: var(--rsi-border-color);
     }
 
     body.dark-mode .rsi-view-image {
-        border-color: var(--border-color);
-        background: var(--card-bg);
+        border-color: var(--rsi-border-color);
+        background: var(--rsi-bg-card);
     }
 
     body.dark-mode .rsi-view-title h2 {
-        color: var(--text-color);
+        color: var(--rsi-text-light);
     }
 
     body.dark-mode .rsi-view-item {
-        border-color: var(--rsi-gray-300);
+        border-color: var(--rsi-border-color);
     }
 
     body.dark-mode .rsi-view-label {
-        color: var(--rsi-gray-400);
+        color: var(--rsi-text-muted);
     }
 
     body.dark-mode .rsi-view-value {
-        color: var(--text-color);
+        color: var(--rsi-text-primary);
     }
 
     body.dark-mode .rsi-view-timeline {
-        background: var(--rsi-gray-800);
-        border-color: var(--border-color);
+        background: var(--rsi-bg-secondary);
+        border-color: var(--rsi-border-color);
     }
 
     body.dark-mode .rsi-timeline-title {
-        color: var(--text-color);
+        color: var(--rsi-text-primary);
     }
 
     body.dark-mode .rsi-timeline-item::before {
-        background: var(--rsi-gray-300);
+        background: var(--rsi-border-color);
     }
 
     body.dark-mode .rsi-timeline-item::after {
-        border-color: var(--card-bg);
+        border-color: var(--rsi-bg-card);
     }
 
     body.dark-mode .rsi-timeline-content {
-        background: var(--card-bg);
-        border-color: var(--border-color);
+        background: var(--rsi-bg-card);
+        border-color: var(--rsi-border-color);
     }
 
     body.dark-mode .rsi-timeline-content:hover {
@@ -625,45 +625,45 @@
     }
 
     body.dark-mode .rsi-timeline-event {
-        color: var(--text-color);
+        color: var(--rsi-text-primary);
     }
 
     body.dark-mode .rsi-timeline-user {
-        color: var(--rsi-gray-400);
+        color: var(--rsi-text-muted);
     }
 
     body.dark-mode .rsi-timeline-date {
-        color: var(--rsi-gray-500);
+        color: var(--rsi-text-muted);
     }
 
     body.dark-mode .rsi-timeline-details {
-        color: var(--rsi-gray-400);
+        color: var(--rsi-text-secondary);
     }
 
     body.dark-mode .rsi-timeline-details .value {
-        color: var(--text-color);
+        color: var(--rsi-text-primary);
     }
 
     body.dark-mode .rsi-timeline-details .label {
-        color: var(--rsi-gray-500);
+        color: var(--rsi-text-muted);
     }
 
     body.dark-mode .rsi-view-actions {
-        border-color: var(--border-color);
-        background: var(--card-bg);
+        border-color: var(--rsi-border-color);
+        background: var(--rsi-bg-card);
     }
 
     body.dark-mode .rsi-view-actions .rsi-btn-crud-outline {
-        color: var(--text-color);
-        border-color: var(--border-color);
+        color: var(--rsi-text-primary);
+        border-color: var(--rsi-border-color);
     }
 
     body.dark-mode .rsi-view-actions .rsi-btn-crud-outline:hover {
-        background: var(--rsi-gray-700);
-        border-color: var(--rsi-gray-600);
+        background: var(--rsi-bg-secondary);
+        border-color: var(--rsi-border-color);
     }
 
     body.dark-mode .rsi-view-badges .rsi-badge-secondary {
-        background: var(--rsi-gray-700);
-        color: var(--text-color);
+        background: var(--rsi-bg-secondary);
+        color: var(--rsi-text-secondary);
     }

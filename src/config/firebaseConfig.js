@@ -24,7 +24,8 @@ import {
     endAt,
     setDoc,
     Timestamp,
-    writeBatch
+    writeBatch,
+    runTransaction
 } from 'firebase/firestore';
 
 import { 
@@ -35,7 +36,9 @@ import {
     onAuthStateChanged, 
     sendPasswordResetEmail, 
     updateProfile,
-    sendEmailVerification
+    sendEmailVerification,
+    GoogleAuthProvider,
+    signInWithPopup
 } from 'firebase/auth';
 
 import { 
@@ -121,7 +124,8 @@ export {
     startAt,
     endAt,
     Timestamp,
-    writeBatch
+    writeBatch,
+    runTransaction
 };
 
 // ✅ Exportar funciones de Auth
@@ -132,7 +136,9 @@ export {
     onAuthStateChanged,
     sendPasswordResetEmail,
     updateProfile,
-    sendEmailVerification
+    sendEmailVerification,
+    GoogleAuthProvider,
+    signInWithPopup
 };
 
 // ✅ Exportar funciones de Storage (incluyendo getMetadata)
@@ -179,6 +185,7 @@ export default {
     endAt,
     Timestamp,
     writeBatch,
+    runTransaction,
     // Auth
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -187,6 +194,8 @@ export default {
     sendPasswordResetEmail,
     updateProfile,
     sendEmailVerification,
+    GoogleAuthProvider,
+    signInWithPopup,
     // Storage
     ref,
     uploadBytes,

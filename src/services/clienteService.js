@@ -5,7 +5,7 @@
 
 import ClienteRepository from '../repositories/clienteRepository.js';
 import ClienteModel from '../models/clienteModel.js';
-import { obtenerCodigoRegimen, REGIMENES_SAT } from '../utils/regimenesSAT.js';
+import { obtenerCodigoRegimen, REGIMENES_SAT } from '../utils/regimenesSat.js';
 
 // URL de la API de Facturama (Cloud Functions)
 const FACTURAMA_API_URL = "https://us-central1-rsienterprise.cloudfunctions.net";
@@ -69,7 +69,8 @@ export class ClienteService {
                 throw new Error(JSON.stringify(validation.errors));
             }
 
-            const exists = await this.repository.existsClienteByRfc(data.rfc);
+            const isGenericRfc = ['XAXX010101000', 'XEXX010101000'].includes((data.rfc || '').trim().toUpperCase());
+            const exists = !isGenericRfc && await this.repository.existsClienteByRfc(data.rfc);
             if (exists) {
                 throw new Error('Ya existe un cliente con ese RFC');
             }
@@ -141,7 +142,8 @@ export class ClienteService {
                 throw new Error(JSON.stringify(validation.errors));
             }
 
-            const exists = await this.repository.existsClienteByRfc(data.rfc, clienteId);
+            const isGenericRfc = ['XAXX010101000', 'XEXX010101000'].includes((data.rfc || '').trim().toUpperCase());
+            const exists = !isGenericRfc && await this.repository.existsClienteByRfc(data.rfc, clienteId);
             if (exists) {
                 throw new Error('Ya existe un cliente con ese RFC');
             }

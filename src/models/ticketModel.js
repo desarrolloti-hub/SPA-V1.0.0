@@ -91,9 +91,6 @@ export class TicketModel {
      * @param {string} tipo - 'operativo' o 'administracion'
      * @returns {Object} - Objeto Ticket formateado
      */
-    /**
-     * Crea un nuevo objeto Ticket para Firestore
-     */
     static create(data, idTicket, creadoPor, creadoPorNombre, tipo) {
         const now = new Date().toISOString();
         const nowTimestamp = new Date();
@@ -120,7 +117,6 @@ export class TicketModel {
             creadoPor: creadoPor || '',
             creadoPorNombre: creadoPorNombre || '',
             modificadoPor: creadoPor || '',
-            // ✅ Historial con un SOLO evento de creación
             historial: {
                 [now]: {
                     evento: 'creacion',
@@ -131,12 +127,46 @@ export class TicketModel {
                 }
             },
             notificacionesEnviadas: false,
-            fechaUltimaNotificacion: null
+            fechaUltimaNotificacion: null,
+            aceptaciones: data.aceptaciones || {},
+            comentarios: Array.isArray(data.comentarios) ? data.comentarios : [],
+            evidencias: {
+                antes: Array.isArray(data.evidencias?.antes) ? data.evidencias.antes : [],
+                durante: Array.isArray(data.evidencias?.durante) ? data.evidencias.durante : [],
+                despues: Array.isArray(data.evidencias?.despues) ? data.evidencias.despues : []
+            },
+            actividadesDesarrolladas: data.actividadesDesarrolladas || ''
         };
 
-        // Campos específicos según tipo...
-        // (resto del código igual)
-        
+        // Campos específicos según tipo
+        if (tipoValido === this.TIPOS.OPERATIVO) {
+            ticket.clienteId = data.clienteId || null;
+            ticket.clienteNombre = data.clienteNombre || '';
+            ticket.rfc = data.rfc || '';
+            ticket.atencionA = data.atencionA || '';
+            ticket.correo = data.correo || '';
+            ticket.ordenServicio = data.ordenServicio || '';
+            ticket.proyecto = data.proyecto || '';
+            ticket.servicio = data.servicio || '';
+            ticket.sistemas = data.sistemas || [];
+            ticket.cotizacionId = data.cotizacionId || null;
+            ticket.cotizacionNumero = data.cotizacionNumero || '';
+            ticket.fechaFinalizacionEstimada = null;
+        } else {
+            ticket.clienteId = null;
+            ticket.clienteNombre = '';
+            ticket.rfc = '';
+            ticket.atencionA = '';
+            ticket.correo = '';
+            ticket.ordenServicio = '';
+            ticket.proyecto = '';
+            ticket.servicio = '';
+            ticket.sistemas = [];
+            ticket.cotizacionId = null;
+            ticket.cotizacionNumero = '';
+            ticket.fechaFinalizacionEstimada = data.fechaFinalizacionEstimada || null;
+        }
+
         return ticket;
     }
 
@@ -219,7 +249,7 @@ export class TicketModel {
             errors.prioridad = 'Seleccione una prioridad válida';
         }
 
-        // Validación de fechas
+        // ✅ Validación de fechas - Permite fechas iguales o posteriores a hoy
         const hoy = new Date();
         hoy.setHours(0, 0, 0, 0);
 
@@ -227,6 +257,7 @@ export class TicketModel {
             const fechaInicio = new Date(data.fechaInicio);
             fechaInicio.setHours(0, 0, 0, 0);
             
+            // ✅ Permite fechas iguales o posteriores a hoy
             if (fechaInicio < hoy) {
                 errors.fechaInicio = 'La fecha de inicio no puede ser anterior a hoy';
             }
@@ -236,6 +267,7 @@ export class TicketModel {
             const fechaFin = new Date(data.fechaFin);
             fechaFin.setHours(0, 0, 0, 0);
             
+            // ✅ Permite fechas iguales o posteriores a hoy
             if (fechaFin < hoy) {
                 errors.fechaFin = 'La fecha de finalización no puede ser anterior a hoy';
             }
@@ -249,13 +281,12 @@ export class TicketModel {
             }
         }
 
-        // ✅ Validaciones específicas por tipo - SOLO para operativo
+        // Validaciones específicas por tipo
         if (tipo === this.TIPOS.OPERATIVO) {
             if (!data.clienteId) {
                 errors.cliente = 'Debe seleccionar un cliente';
             }
         }
-        // ✅ Para administración NO se valida cliente
 
         return {
             valid: Object.keys(errors).length === 0,
@@ -329,6 +360,110 @@ export class TicketModel {
             'baja': '#28a745'
         };
         return colors[prioridad] || '#6c757d';
+    }
+
+    /**
+     * Normaliza la estructura de evidencias (antes, durante, despues) de un ticket
+     * @param {Object} ticket
+     * @returns {{ antes: Array, durante: Array, despues: Array }}
+     */
+    static normalizeEvidencias(ticket) {
+        const raw = ticket?.evidencias || {};
+        if (Array.isArray(raw)) {
+            return {
+                antes: raw.filter(e => e && e.etapa === 'antes'),
+                durante: raw.filter(e => e && e.etapa === 'durante'),
+                despues: raw.filter(e => e && e.etapa === 'despues')
+            };
+        }
+        return {
+            antes: Array.isArray(raw.antes) ? raw.antes : [],
+            durante: Array.isArray(raw.durante) ? raw.durante : [],
+            despues: Array.isArray(raw.despues) ? raw.despues : []
+        };
+    }
+
+    /**
+     * Normaliza las aceptaciones del ticket a un arreglo uniforme
+     * @param {Object} ticket
+     * @returns {Array<Object>}
+     */
+    static normalizeAceptaciones(ticket) {
+        const raw = ticket?.aceptaciones;
+        if (!raw) return [];
+        if (Array.isArray(raw)) return raw.filter(Boolean);
+        if (typeof raw === 'object') {
+            return Object.entries(raw).map(([key, val]) => ({
+                id: val?.id || `acc_${key}`,
+                colaboradorId: val?.colaboradorId || key,
+                uid: val?.uid || key,
+                nombre: val?.nombre || val?.usuario || 'Colaborador',
+                puesto: val?.puesto || '',
+                fechaAceptacion: val?.fechaAceptacion || val?.timestamp || null,
+                comentario: val?.comentario || '',
+                ubicacion: val?.ubicacion || null
+            }));
+        }
+        return [];
+    }
+
+    /**
+     * Valida que el ticket cumpla todos los requisitos para poder cerrarse/finalizarse:
+     * - Aceptación registrada
+     * - Evidencia fotográfica del ANTES (>= 1)
+     * - Evidencia fotográfica del DURANTE (>= 1)
+     * - Evidencia fotográfica del DESPUÉS (>= 1)
+     * - Actividades desarrolladas descritas (>= 5 caracteres)
+     *
+     * @param {Object} ticket - Datos actuales del ticket
+     * @param {string} [actividadesOverride] - Texto de actividades desarrolladas en captura
+     * @param {Array<string>} [userIds] - IDs del colaborador actual
+     * @returns {{ valid: boolean, errors: Array<string>, missing: Array<string>, checks: Object }}
+     */
+    static validateForCierre(ticket, actividadesOverride = undefined, userIds = []) {
+        const evidencias = this.normalizeEvidencias(ticket);
+        const aceptaciones = this.normalizeAceptaciones(ticket);
+
+        const hasUserAccepted = userIds && userIds.length > 0
+            ? aceptaciones.some(a => userIds.includes(a.colaboradorId) || (a.uid && userIds.includes(a.uid)))
+            : aceptaciones.length > 0;
+
+        const hasAntes = evidencias.antes.length > 0;
+        const hasDurante = evidencias.durante.length > 0;
+        const hasDespues = evidencias.despues.length > 0;
+
+        const actividades = (actividadesOverride !== undefined ? actividadesOverride : (ticket?.actividadesDesarrolladas || '')).trim();
+        const hasActividades = actividades.length >= 5;
+
+        const missing = [];
+        if (!hasUserAccepted) {
+            missing.push('Aceptar formalmente el ticket antes de cerrarlo.');
+        }
+        if (!hasAntes) {
+            missing.push('Subir al menos 1 evidencia fotográfica del ANTES (con marca de agua).');
+        }
+        if (!hasDurante) {
+            missing.push('Subir al menos 1 evidencia fotográfica del DURANTE (con marca de agua).');
+        }
+        if (!hasDespues) {
+            missing.push('Subir al menos 1 evidencia fotográfica del DESPUÉS (con marca de agua).');
+        }
+        if (!hasActividades) {
+            missing.push('Describir las actividades desarrolladas en el ticket.');
+        }
+
+        return {
+            valid: missing.length === 0,
+            errors: missing,
+            missing,
+            checks: {
+                aceptado: hasUserAccepted,
+                antes: hasAntes,
+                durante: hasDurante,
+                despues: hasDespues,
+                actividades: hasActividades
+            }
+        };
     }
 
     /**

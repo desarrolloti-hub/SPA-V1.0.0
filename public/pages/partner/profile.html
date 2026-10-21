@@ -24,7 +24,7 @@
                     <div id="avatar-placeholder" class="rsi-avatar-placeholder">U</div>
                     <div id="profile-status-badge" class="rsi-avatar-status rsi-status-active">● Activo</div>
                 </div>
-                <div class="rsi-profile-info">
+                <div class="rsi-profile-info-profile">
                     <h2 id="profile-name">Cargando...</h2>
                     <p id="profile-email" class="rsi-profile-email">Cargando...</p>
                     <div class="rsi-profile-tags">
@@ -54,6 +54,11 @@
                     <button class="rsi-tab" data-tab="notificaciones">
                         <i class="fas fa-bell"></i>
                         <span>Notificaciones</span>
+                    </button>
+                    <button class="rsi-tab" data-tab="vehiculos" id="tabVehiculosBtn">
+                        <i class="fas fa-car"></i>
+                        <span>Vehículos</span>
+                        <span class="veh-tab-badge" id="badgePendingVehiculos" style="display:none;">0</span>
                     </button>
                 </div>
 
@@ -241,11 +246,105 @@
                     </div>
                 </div>
 
+                <!-- ===== PANEL VEHÍCULOS Y SALIDAS ===== -->
+                <div class="rsi-tab-panel" data-tab="vehiculos">
+                    <div class="rsi-panel-header">
+                        <h3><i class="fas fa-car"></i> Salidas Vehiculares Asignadas</h3>
+                        <p>Revisa y firma digitalmente las órdenes de salida de automóviles puestas a tu resguardo.</p>
+                    </div>
+                    <div class="rsi-panel-body">
+                        
+                        <div class="veh-profile-section-title">
+                            <h4><i class="fas fa-file-signature"></i> Salidas Pendientes de Aceptación</h4>
+                            <p>Inspecciona las condiciones documentadas, revisa las fotografías y plasma tu firma para recibir la unidad.</p>
+                        </div>
+
+                        <div id="profilePendingSalidasList" class="veh-pending-list">
+                            <div class="veh-empty-state">
+                                <i class="fas fa-check-circle"></i>
+                                <h3>No tienes salidas vehiculares pendientes de firma</h3>
+                                <p>Cuando un inspector te asigne un automóvil, aparecerá aquí para tu revisión y firma.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
         </div>
 
     </div>
 </section>
+
+<!-- Modal: Firma Electrónica y Aceptación de Salida Vehicular -->
+<div class="rsi-modal" id="modalFirmaSalida" style="display: none;">
+    <div class="rsi-modal-content" style="max-width: 800px;">
+        <div class="rsi-modal-header">
+            <h3 id="modalFirmaTitle">
+                <i class="fas fa-file-signature"></i> Aceptación y Firma de Salida Vehicular
+            </h3>
+            <button type="button" class="rsi-modal-close" id="btnCloseModalFirmaSalida">&times;</button>
+        </div>
+        <div class="rsi-modal-body">
+            
+            <!-- Resumen de la Salida a Firmar -->
+            <div id="signingSummaryBox" style="background: var(--rsi-bg-secondary); border: 1px solid var(--rsi-border-color); border-radius: var(--rsi-radius-lg); padding: var(--rsi-spacing-md); margin-bottom: var(--rsi-spacing-md);">
+                <!-- Se llena dinámicamente con datos del auto, inspector, km y combustible -->
+            </div>
+
+            <!-- Galería de Evidencias de la Inspección Previa -->
+            <div style="margin-bottom: var(--rsi-spacing-md);">
+                <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--rsi-text-primary); margin: 0 0 4px 0; display: flex; align-items: center; gap: 6px;">
+                    <i class="fas fa-camera" style="color: var(--rsi-primary);"></i> Evidencias Registradas por el Inspector
+                </h4>
+                <p style="font-size: 0.82rem; color: var(--rsi-text-secondary); margin: 0 0 10px 0;">Verifica las fotografías y condiciones documentadas antes de firmar de conformidad:</p>
+                <div id="signingEvidenciasGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px;"></div>
+            </div>
+
+            <!-- Declaración de Responsabilidad -->
+            <div style="background: rgba(212, 175, 55, 0.08); border: 1.5px solid var(--rsi-primary); border-radius: var(--rsi-radius-md); padding: 12px 14px; margin-bottom: var(--rsi-spacing-md);">
+                <label style="display: flex; gap: 10px; align-items: flex-start; cursor: pointer;">
+                    <input type="checkbox" id="chkDeclaracionAceptacion" style="margin-top: 3px; accent-color: var(--rsi-primary);" />
+                    <span style="font-size: 0.85rem; color: var(--rsi-text-primary); line-height: 1.45;">
+                        <strong>Declaración de recepción y resguardo:</strong> He revisado físicamente el automóvil, verificando que las condiciones, kilometraje, combustible y daños documentados corresponden fielmente al estado actual del vehículo. Acepto el resguardo y responsabilidad del automóvil durante la salida.
+                    </span>
+                </label>
+            </div>
+
+            <!-- Observaciones adicionales del receptor antes de firmar -->
+            <div class="rsi-form-group" style="margin-bottom: var(--rsi-spacing-md);">
+                <label for="inputObservacionesReceptor" style="font-size: 0.85rem; font-weight: 600; color: var(--rsi-text-primary); margin-bottom: 4px; display: block;">Comentarios u observaciones adicionales del receptor (opcional):</label>
+                <div class="rsi-input-wrapper">
+                    <textarea id="inputObservacionesReceptor" rows="2" placeholder="Agrega cualquier observación adicional al recibir la unidad..." style="font-size: 0.85rem;"></textarea>
+                </div>
+            </div>
+
+            <!-- Lienzo de Firma Digital -->
+            <div style="background: var(--rsi-bg-card); border: 1.5px solid var(--rsi-border-color); border-radius: var(--rsi-radius-lg); padding: var(--rsi-spacing-md);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <label style="font-size: 0.88rem; font-weight: 700; color: var(--rsi-text-primary);">
+                        <i class="fas fa-signature" style="color: var(--rsi-primary);"></i> Firma Digital del Receptor (Dibuja tu firma en el recuadro):
+                    </label>
+                    <button type="button" class="rsi-btn-action rsi-btn-action-outline rsi-btn-sm" id="btnClearSignature" style="padding: 4px 10px; font-size: 0.78rem;">
+                        <i class="fas fa-eraser"></i> Limpiar
+                    </button>
+                </div>
+                <div style="position: relative; width: 100%; border: 1.5px dashed var(--rsi-border-color); border-radius: var(--rsi-radius-md); background: #ffffff; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                    <canvas id="signatureCanvas" width="600" height="200" style="width: 100%; max-width: 600px; height: 180px; display: block; touch-action: none; cursor: crosshair;"></canvas>
+                </div>
+                <small style="font-size: 0.75rem; color: var(--rsi-text-muted); text-align: center; display: block; margin-top: 4px;">Firma aquí con el dedo o puntero del ratón</small>
+            </div>
+
+            <div class="rsi-modal-actions" style="margin-top: var(--rsi-spacing-lg); justify-content: flex-end; gap: var(--rsi-spacing-md);">
+                <button type="button" class="rsi-btn-crud rsi-btn-crud-outline" id="btnCancelFirmaSalida">Cancelar</button>
+                <button type="button" class="rsi-btn-crud rsi-btn-crud-primary" id="btnConfirmarFirmaSalida">
+                    <i class="fas fa-check-circle"></i> Confirmar y Firmar Salida
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <!-- Toast Container -->
 <div id="toast-container"></div>

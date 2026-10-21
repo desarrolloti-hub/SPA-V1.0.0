@@ -79,6 +79,78 @@ export class NewCollaboratorRepository extends BaseRepository {
     }
 
     /**
+ * ✅ Obtiene un colaborador por su UID (Firebase Auth UID)
+ */
+async getCollaboratorByUid(uid, forceRefresh = false) {
+    try {
+        // Verificar caché
+        if (!forceRefresh && this.cache.byUid && this.cache.byUid[uid]) {
+            console.log(`📦 Usando caché para colaborador con UID: ${uid}`);
+            return this.cache.byUid[uid];
+        }
+
+        const usersCollection = this._getCollection();
+        const q = query(usersCollection, where('uid', '==', uid));
+        const snapshot = await getDocs(q);
+        
+        if (snapshot.empty) {
+            console.warn(`⚠️ Colaborador no encontrado con UID: ${uid}`);
+            return null;
+        }
+
+        const doc = snapshot.docs[0];
+        const collaborator = {
+            id: doc.id,
+            ...doc.data()
+        };
+
+        // Guardar en caché
+        if (!this.cache.byUid) this.cache.byUid = {};
+        this.cache.byUid[uid] = collaborator;
+
+        console.log(`✅ Colaborador encontrado con UID: ${uid}`);
+        return collaborator;
+    } catch (error) {
+        console.error(`❌ Error obteniendo colaborador por UID ${uid}:`, error);
+        return null;
+    }
+}
+
+/**
+ * ✅ Obtiene un colaborador por su docId (ID del documento en Firestore)
+ */
+async getCollaboratorByDocId(docId, forceRefresh = false) {
+    try {
+        if (!forceRefresh && this.cache.byDocId && this.cache.byDocId[docId]) {
+            console.log(`📦 Usando caché para colaborador con docId: ${docId}`);
+            return this.cache.byDocId[docId];
+        }
+
+        const docRef = doc(db, this.collectionName, docId);
+        const docSnap = await getDoc(docRef);
+        
+        if (!docSnap.exists()) {
+            console.warn(`⚠️ Colaborador no encontrado con docId: ${docId}`);
+            return null;
+        }
+
+        const collaborator = {
+            id: docSnap.id,
+            ...docSnap.data()
+        };
+
+        if (!this.cache.byDocId) this.cache.byDocId = {};
+        this.cache.byDocId[docId] = collaborator;
+
+        console.log(`✅ Colaborador encontrado con docId: ${docId}`);
+        return collaborator;
+    } catch (error) {
+        console.error(`❌ Error obteniendo colaborador por docId ${docId}:`, error);
+        return null;
+    }
+}
+
+    /**
      * Guarda los datos del colaborador en Firestore y limpia caché
      */
     async saveCollaboratorData(uid, data) {
@@ -256,33 +328,120 @@ export class NewCollaboratorRepository extends BaseRepository {
     // ==========================================
 
     /**
-     * 🔥 Guarda el token FCM en el documento del usuario
+     * 🔥 Guarda el token FCM en el documento del usuario (soporta múltiples dispositivos)
      */
     async saveFCMToken(uid, fcmToken, platform = 'web') {
         try {
+            if (!uid || !fcmToken) return false;
+
             const usersCollection = this._getCollection();
             const q = query(usersCollection, where('uid', '==', uid));
             const snapshot = await getDocs(q);
             
             if (snapshot.empty) {
-                throw new Error('Usuario no encontrado');
+                console.warn(`⚠️ Usuario no encontrado con UID ${uid} para guardar token FCM`);
+                return false;
             }
 
             const docRef = snapshot.docs[0].ref;
+            const currentData = snapshot.docs[0].data();
+            
+            // Consolidar array de tokens
+            let tokens = currentData.fcmTokens || [];
+            if (!Array.isArray(tokens)) {
+                tokens = currentData.fcmToken ? [currentData.fcmToken] : [];
+            }
+            
+            // Agregar nuevo token sin duplicar
+            if (!tokens.includes(fcmToken)) {
+                tokens.push(fcmToken);
+            }
             
             await updateDoc(docRef, {
                 fcmToken: fcmToken,
+                fcmTokens: tokens,
                 fcmPlatform: platform,
                 notificationsEnabled: true,
                 fcmTokenUpdatedAt: new Date().toISOString()
             });
             
             this.clearCache();
-            console.log('✅ Token FCM guardado en usuario:', uid);
+            console.log('✅ Token FCM guardado en usuario:', uid, `(Total dispositivos: ${tokens.length})`);
             return true;
         } catch (error) {
             console.error('❌ Error guardando FCM token:', error);
             throw error;
+        }
+    }
+
+    /**
+     * 🔥 Desvincula un token FCM específico del usuario (ej. al cerrar sesión en este dispositivo)
+     */
+    async removeFCMToken(uid, tokenToRemove) {
+        try {
+            if (!uid || !tokenToRemove) return false;
+
+            const usersCollection = this._getCollection();
+            const q = query(usersCollection, where('uid', '==', uid));
+            const snapshot = await getDocs(q);
+            
+            if (snapshot.empty) return false;
+
+            const docRef = snapshot.docs[0].ref;
+            const currentData = snapshot.docs[0].data();
+            
+            let tokens = currentData.fcmTokens || [];
+            if (!Array.isArray(tokens)) {
+                tokens = currentData.fcmToken ? [currentData.fcmToken] : [];
+            }
+            
+            // Filtrar únicamente el token de este dispositivo
+            tokens = tokens.filter(t => t !== tokenToRemove);
+            
+            const updatePayload = {
+                fcmTokens: tokens,
+                fcmToken: tokens.length > 0 ? tokens[tokens.length - 1] : '',
+                fcmTokenUpdatedAt: new Date().toISOString()
+            };
+            
+            if (tokens.length === 0) {
+                updatePayload.notificationsEnabled = false;
+            }
+            
+            await updateDoc(docRef, updatePayload);
+            this.clearCache();
+            console.log(`✅ Token de dispositivo desvinculado para usuario ${uid}. Quedan ${tokens.length} dispositivos.`);
+            return true;
+        } catch (error) {
+            console.error('❌ Error desvinculando token FCM:', error);
+            return false;
+        }
+    }
+
+    /**
+     * 🔥 Remueve un token inválido de cualquier usuario en Firestore
+     */
+    async removeInvalidToken(invalidToken) {
+        try {
+            if (!invalidToken) return;
+
+            const usersCollection = this._getCollection();
+            const q = query(usersCollection, where('fcmTokens', 'array-contains', invalidToken));
+            const snapshot = await getDocs(q);
+            
+            for (const docSnap of snapshot.docs) {
+                const data = docSnap.data();
+                const tokens = (data.fcmTokens || []).filter(t => t !== invalidToken);
+                await updateDoc(docSnap.ref, {
+                    fcmTokens: tokens,
+                    fcmToken: tokens.length > 0 ? tokens[tokens.length - 1] : '',
+                    fcmTokenUpdatedAt: new Date().toISOString()
+                });
+                console.log(`🗑️ Token inválido removido de usuario ${docSnap.id}`);
+            }
+            this.clearCache();
+        } catch (error) {
+            console.warn('⚠️ No se pudo remover token inválido:', error.message);
         }
     }
 
@@ -330,8 +489,13 @@ export class NewCollaboratorRepository extends BaseRepository {
             }
 
             const data = snapshot.docs[0].data();
+            const tokens = Array.isArray(data.fcmTokens) && data.fcmTokens.length > 0
+                ? data.fcmTokens
+                : (data.fcmToken ? [data.fcmToken] : []);
+
             return {
-                fcmToken: data.fcmToken || null,
+                fcmToken: data.fcmToken || (tokens[0] || null),
+                fcmTokens: tokens,
                 notificationsEnabled: data.notificationsEnabled || false,
                 locationEnabled: data.locationEnabled || false,
                 fcmPlatform: data.fcmPlatform || null,
@@ -346,7 +510,7 @@ export class NewCollaboratorRepository extends BaseRepository {
     }
 
     /**
-     * 🔥 Desactiva las notificaciones del usuario
+     * 🔥 Desactiva las notificaciones del usuario (todos los dispositivos)
      */
     async disableNotifications(uid) {
         try {
@@ -362,6 +526,7 @@ export class NewCollaboratorRepository extends BaseRepository {
             
             await updateDoc(docRef, {
                 fcmToken: '',
+                fcmTokens: [],
                 notificationsEnabled: false,
                 fcmTokenUpdatedAt: new Date().toISOString()
             });

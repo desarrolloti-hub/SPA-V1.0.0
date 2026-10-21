@@ -1,0 +1,646 @@
+/* ========================================
+   REEMBOLSOS CSS - RSI ENTERPRISE
+   Estilos modulares para Mis Reembolsos, Solicitud de Reembolso Propio
+   y Panel Administrativo de Reembolsos a Colaboradores (Total / Parcial)
+   ======================================== */
+
+.rsi-reembolsos-section,
+.rsi-reembolso-form-section,
+.rsi-reembolsos-crud-section {
+    padding: var(--rsi-spacing-2xl) 0 var(--rsi-spacing-3xl);
+    min-height: calc(100vh - 180px);
+    background-color: var(--rsi-bg-secondary);
+}
+
+.rsi-reembolsos-section > .rsi-container,
+.rsi-reembolso-form-section > .rsi-container,
+.rsi-reembolsos-crud-section > .rsi-container {
+    max-width: 1380px;
+    margin: 0 auto;
+    padding: 0 var(--rsi-spacing-xl);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* === Encabezado de Vistas de Reembolsos === */
+.rsi-reembolso-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--rsi-spacing-md);
+    margin-bottom: var(--rsi-spacing-xl);
+}
+
+.rsi-reembolso-header-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* === Tarjeta del Solicitante en Reembolso Propio === */
+.rsi-reembolso-applicant-card {
+    background: var(--rsi-bg-card);
+    border: 1px solid var(--rsi-border-color, var(--rsi-border));
+    border-radius: var(--rsi-radius-xl);
+    padding: var(--rsi-spacing-xl);
+    box-shadow: var(--rsi-shadow-sm);
+    margin-bottom: var(--rsi-spacing-xl);
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: var(--rsi-spacing-xl);
+    align-items: center;
+}
+
+.rsi-reembolso-applicant-profile {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-md);
+}
+
+.rsi-reembolso-avatar {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--rsi-gold-base, #d4af37);
+    box-shadow: var(--rsi-shadow-sm);
+}
+
+.rsi-reembolso-badge-role {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--rsi-gold-base, #d4af37);
+    margin-bottom: 2px;
+}
+
+.rsi-reembolso-applicant-profile h3 {
+    margin: 0 0 3px 0;
+    font-size: 1.15rem;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-reembolso-applicant-profile p {
+    margin: 0 0 2px 0;
+    font-size: 0.85rem;
+    color: var(--rsi-text-secondary);
+}
+
+.rsi-reembolso-email {
+    font-size: 0.78rem;
+    color: var(--rsi-text-muted);
+}
+
+.rsi-reembolso-policy-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(28, 25, 72, 0.05);
+    border: 1px solid var(--rsi-border-color, rgba(28, 25, 72, 0.14));
+    border-left: 4px solid var(--rsi-gold-base, #d4af37);
+    border-radius: var(--rsi-radius-md);
+    padding: 14px 18px;
+    font-size: 0.88rem;
+    color: var(--rsi-text-secondary);
+}
+
+.rsi-reembolso-policy-banner i {
+    font-size: 1.6rem;
+    color: var(--rsi-gold-base, #d4af37);
+}
+
+/* === Grid Formulario de Reembolso Propio + Resumen Lateral === */
+.rsi-reembolso-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: var(--rsi-spacing-xl);
+    align-items: start;
+}
+
+.rsi-reembolso-row-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+/* Input de Moneda */
+.rsi-currency-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.rsi-currency-prefix {
+    position: absolute;
+    left: 14px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--rsi-primary);
+    pointer-events: none;
+}
+
+.rsi-currency-suffix {
+    position: absolute;
+    right: 14px;
+    font-weight: 700;
+    font-size: 0.78rem;
+    color: var(--rsi-text-muted);
+    pointer-events: none;
+}
+
+.rsi-input-currency {
+    padding-left: 32px !important;
+    padding-right: 52px !important;
+    font-weight: 700;
+    font-size: 1.05rem !important;
+}
+
+/* === Tarjetas de Selección de Modalidad (Total o Parcial) === */
+.rsi-devolucion-mode-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.rsi-devolucion-mode-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px;
+    border-radius: var(--rsi-radius-md);
+    border: 2px solid var(--rsi-border-color, var(--rsi-border));
+    background: var(--rsi-bg-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.rsi-devolucion-mode-card input[type="radio"] {
+    margin-top: 4px;
+    accent-color: var(--rsi-primary);
+}
+
+.rsi-devolucion-mode-card:hover {
+    border-color: var(--rsi-primary);
+}
+
+.rsi-devolucion-mode-card.active {
+    border-color: var(--rsi-gold-base, #d4af37);
+    background: rgba(212, 175, 55, 0.08);
+    box-shadow: var(--rsi-shadow-sm);
+}
+
+.rsi-devolucion-mode-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--rsi-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.rsi-devolucion-mode-card.active .rsi-devolucion-mode-icon {
+    background: var(--rsi-gold-base, #d4af37);
+    color: #1c1948;
+}
+
+.rsi-devolucion-mode-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.rsi-devolucion-mode-info strong {
+    font-size: 0.9rem;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-devolucion-mode-info span {
+    font-size: 0.78rem;
+    color: var(--rsi-text-secondary);
+    line-height: 1.35;
+}
+
+/* === Subida y Previsualización de Evidencia Fotográfica === */
+.rsi-evidencia-upload-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.rsi-reembolso-preview-card {
+    border: 1px solid var(--rsi-border-color, var(--rsi-border));
+    border-radius: var(--rsi-radius-md);
+    background: var(--rsi-bg-secondary);
+    padding: 12px;
+    margin-top: 12px;
+}
+
+.rsi-reembolso-preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.rsi-reembolso-preview-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 280px;
+    overflow: hidden;
+    border-radius: var(--rsi-radius-sm);
+    background: var(--rsi-bg-card);
+}
+
+.rsi-reembolso-preview-img {
+    max-width: 100%;
+    max-height: 260px;
+    object-fit: contain;
+    border-radius: 6px;
+    cursor: zoom-in;
+}
+
+.rsi-reembolso-form-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rsi-border-color, var(--rsi-border));
+}
+
+/* === Tarjeta Lateral de Resumen en Vivo === */
+.rsi-reembolso-summary-card {
+    background: var(--rsi-bg-card);
+    border: 1px solid var(--rsi-border-color, var(--rsi-border));
+    border-radius: var(--rsi-radius-xl);
+    padding: var(--rsi-spacing-xl);
+    box-shadow: var(--rsi-shadow-md);
+    position: sticky;
+    top: 110px;
+}
+
+.rsi-reembolso-summary-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rsi-border-color, var(--rsi-border));
+}
+
+.rsi-reembolso-summary-header i {
+    font-size: 1.3rem;
+    color: var(--rsi-gold-base, #d4af37);
+}
+
+.rsi-reembolso-summary-header h3 {
+    margin: 0;
+    font-size: 1.08rem;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-reembolso-summary-amount {
+    background: linear-gradient(135deg, var(--rsi-primary) 0%, var(--rsi-primary-dark, #121030) 100%);
+    color: #fff;
+    padding: 16px;
+    border-radius: var(--rsi-radius-md);
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.rsi-reembolso-summary-amount span {
+    display: block;
+    font-size: 0.78rem;
+    opacity: 0.85;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.rsi-reembolso-summary-amount strong {
+    font-size: 1.55rem;
+    color: var(--rsi-gold-light, #f3d478);
+}
+
+.rsi-reembolso-summary-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rsi-reembolso-summary-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--rsi-border-color, var(--rsi-border));
+}
+
+.rsi-reembolso-summary-list li span {
+    color: var(--rsi-text-secondary);
+}
+
+.rsi-reembolso-summary-list li strong {
+    color: var(--rsi-text-primary);
+    text-align: right;
+}
+
+.rsi-reembolso-summary-note {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 0.8rem;
+    color: var(--rsi-text-secondary);
+    background: var(--rsi-bg-secondary);
+    padding: 12px;
+    border-radius: var(--rsi-radius-md);
+}
+
+.rsi-reembolso-summary-note i {
+    color: var(--rsi-primary);
+    margin-top: 2px;
+}
+
+.rsi-reembolso-summary-note p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* === Tabla de Reembolsos: Barras de Progreso, Miniaturas y Colaborador Clicable === */
+.rsi-rmb-progress-bar {
+    width: 100%;
+    min-width: 120px;
+    height: 8px;
+    background: var(--rsi-bg-secondary);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 4px;
+    border: 1px solid var(--rsi-border-color, rgba(0, 0, 0, 0.08));
+}
+
+.rsi-rmb-progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--rsi-primary);
+    transition: width 0.3s ease;
+}
+
+.rsi-rmb-progress-fill.partial {
+    background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+.rsi-rmb-progress-fill.complete {
+    background: linear-gradient(90deg, #16a34a, #22c55e);
+}
+
+.rsi-rmb-category-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: rgba(28, 25, 72, 0.08);
+    color: var(--rsi-text-primary);
+    border: 1px solid var(--rsi-border-color, rgba(28, 25, 72, 0.15));
+}
+
+.rsi-rmb-thumb-wrap {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--rsi-border-color, var(--rsi-border));
+    background: var(--rsi-bg-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rsi-rmb-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+}
+
+.rsi-rmb-thumb-img:hover {
+    transform: scale(1.08);
+}
+
+.rsi-rmb-colab-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 8px;
+    transition: background 0.18s ease;
+}
+
+.rsi-rmb-colab-cell:hover {
+    background: rgba(212, 175, 55, 0.12);
+}
+
+.rsi-rmb-colab-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--rsi-gold-base, #d4af37);
+    flex-shrink: 0;
+}
+
+.rsi-rmb-colab-link {
+    color: var(--rsi-text-primary);
+    text-decoration: underline;
+    text-decoration-color: rgba(212, 175, 55, 0.6);
+    font-size: 0.9rem;
+}
+
+/* === Modales de Reembolsos y Devoluciones (Centrados con Scrollbar) === */
+.rsi-reembolso-modal-card {
+    max-width: 780px !important;
+    width: 95% !important;
+}
+
+.rsi-reembolso-balance-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.rsi-balance-box {
+    background: var(--rsi-bg-secondary);
+    border: 1px solid var(--rsi-border-color, var(--rsi-border));
+    border-radius: var(--rsi-radius-md);
+    padding: 12px;
+    text-align: center;
+}
+
+.rsi-balance-box span {
+    display: block;
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--rsi-text-muted);
+    margin-bottom: 4px;
+}
+
+.rsi-balance-box strong {
+    font-size: 1.18rem;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-balance-box.rsi-balance-paid strong {
+    color: #28a745;
+}
+
+.rsi-balance-box.rsi-balance-pending strong {
+    color: #dc3545;
+}
+
+.rsi-reembolso-modal-summary {
+    background: var(--rsi-bg-secondary);
+    border: 1px solid var(--rsi-border-color, var(--rsi-border));
+    border-radius: var(--rsi-radius-md);
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    font-size: 0.88rem;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-reembolso-evidencia-viewer {
+    background: var(--rsi-bg-secondary);
+    border: 1px solid var(--rsi-border-color, var(--rsi-border));
+    border-radius: var(--rsi-radius-md);
+    padding: 10px;
+    text-align: center;
+    max-height: 280px;
+    overflow: hidden;
+}
+
+.rsi-reembolso-modal-img {
+    max-width: 100%;
+    max-height: 255px;
+    object-fit: contain;
+    border-radius: 6px;
+    cursor: zoom-in;
+}
+
+.rsi-reembolso-devolucion-box {
+    background: var(--rsi-bg-secondary);
+    border: 1px solid var(--rsi-border-color, var(--rsi-border));
+    border-radius: var(--rsi-radius-lg);
+    padding: 16px;
+    margin-top: 12px;
+}
+
+.rsi-devolucion-radio-pills {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.rsi-radio-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1.5px solid var(--rsi-border-color, var(--rsi-border));
+    background: var(--rsi-bg-card);
+    color: var(--rsi-text-primary);
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.rsi-radio-pill.active {
+    border-color: var(--rsi-gold-base, #d4af37);
+    background: var(--rsi-primary);
+    color: #ffffff;
+}
+
+.rsi-quick-percent-bar {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.rsi-chip-percent {
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--rsi-border-color, var(--rsi-border));
+    background: var(--rsi-bg-card);
+    color: var(--rsi-text-primary);
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.rsi-chip-percent:hover {
+    background: var(--rsi-primary);
+    color: #fff;
+}
+
+.rsi-empty-inline-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: var(--rsi-radius-md);
+    background: var(--rsi-bg-secondary);
+    border: 1px dashed var(--rsi-border-color, var(--rsi-border));
+    color: var(--rsi-text-secondary);
+    font-size: 0.86rem;
+}
+
+.rsi-text-success {
+    color: #28a745 !important;
+}
+
+.rsi-text-danger {
+    color: #dc3545 !important;
+}
+
+/* === Responsividad === */
+@media (max-width: 992px) {
+    .rsi-reembolso-applicant-card,
+    .rsi-reembolso-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rsi-reembolso-summary-card {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .rsi-reembolso-row-2,
+    .rsi-devolucion-mode-grid,
+    .rsi-reembolso-balance-strip {
+        grid-template-columns: 1fr;
+    }
+}

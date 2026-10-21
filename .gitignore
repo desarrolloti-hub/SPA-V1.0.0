@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+ 
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+functions/.env*
+*-credentials.json
+service-account*.json

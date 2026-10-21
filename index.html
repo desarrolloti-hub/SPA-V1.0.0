@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-MX">
 
 <head>
     <meta charset="UTF-8">
@@ -7,22 +7,85 @@
     <!-- Manifest e icono -->
     <link rel="manifest" href="/manifest.json">
     <link rel="icon" type="image/png" href="/assets/icons/logoApp.png">
-    <!-- SEO Meta Tags -->
+    <link rel="apple-touch-icon" href="/assets/icons/logoApp-192.png">
+    <meta name="theme-color" content="#1c1948">
+
+    <!-- SEO Meta Tags Principales -->
+    <title>RSI Enterprise México | Seguridad Electrónica, Videovigilancia CCTV y Automatización</title>
     <meta name="description"
-        content="RSI Enterprise - Expertos en seguridad electrónica en México. Soluciones integrales con tecnología de vanguardia.">
-    <meta name="keywords" content="cámaras de seguridad, alarmas, controles de acceso, sistemas contra incendio">
-    <meta name="author" content="RSI Enterprise">
+        content="RSI Enterprise México: expertos en seguridad electrónica, cámaras de vigilancia CCTV con IA, alarmas, control de acceso, detección de incendios y soporte técnico 24/7 en Estado de México y CDMX.">
+    <meta name="keywords"
+        content="RSI Enterprise México, seguridad electrónica, cámaras de seguridad, videovigilancia CCTV, alarmas para negocio y hogar, control de acceso biométrico, sistemas contra incendio, automatización, telecomunicaciones, Nezahualcóyotl, Estado de México, CDMX">
+    <meta name="author" content="RSI Enterprise México">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://rsienterprise.com/">
+
+    <!-- SEO Local / Geolocalización -->
+    <meta name="geo.region" content="MX-MEX">
+    <meta name="geo.placename" content="Cdad. Nezahualcóyotl, Estado de México">
+
     <!-- Open Graph / Facebook -->
+    <meta property="og:locale" content="es_MX">
+    <meta property="og:site_name" content="RSI Enterprise México">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://rsienterprise.com/">
-    <meta property="og:title" content="RSI Enterprise | Seguridad Electrónica Profesional">
-    <meta property="og:description" content="Protección inteligente para hogares y negocios con tecnología de punta">
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://rsienterprise.com/">
-    <meta property="twitter:title" content="RSI Enterprise | Seguridad Electrónica Profesional">
+    <meta property="og:title" content="RSI Enterprise México | Soluciones Integrales de Seguridad Electrónica">
+    <meta property="og:description"
+        content="Protección inteligente para hogares, comercios e industrias con tecnología de vanguardia y monitoreo especializado.">
+    <meta property="og:image" content="https://rsienterprise.com/assets/icons/logo.png">
 
-    <title>RSI Enterprise - Soluciones Integrales de Seguridad</title>
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://rsienterprise.com/">
+    <meta name="twitter:title" content="RSI Enterprise México | Seguridad Electrónica Profesional">
+    <meta name="twitter:description"
+        content="Soluciones integrales en videovigilancia, control de acceso, alarmas y sistemas contra incendio en México.">
+    <meta name="twitter:image" content="https://rsienterprise.com/assets/icons/logo.png">
+
+    <!-- Datos Estructurados Schema.org (LocalBusiness) para posicionamiento en Google -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "RSI Enterprise México",
+        "description": "Soluciones integrales de seguridad electrónica, videovigilancia CCTV, control de acceso, sistemas contra incendio, automatización y telecomunicaciones en México.",
+        "url": "https://rsienterprise.com/",
+        "logo": "https://rsienterprise.com/assets/icons/logo.png",
+        "image": "https://rsienterprise.com/assets/icons/logo.png",
+        "telephone": "+52-55-5139-1533",
+        "email": "aadministracion@rhafasoluciones.com",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "C. 31 110, El Sol",
+            "addressLocality": "Cdad. Nezahualcóyotl",
+            "addressRegion": "Estado de México",
+            "postalCode": "57200",
+            "addressCountry": "MX"
+        },
+        "hasMap": "https://maps.google.com/?cid=16455769269265573941&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF",
+        "openingHoursSpecification": [
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                "opens": "09:00",
+                "closes": "18:00"
+            },
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": "Saturday",
+                "opens": "10:00",
+                "closes": "14:00"
+            }
+        ],
+        "priceRange": "$$"
+    }
+    </script>
+
+    <!-- Preconnect para optimización de carga -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -44,8 +107,7 @@
     <!-- Script principal (módulo ES6) -->
     <script type="module" src="/src/main.js"></script>
     <!-- Script para reseñas de google -->
-    <script src="https://elfsightcdn.com/platform.js" async></script>
-    <script type="module" src="/src/main.js"></script>
+    <script src="https://static.elfsight.com/platform/platform.js" async></script>
     <!-- Script para lectura de PDFS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <!-- Script para crear  PDFS -->

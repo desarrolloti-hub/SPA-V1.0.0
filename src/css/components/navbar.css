@@ -8,8 +8,8 @@
     top: 0;
     left: 0;
     width: 100%;
-    background: var(--rsi-bg-primary);
-    box-shadow: var(--rsi-shadow-sm);
+    background: transparent; /* ← Transparente al inicio */
+    box-shadow: none; /* ← Sin sombra al inicio */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -18,11 +18,12 @@
     transition: all var(--rsi-transition-base);
 }
 
+/* Navbar con scroll - FONDO BLANCO */
 .nan_navbar.navbar-scrolled {
     padding: 0.7rem 5%;
+    background: var(--rsi-bg-primary); /* ← Fondo blanco */
     box-shadow: var(--rsi-shadow-lg);
     backdrop-filter: blur(10px);
-    background: rgba(var(--rsi-bg-primary-rgb), 0.95);
 }
 
 /* ============================================
@@ -137,7 +138,8 @@ body.dark-mode .nan_menu li a.active {
     margin-left: 2px;
 }
 
-.nan_dropdown-item:hover .nan_arrow,
+.nan_dropdown-item:not(.dropdown-closing):hover .nan_arrow,
+.nan_dropdown-item.dropdown-open .nan_arrow,
 .nan_dropdown-item.active .nan_arrow {
     transform: rotate(180deg);
 }
@@ -156,13 +158,16 @@ body.dark-mode .nan_menu li a.active {
         padding: 8px 0;
         opacity: 0;
         visibility: hidden;
-        transition: all var(--rsi-transition-base);
+        pointer-events: none;
+        transition: opacity var(--rsi-transition-fast),
+                    transform var(--rsi-transition-fast),
+                    visibility var(--rsi-transition-fast);
         z-index: var(--rsi-z-dropdown);
         list-style: none;
         margin: 0;
-        border: 1px solid var(--rsi-gray-200);
+        border: 1px solid var(--rsi-border-color);
     }
-    
+
     .nan_dropdown-menu::before {
         content: '';
         position: absolute;
@@ -172,12 +177,31 @@ body.dark-mode .nan_menu li a.active {
         border: 8px solid transparent;
         border-bottom-color: var(--rsi-bg-card);
     }
-    
-    .nan_dropdown-item:hover .nan_dropdown-menu,
-    .nan_dropdown-item.active .nan_dropdown-menu {
+
+    /* Puente invisible de 12px sobre el dropdown para evitar cierre accidental al bajar el cursor */
+    .nan_dropdown-menu::after {
+        content: '';
+        position: absolute;
+        top: -12px;
+        left: 0;
+        right: 0;
+        height: 12px;
+    }
+
+    .nan_dropdown-item:not(.dropdown-closing):hover .nan_dropdown-menu,
+    .nan_dropdown-item.dropdown-open:not(.dropdown-closing) .nan_dropdown-menu {
         opacity: 1;
         visibility: visible;
+        pointer-events: auto;
         transform: translateX(-50%) translateY(0);
+    }
+
+    .nan_dropdown-item.dropdown-closing .nan_dropdown-menu {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        transform: translateX(-50%) translateY(-10px) !important;
+        transition: none !important;
     }
 }
 
@@ -188,7 +212,7 @@ body.dark-mode .nan_menu li a.active {
         padding: 0;
         max-height: 0;
         overflow: hidden;
-        transition: max-height var(--rsi-transition-base), 
+        transition: max-height var(--rsi-transition-base),
                     padding var(--rsi-transition-base),
                     opacity var(--rsi-transition-base);
         width: 100%;
@@ -200,12 +224,13 @@ body.dark-mode .nan_menu li a.active {
         list-style: none;
         margin: 0;
     }
-    
+
     body.dark-mode .nan_dropdown-menu {
-        border-left-color: var(--rsi-gold-gradient);
+        border-left-color: var(--rsi-gold-base);
     }
-    
-    .nan_dropdown-item.active .nan_dropdown-menu {
+
+    .nan_dropdown-item.active .nan_dropdown-menu,
+    .nan_dropdown-item.dropdown-open .nan_dropdown-menu {
         max-height: 500px;
         padding: 8px 0 8px 10px;
         opacity: 1;
@@ -218,7 +243,7 @@ body.dark-mode .nan_menu li a.active {
 
 .nan_dropdown-menu li a {
     padding: 10px 20px;
-    color: var(--rsi-gray-700);
+    color: var(--rsi-text-secondary);
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -236,10 +261,31 @@ body.dark-mode .nan_menu li a.active {
     display: none;
 }
 
-.nan_dropdown-menu li a:hover {
+.nan_dropdown-menu li a:hover,
+.nan_dropdown-menu li a.active,
+.nan_dropdown-menu li a[aria-current="page"] {
     background: var(--rsi-gray-200);
     color: var(--rsi-primary);
     padding-left: 25px;
+    font-weight: 600;
+}
+
+.nan_dropdown-menu li a.active,
+.nan_dropdown-menu li a[aria-current="page"] {
+    border-left: 3px solid var(--rsi-primary);
+}
+
+.nan_dropdown-item.active > .nan_dropdown-trigger,
+.nan_dropdown-item.dropdown-open > .nan_dropdown-trigger,
+.nan_dropdown-item.has-active-child > .nan_dropdown-trigger {
+    color: var(--rsi-primary);
+    font-weight: 600;
+}
+
+.nan_dropdown-item.active > .nan_dropdown-trigger::after,
+.nan_dropdown-item.dropdown-open > .nan_dropdown-trigger::after,
+.nan_dropdown-item.has-active-child > .nan_dropdown-trigger::after {
+    width: 100%;
 }
 
 .nan_dropdown-menu li a i {
@@ -249,15 +295,28 @@ body.dark-mode .nan_menu li a.active {
 
 /* Modo oscuro dropdown */
 body.dark-mode .nan_dropdown-menu {
-    border-color: var(--rsi-gray-300);
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-border-color);
+    box-shadow: var(--rsi-shadow-xl);
 }
 
 body.dark-mode .nan_dropdown-menu li a {
-    color: var(--rsi-gray-700);
+    color: var(--rsi-text-primary);
 }
 
-body.dark-mode .nan_dropdown-menu li a:hover {
-    background: var(--rsi-gray-200);
+body.dark-mode .nan_dropdown-menu li a:hover,
+body.dark-mode .nan_dropdown-menu li a.active,
+body.dark-mode .nan_dropdown-menu li a[aria-current="page"] {
+    background: rgba(74, 158, 255, 0.16);
+    color: var(--rsi-primary);
+    font-weight: 600;
+    border-left: 3px solid var(--rsi-primary);
+    padding-left: 25px;
+}
+
+body.dark-mode .nan_dropdown-item.active > .nan_dropdown-trigger,
+body.dark-mode .nan_dropdown-item.dropdown-open > .nan_dropdown-trigger,
+body.dark-mode .nan_dropdown-item.has-active-child > .nan_dropdown-trigger {
     background: var(--rsi-gold-gradient);
     -webkit-background-clip: text;
     background-clip: text;
@@ -600,3 +659,212 @@ body.dark-mode .nan_close:hover {
 .nan_menu.active li:nth-child(6) { animation-delay: 0.30s; }
 .nan_menu.active li:nth-child(7) { animation-delay: 0.35s; }
 .nan_menu.active li:nth-child(8) { animation-delay: 0.40s; }
+
+
+/* ============================================
+   ACCIONES DE ESCRITORIO (DERECHA: CARRITO, DESEOS, PERFIL, TEMA)
+   ============================================ */
+.nan_desktop_actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+/* ============================================
+   ICONOS DISCRETOS (CARRITO Y DESEOS) & CIERRE RESPONSIVE
+   ============================================ */
+.nan_icon_link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    color: var(--rsi-text-primary);
+    text-decoration: none;
+    transition: all var(--rsi-transition-base);
+    background: transparent;
+}
+
+.nan_icon_link:hover {
+    background: rgba(197, 160, 89, 0.12);
+    color: var(--rsi-gold, #c5a059);
+}
+
+.nan_icon_link i {
+    font-size: 1.15rem;
+}
+
+body.dark-mode .nan_icon_link {
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .nan_icon_link:hover {
+    color: var(--rsi-gold-base);
+}
+
+.nan_icon_link .rsi-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    padding: 2px 5px;
+    font-size: 0.65rem;
+    border-radius: 10px;
+    font-weight: 700;
+    min-width: 17px;
+    text-align: center;
+    line-height: 1.1;
+}
+
+/* Fix botón cerrar mobile flotante y accesible sobre el menú */
+body.menu-open .nan_close {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: fixed !important;
+    top: 16px !important;
+    right: 20px !important;
+    z-index: calc(var(--rsi-z-modal) + 100) !important;
+    width: 46px !important;
+    height: 46px !important;
+    border-radius: 50% !important;
+    background: rgba(0, 0, 0, 0.08) !important;
+    color: var(--rsi-text-primary) !important;
+    font-size: 1.8rem !important;
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    border: none !important;
+}
+
+body.dark-mode.menu-open .nan_close {
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: var(--rsi-gold-base) !important;
+}
+
+/* ============================================
+   ELEMENTOS EXCLUSIVOS DE MOBILE DENTRO DE NAN_MENU
+   En escritorio (desktop > 992px) deben permanecer completamente ocultos
+   ============================================ */
+.nan_mobile_icon_row,
+.nan_theme-mobile,
+.nan_mobile-profile,
+.nan-menu-profile-dropdown,
+.nan-menu-profile,
+.nan-menu-theme,
+.nan-menu-logout {
+    display: none !important;
+}
+
+@media (max-width: 992px) {
+    /* Ocultar acciones de escritorio (derecha) en mobile */
+    .nan_desktop_actions,
+    .nan_actions,
+    .nan-desktop-profile {
+        display: none !important;
+    }
+
+    /* Mostrar fila de iconos discretos de carrito y deseos en el menú */
+    .nan_mobile_icon_row {
+        display: block !important;
+    }
+
+    /* Mostrar switch de tema exclusivo para mobile en el drawer */
+    .nan_theme-mobile {
+        display: flex !important;
+        width: 100%;
+        max-width: 380px;
+        justify-content: center;
+        margin: 10px auto 0;
+        padding-top: 14px;
+        border-top: 1px solid var(--rsi-border-color, #e2e8f0);
+    }
+
+    /* Mostrar tarjeta de perfil del comprador en el menú mobile */
+    .nan_mobile-profile {
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 380px;
+        margin: 10px auto 0;
+        padding: 14px;
+        border-radius: 12px;
+        background: rgba(0, 0, 0, 0.04);
+        border: 1px solid var(--rsi-border-color, #e2e8f0);
+    }
+
+    body.dark-mode .nan_mobile-profile {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .nan_mobile-profile-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .nan_mobile-profile-content img {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--rsi-gold, #c5a059);
+    }
+
+    .nan_mobile-user-details {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+    }
+
+    .nan_mobile-user-details span {
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--rsi-text-primary);
+    }
+
+    .nan_mobile-user-details small {
+        font-size: 0.75rem;
+        color: var(--rsi-gold, #c5a059);
+        font-weight: 600;
+    }
+
+    .nan_mobile-profile-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .nan_mobile-profile-links a {
+        padding: 6px 14px !important;
+        font-size: 0.85rem !important;
+        border-radius: 20px;
+        background: var(--rsi-bg-card, #ffffff);
+        border: 1px solid var(--rsi-border-color, #e2e8f0);
+        text-decoration: none;
+        color: var(--rsi-text-primary) !important;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    body.dark-mode .nan_mobile-profile-links a {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.15);
+        color: #f1f5f9 !important;
+    }
+
+    .nan_mobile-profile-links a.nan_logout-mobile {
+        color: var(--rsi-danger, #ef4444) !important;
+    }
+
+
+}

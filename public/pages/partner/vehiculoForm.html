@@ -1,0 +1,261 @@
+<!-- ========================================
+   FORMULARIO DE AUTOMÓVIL (CREAR / EDITAR) - RSI ENTERPRISE
+   Vista independiente con carga de fotografía oficial
+   ======================================== -->
+
+<section class="rsi-ticket-section">
+    <div class="rsi-container">
+
+        <!-- Navegación superior -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--rsi-spacing-lg); flex-wrap: wrap; gap: var(--rsi-spacing-md);">
+            <a href="/partner/vehiculos" class="rsi-btn-action rsi-btn-action-outline" data-link>
+                <i class="fas fa-arrow-left"></i> Volver al Parque Vehicular
+            </a>
+            <span class="rsi-badge rsi-badge-primary" id="badgeModoForm" style="font-size: 0.88rem; padding: 6px 14px;">
+                <i class="fas fa-car"></i> Registro Vehicular
+            </span>
+        </div>
+
+        <!-- Título -->
+        <h1 class="rsi-page-title" id="pageTitleVehiculo">
+            <span class="rsi-text-gold" id="txtAccionTitulo">Registrar</span> Automóvil
+        </h1>
+        <p class="rsi-page-subtitle" id="pageSubtitleVehiculo">
+            Ingresa los datos generales, especificaciones técnicas y fotografía oficial del automóvil.
+        </p>
+
+        <!-- ===== FORMULARIO INDEPENDIENTE ===== -->
+        <form id="formVehiculoIndependiente" class="rsi-form-steps" autocomplete="off">
+            <input type="hidden" id="editVehiculoId" value="" />
+
+            <!-- Contenedor del Formulario -->
+            <div class="rsi-step-panel active" style="display: block;">
+
+                <!-- Cabecera del Formulario -->
+                <div class="rsi-step-header">
+                    <div class="rsi-step-icon">
+                        <i class="fas fa-car-side"></i>
+                    </div>
+                    <h3 id="stepHeaderTitle">Ficha de Alta Vehicular</h3>
+                    <p>Completa la información técnica y sube la fotografía oficial de la unidad.</p>
+                </div>
+
+                <div class="rsi-step-body">
+
+                    <!-- ==========================================
+                         SECCIÓN 1: FOTOGRAFÍA OFICIAL DEL AUTOMÓVIL
+                         ========================================== -->
+                    <div style="margin-bottom: var(--rsi-spacing-xl); background: var(--rsi-bg-secondary); border: 1.5px solid var(--rsi-border-color); border-radius: var(--rsi-radius-lg); padding: var(--rsi-spacing-lg);">
+                        <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--rsi-text-primary); margin: 0 0 6px 0; display: flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-camera" style="color: var(--rsi-primary);"></i> Fotografía Oficial del Automóvil
+                        </h4>
+                        <p style="font-size: 0.85rem; color: var(--rsi-text-secondary); margin: 0 0 14px 0;">
+                            Carga una fotografía clara y frontal del automóvil para identificarlo en el sistema, bitácoras y checklists.
+                        </p>
+
+                        <!-- Zona de Selección / Dropzone -->
+                        <div id="vehiculoPhotoDropzone" style="border: 2px dashed var(--rsi-border-color); border-radius: var(--rsi-radius-md); background: var(--rsi-bg-card); padding: var(--rsi-spacing-lg); text-align: center; cursor: pointer; transition: all 0.2s;">
+                            <input type="file" id="inputVehiculoFoto" accept="image/*" style="display: none;" />
+                            
+                            <!-- Estado vacío: sin imagen cargada -->
+                            <div id="dropzoneEmptyState" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                                <div style="width: 64px; height: 64px; border-radius: 50%; background: var(--rsi-bg-secondary); border: 1.5px solid var(--rsi-border-color); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: var(--rsi-primary);">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                </div>
+                                <div>
+                                    <strong style="color: var(--rsi-text-primary); font-size: 0.95rem; display: block;">Arrastra y suelta la imagen del vehículo aquí</strong>
+                                    <span style="font-size: 0.82rem; color: var(--rsi-text-muted);">o haz clic para explorar tus archivos (JPG, PNG, WebP)</span>
+                                </div>
+                                <button type="button" class="rsi-btn-crud rsi-btn-crud-outline" id="btnExplorarFoto" style="margin-top: 6px; padding: 6px 16px; font-size: 0.85rem;">
+                                    <i class="fas fa-folder-open"></i> Seleccionar Fotografía
+                                </button>
+                            </div>
+
+                            <!-- Estado con imagen seleccionada / existente -->
+                            <div id="dropzonePreviewState" style="display: none; flex-direction: column; align-items: center; gap: 12px;">
+                                <div style="position: relative; max-width: 380px; width: 100%; aspect-ratio: 16/10; border-radius: var(--rsi-radius-md); overflow: hidden; border: 2px solid var(--rsi-primary); box-shadow: var(--rsi-shadow-md); background: #000000;">
+                                    <img id="imgPreviewVehiculo" src="" alt="Vista previa del automóvil" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
+                                    <span class="rsi-badge rsi-badge-primary" style="position: absolute; top: 8px; left: 8px; font-size: 0.75rem;">
+                                        <i class="fas fa-check"></i> Fotografía del Vehículo
+                                    </span>
+                                </div>
+                                <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                                    <button type="button" class="rsi-btn-crud rsi-btn-crud-outline" id="btnCambiarFoto" style="padding: 6px 14px; font-size: 0.82rem;">
+                                        <i class="fas fa-sync-alt"></i> Cambiar Fotografía
+                                    </button>
+                                    <button type="button" class="rsi-btn-crud rsi-btn-crud-outline" id="btnEliminarFoto" style="padding: 6px 14px; font-size: 0.82rem; color: var(--rsi-danger); border-color: var(--rsi-danger);">
+                                        <i class="fas fa-trash-alt"></i> Quitar Fotografía
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- ==========================================
+                         SECCIÓN 2: IDENTIFICACIÓN Y DATOS TÉCNICOS
+                         ========================================== -->
+                    <div style="margin-bottom: var(--rsi-spacing-xl);">
+                        <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--rsi-text-primary); margin: 0 0 14px 0; display: flex; align-items: center; gap: 8px;">
+                            <i class="fas fa-info-circle" style="color: var(--rsi-primary);"></i> Identificación y Especificaciones Técnicas
+                        </h4>
+
+                        <div class="rsi-form-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--rsi-spacing-md);">
+                            
+                            <!-- No. Económico -->
+                            <div class="rsi-form-group">
+                                <label for="inputNumeroEconomico">No. Económico / Interno <span class="rsi-required" style="color: var(--rsi-danger);">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-hashtag rsi-input-icon"></i>
+                                    <input type="text" id="inputNumeroEconomico" placeholder="Ej: ECO-01 o 104" required />
+                                </div>
+                                <small style="font-size: 0.78rem; color: var(--rsi-text-muted); margin-top: 4px; display: block;">Identificador único interno de la empresa.</small>
+                            </div>
+
+                            <!-- Placas -->
+                            <div class="rsi-form-group">
+                                <label for="inputPlacas">Placas de Circulación <span class="rsi-required" style="color: var(--rsi-danger);">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-id-card rsi-input-icon"></i>
+                                    <input type="text" id="inputPlacas" placeholder="Ej: NZA-1234" style="text-transform: uppercase;" required />
+                                </div>
+                                <small style="font-size: 0.78rem; color: var(--rsi-text-muted); margin-top: 4px; display: block;">Sin guiones ni espacios.</small>
+                            </div>
+
+                        </div>
+
+                        <div class="rsi-form-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--rsi-spacing-md); margin-top: var(--rsi-spacing-sm);">
+                            
+                            <!-- Marca -->
+                            <div class="rsi-form-group">
+                                <label for="inputMarca">Marca <span class="rsi-required" style="color: var(--rsi-danger);">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-car rsi-input-icon"></i>
+                                    <input type="text" id="inputMarca" placeholder="Ej: Nissan, Chevrolet, Toyota" required />
+                                </div>
+                            </div>
+
+                            <!-- Modelo -->
+                            <div class="rsi-form-group">
+                                <label for="inputModelo">Modelo <span class="rsi-required" style="color: var(--rsi-danger);">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-car-side rsi-input-icon"></i>
+                                    <input type="text" id="inputModelo" placeholder="Ej: NP300, Versa, Hilux" required />
+                                </div>
+                            </div>
+
+                            <!-- Año -->
+                            <div class="rsi-form-group">
+                                <label for="inputAnio">Año / Modelo <span class="rsi-required" style="color: var(--rsi-danger);">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-calendar-alt rsi-input-icon"></i>
+                                    <input type="number" id="inputAnio" placeholder="Ej: 2023" min="1990" max="2035" required />
+                                </div>
+                            </div>
+
+                            <!-- Color -->
+                            <div class="rsi-form-group">
+                                <label for="inputColor">Color</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-palette rsi-input-icon"></i>
+                                    <input type="text" id="inputColor" placeholder="Ej: Blanco, Plata, Rojo" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="rsi-form-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--rsi-spacing-md); margin-top: var(--rsi-spacing-sm);">
+                            
+                            <!-- Número de Serie / VIN -->
+                            <div class="rsi-form-group">
+                                <label for="inputNumeroSerie">Número de Serie (VIN)</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-barcode rsi-input-icon"></i>
+                                    <input type="text" id="inputNumeroSerie" placeholder="Ej: 3N1AB7AP6KL..." style="text-transform: uppercase;" />
+                                </div>
+                            </div>
+
+                            <!-- Tipo de Unidad -->
+                            <div class="rsi-form-group">
+                                <label for="inputTipoVehiculo">Tipo de Unidad</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-truck-pickup rsi-input-icon"></i>
+                                    <select id="inputTipoVehiculo">
+                                        <option value="Automóvil">Automóvil Sedán / Hatchback</option>
+                                        <option value="Camioneta / Pickup" selected>Camioneta / Pickup</option>
+                                        <option value="Van / Utilitario">Van / Utilitario</option>
+                                        <option value="Motocicleta">Motocicleta</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Odómetro Actual -->
+                            <div class="rsi-form-group">
+                                <label for="inputKilometraje">Odómetro Actual (km) <span class="rsi-required" style="color: var(--rsi-danger);">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-tachometer-alt rsi-input-icon"></i>
+                                    <input type="number" id="inputKilometraje" placeholder="0" min="0" step="1" required />
+                                </div>
+                            </div>
+
+                            <!-- Nivel de Combustible -->
+                            <div class="rsi-form-group">
+                                <label for="inputCombustible">Nivel de Combustible</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-gas-pump rsi-input-icon"></i>
+                                    <select id="inputCombustible">
+                                        <option value="Reserva">Reserva (E)</option>
+                                        <option value="1/4">1/4 Tanque</option>
+                                        <option value="1/2" selected>1/2 Tanque</option>
+                                        <option value="3/4">3/4 Tanque</option>
+                                        <option value="Lleno">Lleno (F)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="rsi-form-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--rsi-spacing-md); margin-top: var(--rsi-spacing-sm);">
+                            
+                            <!-- Estado Operativo -->
+                            <div class="rsi-form-group">
+                                <label for="selectEstadoOperativo">Estado Operativo Inicial</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-traffic-light rsi-input-icon"></i>
+                                    <select id="selectEstadoOperativo">
+                                        <option value="disponible" selected>Disponible para Asignación</option>
+                                        <option value="mantenimiento">En Mantenimiento</option>
+                                        <option value="inactivo">Inactivo / Fuera de Servicio</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Observaciones Permanentes -->
+                        <div class="rsi-form-group" style="margin-top: var(--rsi-spacing-sm);">
+                            <label for="inputObservaciones">Observaciones Permanentes y Daños Notificados</label>
+                            <div class="rsi-input-wrapper">
+                                <textarea id="inputObservaciones" rows="3" placeholder="Registra golpes previos, detalles de hojalatería, accesorios instalados o notas mecánicas permanentes..."></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Acciones del Formulario -->
+                <div class="rsi-step-actions" style="margin-top: var(--rsi-spacing-xl); justify-content: flex-end; gap: var(--rsi-spacing-md);">
+                    <a href="/partner/vehiculos" class="rsi-btn-crud rsi-btn-crud-outline" data-link style="padding: 10px 24px;">
+                        Cancelar
+                    </a>
+                    <button type="submit" class="rsi-btn-crud rsi-btn-crud-primary" id="btnGuardarVehiculo" style="padding: 10px 32px; font-size: 1rem;">
+                        <i class="fas fa-save"></i> Guardar Automóvil
+                    </button>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</section>

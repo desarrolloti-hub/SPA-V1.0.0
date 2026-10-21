@@ -1,0 +1,709 @@
+/* ==========================================================================
+   CLIENTE FORM — Fénix RSI Enterprise
+   Estilos específicos para el formulario de registro y edición de clientes
+   ========================================================================== */
+
+/* ==========================================
+   SECCIÓN Y CONTENEDOR PRINCIPAL
+   ========================================== */
+.rsi-cliente-section {
+    background-color: var(--rsi-bg-secondary);
+    padding: var(--rsi-spacing-xl) 0 var(--rsi-spacing-3xl);
+    min-height: calc(100vh - 120px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.rsi-cliente-section .rsi-container {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 var(--rsi-spacing-lg);
+    width: 100%;
+}
+
+/* ==========================================
+   BARRA SUPERIOR DE NAVEGACIÓN (VOLVER)
+   ========================================== */
+.rsi-form-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--rsi-spacing-lg);
+}
+
+.rsi-btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--rsi-text-secondary);
+    background: var(--rsi-bg-card);
+    border: 1px solid var(--rsi-border-color);
+    border-radius: var(--rsi-radius-md);
+    text-decoration: none;
+    transition: all var(--rsi-transition-fast);
+    box-shadow: var(--rsi-shadow-sm);
+}
+
+.rsi-btn-back:hover {
+    color: var(--rsi-primary);
+    border-color: var(--rsi-primary);
+    transform: translateX(-3px);
+    box-shadow: var(--rsi-shadow-md);
+}
+
+body.dark-mode .rsi-btn-back:hover {
+    color: var(--rsi-gold-light);
+    border-color: var(--rsi-gold-base);
+}
+
+/* ==========================================
+   CABECERA DEL FORMULARIO
+   ========================================== */
+.rsi-cliente-header {
+    text-align: center;
+    margin-bottom: var(--rsi-spacing-xl);
+}
+
+.rsi-cliente-header .rsi-page-title {
+    font-size: 2.3rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    margin-bottom: 6px;
+    font-family: var(--rsi-font-secondary);
+}
+
+.rsi-cliente-header .rsi-page-subtitle {
+    font-size: 1.05rem;
+    color: var(--rsi-text-muted);
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ==========================================
+   FORMULARIO Y TARJETA CONTENEDORA
+   ========================================== */
+.rsi-cliente-form-card {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-xl);
+    border: 1px solid var(--rsi-border-color);
+    box-shadow: var(--rsi-shadow-lg);
+    padding: var(--rsi-spacing-2xl);
+    position: relative;
+    overflow: hidden;
+    transition: all var(--rsi-transition-base);
+}
+
+/* Línea superior dorada decorativa */
+.rsi-cliente-form-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #1c1948 0%, #c9a03d 50%, #8f94fb 100%);
+    background-size: 200% auto;
+}
+
+/* ==========================================
+   CONMUTADOR DE MÉTODO (Manual / SAT PDF)
+   ========================================== */
+.rsi-method-toggle-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--rsi-spacing-xl);
+}
+
+.rsi-method-toggle-group {
+    display: inline-flex;
+    background: var(--rsi-bg-secondary);
+    border: 1px solid var(--rsi-border-color);
+    border-radius: var(--rsi-radius-full);
+    padding: 4px;
+    gap: 4px;
+    box-shadow: var(--rsi-shadow-sm);
+}
+
+.rsi-method-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    border: none;
+    background: transparent;
+    border-radius: var(--rsi-radius-full);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--rsi-text-muted);
+    cursor: pointer;
+    transition: all var(--rsi-transition-fast);
+    font-family: var(--rsi-font-primary);
+}
+
+.rsi-method-toggle-btn i {
+    font-size: 1rem;
+}
+
+.rsi-method-toggle-btn:hover {
+    color: var(--rsi-text-primary);
+}
+
+.rsi-method-toggle-btn.active {
+    background: var(--rsi-primary);
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(28, 25, 72, 0.25);
+}
+
+body.dark-mode .rsi-method-toggle-btn.active {
+    background: linear-gradient(135deg, #2a2670, #1c1948);
+    color: var(--rsi-gold-light);
+    border: 1px solid var(--rsi-gold-dark);
+}
+
+/* ==========================================
+   CARGADOR DE PDF (Constancia SAT)
+   ========================================== */
+.rsi-pdf-uploader-wrapper {
+    margin-bottom: var(--rsi-spacing-xl);
+    animation: rsiSlideDown 0.3s ease;
+}
+
+.rsi-pdf-uploader {
+    background: var(--rsi-bg-secondary);
+    border: 2px dashed var(--rsi-border-color);
+    border-radius: var(--rsi-radius-lg);
+    padding: var(--rsi-spacing-lg);
+    position: relative;
+    transition: all var(--rsi-transition-fast);
+}
+
+.rsi-pdf-uploader:hover {
+    border-color: var(--rsi-accent);
+}
+
+.rsi-pdf-header {
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-md);
+    margin-bottom: var(--rsi-spacing-md);
+    position: relative;
+}
+
+.rsi-pdf-header i.fa-file-pdf {
+    font-size: 2.2rem;
+    color: #e53935;
+    flex-shrink: 0;
+}
+
+.rsi-pdf-header h4 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-pdf-header p {
+    margin: 4px 0 0 0;
+    font-size: 0.85rem;
+    color: var(--rsi-text-muted);
+}
+
+.rsi-btn-icon-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: transparent;
+    border: none;
+    color: var(--rsi-text-muted);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 50%;
+    transition: all var(--rsi-transition-fast);
+}
+
+.rsi-btn-icon-close:hover {
+    color: var(--rsi-danger);
+    background: rgba(229, 57, 53, 0.1);
+}
+
+.rsi-pdf-dropzone {
+    background: var(--rsi-bg-card);
+    border: 1px dashed var(--rsi-border-color);
+    border-radius: var(--rsi-radius-md);
+    padding: var(--rsi-spacing-xl) var(--rsi-spacing-md);
+    text-align: center;
+    transition: all var(--rsi-transition-fast);
+}
+
+.rsi-pdf-dropzone.dragover {
+    border-color: var(--rsi-primary);
+    background: rgba(143, 148, 251, 0.08);
+}
+
+.rsi-pdf-dropzone-content i {
+    font-size: 2.5rem;
+    color: var(--rsi-text-muted);
+    margin-bottom: 8px;
+    display: block;
+}
+
+.rsi-pdf-dropzone-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--rsi-text-primary);
+    display: block;
+}
+
+.rsi-pdf-dropzone-or {
+    font-size: 0.8rem;
+    color: var(--rsi-text-muted);
+    margin: 6px 0;
+    display: block;
+    text-transform: uppercase;
+}
+
+.rsi-pdf-file-wrapper {
+    display: inline-block;
+    position: relative;
+}
+
+.rsi-pdf-file-wrapper input[type="file"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.rsi-pdf-file-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 22px;
+    background: var(--rsi-primary);
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: var(--rsi-radius-md);
+    cursor: pointer;
+    transition: all var(--rsi-transition-fast);
+    box-shadow: var(--rsi-shadow-sm);
+}
+
+.rsi-pdf-file-label:hover {
+    background: var(--rsi-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--rsi-shadow-md);
+}
+
+.rsi-pdf-file-label.has-file {
+    background: #2e7d32;
+}
+
+.rsi-pdf-status {
+    margin-top: 14px;
+    padding: 8px 14px;
+    border-radius: var(--rsi-radius-sm);
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--rsi-bg-secondary);
+    color: var(--rsi-text-muted);
+    border: 1px solid var(--rsi-border-color);
+}
+
+.rsi-pdf-status.success {
+    background: rgba(46, 125, 50, 0.1);
+    color: #2e7d32;
+    border-color: rgba(46, 125, 50, 0.3);
+}
+
+.rsi-pdf-status.error {
+    background: rgba(229, 57, 53, 0.1);
+    color: #e53935;
+    border-color: rgba(229, 57, 53, 0.3);
+}
+
+.rsi-pdf-status.loading {
+    background: rgba(33, 150, 243, 0.1);
+    color: #1976d2;
+    border-color: rgba(33, 150, 243, 0.3);
+}
+
+/* ==========================================
+   SELECTOR DE TIPO DE RFC (Nacional, Extranjero, Específico)
+   ========================================== */
+.rsi-rfc-type-container {
+    margin-bottom: var(--rsi-spacing-lg);
+    background: var(--rsi-bg-secondary);
+    padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
+    border-radius: var(--rsi-radius-lg);
+    border: 1px solid var(--rsi-border-color);
+}
+
+.rsi-form-label-bold {
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    margin-bottom: var(--rsi-spacing-sm);
+    font-family: var(--rsi-font-secondary);
+}
+
+.rsi-rfc-type-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--rsi-spacing-md);
+}
+
+.rsi-rfc-type-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--rsi-bg-card);
+    border: 2px solid var(--rsi-border-color);
+    border-radius: var(--rsi-radius-md);
+    cursor: pointer;
+    transition: all var(--rsi-transition-fast);
+    position: relative;
+    user-select: none;
+}
+
+.rsi-rfc-type-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.rsi-rfc-type-card-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    color: var(--rsi-border-color);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: all var(--rsi-transition-fast);
+}
+
+.rsi-rfc-type-card:hover {
+    border-color: var(--rsi-accent);
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-sm);
+}
+
+.rsi-rfc-type-card.active {
+    border-color: var(--rsi-primary);
+    background: rgba(28, 25, 72, 0.03);
+    box-shadow: 0 4px 14px rgba(28, 25, 72, 0.12);
+}
+
+.rsi-rfc-type-card.active .rsi-rfc-type-card-indicator {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-rfc-type-card.active {
+    border-color: var(--rsi-gold-base);
+    background: rgba(212, 175, 55, 0.08);
+    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.15);
+}
+
+body.dark-mode .rsi-rfc-type-card.active .rsi-rfc-type-card-indicator {
+    color: var(--rsi-gold-light);
+}
+
+.rsi-rfc-type-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.rsi-rfc-type-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    flex-wrap: wrap;
+}
+
+.rsi-rfc-type-title i {
+    font-size: 1rem;
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-rfc-type-title i {
+    color: var(--rsi-gold-light);
+}
+
+.rsi-rfc-type-desc {
+    font-size: 0.78rem;
+    color: var(--rsi-text-muted);
+    line-height: 1.35;
+}
+
+.rsi-rfc-type-desc code {
+    background: var(--rsi-bg-secondary);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--rsi-text-primary);
+    border: 1px solid var(--rsi-border-color);
+}
+
+/* Badges para selector de RFC */
+.rsi-rfc-badge {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: var(--rsi-radius-full);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.rsi-rfc-badge-nacional {
+    background: rgba(46, 125, 50, 0.12);
+    color: #2e7d32;
+    border: 1px solid rgba(46, 125, 50, 0.25);
+}
+
+.rsi-rfc-badge-extranjero {
+    background: rgba(25, 118, 210, 0.12);
+    color: #1976d2;
+    border: 1px solid rgba(25, 118, 210, 0.25);
+}
+
+/* ==========================================
+   ELEMENTOS DE FORMULARIO MEJORADOS
+   ========================================== */
+.rsi-label-with-badge {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.rsi-label-with-badge label {
+    margin-bottom: 0;
+}
+
+.rsi-rfc-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: var(--rsi-radius-full);
+    text-transform: uppercase;
+}
+
+.rsi-rfc-status-badge.nacional {
+    background: rgba(46, 125, 50, 0.12);
+    color: #2e7d32;
+    border: 1px solid rgba(46, 125, 50, 0.3);
+}
+
+.rsi-rfc-status-badge.extranjero {
+    background: rgba(25, 118, 210, 0.12);
+    color: #1976d2;
+    border: 1px solid rgba(25, 118, 210, 0.3);
+}
+
+.rsi-field-help {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.8rem;
+    color: var(--rsi-text-muted);
+}
+
+.rsi-input-readonly {
+    background: var(--rsi-bg-secondary) !important;
+    color: var(--rsi-text-primary) !important;
+    cursor: default !important;
+    font-weight: 600;
+}
+
+/* ==========================================
+   RESUMEN DEL CLIENTE (PASO 3)
+   ========================================== */
+.rsi-cliente-summary-card {
+    margin-top: var(--rsi-spacing-xl);
+    background: var(--rsi-bg-secondary);
+    border: 1px solid var(--rsi-border-color);
+    border-radius: var(--rsi-radius-lg);
+    padding: var(--rsi-spacing-lg);
+}
+
+.rsi-summary-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: var(--rsi-spacing-sm);
+    margin-bottom: var(--rsi-spacing-md);
+    border-bottom: 1px solid var(--rsi-border-color);
+}
+
+.rsi-summary-header i {
+    font-size: 1.2rem;
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-summary-header i {
+    color: var(--rsi-gold-light);
+}
+
+.rsi-summary-header h4 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+}
+
+.rsi-summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--rsi-spacing-md);
+}
+
+.rsi-summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.rsi-summary-item-full {
+    grid-column: 1 / -1;
+}
+
+.rsi-summary-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--rsi-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.rsi-summary-val {
+    font-size: 0.95rem;
+    color: var(--rsi-text-primary);
+    word-break: break-word;
+}
+
+/* ==========================================
+   BOTONES DE ACCIÓN DEL FORMULARIO
+   ========================================== */
+.rsi-btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    background: transparent;
+    color: var(--rsi-text-muted);
+    border: 1px solid var(--rsi-border-color);
+    border-radius: var(--rsi-radius-md);
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--rsi-transition-fast);
+}
+
+.rsi-btn-cancel:hover {
+    color: var(--rsi-danger);
+    border-color: var(--rsi-danger);
+}
+
+/* ==========================================
+   ANIMACIONES
+   ========================================== */
+@keyframes rsiSlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+@media (max-width: 992px) {
+    .rsi-cliente-section .rsi-container {
+        max-width: 100%;
+        padding: 0 var(--rsi-spacing-md);
+    }
+
+    .rsi-cliente-form-card {
+        padding: var(--rsi-spacing-xl);
+    }
+
+    .rsi-rfc-type-grid {
+        grid-template-columns: 1fr;
+        gap: var(--rsi-spacing-sm);
+    }
+}
+
+@media (max-width: 768px) {
+    .rsi-cliente-section {
+        padding: var(--rsi-spacing-md) 0 var(--rsi-spacing-2xl);
+    }
+
+    .rsi-cliente-header .rsi-page-title {
+        font-size: 1.8rem;
+    }
+
+    .rsi-cliente-header .rsi-page-subtitle {
+        font-size: 0.95rem;
+    }
+
+    .rsi-cliente-form-card {
+        padding: var(--rsi-spacing-lg) var(--rsi-spacing-md);
+        border-radius: var(--rsi-radius-lg);
+    }
+
+    .rsi-method-toggle-group {
+        width: 100%;
+    }
+
+    .rsi-method-toggle-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 8px 12px;
+        font-size: 0.82rem;
+    }
+
+    .rsi-step-actions {
+        flex-direction: column-reverse;
+        gap: var(--rsi-spacing-sm);
+    }
+
+    .rsi-step-actions button,
+    .rsi-step-actions a {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .rsi-summary-grid {
+        grid-template-columns: 1fr;
+    }
+}

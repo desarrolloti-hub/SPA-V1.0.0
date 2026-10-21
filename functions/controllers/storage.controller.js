@@ -1,7 +1,12 @@
 const admin = require('firebase-admin');
 
-const storage = admin.storage();
-const bucket = storage.bucket();
+function getBucket() {
+    try {
+        const b = admin.storage().bucket();
+        if (b && b.name) return b;
+    } catch (e) {}
+    return admin.storage().bucket(process.env.STORAGE_BUCKET || 'rsienterprise.firebasestorage.app');
+}
 
 /**
  * Verifica si un archivo existe en Storage y obtiene su URL
@@ -17,6 +22,7 @@ exports.verificarArchivo = async (req, res) => {
             });
         }
 
+        const bucket = getBucket();
         const file = bucket.file(path);
         const [exists] = await file.exists();
         
@@ -68,6 +74,7 @@ exports.obtenerUrlArchivo = async (req, res) => {
             });
         }
 
+        const bucket = getBucket();
         const file = bucket.file(path);
         const [exists] = await file.exists();
         

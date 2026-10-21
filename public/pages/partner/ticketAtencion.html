@@ -1,0 +1,442 @@
+<section class="ta-section-wrapper">
+    <div class="ta-page">
+        <!-- Barra de navegación superior -->
+        <div class="ta-topbar">
+            <button type="button" class="ta-btn ta-btn-secondary" id="btnVolverDashboard">
+                <i class="fas fa-arrow-left"></i> Volver a Mis Tickets
+            </button>
+            <div class="ta-topbar-actions">
+                <button type="button" class="ta-btn ta-btn-secondary" id="btnRecargarTicket" title="Actualizar información">
+                    <i class="fas fa-sync-alt"></i> Actualizar
+                </button>
+                <button type="button" class="ta-btn ta-btn-primary" id="btnReporteFotograficoPdf" title="Generar Reporte Fotográfico en PDF">
+                    <i class="fas fa-file-pdf"></i> Reporte Fotográfico PDF
+                </button>
+            </div>
+        </div>
+
+        <!-- Encabezado principal del Ticket y Banner de Aceptación -->
+        <section class="ta-hero-card">
+            <div class="ta-hero-top">
+                <div class="ta-folio-group">
+                    <span class="ta-folio-eyebrow">Atención y Seguimiento Operativo</span>
+                    <h1 class="ta-folio-title">
+                        <i class="fas fa-ticket-alt"></i>
+                        <span id="taIdTicket">Cargando...</span>
+                    </h1>
+                </div>
+                <div class="ta-badges-row">
+                    <span class="ta-badge tipo-ticket" id="taTipoBadge">
+                        <i class="fas fa-tag"></i> <span id="taTipoTexto">Operación</span>
+                    </span>
+                    <span class="ta-badge prioridad-media" id="taPrioridadBadge">
+                        <i class="fas fa-flag"></i> <span id="taPrioridadTexto">Media</span>
+                    </span>
+                    <span class="ta-badge estado-pendiente" id="taEstadoBadge">
+                        <i class="fas fa-clock"></i> <span id="taEstadoTexto">Pendiente</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Banner interactivo de aceptación del ticket -->
+            <div class="ta-acceptance-banner is-pending" id="taAcceptanceBanner">
+                <div class="ta-acceptance-info">
+                    <div class="ta-acceptance-icon" id="taAcceptanceIcon">
+                        <i class="fas fa-hand-paper"></i>
+                    </div>
+                    <div class="ta-acceptance-text">
+                        <h3 id="taAcceptanceTitle">Verificando estado de aceptación...</h3>
+                        <p id="taAcceptanceDesc">Al aceptar el ticket se registrará tu confirmación, hora y ubicación GPS de atención.</p>
+                    </div>
+                </div>
+                <div id="taAcceptanceActions">
+                    <button type="button" class="ta-btn ta-btn-primary" id="btnAceptarTicket">
+                        <i class="fas fa-check-circle"></i> Aceptar Ticket Ahora
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Grid Principal -->
+        <div class="ta-main-grid">
+            <!-- COLUMNA IZQUIERDA: Información, Evidencias Fotográficas y Actividades -->
+            <div class="ta-column">
+
+                <!-- 1. Información General del Ticket -->
+                <section class="ta-card">
+                    <div class="ta-card-header">
+                        <div>
+                            <h2 class="ta-card-title">
+                                <i class="fas fa-info-circle"></i> Información del Ticket
+                            </h2>
+                            <span class="ta-card-subtitle" id="taFechaCreacionHeader"></span>
+                        </div>
+                    </div>
+
+                    <div class="ta-info-grid" id="taInfoGrid">
+                        <div class="ta-info-item">
+                            <span class="ta-info-label">Motivo / Servicio</span>
+                            <span class="ta-info-value" id="taMotivoValor">-</span>
+                        </div>
+                        <div class="ta-info-item">
+                            <span class="ta-info-label">Fecha Programada</span>
+                            <span class="ta-info-value" id="taFechaProgramadaValor">-</span>
+                        </div>
+                        <div class="ta-info-item" id="taClienteBox">
+                            <span class="ta-info-label" id="taClienteLabel">Cliente / Solicitante</span>
+                            <span class="ta-info-value" id="taClienteValor">-</span>
+                        </div>
+                        <div class="ta-info-item" id="taContactoBox">
+                            <span class="ta-info-label" id="taContactoLabel">Contacto / Área</span>
+                            <span class="ta-info-value" id="taContactoValor">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Ubicación del servicio (si es operación con cliente) -->
+                    <div id="taUbicacionClienteContainer" style="display: none; margin-bottom: var(--rsi-spacing-md);">
+                        <div class="ta-info-item" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--rsi-spacing-sm);">
+                            <div>
+                                <span class="ta-info-label"><i class="fas fa-map-marker-alt"></i> Dirección / Coordenadas del Cliente</span>
+                                <span class="ta-info-value" id="taDireccionClienteValor">-</span>
+                            </div>
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="ta-btn ta-btn-secondary" id="taLinkMapaCliente" style="display: none;">
+                                <i class="fas fa-directions"></i> Abrir en Google Maps
+                            </a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="ta-info-label" style="margin-bottom: var(--rsi-spacing-xs);">Descripción de la Solicitud</span>
+                        <div class="ta-description-box" id="taDescripcionValor">Sin descripción registrada.</div>
+                    </div>
+                </section>
+
+                <!-- 2. Evidencias Fotográficas (Antes, Durante y Después) con Marca de Agua -->
+                <section class="ta-card" id="taEvidenciasSection">
+                    <div class="ta-card-header">
+                        <div>
+                            <h2 class="ta-card-title">
+                                <i class="fas fa-camera-retro"></i> Evidencias Fotográficas (Antes, Durante y Después)
+                            </h2>
+                            <span class="ta-card-subtitle">
+                                Cada fotografía se sella automáticamente con el logotipo de RSI Enterprise, fecha, hora y coordenadas GPS. Haz clic o usa los controles (+/-) para hacer zoom directo.
+                            </span>
+                        </div>
+                        <button type="button" class="ta-btn ta-btn-secondary" id="btnReporteFotograficoCard" title="Descargar Reporte Fotográfico en PDF">
+                            <i class="fas fa-file-pdf"></i> Reporte PDF
+                        </button>
+                    </div>
+
+                    <!-- Alerta cuando aún no se acepta el ticket -->
+                    <div class="ta-lock-alert" id="taLockEvidenciasAlert" style="display: none;">
+                        <i class="fas fa-lock"></i>
+                        <span>Debes aceptar el ticket primero en el botón superior para habilitar la captura y subida de evidencias fotográficas.</span>
+                    </div>
+
+                    <!-- Pestañas de las 3 etapas obligatorias -->
+                    <div class="ta-stages-tabs" role="tablist">
+                        <button type="button" class="ta-stage-tab active" data-stage-tab="antes" id="tabStageAntes">
+                            <span class="ta-stage-tab-title">
+                                <i class="fas fa-hourglass-start"></i> 1. Antes
+                            </span>
+                            <span class="ta-stage-tab-count" id="countStageAntes">0 fotos</span>
+                        </button>
+                        <button type="button" class="ta-stage-tab" data-stage-tab="durante" id="tabStageDurante">
+                            <span class="ta-stage-tab-title">
+                                <i class="fas fa-tools"></i> 2. Durante
+                            </span>
+                            <span class="ta-stage-tab-count" id="countStageDurante">0 fotos</span>
+                        </button>
+                        <button type="button" class="ta-stage-tab" data-stage-tab="despues" id="tabStageDespues">
+                            <span class="ta-stage-tab-title">
+                                <i class="fas fa-check-double"></i> 3. Después
+                            </span>
+                            <span class="ta-stage-tab-count" id="countStageDespues">0 fotos</span>
+                        </button>
+                    </div>
+
+                    <!-- Inputs de archivo/cámara nativa ocultos por etapa -->
+                    <input type="file" id="fileInputAntes" accept="image/*" capture="environment" style="display: none;" />
+                    <input type="file" id="fileInputDurante" accept="image/*" capture="environment" style="display: none;" />
+                    <input type="file" id="fileInputDespues" accept="image/*" capture="environment" style="display: none;" />
+
+                    <!-- Panel Etapa: ANTES -->
+                    <div class="ta-stage-panel active" id="panelStageAntes" data-stage-panel="antes">
+                        <div class="ta-stage-header-bar">
+                            <div class="ta-stage-header-info">
+                                <h4><i class="fas fa-hourglass-start"></i> Evidencia del Antes</h4>
+                                <p>Fotografía del estado inicial del área, equipo o instalación antes de intervenir.</p>
+                            </div>
+                            <div class="ta-capture-buttons" id="actionsStageAntes">
+                                <button type="button" class="ta-btn ta-btn-primary btn-open-camera" data-stage="antes">
+                                    <i class="fas fa-camera"></i> Tomar Foto con Cámara
+                                </button>
+                                <button type="button" class="ta-btn ta-btn-secondary btn-select-file" data-stage="antes">
+                                    <i class="fas fa-upload"></i> Galería / Archivo
+                                </button>
+                            </div>
+                        </div>
+                        <div id="galleryStageAntes" class="ta-evidence-grid"></div>
+                    </div>
+
+                    <!-- Panel Etapa: DURANTE -->
+                    <div class="ta-stage-panel" id="panelStageDurante" data-stage-panel="durante">
+                        <div class="ta-stage-header-bar">
+                            <div class="ta-stage-header-info">
+                                <h4><i class="fas fa-tools"></i> Evidencia del Durante</h4>
+                                <p>Fotografía del desarrollo de las maniobras, cableado, mantenimiento o configuración en curso.</p>
+                            </div>
+                            <div class="ta-capture-buttons" id="actionsStageDurante">
+                                <button type="button" class="ta-btn ta-btn-primary btn-open-camera" data-stage="durante">
+                                    <i class="fas fa-camera"></i> Tomar Foto con Cámara
+                                </button>
+                                <button type="button" class="ta-btn ta-btn-secondary btn-select-file" data-stage="durante">
+                                    <i class="fas fa-upload"></i> Galería / Archivo
+                                </button>
+                            </div>
+                        </div>
+                        <div id="galleryStageDurante" class="ta-evidence-grid"></div>
+                    </div>
+
+                    <!-- Panel Etapa: DESPUÉS -->
+                    <div class="ta-stage-panel" id="panelStageDespues" data-stage-panel="despues">
+                        <div class="ta-stage-header-bar">
+                            <div class="ta-stage-header-info">
+                                <h4><i class="fas fa-check-double"></i> Evidencia del Después</h4>
+                                <p>Fotografía del trabajo concluido, equipo operando y área limpia al finalizar.</p>
+                            </div>
+                            <div class="ta-capture-buttons" id="actionsStageDespues">
+                                <button type="button" class="ta-btn ta-btn-primary btn-open-camera" data-stage="despues">
+                                    <i class="fas fa-camera"></i> Tomar Foto con Cámara
+                                </button>
+                                <button type="button" class="ta-btn ta-btn-secondary btn-select-file" data-stage="despues">
+                                    <i class="fas fa-upload"></i> Galería / Archivo
+                                </button>
+                            </div>
+                        </div>
+                        <div id="galleryStageDespues" class="ta-evidence-grid"></div>
+                    </div>
+                </section>
+
+                <!-- 3. Actividades Desarrolladas -->
+                <section class="ta-card">
+                    <div class="ta-card-header">
+                        <div>
+                            <h2 class="ta-card-title">
+                                <i class="fas fa-clipboard-list"></i> Actividades Desarrolladas
+                            </h2>
+                            <span class="ta-card-subtitle" id="taActividadesMeta">
+                                Describe detalladamente los trabajos realizados, materiales utilizados y pruebas ejecutadas.
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Alerta cuando aún no se acepta el ticket -->
+                    <div class="ta-lock-alert" id="taLockActividadesAlert" style="display: none;">
+                        <i class="fas fa-lock"></i>
+                        <span>Acepta el ticket primero para poder registrar las actividades desarrolladas.</span>
+                    </div>
+
+                    <textarea
+                        id="taActividadesInput"
+                        class="ta-textarea"
+                        rows="5"
+                        placeholder="Ejemplo: Se realizó diagnóstico de cámaras en acceso principal, reemplazo de conector RJ45 dañado, ajuste de enfoque y pruebas de grabación en NVR..."
+                    ></textarea>
+
+                    <div style="display: flex; justify-content: flex-end; margin-top: var(--rsi-spacing-md);" id="taActividadesActions">
+                        <button type="button" class="ta-btn ta-btn-primary" id="btnGuardarActividades">
+                            <i class="fas fa-save"></i> Guardar Avance de Actividades
+                        </button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- COLUMNA DERECHA: Cierre de Ticket, Colaboradores Asignados, Comentarios e Historial -->
+            <div class="ta-column">
+
+                <!-- 1. Requisitos de Cierre y Botón de Finalización -->
+                <section class="ta-card" id="taCierreCard">
+                    <div class="ta-card-header">
+                        <div>
+                            <h2 class="ta-card-title">
+                                <i class="fas fa-flag-checkered"></i> Cierre del Ticket
+                            </h2>
+                            <span class="ta-card-subtitle">
+                                Completa todos los requisitos para habilitar el cierre definitivo del ticket.
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="ta-checklist" id="taChecklistContainer">
+                        <div class="ta-check-item" id="chkAceptado">
+                            <span class="ta-check-item-left">
+                                <i class="fas fa-clock"></i> 1. Ticket aceptado por colaborador
+                            </span>
+                            <span class="ta-status-pill pending" id="chkAceptadoPill">Pendiente</span>
+                        </div>
+                        <div class="ta-check-item" id="chkAntes">
+                            <span class="ta-check-item-left">
+                                <i class="fas fa-clock"></i> 2. Evidencia fotográfica del Antes
+                            </span>
+                            <span class="ta-status-pill pending" id="chkAntesPill">0 fotos</span>
+                        </div>
+                        <div class="ta-check-item" id="chkDurante">
+                            <span class="ta-check-item-left">
+                                <i class="fas fa-clock"></i> 3. Evidencia fotográfica del Durante
+                            </span>
+                            <span class="ta-status-pill pending" id="chkDurantePill">0 fotos</span>
+                        </div>
+                        <div class="ta-check-item" id="chkDespues">
+                            <span class="ta-check-item-left">
+                                <i class="fas fa-clock"></i> 4. Evidencia fotográfica del Después
+                            </span>
+                            <span class="ta-status-pill pending" id="chkDespuesPill">0 fotos</span>
+                        </div>
+                        <div class="ta-check-item" id="chkActividades">
+                            <span class="ta-check-item-left">
+                                <i class="fas fa-clock"></i> 5. Actividades desarrolladas registradas
+                            </span>
+                            <span class="ta-status-pill pending" id="chkActividadesPill">Pendiente</span>
+                        </div>
+                    </div>
+
+                    <div id="taCierreFormArea">
+                        <label for="taComentarioCierre" class="ta-info-label" style="margin-bottom: var(--rsi-spacing-xs);">
+                            Observación final de cierre (opcional)
+                        </label>
+                        <input
+                            type="text"
+                            id="taComentarioCierre"
+                            class="ta-input-text"
+                            placeholder="Ej. Servicio entregado a entera satisfacción del cliente..."
+                            style="margin-bottom: var(--rsi-spacing-md);"
+                        />
+                        <button type="button" class="ta-btn ta-btn-success" id="btnCerrarTicket" style="width: 100%; padding: 12px 20px; font-size: 0.95rem;">
+                            <i class="fas fa-check-double"></i> Finalizar y Cerrar Ticket
+                        </button>
+                    </div>
+                </section>
+
+                <!-- 2. Colaboradores Asignados y quiénes ya aceptaron -->
+                <section class="ta-card">
+                    <div class="ta-card-header">
+                        <div>
+                            <h2 class="ta-card-title">
+                                <i class="fas fa-users"></i> Colaboradores y Aceptaciones
+                            </h2>
+                            <span class="ta-card-subtitle" id="taCollabSummarySubtitle">
+                                Estado de confirmación del equipo asignado
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ta-collab-list" id="taCollabList">
+                        <!-- Renderizado dinámico por ticketAtencionController -->
+                    </div>
+                </section>
+
+                <!-- 3. Comentarios del Ticket -->
+                <section class="ta-card">
+                    <div class="ta-card-header">
+                        <div>
+                            <h2 class="ta-card-title">
+                                <i class="fas fa-comments"></i> Comentarios y Seguimiento
+                            </h2>
+                            <span class="ta-card-subtitle" id="taComentariosCount">0 comentarios</span>
+                        </div>
+                    </div>
+
+                    <!-- Alerta cuando aún no se acepta el ticket -->
+                    <div class="ta-lock-alert" id="taLockComentariosAlert" style="display: none;">
+                        <i class="fas fa-lock"></i>
+                        <span>Acepta el ticket primero para poder publicar comentarios de seguimiento.</span>
+                    </div>
+
+                    <div class="ta-comment-form" id="taCommentForm">
+                        <textarea
+                            id="taNuevoComentarioInput"
+                            class="ta-textarea"
+                            rows="3"
+                            placeholder="Escribe un comentario, observación o avance sobre el ticket..."
+                            style="min-height: 80px;"
+                        ></textarea>
+                        <div style="display: flex; justify-content: flex-end;">
+                            <button type="button" class="ta-btn ta-btn-primary" id="btnAgregarComentario">
+                                <i class="fas fa-paper-plane"></i> Publicar Comentario
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="ta-comments-list" id="taComentariosList">
+                        <!-- Renderizado dinámico de comentarios -->
+                    </div>
+                </section>
+
+                <!-- 4. Historial de Eventos del Ticket -->
+                <section class="ta-card">
+                    <div class="ta-card-header">
+                        <h2 class="ta-card-title">
+                            <i class="fas fa-history"></i> Bitácora de Movimientos
+                        </h2>
+                    </div>
+                    <div class="ta-comments-list" id="taHistorialList">
+                        <!-- Renderizado dinámico de historialCambios -->
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Modal de Cámara en Vivo y Previsualización de Marca de Agua -->
+        <div class="ta-camera-modal" id="taCameraModal" aria-hidden="true">
+            <div class="ta-camera-dialog">
+                <div class="ta-camera-header">
+                    <h3 id="taCameraModalTitle">
+                        <i class="fas fa-camera"></i> Capturar Evidencia Fotográfica
+                    </h3>
+                    <button type="button" class="ta-camera-close" id="btnCloseCameraModal" title="Cerrar">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="ta-camera-body">
+                    <div class="ta-camera-viewport">
+                        <video id="taCameraVideo" class="ta-camera-video" autoplay playsinline muted></video>
+                        <img id="taWatermarkPreviewImg" class="ta-camera-preview-img" alt="Vista previa con marca de agua" style="display: none;" />
+                        <div class="ta-camera-overlay-badge" id="taCameraOverlayBadge">
+                            <i class="fas fa-shield-alt"></i> Marca de agua RSI + GPS activa
+                        </div>
+                    </div>
+
+                    <div id="taEvidenciaDescWrapper" style="display: none;">
+                        <label for="taEvidenciaDescripcion" class="ta-info-label" style="margin-bottom: 4px;">
+                            Nota o descripción breve de la fotografía (opcional)
+                        </label>
+                        <input
+                            type="text"
+                            id="taEvidenciaDescripcion"
+                            class="ta-input-text"
+                            placeholder="Ej. Tablero principal antes de peinado de cables..."
+                        />
+                    </div>
+
+                    <div class="ta-camera-controls">
+                        <!-- Controles cuando el video en vivo está activo -->
+                        <button type="button" class="ta-btn ta-btn-secondary" id="btnSwitchCamera">
+                            <i class="fas fa-sync"></i> Cambiar Cámara
+                        </button>
+                        <button type="button" class="ta-btn ta-btn-primary" id="btnTakeSnapshot">
+                            <i class="fas fa-camera"></i> Capturar Fotografía
+                        </button>
+
+                        <!-- Controles cuando la previsualización con marca de agua está lista -->
+                        <button type="button" class="ta-btn ta-btn-secondary" id="btnRetakePhoto" style="display: none;">
+                            <i class="fas fa-redo"></i> Tomar Otra
+                        </button>
+                        <button type="button" class="ta-btn ta-btn-success" id="btnConfirmUploadEvidencia" style="display: none;">
+                            <i class="fas fa-cloud-upload-alt"></i> Subir Evidencia con Marca de Agua
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

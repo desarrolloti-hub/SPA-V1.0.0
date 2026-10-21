@@ -1,0 +1,151 @@
+<!-- ========================================
+   FICHA DE DETALLE DE AUTOMÓVIL - RSI ENTERPRISE
+   Ficha técnica y bitácora completa homologada con details.css
+   ======================================== -->
+
+<section class="rsi-ticket-view-section">
+    <div class="rsi-container">
+        
+        <!-- Navegación y Acciones Superiores -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--rsi-spacing-lg); flex-wrap: wrap; gap: var(--rsi-spacing-md);">
+            <a href="/partner/vehiculos" class="rsi-btn-action rsi-btn-action-outline" data-link>
+                <i class="fas fa-arrow-left"></i> Volver al Parque Vehicular
+            </a>
+            <div id="detailHeaderActions">
+                <!-- Se inyecta botón de Salida si disponible -->
+            </div>
+        </div>
+
+        <!-- Título -->
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Ficha Técnica</span> del Automóvil
+        </h1>
+        <p class="rsi-page-subtitle">
+            Especificaciones mecánicas, estado operativo y bitácora de inspecciones de salida.
+        </p>
+
+        <!-- ===== TARJETA DE DETALLE RSI ===== -->
+        <div class="rsi-view-card" id="viewCard">
+            
+            <!-- Cabecera de la Tarjeta -->
+            <div class="rsi-view-header">
+                <div class="rsi-view-icon-container" id="detailIconContainer">
+                    <div class="rsi-view-icon" id="detailIconFallback" style="width: 80px; height: 80px; border-radius: var(--rsi-radius-lg); background: var(--rsi-bg-card); border: 2px solid var(--rsi-primary); display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-car" style="font-size: 2.2rem; color: var(--rsi-primary);"></i>
+                    </div>
+                    <img id="detailVehiculoImg" src="" alt="Automóvil" style="display: none; width: 110px; height: 80px; object-fit: cover; border-radius: var(--rsi-radius-md); border: 2px solid var(--rsi-primary); box-shadow: 0 4px 12px rgba(0,0,0,0.25);" />
+                </div>
+                <div class="rsi-view-title">
+                    <h2 id="detailTituloVehiculo">Cargando datos del vehículo...</h2>
+                    <div class="rsi-view-badges">
+                        <span id="detailBadgeEco" class="rsi-badge rsi-badge-primary">No. Eco: -</span>
+                        <span id="detailBadgePlacas" class="rsi-badge rsi-badge-secondary" style="font-family: monospace; font-weight: 700;">Placas: -</span>
+                        <span id="detailBadgeEstado" class="rsi-badge-status">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cuerpo - Información y Especificaciones -->
+            <div class="rsi-view-body">
+                <h4 class="rsi-section-title" style="margin-bottom: var(--rsi-spacing-md); font-size: 1.05rem; font-weight: 700; color: var(--rsi-text-primary); display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-tachometer-alt" style="color: var(--rsi-primary);"></i> Estado Operativo Actual
+                </h4>
+                
+                <div class="rsi-view-grid" style="margin-bottom: var(--rsi-spacing-xl);">
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Kilometraje Actual</span>
+                        <span class="rsi-view-value" id="detailKmActual" style="font-family: monospace; font-size: 1.15rem; font-weight: 700; color: var(--rsi-text-gold);">0 km</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Nivel de Combustible</span>
+                        <span class="rsi-view-value" id="detailCombustible">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Conductor Asignado (Receptor)</span>
+                        <span class="rsi-view-value" id="detailConductorActual" style="font-weight: 600;">Sin conductor asignado</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Salidas Registradas</span>
+                        <span class="rsi-view-value" id="detailTotalSalidas">0</span>
+                    </div>
+                </div>
+
+                <h4 class="rsi-section-title" style="margin-bottom: var(--rsi-spacing-md); font-size: 1.05rem; font-weight: 700; color: var(--rsi-text-primary); display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-info-circle" style="color: var(--rsi-primary);"></i> Especificaciones del Automóvil
+                </h4>
+
+                <div class="rsi-view-grid">
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Marca</span>
+                        <span class="rsi-view-value" id="specMarca">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Modelo</span>
+                        <span class="rsi-view-value" id="specModelo">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Año / Modelo</span>
+                        <span class="rsi-view-value" id="specAnio">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Color</span>
+                        <span class="rsi-view-value" id="specColor">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Número de Serie (VIN)</span>
+                        <span class="rsi-view-value" id="specVIN" style="font-family: monospace;">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Tipo de Unidad</span>
+                        <span class="rsi-view-value" id="specTipo">-</span>
+                    </div>
+                    <div class="rsi-view-item">
+                        <span class="rsi-view-label">Fecha de Registro</span>
+                        <span class="rsi-view-value" id="specFechaRegistro">-</span>
+                    </div>
+                    <div class="rsi-view-item full-width" style="grid-column: 1 / -1;">
+                        <span class="rsi-view-label">Observaciones y Notas Permanentes</span>
+                        <span class="rsi-view-value" id="specObservaciones" style="font-style: italic; color: var(--rsi-text-secondary);">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Línea de Tiempo / Bitácora de Salidas -->
+            <div class="rsi-view-timeline">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--rsi-spacing-lg);">
+                    <h3 class="rsi-timeline-title" style="margin: 0;">
+                        <i class="fas fa-history"></i> Historial de Salidas e Inspecciones
+                    </h3>
+                    <span id="historyCounter" class="rsi-badge rsi-badge-primary">0 movimientos</span>
+                </div>
+
+                <div id="vehiculoHistoryList" class="rsi-timeline">
+                    <!-- Se inyecta dinámicamente con items de timeline -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ========================================
+   MODAL DE DETALLE DEL CHECKLIST (RSI MODAL)
+   ======================================== -->
+<div class="rsi-modal" id="modalChecklistDetalle" style="display: none;">
+    <div class="rsi-modal-content" style="max-width: 850px;">
+        <div class="rsi-modal-header">
+            <h3 id="modalChecklistTitle">
+                <i class="fas fa-file-signature"></i> Detalle de Inspección de Salida
+            </h3>
+            <button type="button" class="rsi-modal-close" id="btnCloseModalChecklistDetalle">&times;</button>
+        </div>
+        <div class="rsi-modal-body" id="modalChecklistContent">
+            <!-- Contenido dinámico del checklist -->
+        </div>
+        <div class="rsi-modal-actions" style="justify-content: flex-end;">
+            <button type="button" class="rsi-btn-action rsi-btn-action-secondary" id="btnCerrarModalChecklistDetalle">
+                Cerrar
+            </button>
+        </div>
+    </div>
+</div>

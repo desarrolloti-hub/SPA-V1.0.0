@@ -1,0 +1,126 @@
+<!-- ========================================
+   VER CATÁLOGO - Detalle
+   ======================================== -->
+
+<section class="rsi-view-catalog-section">
+    <div class="rsi-container">
+
+        <!-- Loading -->
+        <div id="viewLoading" class="rsi-view-loading">
+            <div class="rsi-loading-spinner"></div>
+            <p>Cargando catálogo...</p>
+        </div>
+
+        <!-- Error -->
+        <div id="viewError" class="rsi-view-error" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>No se pudo cargar el catálogo</h3>
+            <p id="viewErrorText">El catálogo no existe o fue eliminado.</p>
+            <a href="/partner/crudCatalogs" class="rsi-btn-primary">
+                <i class="fas fa-arrow-left"></i> Volver al listado
+            </a>
+        </div>
+
+        <!-- Contenido -->
+        <div id="viewContent" style="display: none;">
+
+            <!-- Botón volver -->
+            <div class="rsi-view-back">
+                <a href="/partner/crudCatalogs" class="rsi-btn-back">
+                    <i class="fas fa-arrow-left"></i> Volver a catálogos
+                </a>
+            </div>
+
+            <!-- ===== HERO ===== -->
+            <div class="rsi-view-hero" id="viewHero">
+                <div class="rsi-view-hero-overlay"></div>
+                <div class="rsi-view-hero-content">
+                    <div id="viewStatusBadge"></div>
+                    <h1 id="viewTitle">—</h1>
+                    <p id="viewDescription">—</p>
+                    <div class="rsi-view-hero-meta">
+                        <span>
+                            <i class="fas fa-box"></i>
+                            <strong id="viewProductCount">0</strong> productos
+                        </span>
+                        <span>
+                            <i class="fas fa-calendar"></i>
+                            <span id="viewCreatedDate">—</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== INFO + ACCIONES ===== -->
+            <div class="rsi-view-info-bar">
+                <div class="rsi-view-info-left">
+                    <div class="rsi-view-audit">
+                        <i class="fas fa-user-circle"></i>
+                        <div>
+                            <small>Creado por</small>
+                            <strong id="viewCreatedBy">—</strong>
+                        </div>
+                    </div>
+                    <div class="rsi-view-audit" id="viewEditedByContainer" style="display: none;">
+                        <i class="fas fa-user-edit"></i>
+                        <div>
+                            <small>Última edición</small>
+                            <strong id="viewEditedBy">—</strong>
+                        </div>
+                    </div>
+                    <div class="rsi-view-audit rsi-view-audit-danger" id="viewDisabledByContainer" style="display: none;">
+                        <i class="fas fa-user-slash"></i>
+                        <div>
+                            <small>Deshabilitado por</small>
+                            <strong id="viewDisabledBy">—</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="rsi-view-info-actions" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <button type="button" id="viewShareBtn" class="rsi-btn-secondary" style="display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-share-alt" style="color: #D4AF37;"></i> Compartir
+                    </button>
+                    <button id="viewEditBtn" class="rsi-btn-primary">
+                        <i class="fas fa-edit"></i> Editar catálogo
+                    </button>
+                </div>
+            </div>
+
+            <!-- ===== BUSCADOR DE PRODUCTOS ===== -->
+            <div class="rsi-view-products-header">
+                <h2>
+                    <i class="fas fa-box-open"></i>
+                    Productos y servicios
+                    <span class="rsi-badge rsi-badge-primary" id="viewProductsBadge">0</span>
+                </h2>
+                <div class="rsi-view-products-search">
+                    <i class="fas fa-search"></i>
+                    <input 
+                        type="text" 
+                        id="viewProductsSearch" 
+                        placeholder="Buscar producto..."
+                        autocomplete="off"
+                    >
+                </div>
+            </div>
+
+            <!-- Grid de productos -->
+            <div id="viewProductsGrid" class="rsi-view-products-grid"></div>
+
+            <!-- Sin productos -->
+            <div id="viewNoProducts" class="rsi-view-empty" style="display: none;">
+                <i class="fas fa-box-open"></i>
+                <h3>Sin productos</h3>
+                <p>Este catálogo aún no tiene productos registrados.</p>
+            </div>
+
+            <!-- Sin resultados de búsqueda -->
+            <div id="viewNoResults" class="rsi-view-empty" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>Sin resultados</h3>
+                <p>No se encontraron productos que coincidan con tu búsqueda.</p>
+            </div>
+
+        </div>
+    </div>
+</section>

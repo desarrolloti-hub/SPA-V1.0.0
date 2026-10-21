@@ -1,0 +1,194 @@
+<!-- ========================================
+   FORMULARIO DE MARCA (CREAR / EDITAR) - RSI ENTERPRISE
+   Formulario por pasos (Stepper) con vista previa en vivo
+   ======================================== -->
+
+<section class="rsi-new-collaborator-section">
+    <div class="rsi-container">
+        
+        <!-- BARRA DE NAVEGACIÓN SUPERIOR -->
+        <div class="rsi-form-nav-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--rsi-spacing-lg);">
+            <a href="/ecommerce/marcas" class="rsi-btn-crud rsi-btn-crud-secondary" data-link>
+                <i class="fas fa-arrow-left"></i> Volver a Marcas
+            </a>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <span class="rsi-badge rsi-badge-primary" id="badgeModoMarca">
+                    <i class="fas fa-certificate"></i> Nueva Marca
+                </span>
+                <span class="rsi-badge rsi-badge-secondary" id="badgeEstadoMarca">
+                    <i class="fas fa-eye"></i> Activa
+                </span>
+            </div>
+        </div>
+
+        <!-- TÍTULO DINÁMICO -->
+        <h1 class="rsi-page-title" id="pageTitleMarca">
+            <span class="rsi-text-gold" id="txtAccionTituloMarca">Nueva</span> Marca
+        </h1>
+        <p class="rsi-page-subtitle" id="pageSubtitleMarca">
+            Registra un fabricante o marca comercial con su logotipo oficial para asociarlo a los productos.
+        </p>
+
+        <!-- ===== FORMULARIO POR PASOS ===== -->
+        <form id="formMarca" class="rsi-form-steps" autocomplete="off">
+            <input type="hidden" id="marcaDocId" value="" />
+
+            <!-- Indicador de pasos -->
+            <div class="rsi-steps-indicator">
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number active" data-step="1">1</span>
+                    <span class="rsi-step-label active" data-step="1">Datos de la Marca</span>
+                </div>
+                <div class="rsi-step-line" data-step="1"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number" data-step="2">2</span>
+                    <span class="rsi-step-label" data-step="2">Logotipo y Confirmación</span>
+                </div>
+            </div>
+
+            <!-- Contenedor de pasos -->
+            <div class="rsi-steps-container">
+
+                <!-- ===== PASO 1: DATOS DE LA MARCA ===== -->
+                <div class="rsi-step-panel active" data-step="1">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <h3>Información de la Marca</h3>
+                        <p>Nombre comercial, identificación y estado en catálogo</p>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="inputMarcaNombre">Nombre de la Marca <span class="rsi-required">*</span></label>
+                        <div class="rsi-input-wrapper">
+                            <i class="fas fa-building rsi-input-icon"></i>
+                            <input type="text" id="inputMarcaNombre" name="nombre" placeholder="Ej: Hikvision, Dahua, Cisco, Ubiquiti" required>
+                        </div>
+                        <small style="color: var(--rsi-gray-400); font-size: 0.8rem; margin-top: 4px; display: block;">
+                            Slug: <code id="txtMarcaSlug" style="color: var(--rsi-gold, #c5a059); font-weight: 600;">automático</code>
+                        </small>
+                        <div class="rsi-form-error-message" id="errorMarcaNombre"></div>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="inputMarcaDescripcion">Descripción o reseña comercial</label>
+                        <div class="rsi-input-wrapper">
+                            <textarea id="inputMarcaDescripcion" name="descripcion" rows="3" placeholder="Información destacada del fabricante o distribuidor..." style="width: 100%; border: none; background: transparent; padding: 12px 14px; font-family: inherit; font-size: 0.95rem; resize: vertical; outline: none;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label>Estado en catálogo</label>
+                        <div style="padding: 10px 0; display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="checkMarcaActivo" checked style="width: 20px; height: 20px; accent-color: var(--rsi-gold, #c5a059); cursor: pointer;" />
+                            <span id="labelMarcaActivo" style="font-weight: 500; font-size: 0.95rem;">Visible (Activa)</span>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <a href="/ecommerce/marcas" class="rsi-btn-prev" data-link style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-arrow-left"></i> Cancelar
+                        </a>
+                        <button type="button" class="rsi-btn-next" data-next="2">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>1</span> de 2</div>
+                </div>
+
+                <!-- ===== PASO 2: LOGOTIPO Y CONFIRMACIÓN ===== -->
+                <div class="rsi-step-panel" data-step="2">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Logotipo Oficial y Vista Previa</h3>
+                        <p>Carga el logotipo representativo y confirma la apariencia</p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--rsi-spacing-lg); align-items: start;">
+                        <!-- Columna de carga -->
+                        <div>
+                            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px;">
+                                Origen del Logotipo
+                            </label>
+
+                            <!-- Pestañas origen -->
+                            <div class="rsi-image-source-tabs" style="display: flex; gap: 8px; margin-bottom: 14px;">
+                                <button type="button" class="rsi-tab-btn active" id="tabMarcaFile" style="padding: 8px 16px; border-radius: 8px; border: 1px solid var(--rsi-gray-300); background: var(--rsi-bg-card); cursor: pointer; font-weight: 600;">
+                                    <i class="fas fa-upload"></i> Subir Archivo
+                                </button>
+                                <button type="button" class="rsi-tab-btn" id="tabMarcaUrl" style="padding: 8px 16px; border-radius: 8px; border: 1px solid var(--rsi-gray-300); background: var(--rsi-bg-card); cursor: pointer; font-weight: 600;">
+                                    <i class="fas fa-link"></i> URL Externa
+                                </button>
+                            </div>
+
+                            <!-- Panel Archivo -->
+                            <div id="panelMarcaFile">
+                                <div id="dropzoneMarca" style="border: 2px dashed var(--rsi-gold, #c5a059); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; background: rgba(197, 160, 89, 0.04); transition: background 0.2s;">
+                                    <i class="fas fa-cloud-upload-alt fa-2x" style="color: var(--rsi-gold, #c5a059); margin-bottom: 8px;"></i>
+                                    <p style="margin: 0; font-weight: 600;">Haz clic o arrastra un logotipo aquí</p>
+                                    <small style="color: var(--rsi-gray-500); display: block; margin-top: 4px;">PNG transparente recomendado, máx. 5 MB</small>
+                                    <input type="file" id="fileMarcaInput" accept="image/png,image/jpeg,image/webp,image/svg+xml" style="display: none;" />
+                                </div>
+                                <p id="marcaFileInfo" style="display: none; margin-top: 8px; font-size: 0.85rem; color: var(--rsi-success, #10b981);">
+                                    <i class="fas fa-check-circle"></i> Archivo seleccionado: <strong id="marcaFileName"></strong>
+                                </p>
+                            </div>
+
+                            <!-- Panel URL -->
+                            <div id="panelMarcaUrl" style="display: none;">
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-link rsi-input-icon"></i>
+                                    <input type="url" id="inputMarcaLogoUrl" placeholder="https://ejemplo.com/logo.png">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Columna Live Preview -->
+                        <div>
+                            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--rsi-gray-600);">
+                                <i class="fas fa-eye"></i> Vista Previa de la Marca
+                            </label>
+                            <div style="border-radius: 12px; border: 1px solid var(--rsi-gray-300); box-shadow: var(--rsi-shadow-sm); background: var(--rsi-bg-card); padding: 20px; text-align: center;">
+                                <div style="height: 110px; display: flex; align-items: center; justify-content: center; background: rgba(197, 160, 89, 0.04); border-radius: 8px; margin-bottom: 14px; overflow: hidden; padding: 10px;">
+                                    <img id="previewMarcaLogo" src="" alt="Logo Preview" style="max-height: 80px; max-width: 100%; object-fit: contain; display: none;" />
+                                    <div id="previewMarcaPlaceholder" style="color: var(--rsi-gray-400);">
+                                        <i class="fas fa-shield-alt fa-2x"></i>
+                                        <p style="margin: 6px 0 0; font-size: 0.8rem;">Sin logotipo asignado</p>
+                                    </div>
+                                </div>
+                                <h4 id="previewMarcaTitulo" style="margin: 0 0 6px; font-size: 1.1rem; font-weight: 700; color: var(--rsi-text-primary);">
+                                    Nombre de Marca
+                                </h4>
+                                <p id="previewMarcaDesc" style="margin: 0 0 10px; font-size: 0.82rem; color: var(--rsi-gray-500); line-height: 1.4;">
+                                    Descripción o notas comerciales de la marca seleccionada.
+                                </p>
+                                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; color: var(--rsi-gray-400); border-top: 1px solid var(--rsi-gray-200); padding-top: 10px;">
+                                    <span><i class="fas fa-box"></i> 0 productos asociados</span>
+                                    <span id="previewMarcaBadge" class="rsi-badge rsi-badge-primary" style="font-size: 0.75rem;">
+                                        Activa
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions" style="margin-top: var(--rsi-spacing-xl);">
+                        <button type="button" class="rsi-btn-prev" data-prev="1">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="submit" class="rsi-btn-submit-step" id="btnGuardarMarca">
+                            <i class="fas fa-save"></i> Guardar Marca
+                        </button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>2</span> de 2</div>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</section>

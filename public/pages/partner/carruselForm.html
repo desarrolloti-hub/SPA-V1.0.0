@@ -1,0 +1,349 @@
+<!-- ========================================
+   FORMULARIO DE DIAPOSITIVA (CREAR / EDITAR) - RSI ENTERPRISE
+   Vista dedicada con Live Preview interactivo en tiempo real
+   ======================================== -->
+
+<section class="rsi-facturas-section rsi-carrusel-form-section">
+    <div class="rsi-container">
+        
+        <!-- ==========================================
+           BARRA DE NAVEGACIÓN SUPERIOR
+           ========================================== -->
+        <div class="rsi-form-nav-bar">
+            <a href="/ecommerce/carrusel" class="rsi-btn-crud rsi-btn-crud-secondary" data-link>
+                <i class="fas fa-arrow-left"></i> Volver a Diapositivas
+            </a>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <span class="rsi-badge rsi-badge-primary" id="badgeModoSlide">
+                    <i class="fas fa-images"></i> Nueva Diapositiva
+                </span>
+                <span class="rsi-badge rsi-badge-secondary" id="badgeEstadoSlide">
+                    <i class="fas fa-eye"></i> Activa
+                </span>
+            </div>
+        </div>
+
+        <!-- ==========================================
+           TÍTULO DE LA PÁGINA
+           ========================================== -->
+        <div class="rsi-form-header-text">
+            <h1 class="rsi-page-title" id="pageTitleSlide">
+                <span class="rsi-text-gold" id="txtAccionTitulo">Nueva</span> Diapositiva
+            </h1>
+            <p class="rsi-page-subtitle" id="pageSubtitleSlide">
+                Configura los elementos visuales, textos descriptivos y botón con enlace hacia cualquier sección de la aplicación para el carrusel de inicio.
+            </p>
+        </div>
+
+        <!-- ==========================================
+           GRID DE DOS COLUMNAS: FORMULARIO + LIVE PREVIEW
+           ========================================== -->
+        <form id="formSlideCompleto" class="rsi-carrusel-form-layout" autocomplete="off">
+            <input type="hidden" id="slideDocId" value="" />
+
+            <!-- ==========================================
+               COLUMNA IZQUIERDA: CAMPOS DE CAPTURA
+               ========================================== -->
+            <div class="rsi-form-col-inputs">
+                
+                <!-- BLOQUE 1: IMAGEN DEL SLIDE -->
+                <div class="rsi-form-card">
+                    <div class="rsi-form-card-header">
+                        <div class="rsi-form-card-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <div>
+                            <h3>Imagen de la Diapositiva *</h3>
+                            <p>Sube un archivo de alta resolución o ingresa una URL externa (Unsplash, CDN).</p>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-card-body">
+                        <!-- Pestañas de origen de imagen -->
+                        <div class="rsi-image-source-tabs" style="margin-bottom: 14px;">
+                            <button type="button" class="rsi-tab-btn active" id="tabSourceFile">
+                                <i class="fas fa-upload"></i> Subir Archivo a Storage
+                            </button>
+                            <button type="button" class="rsi-tab-btn" id="tabSourceUrl">
+                                <i class="fas fa-link"></i> URL Externa
+                            </button>
+                        </div>
+
+                        <!-- Opción A: Subir Archivo local -->
+                        <div id="wrapperSourceFile" class="rsi-dropzone-box">
+                            <input type="file" id="slideFileInput" accept="image/jpeg,image/png,image/webp" style="display: none;" />
+                            <div class="rsi-dropzone-content" id="dropzoneTrigger">
+                                <i class="fas fa-cloud-upload-alt fa-3x" style="color: var(--rsi-gold, #c5a059); margin-bottom: 10px;"></i>
+                                <h4 style="margin: 0 0 6px 0; color: var(--rsi-text-primary);">Haz clic para seleccionar o arrastra una imagen</h4>
+                                <span style="font-size: 0.82rem; color: var(--rsi-text-secondary); display: block;">
+                                    Formatos permitidos: JPG, PNG, WEBP (Máximo 5MB)
+                                </span>
+                                <span id="slideFileName" class="rsi-file-selected-tag" style="display: none;">
+                                    <!-- Nombre del archivo -->
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Opción B: URL Externa -->
+                        <div id="wrapperSourceUrl" style="display: none;">
+                            <label for="slideImageUrl" class="rsi-label">URL directa de la imagen:</label>
+                            <input 
+                                type="url" 
+                                id="slideImageUrl" 
+                                class="rsi-input" 
+                                placeholder="https://images.unsplash.com/... o enlace CDN" 
+                            />
+                            <small style="color: var(--rsi-text-muted); display: block; margin-top: 5px;">
+                                Pega un enlace directo que comience con https://
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BLOQUE 2: CONTENIDO VISUAL (OPCIONAL) -->
+                <div class="rsi-form-card">
+                    <div class="rsi-form-card-header">
+                        <div class="rsi-form-card-icon">
+                            <i class="fas fa-font"></i>
+                        </div>
+                        <div>
+                            <h3>Textos del Banner <small style="font-weight: normal; color: var(--rsi-text-muted);">(Opcionales)</small></h3>
+                            <p>Puedes dejar estos campos vacíos si deseas un banner visual de solo imagen.</p>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-card-body">
+                        <div class="rsi-form-group">
+                            <label for="slideTitle" class="rsi-label">
+                                <i class="fas fa-heading"></i> Título Principal:
+                            </label>
+                            <input 
+                                type="text" 
+                                id="slideTitle" 
+                                class="rsi-input" 
+                                placeholder="Ej. Seguridad Electrónica Profesional" 
+                                maxlength="120"
+                            />
+                        </div>
+
+                        <div class="rsi-form-group">
+                            <label for="slideDescription" class="rsi-label">
+                                <i class="fas fa-align-left"></i> Descripción / Bajada:
+                            </label>
+                            <textarea 
+                                id="slideDescription" 
+                                class="rsi-textarea" 
+                                rows="3" 
+                                placeholder="Ej. Protegemos lo que más te importa con tecnología de última generación y monitoreo 24/7."
+                                maxlength="280"
+                            ></textarea>
+                            <div style="text-align: right; margin-top: 4px;">
+                                <small id="charCountDesc" style="color: var(--rsi-text-muted); font-size: 0.75rem;">0 / 280 caracteres</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BLOQUE 3: BOTÓN DE ENLACE / ACCIÓN (OPCIONAL) -->
+                <div class="rsi-form-card">
+                    <div class="rsi-form-card-header">
+                        <div class="rsi-form-card-icon">
+                            <i class="fas fa-mouse-pointer"></i>
+                        </div>
+                        <div>
+                            <h3>Botón con Enlace a la Aplicación</h3>
+                            <p>Permite redirigir a los visitantes hacia productos, catálogo, nosotros o contacto.</p>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-card-body">
+                        <label for="slideHasButton" class="rsi-checkbox-card-row">
+                            <input type="checkbox" id="slideHasButton" />
+                            <div>
+                                <strong style="color: var(--rsi-text-primary); display: block;">Activar botón de llamada a la acción en esta diapositiva</strong>
+                                <span style="font-size: 0.8rem; color: var(--rsi-text-secondary);">Se mostrará un botón interactivo estilizado sobre el banner</span>
+                            </div>
+                        </label>
+
+                        <!-- Campos condicionales del botón -->
+                        <div id="slideButtonFields" class="rsi-button-fields-container" style="display: none;">
+                            <div class="rsi-form-group">
+                                <label for="slideButtonText" class="rsi-label">
+                                    <i class="fas fa-tag"></i> Texto del Botón:
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="slideButtonText" 
+                                    class="rsi-input" 
+                                    placeholder="Ej. Conoce más, Ver productos, Cotizar ahora" 
+                                    maxlength="40"
+                                />
+                            </div>
+
+                            <div class="rsi-form-group">
+                                <label for="slideButtonLink" class="rsi-label">
+                                    <i class="fas fa-external-link-alt"></i> Enlace o Ruta de Destino:
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="slideButtonLink" 
+                                    class="rsi-input" 
+                                    placeholder="Ej. /products, /nosotros, /contacto o URL" 
+                                />
+
+                                <!-- Chips con accesos rápidos -->
+                                <div class="rsi-chips-wrapper">
+                                    <span style="font-size: 0.74rem; color: var(--rsi-text-muted); align-self: center;">Rutas frecuentes:</span>
+                                    <button type="button" class="rsi-chip-btn" data-link="/products">/products</button>
+                                    <button type="button" class="rsi-chip-btn" data-link="/nosotros">/nosotros</button>
+                                    <button type="button" class="rsi-chip-btn" data-link="/contacto">/contacto</button>
+                                    <button type="button" class="rsi-chip-btn" data-link="/servicios">/servicios</button>
+                                    <button type="button" class="rsi-chip-btn" data-link="/catalogos">/catalogos</button>
+                                </div>
+                            </div>
+
+                            <div class="rsi-form-group">
+                                <label for="slideButtonIcon" class="rsi-label">
+                                    <i class="fas fa-icons"></i> Icono (FontAwesome):
+                                </label>
+                                <div style="display: flex; gap: 8px;">
+                                    <input 
+                                        type="text" 
+                                        id="slideButtonIcon" 
+                                        class="rsi-input" 
+                                        value="fas fa-arrow-right" 
+                                        placeholder="fas fa-arrow-right" 
+                                    />
+                                    <div class="rsi-icon-preview-box" id="iconPreviewBox">
+                                        <i class="fas fa-arrow-right" id="iconPreviewEl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BLOQUE 4: CONFIGURACIÓN OPERATIVA -->
+                <div class="rsi-form-card">
+                    <div class="rsi-form-card-header">
+                        <div class="rsi-form-card-icon">
+                            <i class="fas fa-sliders-h"></i>
+                        </div>
+                        <div>
+                            <h3>Orden y Estado</h3>
+                            <p>Define la posición de aparición en la secuencia y activa o desactiva la diapositiva.</p>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-card-body">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <div class="rsi-form-group">
+                                <label for="slideOrden" class="rsi-label">
+                                    <i class="fas fa-sort-numeric-down"></i> Orden de Aparición:
+                                </label>
+                                <input 
+                                    type="number" 
+                                    id="slideOrden" 
+                                    class="rsi-input" 
+                                    min="1" 
+                                    max="99" 
+                                    value="1" 
+                                />
+                                <small style="color: var(--rsi-text-muted); font-size: 0.74rem;">
+                                    1 = primera diapositiva visible
+                                </small>
+                            </div>
+
+                            <div class="rsi-form-group" style="display: flex; flex-direction: column; justify-content: center;">
+                                <label class="rsi-label" style="margin-bottom: 6px;">
+                                    <i class="fas fa-toggle-on"></i> Visibilidad en Home:
+                                </label>
+                                <label for="slideActivo" style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--rsi-border-color); border-radius: 6px;">
+                                    <input type="checkbox" id="slideActivo" checked style="width: 18px; height: 18px; cursor: pointer;" />
+                                    <span id="slideActivoLabel" style="font-weight: 600; color: var(--rsi-success, #10b981);">Activa en Home</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOTONES DE ACCIÓN DEL FORMULARIO -->
+                <div class="rsi-form-actions-bottom">
+                    <a href="/ecommerce/carrusel" class="rsi-btn-crud rsi-btn-crud-secondary" data-link>
+                        <i class="fas fa-times"></i> Cancelar
+                    </a>
+                    <button type="submit" class="rsi-btn-crud rsi-btn-crud-primary" id="btnGuardarSlide">
+                        <i class="fas fa-save"></i> Guardar Diapositiva
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- ==========================================
+               COLUMNA DERECHA: LIVE PREVIEW & RECOMENDACIONES
+               ========================================== -->
+            <div class="rsi-form-col-sidebar">
+                
+                <!-- TARJETA DE PREVIEW EN VIVO -->
+                <div class="rsi-preview-sticky-card">
+                    <div class="rsi-preview-sticky-header">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="rsi-live-dot"></span>
+                            <strong style="color: var(--rsi-text-primary); font-size: 0.95rem;">Vista Previa en Vivo</strong>
+                        </div>
+                        <span style="font-size: 0.75rem; color: var(--rsi-text-muted);">Así se verá en el Home</span>
+                    </div>
+
+                    <!-- MOCKUP DEL CARRUSEL -->
+                    <div class="rsi-live-mockup-wrapper">
+                        <div class="rsi-live-mockup-inner" id="liveMockupBanner">
+                            <!-- Imagen de fondo -->
+                            <img id="livePreviewImg" src="" alt="Banner Preview" style="display: none;" />
+                            
+                            <!-- Placeholder si no hay imagen seleccionada -->
+                            <div class="rsi-live-placeholder" id="livePreviewPlaceholder">
+                                <i class="fas fa-image fa-3x"></i>
+                                <span>Selecciona o sube una imagen para ver la previsualización</span>
+                            </div>
+
+                            <!-- Contenido superpuesto -->
+                            <div class="rsi-live-content-overlay" id="liveContentOverlay" style="display: none;">
+                                <h2 id="livePreviewTitle" style="display: none;">Título del Banner</h2>
+                                <p id="livePreviewDesc" style="display: none;">Descripción del banner...</p>
+                                <div id="livePreviewBtnWrapper" style="display: none;">
+                                    <span class="rsi-mockup-button">
+                                        <span id="livePreviewBtnText">Botón</span>
+                                        <i class="fas fa-arrow-right" id="livePreviewBtnIcon"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Indicadores simulados -->
+                        <div class="rsi-mockup-dots">
+                            <span class="rsi-mockup-dot active"></span>
+                            <span class="rsi-mockup-dot"></span>
+                            <span class="rsi-mockup-dot"></span>
+                        </div>
+                    </div>
+
+                    <!-- TARJETA DE RECOMENDACIONES TÉCNICAS -->
+                    <div class="rsi-tips-card" style="margin-top: 16px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 0.88rem; color: var(--rsi-gold, #c5a059); display: flex; align-items: center; gap: 6px;">
+                            <i class="fas fa-lightbulb"></i> Recomendaciones para Banners
+                        </h4>
+                        <ul class="rsi-tips-list">
+                            <li><strong>Resolución sugerida:</strong> 1920 &times; 800 px o proporción panorámica 16:9.</li>
+                            <li><strong>Contraste visual:</strong> Imágenes con tonalidad oscura o neutra favorecen la lectura del texto blanco y dorado.</li>
+                            <li><strong>Optimización:</strong> Se recomienda comprimir tus imágenes en formato WEBP o JPG antes de subirlas para acelerar el inicio de la página.</li>
+                            <li><strong>Enlaces:</strong> Para redirigir dentro de la SPA utiliza rutas relativas como <code>/products</code> o <code>/contacto</code>.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+</section>

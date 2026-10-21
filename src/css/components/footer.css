@@ -98,6 +98,35 @@
     color: var(--rsi-white);
 }
 
+.rsi-footer-contact p {
+    align-items: flex-start;
+    line-height: 1.5;
+}
+
+.rsi-footer-contact p i {
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+.rsi-footer-contact-link {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    transition: color var(--rsi-transition-base), transform var(--rsi-transition-base);
+    display: inline-block;
+    word-break: break-word;
+}
+
+.rsi-footer-contact-link:hover,
+.rsi-footer-contact-link:focus-visible {
+    color: var(--rsi-white);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.rsi-footer-map-link {
+    line-height: 1.45;
+}
+
 .rsi-footer-logo {
     height: 150px;
     margin-bottom: var(--rsi-spacing-md);
@@ -242,6 +271,16 @@ body.dark-mode .rsi-footer-section p i {
 
 body.dark-mode .rsi-footer-section p:hover i {
     color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-footer-contact-link {
+    color: var(--rsi-gray-700);
+}
+
+body.dark-mode .rsi-footer-contact-link:hover,
+body.dark-mode .rsi-footer-contact-link:focus-visible {
+    color: var(--rsi-primary);
+    text-decoration: underline;
 }
 
 body.dark-mode .rsi-footer-description {
@@ -517,8 +556,8 @@ body.dark-mode .rsi-footer-partner-text p i {
 }
 
 body.dark-mode .rsi-footer-partner-year {
-    color: var(--rsi-black);
-    background: var(--rsi-gold-gradient);
+    color: var(--rsi-text-light);
+    background: rgba(74, 158, 255, 0.2);
     border-color: var(--rsi-gold-base);
 }
 

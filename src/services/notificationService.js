@@ -175,6 +175,44 @@ export class NotificationService {
     }
 
     /**
+     * Inicializa el servicio de notificaciones para un usuario autenticado
+     */
+    async initForUser(uid) {
+        if (!this.isSupported() || !uid) return;
+
+        this.startListening();
+
+        // Si el usuario ya concedió permisos previamente, refrescar token silenciosamente
+        if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+            try {
+                const token = await this.getFCMToken();
+                if (token) {
+                    await this.repository.saveFCMToken(uid, token, 'web');
+                }
+            } catch (error) {
+                console.warn('⚠️ No se pudo refrescar token FCM en inicio:', error.message);
+            }
+        }
+    }
+
+    /**
+     * Desvincula el token del dispositivo actual (usado en logout)
+     */
+    async unregisterCurrentDevice() {
+        try {
+            const uid = this._getCurrentUserUid();
+            const token = this._currentToken || (await this.getFCMToken());
+            if (uid && token) {
+                await this.repository.removeFCMToken(uid, token);
+            }
+            this.stopListening();
+            this._currentToken = null;
+        } catch (error) {
+            console.warn('⚠️ Error desvinculando dispositivo en logout:', error.message);
+        }
+    }
+
+    /**
      * Inicia la escucha de mensajes en primer plano
      */
     startListening(callback) {
@@ -190,13 +228,25 @@ export class NotificationService {
         console.log('👂 Escuchando mensajes en primer plano...');
         
         this._messageListener = onFirebaseMessage(messaging, (payload) => {
-            console.log('📨 Mensaje recibido:', payload);
+            console.log('📨 Mensaje recibido en primer plano:', payload);
+            
+            const title = payload.notification?.title || payload.data?.titulo || 'Nuevo ticket asignado';
+            const body = payload.notification?.body || payload.data?.mensaje || 'Se te ha asignado un nuevo ticket';
+            const data = payload.data || {};
+            const ticketId = data.ticketId || data.idTicket || '';
+            let targetUrl = data.url;
+            if (!targetUrl || targetUrl.includes('/partner/ticketView')) {
+                targetUrl = ticketId 
+                    ? `https://rsienterprise.com/partner/ticketAtencion?id=${ticketId}` 
+                    : 'https://rsienterprise.com/partner/crudTickets';
+            }
             
             const notification = {
-                title: payload.notification?.title || 'Nueva notificación',
-                body: payload.notification?.body || '',
+                title,
+                body,
                 image: payload.notification?.image || null,
-                data: payload.data || {},
+                data,
+                targetUrl,
                 timestamp: new Date().toISOString()
             };
             
@@ -207,6 +257,41 @@ export class NotificationService {
             });
             document.dispatchEvent(event);
             
+            // Mostrar aviso visual con SweetAlert2 en primer plano
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    title: title,
+                    html: `<div style="text-align: left; font-size: 14px; margin-top: 6px;">${body}</div>`,
+                    icon: 'info',
+                    position: 'top-end',
+                    toast: true,
+                    timer: 10000,
+                    timerProgressBar: true,
+                    showConfirmButton: true,
+                    confirmButtonText: 'Ver ticket',
+                    confirmButtonColor: '#1c1948',
+                    showCancelButton: true,
+                    cancelButtonText: 'Cerrar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        if (typeof window.navigateTo === 'function') {
+                            try {
+                                const parsed = new URL(targetUrl, window.location.origin);
+                                if (parsed.hostname === 'rsienterprise.com' || parsed.hostname === window.location.hostname) {
+                                    window.navigateTo(parsed.pathname + parsed.search);
+                                } else {
+                                    window.location.href = targetUrl;
+                                }
+                            } catch (e) {
+                                window.navigateTo(targetUrl);
+                            }
+                        } else {
+                            window.location.href = targetUrl;
+                        }
+                    }
+                });
+            }
+
             if (callback && typeof callback === 'function') {
                 callback(notification);
             }

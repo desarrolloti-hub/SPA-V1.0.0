@@ -231,16 +231,442 @@
 }
 
 /* ==========================================
+   SECCIÓN HERO CARRUSEL (HOME)
+   ========================================== */
+.rsi-home-hero {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==========================================
+   BADGES Y ACCIONES REUTILIZABLES
+   ========================================== */
+.rsi-section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: var(--rsi-radius-full);
+    background: rgba(143, 148, 251, 0.15);
+    color: var(--rsi-primary);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: var(--rsi-spacing-md);
+    border: 1px solid rgba(143, 148, 251, 0.25);
+}
+
+.rsi-about-section .rsi-section-badge,
+.rsi-services-section .rsi-section-badge {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--rsi-white);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.rsi-about-actions,
+.rsi-products-actions,
+.rsi-services-actions {
+    display: flex;
+    gap: var(--rsi-spacing-md);
+    flex-wrap: wrap;
+    margin-top: var(--rsi-spacing-xl);
+}
+
+/* ==========================================
+   SECCIÓN TODO A LO QUE NOS DEDICAMOS (SOLUCIONES)
+   ========================================== */
+.rsi-solutions-section {
+    padding: var(--rsi-spacing-4xl) 0;
+    background: linear-gradient(180deg, var(--rsi-bg-primary, #ffffff) 0%, var(--rsi-bg-secondary, #f8f9fa) 100%);
+    position: relative;
+}
+
+.rsi-solutions-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto var(--rsi-spacing-3xl);
+}
+
+.rsi-solutions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--rsi-spacing-2xl);
+}
+
+.rsi-solution-card {
+    background: var(--rsi-bg-card, #ffffff);
+    border-radius: var(--rsi-radius-xl);
+    padding: var(--rsi-spacing-2xl);
+    box-shadow: var(--rsi-shadow-md);
+    border: 1px solid var(--rsi-border-color);
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--rsi-transition-base), box-shadow var(--rsi-transition-base), border-color var(--rsi-transition-base);
+}
+
+.rsi-solution-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--rsi-shadow-xl);
+    border-color: var(--rsi-accent);
+}
+
+.rsi-solution-icon {
+    width: 58px;
+    height: 58px;
+    border-radius: var(--rsi-radius-lg);
+    background: linear-gradient(135deg, var(--rsi-primary) 0%, var(--rsi-primary-light) 100%);
+    color: var(--rsi-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: var(--rsi-spacing-lg);
+    box-shadow: 0 6px 16px rgba(28, 25, 72, 0.15);
+}
+
+.rsi-solution-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--rsi-primary);
+    margin-bottom: var(--rsi-spacing-sm);
+    line-height: 1.35;
+}
+
+.rsi-solution-desc {
+    color: var(--rsi-gray-600);
+    font-size: 0.94rem;
+    line-height: 1.6;
+    margin-bottom: var(--rsi-spacing-lg);
+}
+
+.rsi-solution-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--rsi-spacing-xl) 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-grow: 1;
+}
+
+.rsi-solution-list li {
+    font-size: 0.9rem;
+    color: var(--rsi-gray-700);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rsi-solution-list li i {
+    color: var(--rsi-accent);
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+
+.rsi-solution-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--rsi-primary);
+    text-decoration: none;
+    transition: color var(--rsi-transition-base), transform var(--rsi-transition-base);
+    margin-top: auto;
+}
+
+.rsi-solution-link:hover {
+    color: var(--rsi-accent-dark);
+    transform: translateX(4px);
+}
+
+/* ==========================================
+   PILARES DE SERVICIOS PROFESIONALES
+   ========================================== */
+.rsi-service-pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--rsi-spacing-lg);
+    margin: var(--rsi-spacing-xl) 0;
+    text-align: left;
+}
+
+.rsi-pillar-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.rsi-pillar-item i {
+    font-size: 1.25rem;
+    color: var(--rsi-accent-light);
+    margin-top: 4px;
+    flex-shrink: 0;
+}
+
+.rsi-pillar-item h4 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--rsi-white);
+    margin-bottom: 4px;
+}
+
+.rsi-pillar-item p {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.45;
+    margin: 0;
+}
+
+/* ==========================================
+   SECCIÓN PROCESO DE TRABAJO (PASO A PASO)
+   ========================================== */
+.rsi-process-section {
+    padding: var(--rsi-spacing-4xl) 0;
+    background: var(--rsi-bg-primary, #ffffff);
+    text-align: center;
+}
+
+.rsi-process-header {
+    max-width: 760px;
+    margin: 0 auto var(--rsi-spacing-3xl);
+}
+
+.rsi-process-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--rsi-spacing-xl);
+}
+
+.rsi-process-card {
+    background: var(--rsi-bg-card, #ffffff);
+    border-radius: var(--rsi-radius-xl);
+    padding: var(--rsi-spacing-2xl) var(--rsi-spacing-xl);
+    box-shadow: var(--rsi-shadow-md);
+    border: 1px solid var(--rsi-border-color);
+    position: relative;
+    text-align: left;
+    transition: transform var(--rsi-transition-base), box-shadow var(--rsi-transition-base);
+}
+
+.rsi-process-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--rsi-shadow-lg);
+}
+
+.rsi-process-step {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    font-size: 2rem;
+    font-weight: 800;
+    color: rgba(28, 25, 72, 0.08);
+    user-select: none;
+}
+
+.rsi-process-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--rsi-radius-lg);
+    background: rgba(143, 148, 251, 0.15);
+    color: var(--rsi-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    margin-bottom: var(--rsi-spacing-md);
+}
+
+.rsi-process-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--rsi-primary);
+    margin-bottom: var(--rsi-spacing-sm);
+}
+
+.rsi-process-desc {
+    font-size: 0.9rem;
+    color: var(--rsi-gray-600);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ==========================================
    SECCIÓN RESEÑAS (Google Reviews)
    ========================================== */
 .rsi-reviews-section {
     padding: var(--rsi-spacing-4xl) 0;
-    background-color: var(--rsi-gray-50);
+    background: linear-gradient(180deg, var(--rsi-bg-primary) 0%, var(--rsi-bg-secondary) 100%);
     text-align: center;
+    position: relative;
+}
+
+.rsi-reviews-header {
+    max-width: 760px;
+    margin: 0 auto var(--rsi-spacing-2xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rsi-reviews-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: var(--rsi-radius-full);
+    background: rgba(28, 25, 72, 0.08);
+    color: var(--rsi-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: var(--rsi-spacing-md);
+    border: 1px solid rgba(28, 25, 72, 0.12);
+}
+
+.rsi-reviews-badge i {
+    color: #ea4335;
+    font-size: 0.95rem;
+}
+
+.rsi-reviews-section .rsi-section-title {
+    margin-bottom: var(--rsi-spacing-sm);
 }
 
 .rsi-reviews-section .rsi-section-subtitle {
+    margin-bottom: 0;
+    line-height: 1.6;
+}
+
+.rsi-reviews-rating-summary {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: var(--rsi-spacing-md);
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.rsi-stars {
+    color: #fbbc04;
+    display: flex;
+    gap: 3px;
+    font-size: 1.25rem;
+}
+
+.rsi-rating-text {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--rsi-gray-700);
+}
+
+.rsi-reviews-widget-card {
+    background: var(--rsi-bg-card);
+    border-radius: var(--rsi-radius-xl);
+    padding: var(--rsi-spacing-2xl) var(--rsi-spacing-xl);
+    box-shadow: var(--rsi-shadow-md);
+    border: 1px solid var(--rsi-border-color);
+    min-height: 220px;
+}
+
+.rsi-reviews-direct-link {
+    margin-top: var(--rsi-spacing-2xl);
+    display: flex;
+    justify-content: center;
+}
+
+.rsi-reviews-btn {
+    border-color: var(--rsi-primary);
+    color: var(--rsi-primary) !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 24px;
+    font-size: 0.95rem;
+    border-radius: var(--rsi-radius-full);
+}
+
+.rsi-reviews-btn:hover {
+    background: var(--rsi-primary);
+    color: var(--rsi-white) !important;
+}
+
+/* ==========================================
+   BANNER FINAL CTA
+   ========================================== */
+.rsi-final-cta-section {
+    padding: var(--rsi-spacing-4xl) 0;
+    background: linear-gradient(135deg, var(--rsi-primary) 0%, var(--rsi-primary-dark) 100%);
+    color: var(--rsi-white);
+    text-align: center;
+}
+
+.rsi-final-cta-card {
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.rsi-final-cta-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--rsi-white);
+    margin-bottom: var(--rsi-spacing-md);
+    line-height: 1.3;
+}
+
+.rsi-final-cta-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    line-height: 1.6;
     margin-bottom: var(--rsi-spacing-2xl);
+    color: var(--rsi-white);
+}
+
+.rsi-final-cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: var(--rsi-spacing-lg);
+    flex-wrap: wrap;
+}
+
+.rsi-cta-phone-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 30px;
+    background: transparent;
+    color: var(--rsi-white);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: var(--rsi-radius-md);
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all var(--rsi-transition-base);
+}
+
+.rsi-cta-phone-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--rsi-white);
+    color: var(--rsi-white);
+    transform: translateY(-2px);
+}
+
+/* Animación Scroll Reveal */
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* ==========================================
@@ -694,15 +1120,120 @@ body.dark-mode .rsi-blog-section .rsi-primary-btn:hover {
 
 /* Sección Reseñas */
 body.dark-mode .rsi-reviews-section {
-    background: var(--rsi-bg-secondary);
+    background: linear-gradient(180deg, var(--rsi-bg-primary) 0%, var(--rsi-bg-secondary) 100%);
+}
+
+body.dark-mode .rsi-reviews-badge {
+    background: rgba(74, 158, 255, 0.12);
+    color: var(--rsi-primary);
+    border-color: rgba(74, 158, 255, 0.25);
 }
 
 body.dark-mode .rsi-reviews-section .rsi-section-title {
-    color: var(--rsi-primary);
+    color: var(--rsi-text-primary);
 }
 
 body.dark-mode .rsi-reviews-section .rsi-section-subtitle {
-    color: var(--rsi-gray-600);
+    color: var(--rsi-text-secondary);
+}
+
+body.dark-mode .rsi-reviews-widget-card {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-border-color);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* Sección Soluciones en Modo Oscuro */
+body.dark-mode .rsi-solutions-section {
+    background: linear-gradient(180deg, var(--rsi-bg-primary) 0%, var(--rsi-bg-secondary) 100%);
+}
+
+body.dark-mode .rsi-solutions-section .rsi-section-badge,
+body.dark-mode .rsi-process-section .rsi-section-badge {
+    background: rgba(74, 158, 255, 0.12);
+    color: var(--rsi-primary);
+    border-color: rgba(74, 158, 255, 0.25);
+}
+
+body.dark-mode .rsi-solution-card {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-border-color);
+}
+
+body.dark-mode .rsi-solution-card:hover {
+    border-color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-solution-icon {
+    background: linear-gradient(135deg, var(--rsi-primary-dark) 0%, var(--rsi-primary) 100%);
+    color: #ffffff;
+}
+
+body.dark-mode .rsi-solution-title {
+    color: var(--rsi-text-primary);
+}
+
+body.dark-mode .rsi-solution-desc {
+    color: var(--rsi-text-secondary);
+}
+
+body.dark-mode .rsi-solution-list li {
+    color: var(--rsi-gray-500);
+}
+
+body.dark-mode .rsi-solution-list li i {
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-solution-link {
+    color: var(--rsi-primary-light);
+}
+
+body.dark-mode .rsi-solution-link:hover {
+    color: var(--rsi-primary);
+}
+
+/* Sección Proceso de Trabajo en Modo Oscuro */
+body.dark-mode .rsi-process-section {
+    background: var(--rsi-bg-primary);
+}
+
+body.dark-mode .rsi-process-card {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-border-color);
+}
+
+body.dark-mode .rsi-process-icon {
+    background: rgba(74, 158, 255, 0.15);
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-process-title {
+    color: var(--rsi-text-primary);
+}
+
+body.dark-mode .rsi-process-desc {
+    color: var(--rsi-text-secondary);
+}
+
+/* Reseñas y CTA Final en Modo Oscuro */
+body.dark-mode .rsi-rating-text {
+    color: var(--rsi-text-secondary);
+}
+
+body.dark-mode .rsi-reviews-btn {
+    border-color: var(--rsi-primary);
+    color: var(--rsi-primary) !important;
+}
+
+body.dark-mode .rsi-reviews-btn:hover {
+    background: var(--rsi-primary);
+    color: #ffffff !important;
+}
+
+body.dark-mode .rsi-final-cta-section {
+    background: linear-gradient(135deg, var(--rsi-bg-secondary) 0%, var(--rsi-bg-primary) 100%);
+    border-top: 1px solid var(--rsi-border-color);
 }
 
 /* ==========================================
@@ -844,5 +1375,44 @@ body.dark-mode .rsi-reviews-section .rsi-section-subtitle {
         font-size: 1rem;
         width: 100%;
         max-width: 280px;
+    }
+
+    .rsi-service-pillars {
+        grid-template-columns: 1fr;
+    }
+
+    .rsi-about-actions,
+    .rsi-products-actions,
+    .rsi-services-actions {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .rsi-about-actions a,
+    .rsi-products-actions a,
+    .rsi-services-actions a {
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .rsi-final-cta-title {
+        font-size: 1.5rem;
+    }
+
+    .rsi-final-cta-buttons {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .rsi-final-cta-buttons .rsi-cta-button,
+    .rsi-final-cta-buttons .rsi-cta-phone-btn {
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+        justify-content: center;
     }
 }

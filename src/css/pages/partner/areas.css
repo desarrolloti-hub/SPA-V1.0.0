@@ -216,12 +216,12 @@
 
 .rsi-summary-item .subarea-actions .btn-edit-summary:hover {
     color: var(--rsi-primary);
-    background: rgba(28, 25, 72, 0.1);
+    background: var(--rsi-bg-secondary);
 }
 
 .rsi-summary-item .subarea-actions .btn-delete-summary:hover {
     color: var(--rsi-danger);
-    background: rgba(220, 53, 69, 0.1);
+    background: var(--rsi-danger-light);
 }
 
 /* ==========================================
@@ -230,7 +230,7 @@
 
 .rsi-subarea-form-container {
     background: var(--rsi-bg-card);
-    border: 2px solid var(--rsi-gray-200);
+    border: 2px solid var(--rsi-border-color);
     border-radius: var(--rsi-radius-md);
     padding: var(--rsi-spacing-lg);
     transition: all var(--rsi-transition-base);
@@ -376,7 +376,7 @@
 
 .rsi-modulo-actions .btn-remove-modulo:hover {
     color: var(--rsi-danger);
-    background: rgba(220, 53, 69, 0.1);
+    background: var(--rsi-danger-light);
 }
 
 .rsi-modulo-form {
@@ -721,7 +721,7 @@ body.dark-mode .rsi-switch-group {
 
 body.dark-mode .rsi-switch-group:hover {
     border-color: var(--rsi-gray-400);
-    background: var(--rsi-gray-800);
+    background: var(--rsi-bg-secondary);
 }
 
 body.dark-mode .rsi-switch-label {

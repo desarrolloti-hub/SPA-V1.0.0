@@ -1,0 +1,219 @@
+<!-- ========================================
+   NUEVO / EDITAR CATÁLOGO
+   ======================================== -->
+
+<section class="rsi-new-collaborator-section">
+    <div class="rsi-container">
+        
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Registro</span> de Nuevo Catálogo
+        </h1>
+        <p class="rsi-page-subtitle">
+            Crea un catálogo y agrega los productos o servicios que ofrecerás.
+        </p>
+
+        <form id="catalogForm" class="rsi-form-steps" autocomplete="off">
+
+            <!-- Indicador de pasos -->
+            <div class="rsi-steps-indicator">
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number active" data-step="1">1</span>
+                    <span class="rsi-step-label active" data-step="1">Catálogo</span>
+                </div>
+                <div class="rsi-step-line" data-step="1"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number" data-step="2">2</span>
+                    <span class="rsi-step-label" data-step="2">Productos</span>
+                </div>
+                <div class="rsi-step-line" data-step="2"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number" data-step="3">3</span>
+                    <span class="rsi-step-label" data-step="3">Resumen</span>
+                </div>
+            </div>
+
+            <div class="rsi-steps-container">
+
+                <!-- ===== PASO 1: DATOS DEL CATÁLOGO ===== -->
+                <div class="rsi-step-panel active" data-step="1">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-folder-open"></i>
+                        </div>
+                        <h3>Datos del Catálogo</h3>
+                        <p>Información general del catálogo</p>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="imagenPortada">Imagen de portada</label>
+                        <div class="rsi-upload-wrapper">
+                            <input type="file" id="imagenPortada" name="imagenPortada" 
+                                   accept="image/*" class="rsi-file-input">
+                            <div class="rsi-upload-preview" id="portadaPreview">
+                                <i class="fas fa-image"></i>
+                                <span>Subir imagen</span>
+                            </div>
+                        </div>
+                        <small class="rsi-help-text">Máximo 5MB. Formatos: JPG, PNG, WEBP</small>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="titulo">Título del catálogo <span class="rsi-required">*</span></label>
+                        <div class="rsi-input-wrapper">
+                            <i class="fas fa-heading rsi-input-icon"></i>
+                            <input type="text" id="titulo" name="titulo" 
+                                   placeholder="Ej: Tecnología 2025" 
+                                   required maxlength="100">
+                        </div>
+                        <div class="rsi-form-error-message"></div>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="descripcion">Descripción</label>
+                        <div class="rsi-input-wrapper">
+                            <i class="fas fa-align-left rsi-input-icon"></i>
+                            <textarea id="descripcion" name="descripcion" 
+                                      placeholder="Describe brevemente este catálogo..."
+                                      maxlength="500" rows="4"></textarea>
+                        </div>
+                        <small class="rsi-char-counter">
+                            <span id="descCounter">0</span>/500
+                        </small>
+                        <div class="rsi-form-error-message"></div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button type="button" class="rsi-btn-prev" disabled>Anterior</button>
+                        <button type="button" class="rsi-btn-next" data-next="2">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>1</span> de 3</div>
+                </div>
+
+                <!-- ===== PASO 2: PRODUCTOS ===== -->
+                <div class="rsi-step-panel" data-step="2">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+                        <h3>Productos / Servicios</h3>
+                        <p>Agrega los items que forman parte del catálogo</p>
+                    </div>
+
+                    <button type="button" class="rsi-btn-add-product" id="addProductBtn">
+                        <i class="fas fa-plus"></i> Agregar producto/servicio
+                    </button>
+
+                    <div id="productsList" class="rsi-products-list"></div>
+
+                    <div id="noProductsMessage" class="rsi-empty-state">
+                        <i class="fas fa-box-open"></i>
+                        <p>Aún no has agregado productos</p>
+                        <small>Puedes continuar sin productos y agregarlos después</small>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button type="button" class="rsi-btn-prev" data-prev="1">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="button" class="rsi-btn-next" data-next="3">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>2</span> de 3</div>
+                </div>
+
+                <!-- ===== PASO 3: RESUMEN ===== -->
+                <div class="rsi-step-panel" data-step="3">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Resumen</h3>
+                        <p>Revisa la información antes de guardar</p>
+                    </div>
+
+                    <div id="summaryContent" class="rsi-summary"></div>
+
+                    <div class="rsi-step-actions">
+                        <button type="button" class="rsi-btn-prev" data-prev="2">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="button" class="rsi-btn-submit-step" id="submitCatalog">
+                            <i class="fas fa-save"></i> Guardar Catálogo
+                        </button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>3</span> de 3</div>
+                </div>
+
+            </div>
+        </form>
+
+        <!-- ===== MODAL DE PRODUCTO ===== -->
+        <div id="productModal" class="rsi-modal-overlay" style="display: none;">
+            <div class="rsi-modal">
+                <div class="rsi-modal-header">
+                    <h3 id="productModalTitle">Agregar Producto</h3>
+                    <button type="button" class="rsi-modal-close" id="closeProductModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="rsi-modal-body">
+                    <input type="hidden" id="editingProductId" value="">
+
+                    <div class="rsi-form-group">
+                        <label for="productImage">Imagen</label>
+                        <div class="rsi-upload-wrapper">
+                            <input type="file" id="productImage" accept="image/*" class="rsi-file-input">
+                            <div class="rsi-upload-preview" id="productImagePreview">
+                                <i class="fas fa-camera"></i>
+                                <span>Subir imagen</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="productName">Nombre <span class="rsi-required">*</span></label>
+                        <div class="rsi-input-wrapper">
+                            <i class="fas fa-tag rsi-input-icon"></i>
+                            <input type="text" id="productName" placeholder="Ej: Laptop Pro" maxlength="150">
+                        </div>
+                        <div class="rsi-form-error-message"></div>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="productDescription">Descripción</label>
+                        <div class="rsi-input-wrapper">
+                            <i class="fas fa-align-left rsi-input-icon"></i>
+                            <textarea id="productDescription" 
+                                      placeholder="Describe el producto..."
+                                      maxlength="1000" rows="3"></textarea>
+                        </div>
+                        <div class="rsi-form-error-message"></div>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="productPrice">Precio (opcional)</label>
+                        <div class="rsi-input-wrapper">
+                            <i class="fas fa-dollar-sign rsi-input-icon"></i>
+                            <input type="number" id="productPrice" placeholder="0.00" min="0" step="0.01">
+                        </div>
+                        <div class="rsi-form-error-message"></div>
+                    </div>
+                </div>
+
+                <div class="rsi-modal-footer">
+                    <button type="button" class="rsi-btn-secondary" id="cancelProductModal">Cancelar</button>
+                    <button type="button" class="rsi-btn-primary" id="saveProductBtn">
+                        <i class="fas fa-check"></i> Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>

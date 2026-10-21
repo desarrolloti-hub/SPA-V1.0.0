@@ -4,43 +4,185 @@
 
 <section class="rsi-dashboard-section">
     <div class="rsi-container">
-        
-        <!-- Título -->
-        <h1 class="rsi-page-title">
-            <span class="rsi-text-gold">Dashboard</span> de Colaborador
-        </h1>
-        <p class="rsi-page-subtitle">
-            Resumen de tu actividad y rendimiento en el sistema.
-        </p>
 
-        <!-- ===== PERFIL Y ASISTENCIA (MÁS PEQUEÑO) ===== -->
+        <!-- Encabezado del Dashboard -->
+        <div class="rsi-dashboard-header">
+            <div>
+                <h1 class="rsi-page-title">
+                    <span class="rsi-text-gold">Dashboard</span> de Colaborador
+                </h1>
+                <p class="rsi-page-subtitle" id="dashboardSubtitle">
+                    Resumen operativo en tiempo real de tu jornada, asistencia y tickets asignados.
+                </p>
+            </div>
+            <div class="rsi-dashboard-header-actions">
+                <button type="button" id="refreshDashboardBtn" class="rsi-btn-crud rsi-btn-crud-outline" title="Actualizar datos del dashboard">
+                    <i class="fas fa-sync-alt"></i> Actualizar
+                </button>
+                <a href="/partner/asistencia" class="rsi-btn-crud rsi-btn-crud-primary">
+                    <i class="fas fa-user-clock"></i> Mi Asistencia
+                </a>
+            </div>
+        </div>
+
+        <!-- ===== PERFIL DEL COLABORADOR Y CONTROL DE JORNADA / ASISTENCIA ===== -->
         <div class="rsi-dashboard-profile">
             <div class="rsi-profile-card">
                 <div class="rsi-profile-avatar">
-                    <img src="/assets/images/default-avatar.png" alt="Avatar" id="dashboardAvatar">
+                    <img src="/assets/images/default-avatar.png" alt="Avatar del colaborador" id="dashboardAvatar">
                     <span class="rsi-profile-status" id="profileStatus">
                         <i class="fas fa-circle"></i> Activo
                     </span>
                 </div>
+
                 <div class="rsi-profile-info">
-                    <h2 id="dashboardName">Colaborador</h2>
-                    <p id="dashboardRole"><i class="fas fa-briefcase"></i> Área</p>
-                    <p id="dashboardEmail"><i class="fas fa-envelope"></i> correo@empresa.com</p>
+                    <div class="rsi-profile-title-row">
+                        <h2 id="dashboardName">Cargando perfil...</h2>
+                        <span class="rsi-badge rsi-badge-primary" id="dashboardRoleBadge">Colaborador</span>
+                    </div>
+                    <p id="dashboardRole"><i class="fas fa-sitemap"></i> <span>Área operativa</span></p>
+                    <p id="dashboardEmail"><i class="fas fa-envelope"></i> <span>correo@empresa.com</span></p>
+                    <p id="dashboardShiftInfo"><i class="far fa-calendar-check"></i> <span id="dashboardCurrentDate">--</span></p>
                 </div>
+
                 <div class="rsi-profile-attendance">
                     <div class="rsi-attendance-card">
                         <div class="rsi-attendance-header">
-                            <i class="fas fa-clipboard-check"></i>
-                            <span>Asistencia Hoy</span>
+                            <div>
+                                <i class="fas fa-clipboard-check"></i>
+                                <span>Jornada de Hoy</span>
+                            </div>
+                            <small id="attendanceScheduleLabel" class="rsi-attendance-schedule">Entrada 09:00 hrs</small>
                         </div>
+
                         <div class="rsi-attendance-status" id="attendanceStatus">
-                            <span class="rsi-badge rsi-badge-warning">
-                                <i class="fas fa-clock"></i> Pendiente
+                            <span class="rsi-badge rsi-badge-secondary">
+                                <i class="fas fa-spinner fa-spin"></i> Verificando...
                             </span>
                         </div>
-                        <button id="registerAttendanceBtn" class="rsi-btn-attendance">
-                            <i class="fas fa-fingerprint"></i> Registrar Asistencia
-                        </button>
+
+                        <div class="rsi-attendance-hours" id="attendanceHoursInfo">
+                            <div class="rsi-attendance-hour-item">
+                                <span class="hour-label"><i class="fas fa-sign-in-alt"></i> Entrada:</span>
+                                <strong class="hour-value" id="attendanceEntryTime">--:--</strong>
+                            </div>
+                            <div class="rsi-attendance-hour-item">
+                                <span class="hour-label"><i class="fas fa-sign-out-alt"></i> Salida:</span>
+                                <strong class="hour-value" id="attendanceExitTime">--:--</strong>
+                            </div>
+                        </div>
+
+                        <div class="rsi-attendance-summary-mini" id="attendanceMonthSummary">
+                            <span><i class="fas fa-chart-pie"></i> Puntualidad (30d): <strong id="punctualityRate">--%</strong></span>
+                        </div>
+
+                        <div class="rsi-attendance-actions">
+                            <button type="button" id="registerAttendanceBtn" class="rsi-btn-attendance">
+                                <i class="fas fa-fingerprint"></i> Registrar Entrada
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== MÓDULO INTEGRAL DE OPERACIONES DEL COLABORADOR ===== -->
+        <div class="rsi-dashboard-operations" style="margin-bottom: var(--rsi-spacing-xl);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--rsi-spacing-md); flex-wrap: wrap; gap: 8px;">
+                <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--rsi-text-primary); margin: 0; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-clipboard-list" style="color: var(--rsi-gold, #D4AF37);"></i> Operaciones del Colaborador
+                </h3>
+                <span style="font-size: 0.8rem; color: var(--rsi-text-muted);">Accesos a tus herramientas operativas activas</span>
+            </div>
+            
+            <div class="rsi-ops-quick-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: var(--rsi-spacing-md);">
+                <!-- Card 1: Asistencia Propia -->
+                <a href="/partner/asistencia" data-link class="rsi-ops-quick-card" style="text-decoration: none; color: inherit; background: var(--rsi-bg-card); border: 1px solid var(--rsi-border-color); border-radius: var(--rsi-radius-lg); padding: var(--rsi-spacing-lg); display: flex; align-items: center; gap: 14px; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: var(--rsi-shadow-sm);">
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(59, 130, 246, 0.12); color: #3b82f6; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;">
+                        <i class="fas fa-user-clock"></i>
+                    </div>
+                    <div style="flex: 1; overflow: hidden;">
+                        <h4 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--rsi-text-primary);">Asistencia Propia</h4>
+                        <p style="margin: 3px 0 0; font-size: 0.78rem; color: var(--rsi-text-muted);" id="opsCardAsistenciaStatus">Control y registro de jornada</p>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: var(--rsi-text-muted); font-size: 0.8rem;"></i>
+                </a>
+
+                <!-- Card 2: Checklists Propios -->
+                <a href="/partner/mis-salidas" data-link class="rsi-ops-quick-card" style="text-decoration: none; color: inherit; background: var(--rsi-bg-card); border: 1px solid var(--rsi-border-color); border-radius: var(--rsi-radius-lg); padding: var(--rsi-spacing-lg); display: flex; align-items: center; gap: 14px; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: var(--rsi-shadow-sm);">
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(212, 175, 55, 0.15); color: #D4AF37; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;">
+                        <i class="fas fa-file-signature"></i>
+                    </div>
+                    <div style="flex: 1; overflow: hidden;">
+                        <h4 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--rsi-text-primary);">Checklists Propios</h4>
+                        <p style="margin: 3px 0 0; font-size: 0.78rem; color: var(--rsi-text-muted);" id="opsCardChecklistsCount">Salidas vehiculares y firmas</p>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: var(--rsi-text-muted); font-size: 0.8rem;"></i>
+                </a>
+
+                <!-- Card 3: Solicitud de Reembolsos -->
+                <a href="/partner/reembolsos" data-link class="rsi-ops-quick-card" style="text-decoration: none; color: inherit; background: var(--rsi-bg-card); border: 1px solid var(--rsi-border-color); border-radius: var(--rsi-radius-lg); padding: var(--rsi-spacing-lg); display: flex; align-items: center; gap: 14px; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: var(--rsi-shadow-sm);">
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(16, 185, 129, 0.12); color: #10b981; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <div style="flex: 1; overflow: hidden;">
+                        <h4 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--rsi-text-primary);">Solicitud de Reembolsos</h4>
+                        <p style="margin: 3px 0 0; font-size: 0.78rem; color: var(--rsi-text-muted);" id="opsCardReembolsosStatus">Mis gastos y solicitudes</p>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: var(--rsi-text-muted); font-size: 0.8rem;"></i>
+                </a>
+
+                <!-- Card 4: Parque Vehicular y Checklist -->
+                <a href="/partner/checklist-salida" data-link class="rsi-ops-quick-card" style="text-decoration: none; color: inherit; background: var(--rsi-bg-card); border: 1px solid var(--rsi-border-color); border-radius: var(--rsi-radius-lg); padding: var(--rsi-spacing-lg); display: flex; align-items: center; gap: 14px; transition: transform 0.2s ease, box-shadow 0.2s ease; box-shadow: var(--rsi-shadow-sm);">
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: rgba(99, 102, 241, 0.12); color: #6366f1; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div style="flex: 1; overflow: hidden;">
+                        <h4 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--rsi-text-primary);">Checklist de Salida</h4>
+                        <p style="margin: 3px 0 0; font-size: 0.78rem; color: var(--rsi-text-muted);">Nueva inspección de auto</p>
+                    </div>
+                    <i class="fas fa-chevron-right" style="color: var(--rsi-text-muted); font-size: 0.8rem;"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- ===== INDICADORES DE TICKETS Y RENDIMIENTO ===== -->
+        <div class="rsi-dashboard-stats">
+            <div class="rsi-stats-grid">
+                <div class="rsi-stat-card rsi-stat-total">
+                    <div class="rsi-stat-icon">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <div class="rsi-stat-content">
+                        <span class="rsi-stat-number" id="totalTickets">0</span>
+                        <span class="rsi-stat-label">Tickets Asignados</span>
+                    </div>
+                </div>
+                <div class="rsi-stat-card rsi-stat-pending">
+                    <div class="rsi-stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="rsi-stat-content">
+                        <span class="rsi-stat-number" id="pendingTickets">0</span>
+                        <span class="rsi-stat-label">Abiertos / Pendientes</span>
+                    </div>
+                </div>
+                <div class="rsi-stat-card rsi-stat-in-progress">
+                    <div class="rsi-stat-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="rsi-stat-content">
+                        <span class="rsi-stat-number" id="inProgressTickets">0</span>
+                        <span class="rsi-stat-label">En Proceso</span>
+                    </div>
+                </div>
+                <div class="rsi-stat-card rsi-stat-completed">
+                    <div class="rsi-stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="rsi-stat-content">
+                        <span class="rsi-stat-number" id="completedTickets">0</span>
+                        <span class="rsi-stat-label">Resueltos / Cerrados</span>
                     </div>
                 </div>
             </div>
@@ -50,78 +192,53 @@
         <div class="rsi-dashboard-charts">
             <div class="rsi-chart-row">
                 <div class="rsi-chart-card">
-                    <h4><i class="fas fa-chart-pie"></i> Distribución</h4>
-                    <div class="rsi-chart-container">
+                    <h4><i class="fas fa-chart-pie"></i> Distribución por Estado</h4>
+                    <div class="rsi-chart-container" id="pieChartContainer">
                         <canvas id="ticketsPieChart"></canvas>
                     </div>
                 </div>
                 <div class="rsi-chart-card">
                     <h4><i class="fas fa-chart-bar"></i> Tickets por Mes</h4>
-                    <div class="rsi-chart-container">
+                    <div class="rsi-chart-container" id="barChartContainer">
                         <canvas id="ticketsBarChart"></canvas>
                     </div>
                 </div>
                 <div class="rsi-chart-card">
-                    <h4><i class="fas fa-chart-line"></i> Rendimiento</h4>
-                    <div class="rsi-chart-container">
+                    <h4><i class="fas fa-chart-line"></i> Actividad y Asistencias</h4>
+                    <div class="rsi-chart-container" id="lineChartContainer">
                         <canvas id="performanceLineChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- ===== ESTADÍSTICAS ===== -->
-        <div class="rsi-dashboard-stats">
-            <div class="rsi-stats-grid">
-                <div class="rsi-stat-card rsi-stat-total">
-                    <div class="rsi-stat-icon">
-                        <i class="fas fa-ticket-alt"></i>
-                    </div>
-                    <div class="rsi-stat-content">
-                        <span class="rsi-stat-number" id="totalTickets">0</span>
-                        <span class="rsi-stat-label">Total Tickets</span>
-                    </div>
-                </div>
-                <div class="rsi-stat-card rsi-stat-pending">
-                    <div class="rsi-stat-icon">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <div class="rsi-stat-content">
-                        <span class="rsi-stat-number" id="pendingTickets">0</span>
-                        <span class="rsi-stat-label">Pendientes</span>
-                    </div>
-                </div>
-                <div class="rsi-stat-card rsi-stat-in-progress">
-                    <div class="rsi-stat-icon">
-                        <i class="fas fa-spinner"></i>
-                    </div>
-                    <div class="rsi-stat-content">
-                        <span class="rsi-stat-number" id="inProgressTickets">0</span>
-                        <span class="rsi-stat-label">En Progreso</span>
-                    </div>
-                </div>
-                <div class="rsi-stat-card rsi-stat-completed">
-                    <div class="rsi-stat-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="rsi-stat-content">
-                        <span class="rsi-stat-number" id="completedTickets">0</span>
-                        <span class="rsi-stat-label">Completados</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ===== TICKETS (TARJETAS MÁS GRANDES) ===== -->
+        <!-- ===== MIS TICKETS ASIGNADOS ===== -->
         <div class="rsi-dashboard-tickets">
             <div class="rsi-tickets-header">
-                <h3><i class="fas fa-ticket-alt"></i> Mis Tickets</h3>
+                <div>
+                    <h3 id="ticketsSectionTitle"><i class="fas fa-ticket-alt"></i> Mis Tickets Asignados</h3>
+                    <p class="rsi-tickets-subtitle" id="ticketsSectionSubtitle">Haz clic en cualquier ticket para consultar su bitácora y dar seguimiento.</p>
+                </div>
+                <div class="rsi-tickets-filters" id="dashboardTicketFilters">
+                    <button type="button" class="rsi-ticket-filter-btn active" data-filter="all">
+                        Mis Tickets
+                    </button>
+                    <button type="button" class="rsi-ticket-filter-btn" data-filter="pending">
+                        Pendientes
+                    </button>
+                    <button type="button" class="rsi-ticket-filter-btn" data-filter="in_progress">
+                        En Proceso
+                    </button>
+                    <button type="button" class="rsi-ticket-filter-btn" data-filter="completed">
+                        Resueltos
+                    </button>
+                </div>
             </div>
+
             <div class="rsi-tickets-grid" id="recentTickets">
-                <!-- Se llena dinámicamente -->
                 <div class="rsi-tickets-empty">
-                    <i class="fas fa-ticket-alt"></i>
-                    <p>No hay tickets</p>
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Cargando tickets asignados...</p>
                 </div>
             </div>
         </div>

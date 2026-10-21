@@ -1,0 +1,276 @@
+<!-- ========================================
+   VISTA INDIVIDUAL DE ASISTENCIA Y SALIDA - RSI ENTERPRISE
+   ======================================== -->
+
+<section class="rsi-asistencia-section">
+    <div class="rsi-container">
+
+        <!-- Encabezado de la página -->
+        <div class="rsi-asistencia-header">
+            <div>
+                <h1 class="rsi-page-title">
+                    <span class="rsi-text-gold">Control de Asistencia</span> y Salida
+                </h1>
+                <p class="rsi-page-subtitle">
+                    Registra tu jornada laboral diaria, consulta tu historial y gestiona justificaciones.
+                </p>
+            </div>
+            <!-- Reloj en vivo en tiempo real -->
+            <div class="rsi-clock-card">
+                <div class="rsi-clock-time" id="liveClockTime">--:--:--</div>
+                <div class="rsi-clock-date" id="liveClockDate">Cargando fecha...</div>
+                <div class="rsi-clock-tz"><i class="fas fa-globe-americas"></i> CDMX (UTC-6)</div>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Perfil y Estado Diario -->
+        <div class="rsi-asistencia-profile-card">
+            <div class="rsi-asistencia-user">
+                <img src="/assets/images/default-avatar.png" alt="Avatar" id="asistenciaAvatar" class="rsi-asistencia-avatar">
+                <div class="rsi-asistencia-user-info">
+                    <h3 id="asistenciaNombre">Cargando colaborador...</h3>
+                    <p id="asistenciaArea"><i class="fas fa-briefcase"></i> Área</p>
+                    <span id="asistenciaEmail" class="rsi-asistencia-email"><i class="fas fa-envelope"></i> correo@rsienterprise.com</span>
+                </div>
+            </div>
+
+            <!-- Resumen del Día Actual -->
+            <div class="rsi-asistencia-today-summary">
+                <div class="rsi-today-status-box" id="boxEntrada">
+                    <span class="rsi-status-box-label"><i class="fas fa-sign-in-alt"></i> Entrada de Hoy</span>
+                    <div class="rsi-status-box-val" id="valEntrada">Consultando...</div>
+                    <div class="rsi-status-box-sub" id="subEntrada">--</div>
+                </div>
+
+                <div class="rsi-today-status-box" id="boxSalida">
+                    <span class="rsi-status-box-label"><i class="fas fa-sign-out-alt"></i> Salida de Hoy</span>
+                    <div class="rsi-status-box-val" id="valSalida">Consultando...</div>
+                    <div class="rsi-status-box-sub" id="subSalida">--</div>
+                </div>
+
+                <div class="rsi-today-status-box" id="boxUbicacion">
+                    <span class="rsi-status-box-label"><i class="fas fa-map-marker-alt"></i> Última Ubicación</span>
+                    <div class="rsi-status-box-val" id="valUbicacion">--</div>
+                    <button id="btnVerMapaHoy" class="rsi-btn-link" style="display: none;">
+                        <i class="fas fa-map"></i> Ver en mapa
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de Acciones de la Jornada -->
+        <div class="rsi-asistencia-actions-card">
+            <div class="rsi-action-info-banner">
+                <i class="fas fa-shield-alt"></i>
+                <div>
+                    <strong>Registro Seguro de Asistencia:</strong>
+                    <span>El sistema verifica la ubicación geográfica y el autenticador seguro del dispositivo para certificar tu registro.</span>
+                </div>
+            </div>
+
+            <div class="rsi-action-buttons-group">
+                <!-- Botón Registrar Entrada -->
+                <button id="btnRegistrarEntrada" class="rsi-btn-action rsi-btn-primary" disabled>
+                    <i class="fas fa-fingerprint"></i>
+                    <span>Registrar Entrada</span>
+                </button>
+
+                <!-- Botón Registrar Salida -->
+                <button id="btnRegistrarSalida" class="rsi-btn-action rsi-btn-outline" disabled>
+                    <i class="fas fa-door-open"></i>
+                    <span>Registrar Salida</span>
+                </button>
+
+                <!-- Botón Nueva Justificación -->
+                <button id="btnAbrirModalJustificacion" class="rsi-btn-action rsi-btn-secondary">
+                    <i class="fas fa-file-medical"></i>
+                    <span>Justificar Inasistencia</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Historial Personal de Asistencias (Filtrado por Mes Actual por defecto) -->
+        <div class="rsi-panel-crud">
+            <div class="rsi-panel-header" style="flex-wrap: wrap; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <h2>
+                        <i class="fas fa-history"></i>
+                        Mi Historial de Asistencias y Salidas
+                    </h2>
+                    <span id="badgePeriodoHistorial" class="rsi-badge rsi-badge-primary">Mes en curso</span>
+                </div>
+                <div class="rsi-panel-actions" style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                    <select id="filtroHistorialMes" class="rsi-form-control" style="width: auto; min-width: 135px; padding: 6px 10px; font-size: 0.85rem;" title="Filtrar por mes">
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                    <select id="filtroHistorialAnio" class="rsi-form-control" style="width: auto; min-width: 92px; padding: 6px 10px; font-size: 0.85rem;" title="Filtrar por año">
+                    </select>
+                    <select id="filtroHistorialEstado" class="rsi-form-control" style="width: auto; min-width: 145px; padding: 6px 10px; font-size: 0.85rem;" title="Filtrar por estado">
+                        <option value="todos">Todos los estados</option>
+                        <option value="asistencia_registrada">Puntuales</option>
+                        <option value="retardo">Retardos</option>
+                        <option value="inasistencia">Inasistencias</option>
+                    </select>
+                    <button id="btnHistorialMesActual" type="button" class="rsi-btn-crud rsi-btn-crud-outline" style="display: none;" title="Regresar al mes en curso">
+                        <i class="fas fa-calendar-day"></i> Mes Actual
+                    </button>
+                    <button id="btnActualizarHistorial" type="button" class="rsi-btn-crud rsi-btn-crud-outline" title="Actualizar historial">
+                        <i class="fas fa-sync"></i> Actualizar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingHistorial" class="rsi-loading-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Cargando registros del mes seleccionado...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyHistorial" class="rsi-empty-state" style="display: none;">
+                <i class="fas fa-calendar-times"></i>
+                <h3>No hay registros de asistencia en este mes</h3>
+                <p>Tus entradas y salidas del mes aparecerán listadas aquí conforme las vayas registrando.</p>
+            </div>
+
+            <!-- Tabla de Historial -->
+            <div class="rsi-table-wrapper" id="tablaHistorialWrapper" style="display: none;">
+                <table class="rsi-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Entrada</th>
+                            <th>Salida</th>
+                            <th>Estado</th>
+                            <th>Retardo</th>
+                            <th>Ubicación</th>
+                            <th>Justificación</th>
+                            <th style="text-align: center;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historialTableBody">
+                        <!-- Llenado dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ==========================================
+     MODAL: JUSTIFICAR INASISTENCIA
+     ========================================== -->
+<div id="modalJustificacion" class="rsi-modal rsi-asistencia-modal-overlay" style="display: none;">
+    <div class="rsi-modal-content rsi-asistencia-modal-card">
+        <div class="rsi-modal-header">
+            <h3><i class="fas fa-file-medical"></i> Justificar Inasistencia</h3>
+            <button type="button" class="rsi-modal-close" id="btnCerrarModalJustificacion" aria-label="Cerrar">&times;</button>
+        </div>
+
+        <form id="formJustificacion" class="rsi-modal-form" novalidate>
+            <div class="rsi-modal-body">
+                <div class="rsi-modal-hint-box">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Únicamente se pueden justificar <strong>días en los que no asististe (inasistencias)</strong>. Selecciona el día de la falta, indica el motivo y adjunta tu comprobante si dispones de él.</span>
+                </div>
+
+                <!-- Fecha de inasistencia (Solo días en que no asistió) -->
+                <div class="rsi-form-group">
+                    <label for="justFechaInasistencia" class="rsi-form-label">
+                        Día de Inasistencia a Justificar <span class="rsi-required">*</span>
+                    </label>
+                    <div class="rsi-input-wrapper">
+                        <i class="fas fa-calendar-times rsi-input-icon"></i>
+                        <select 
+                            id="justFechaInasistencia" 
+                            name="fechaInasistencia" 
+                            class="rsi-form-input" 
+                            required
+                        >
+                            <option value="">Cargando días sin asistencia...</option>
+                        </select>
+                    </div>
+                    <small class="rsi-form-help" id="justFechaHelpText">Solo aparecen listados los días hábiles en los que no tienes registro de asistencia.</small>
+                </div>
+
+                <!-- Motivo -->
+                <div class="rsi-form-group">
+                    <label for="justMotivo" class="rsi-form-label">
+                        Motivo o Causa Detallada <span class="rsi-required">*</span>
+                    </label>
+                    <div class="rsi-input-wrapper">
+                        <i class="fas fa-comment-alt rsi-input-icon"></i>
+                        <textarea 
+                            id="justMotivo" 
+                            name="motivo" 
+                            rows="4" 
+                            class="rsi-form-input" 
+                            placeholder="Explica detalladamente la causa de tu inasistencia (mínimo 10 caracteres)..."
+                            minlength="10"
+                            maxlength="1000"
+                            required
+                        ></textarea>
+                    </div>
+                    <div class="rsi-char-counter"><span id="charCount">0</span>/1000 caracteres</div>
+                </div>
+
+                <!-- Evidencia / Comprobante (Dropzone) -->
+                <div class="rsi-form-group">
+                    <label class="rsi-form-label">
+                        Comprobante o Evidencia Documental (Opcional)
+                    </label>
+                    <div class="rsi-file-dropzone" id="dropzoneEvidencia">
+                        <input 
+                            type="file" 
+                            id="justEvidencia" 
+                            name="evidencia" 
+                            class="rsi-file-input" 
+                            accept="image/jpeg,image/png,image/webp,application/pdf"
+                        >
+                        <div class="rsi-file-dropzone-content">
+                            <i class="fas fa-cloud-upload-alt rsi-file-icon"></i>
+                            <span class="rsi-file-title">Selecciona o arrastra una imagen o PDF</span>
+                            <span class="rsi-file-subtitle">Formatos: JPG, PNG, WEBP o PDF (Máximo 5 MB)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Previsualización de evidencia -->
+                <div id="evidenciaPreviewContainer" class="rsi-preview-box" style="display: none;">
+                    <div class="rsi-preview-header">
+                        <span><i class="fas fa-paperclip"></i> Archivo adjunto:</span>
+                        <button type="button" id="btnQuitarEvidencia" class="rsi-btn-remove-preview" title="Quitar archivo">
+                            <i class="fas fa-times"></i> Quitar
+                        </button>
+                    </div>
+                    <div class="rsi-preview-wrapper">
+                        <img id="evidenciaPreviewImg" src="" alt="Previsualización de evidencia" class="rsi-preview-img" style="display: none;">
+                        <div id="evidenciaPreviewPdf" style="display: none; align-items: center; gap: 8px;">
+                            <i class="fas fa-file-pdf" style="color: var(--rsi-danger); font-size: 1.8rem;"></i>
+                            <span id="evidenciaPdfName" style="font-weight: 600; font-size: 0.88rem; color: var(--rsi-text-primary);"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rsi-modal-footer">
+                <button type="button" class="rsi-btn-crud rsi-btn-crud-outline" id="btnCancelarJustificacion">Cancelar</button>
+                <button type="submit" class="rsi-btn-crud rsi-btn-crud-primary" id="btnEnviarJustificacion">
+                    <i class="fas fa-paper-plane"></i> Enviar Justificación
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,136 @@
+<!-- ========================================
+   PANEL CRUD - Gestión de Carrusel de Inicio (Ecommerce)
+   RSI Enterprise
+   ======================================== -->
+
+<section class="rsi-facturas-section rsi-carrusel-section">
+    <div class="rsi-container">
+        
+        <!-- ==========================================
+           ENCABEZADO DE PÁGINA
+           ========================================== -->
+        <div class="rsi-carrusel-header-wrapper">
+            <div>
+                <span class="rsi-badge rsi-badge-primary" style="margin-bottom: var(--rsi-spacing-xs);">
+                    <i class="fas fa-images"></i> Ecommerce / Portal Público
+                </span>
+                <h1 class="rsi-page-title">
+                    <span class="rsi-text-gold">Gestión</span> del Carrusel de Inicio
+                </h1>
+                <p class="rsi-page-subtitle">
+                    Administra los banners visuales y diapositivas interactivas mostradas en la página principal. Puedes configurar imágenes, títulos, descripciones y botones con enlaces a cualquier sección de la aplicación.
+                </p>
+            </div>
+            <div class="rsi-carrusel-header-actions">
+                <a href="/" target="_blank" class="rsi-btn-crud rsi-btn-crud-secondary" title="Ver cómo se ve en el portal público">
+                    <i class="fas fa-external-link-alt"></i> Ver en Home
+                </a>
+                <button type="button" id="btnRecargarCarrusel" class="rsi-btn-crud rsi-btn-crud-outline" title="Recargar diapositivas">
+                    <i class="fas fa-sync-alt"></i> Actualizar
+                </button>
+                <a href="/ecommerce/carrusel-form" class="rsi-btn-crud rsi-btn-crud-primary" data-link>
+                    <i class="fas fa-plus"></i> Nueva Diapositiva
+                </a>
+            </div>
+        </div>
+
+        <!-- ==========================================
+           TARJETAS DE MÉTRICAS (KPIS)
+           ========================================== -->
+        <div class="rsi-stats-container" style="margin-bottom: var(--rsi-spacing-lg);">
+            <div class="rsi-stat-item">
+                <span class="rsi-stat-value" id="statTotalSlides">0</span>
+                <span class="rsi-stat-label">Total Diapositivas</span>
+            </div>
+            <div class="rsi-stat-item">
+                <span class="rsi-stat-value" style="color: var(--rsi-success, #10b981);" id="statActivos">0</span>
+                <span class="rsi-stat-label">Activas en Home</span>
+            </div>
+            <div class="rsi-stat-item">
+                <span class="rsi-stat-value" style="color: var(--rsi-gray-500, #94a3b8);" id="statInactivos">0</span>
+                <span class="rsi-stat-label">Desactivadas</span>
+            </div>
+            <div class="rsi-stat-item">
+                <span class="rsi-stat-value" style="color: var(--rsi-gold, #c5a059);" id="statConBoton">0</span>
+                <span class="rsi-stat-label">Con Enlace / Botón</span>
+            </div>
+        </div>
+
+        <!-- ==========================================
+           PANEL PRINCIPAL Y PESTAÑAS
+           ========================================== -->
+        <div class="rsi-panel-crud">
+            <div class="rsi-panel-header" style="flex-wrap: wrap; gap: 12px;">
+                <div>
+                    <h2>
+                        <i class="fas fa-film"></i> Diapositivas del Carrusel
+                        <span id="slidesCountBadge" class="rsi-badge rsi-badge-primary" style="font-size: 0.8rem; margin-left: 6px;">0</span>
+                    </h2>
+                    <span style="font-size: 0.82rem; color: var(--rsi-text-secondary);">
+                        Las diapositivas se presentan en el Home en el orden asignado (1, 2, 3...)
+                    </span>
+                </div>
+
+                <!-- Filtros por estado -->
+                <div class="rsi-filter-tabs" style="margin: 0;">
+                    <button type="button" class="rsi-filter-tab active" data-filter="all">
+                        <i class="fas fa-list"></i> Todas
+                    </button>
+                    <button type="button" class="rsi-filter-tab" data-filter="active">
+                        <i class="fas fa-check-circle"></i> Activas
+                    </button>
+                    <button type="button" class="rsi-filter-tab" data-filter="inactive">
+                        <i class="fas fa-eye-slash"></i> Inactivas
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="carruselLoading" class="rsi-loading-state" style="padding: 50px 0;">
+                <i class="fas fa-spinner fa-spin fa-2x"></i>
+                <p style="margin-top: 10px;">Cargando diapositivas del carrusel...</p>
+            </div>
+
+            <!-- Empty State inicial / Semilla -->
+            <div id="carruselEmptyState" class="rsi-empty-state" style="display: none; padding: 50px 20px; text-align: center;">
+                <i class="fas fa-images fa-3x" style="color: var(--rsi-text-muted); opacity: 0.5; margin-bottom: 15px;"></i>
+                <h3 style="margin-bottom: 8px; color: var(--rsi-text-primary);">Aún no hay diapositivas en la base de datos</h3>
+                <p style="color: var(--rsi-text-secondary); max-width: 500px; margin: 0 auto 20px auto; font-size: 0.9rem;">
+                    Actualmente el Home está utilizando las imágenes estáticas predeterminadas. Puedes importar esas diapositivas predeterminadas a la base de datos para comenzar a administrarlas o crear una nueva desde cero.
+                </p>
+                <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                    <button type="button" id="btnSembrarPredeterminados" class="rsi-btn-crud rsi-btn-crud-secondary">
+                        <i class="fas fa-cloud-download-alt"></i> Importar Diapositivas Predeterminadas
+                    </button>
+                    <a href="/ecommerce/carrusel-form" class="rsi-btn-crud rsi-btn-crud-primary" data-link>
+                        <i class="fas fa-plus"></i> Crear Primera Diapositiva
+                    </a>
+                </div>
+            </div>
+
+            <!-- Contenedor Grid de Diapositivas -->
+            <div id="carruselGrid" class="rsi-carrusel-cards-grid" style="display: none;">
+                <!-- Slides renderizados dinámicamente -->
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+<!-- ==========================================
+   MODAL DE PREVISUALIZACIÓN COMPLETA
+   ========================================== -->
+<div class="rsi-modal-backdrop" id="modalSlidePreviewFullscreen" style="display: none;">
+    <div class="rsi-modal-dialog" style="max-width: 900px; padding: 0; background: #000; overflow: hidden;">
+        <div style="position: absolute; top: 12px; right: 12px; z-index: 10;">
+            <button type="button" class="rsi-modal-close" id="btnCerrarPreviewFullscreen" style="background: rgba(0,0,0,0.6); color: #fff;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div id="previewSlideMockup" class="rsi-slide-mockup-container">
+            <!-- Renderizado dinámico del slide tal como se verá en el Home -->
+        </div>
+    </div>
+</div>

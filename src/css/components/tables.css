@@ -12,7 +12,7 @@
 /* Tabla base */
 .rsi-table {
     width: 100%;
-    background: var(--rsi-white);
+    background: var(--rsi-bg-card);
     border-collapse: collapse;
     border-radius: var(--rsi-radius-lg);
     overflow: hidden;
@@ -21,11 +21,11 @@
 /* Cabecera */
 .rsi-table thead {
     background: linear-gradient(135deg, var(--rsi-primary), var(--rsi-primary-dark));
-    color: var(--rsi-white);
+    color: var(--rsi-text-light);
 }
 
 .rsi-table th {
-    padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
+    padding: 9px 12px;
     text-align: left;
     font-weight: 600;
     font-size: 0.9rem;
@@ -35,9 +35,9 @@
 
 /* Celdas */
 .rsi-table td {
-    padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
-    border-bottom: 1px solid var(--rsi-gray-200);
-    color: var(--rsi-gray-700);
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--rsi-border-color);
+    color: var(--rsi-text-secondary);
 }
 
 /* Filas */
@@ -60,12 +60,12 @@
 
 /* Tabla con bordes */
 .rsi-table-bordered {
-    border: 1px solid var(--rsi-gray-200);
+    border: 1px solid var(--rsi-border-color);
 }
 
 .rsi-table-bordered th,
 .rsi-table-bordered td {
-    border: 1px solid var(--rsi-gray-200);
+    border: 1px solid var(--rsi-border-color);
 }
 
 /* Tabla compacta */
@@ -113,17 +113,17 @@
 
 .rsi-table-badge-warning {
     background: var(--rsi-warning-light);
-    color: #856404;
+    color: var(--rsi-warning-text);
 }
 
 .rsi-table-badge-danger {
     background: var(--rsi-danger-light);
-    color: var(--rsi-danger);
+    color: var(--rsi-danger-text);
 }
 
 /* Tabla responsive */
 @media (max-width: 768px) {
-    .risi-table-responsive {
+    .rsi-table-responsive {
         display: block;
         width: 100%;
     }
@@ -135,7 +135,7 @@
     .rsi-table-responsive tbody tr {
         display: block;
         margin-bottom: var(--rsi-spacing-md);
-        border: 1px solid var(--rsi-gray-200);
+        border: 1px solid var(--rsi-border-color);
         border-radius: var(--rsi-radius-md);
     }
     
@@ -144,7 +144,7 @@
         justify-content: space-between;
         align-items: center;
         text-align: right;
-        border-bottom: 1px solid var(--rsi-gray-200);
+        border-bottom: 1px solid var(--rsi-border-color);
     }
     
     .rsi-table-responsive td::before {
@@ -174,25 +174,25 @@
 
 .rsi-table-btn-edit {
     background: var(--rsi-info);
-    color: var(--rsi-white);
+    color: var(--rsi-text-light);
 }
 
 .rsi-table-btn-edit:hover {
-    background: #138496;
+    filter: brightness(0.9);
 }
 
 .rsi-table-btn-delete {
     background: var(--rsi-danger);
-    color: var(--rsi-white);
+    color: var(--rsi-text-light);
 }
 
 .rsi-table-btn-delete:hover {
-    background: #c82333;
+    filter: brightness(0.9);
 }
 
 .rsi-table-btn-view {
     background: var(--rsi-primary);
-    color: var(--rsi-white);
+    color: var(--rsi-text-light);
 }
 
 .rsi-table-btn-view:hover {

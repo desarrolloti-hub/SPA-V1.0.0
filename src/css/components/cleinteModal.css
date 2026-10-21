@@ -1,0 +1,347 @@
+/* ========================================
+   MODAL CLIENTE - Estilos
+   Usa variables globales de variables.css
+   ======================================== */
+
+/* ==========================================
+   ROOT DEL MODAL
+   ========================================== */
+#rsi-modal-root.rsi-modal-open {
+    position: fixed;
+    inset: 0;
+    z-index: var(--rsi-z-modal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==========================================
+   BACKDROP
+   ========================================== */
+.rsi-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 10, 26, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--rsi-spacing-md);
+    animation: rsiFadeIn var(--rsi-transition-fast);
+}
+
+body.dark-mode .rsi-modal-backdrop {
+    background: rgba(0, 0, 0, 0.75);
+}
+
+/* ==========================================
+   CONTENEDOR DEL MODAL
+   ========================================== */
+.rsi-modal {
+    position: relative;
+    background: var(--rsi-bg-card);
+    color: var(--rsi-text-secondary);
+    border-radius: var(--rsi-radius-lg);
+    width: 100%;
+    max-width: 720px;
+    max-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--rsi-shadow-xl);
+    animation: rsiSlideUp var(--rsi-transition-base);
+    overflow: hidden;
+    font-family: var(--rsi-font-primary);
+    border: 1px solid var(--rsi-border-color);
+}
+
+/* ==========================================
+   HEADER
+   ========================================== */
+.rsi-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
+    border-bottom: 1px solid var(--rsi-border-color);
+    background: var(--rsi-bg-secondary);
+}
+
+.rsi-modal-header h2 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    color: var(--rsi-text-primary);
+    font-family: var(--rsi-font-secondary);
+}
+
+.rsi-modal-header h2 i {
+    color: var(--rsi-primary);
+}
+
+/* Botón cerrar */
+.rsi-modal-close {
+    background: transparent;
+    border: none;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--rsi-radius-md);
+    cursor: pointer;
+    color: var(--rsi-text-muted);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--rsi-transition-fast);
+}
+
+.rsi-modal-close:hover {
+    background: var(--rsi-gray-200);
+    color: var(--rsi-text-primary);
+}
+
+/* ==========================================
+   BODY
+   ========================================== */
+.rsi-modal-body {
+    padding: var(--rsi-spacing-lg);
+    overflow-y: auto;
+    flex: 1;
+    background: var(--rsi-bg-card);
+}
+
+.rsi-modal-body .rsi-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--rsi-spacing-md);
+}
+
+.rsi-modal-body .rsi-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--rsi-spacing-xs);
+    margin-bottom: var(--rsi-spacing-md);
+}
+
+.rsi-modal-body .rsi-form-group label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--rsi-text-secondary);
+}
+
+.rsi-modal-body .rsi-required {
+    color: var(--rsi-danger);
+}
+
+.rsi-modal-body .rsi-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.rsi-modal-body .rsi-input-icon {
+    position: absolute;
+    left: 12px;
+    color: var(--rsi-text-muted);
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+
+.rsi-modal-body input[type="text"],
+.rsi-modal-body input[type="email"],
+.rsi-modal-body input[type="tel"] {
+    width: 100%;
+    padding: 10px 12px 10px 38px;
+    border: 1px solid var(--rsi-gray-300);
+    border-radius: var(--rsi-radius-md);
+    background: var(--rsi-bg-input);
+    color: var(--rsi-text-primary);
+    font-family: var(--rsi-font-primary);
+    font-size: 0.9rem;
+    transition: border-color var(--rsi-transition-fast),
+                box-shadow var(--rsi-transition-fast);
+    outline: none;
+}
+
+.rsi-modal-body input:focus {
+    border-color: var(--rsi-primary);
+    box-shadow: 0 0 0 3px rgba(28, 25, 72, 0.1);
+}
+
+body.dark-mode .rsi-modal-body input:focus {
+    box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.2);
+}
+
+.rsi-modal-body input::placeholder {
+    color: var(--rsi-text-muted);
+    opacity: 0.7;
+}
+
+/* Error */
+.rsi-modal-body .rsi-form-group.error input {
+    border-color: var(--rsi-danger);
+}
+
+.rsi-modal-body .rsi-form-error-message {
+    font-size: 0.75rem;
+    color: var(--rsi-danger);
+    min-height: 14px;
+}
+
+/* ==========================================
+   HINT (aviso inferior)
+   ========================================== */
+.rsi-modal-hint {
+    margin-top: var(--rsi-spacing-md);
+    padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    background: rgba(28, 25, 72, 0.05);
+    border-left: 3px solid var(--rsi-primary);
+    border-radius: var(--rsi-radius-sm);
+    font-size: 0.85rem;
+    color: var(--rsi-text-muted);
+    display: flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+}
+
+body.dark-mode .rsi-modal-hint {
+    background: rgba(74, 158, 255, 0.08);
+}
+
+.rsi-modal-hint i {
+    color: var(--rsi-info);
+}
+
+.rsi-modal-hint a {
+    color: var(--rsi-primary);
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.rsi-modal-hint a:hover {
+    color: var(--rsi-primary-dark);
+}
+
+/* ==========================================
+   FOOTER
+   ========================================== */
+.rsi-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--rsi-spacing-sm);
+    padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
+    border-top: 1px solid var(--rsi-border-color);
+    background: var(--rsi-bg-secondary);
+}
+
+/* Botón cancelar (reusa tus estilos .rsi-btn-prev si los tienes) */
+.rsi-modal-footer .rsi-btn-prev {
+    padding: 10px 20px;
+    border: 1px solid var(--rsi-gray-300);
+    border-radius: var(--rsi-radius-md);
+    background: transparent;
+    color: var(--rsi-text-secondary);
+    font-family: var(--rsi-font-primary);
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all var(--rsi-transition-fast);
+}
+
+.rsi-modal-footer .rsi-btn-prev:hover {
+    background: var(--rsi-gray-100);
+    border-color: var(--rsi-gray-400);
+    color: var(--rsi-text-primary);
+}
+
+/* Botón guardar */
+.rsi-modal-footer .rsi-btn-submit-step {
+    padding: 10px 22px;
+    border: none;
+    border-radius: var(--rsi-radius-md);
+    background: var(--rsi-primary);
+    color: var(--rsi-text-light);
+    font-family: var(--rsi-font-primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    transition: all var(--rsi-transition-fast);
+    box-shadow: var(--rsi-shadow-sm);
+}
+
+.rsi-modal-footer .rsi-btn-submit-step:hover {
+    background: var(--rsi-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--rsi-shadow-primary);
+}
+
+.rsi-modal-footer .rsi-btn-submit-step:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+body.dark-mode .rsi-modal-footer .rsi-btn-submit-step {
+    background: var(--rsi-gold-gradient);
+    color: var(--rsi-text-light);
+}
+
+body.dark-mode .rsi-modal-footer .rsi-btn-submit-step:hover {
+    background: var(--rsi-gold-gradient-hover);
+    box-shadow: var(--rsi-shadow-gold);
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+@media (max-width: 600px) {
+    .rsi-modal-body .rsi-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .rsi-modal {
+        max-height: 95vh;
+        border-radius: var(--rsi-radius-md);
+    }
+
+    .rsi-modal-header,
+    .rsi-modal-body,
+    .rsi-modal-footer {
+        padding-left: var(--rsi-spacing-md);
+        padding-right: var(--rsi-spacing-md);
+    }
+
+    .rsi-modal-footer {
+        flex-direction: column-reverse;
+    }
+
+    .rsi-modal-footer button {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ==========================================
+   ANIMACIONES
+   ========================================== */
+@keyframes rsiFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes rsiSlideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

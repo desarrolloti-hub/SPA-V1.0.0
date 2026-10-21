@@ -1,0 +1,47 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Reglas para comprobantes de evidencia de justificaciones de asistencia
+    match /justificaciones/{fileName} {
+      // Solo usuarios autenticados pueden leer o subir evidencias
+      // Límite de tamaño: 5 MB
+      // Tipos permitidos: imágenes (JPEG, PNG, WEBP) o documentos PDF
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() &&
+                      request.resource.size < 5 * 1024 * 1024 &&
+                      (request.resource.contentType.matches('image/.*') || request.resource.contentType == 'application/pdf');
+      allow update, delete: if isAuthenticated();
+    }
+
+    // Reglas para comprobantes fiscales y cotizaciones (existentes)
+    match /facturas/{fileName} {
+      allow read, write: if isAuthenticated();
+    }
+
+    match /cotizaciones/{fileName} {
+      allow read, write: if isAuthenticated();
+    }
+
+    // Reglas para imágenes públicas del carrusel de inicio
+    match /carrusel/{fileName} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Reglas para imágenes y fichas técnicas de productos de Ecommerce
+    match /ecommerce/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated();
+    }
+
+    // Regla general para archivos de colaboradores
+    match /{allPaths=**} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}

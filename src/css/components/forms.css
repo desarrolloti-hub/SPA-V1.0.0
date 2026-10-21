@@ -342,7 +342,7 @@
 }
 
 .rsi-btn-submit:hover {
-    background: linear-gradient(135deg, var(--rsi-primary-dark), #0a0828);
+    background: linear-gradient(135deg, var(--rsi-primary-dark), var(--rsi-black));
     transform: translateY(-3px);
     box-shadow: 0 8px 25px rgba(28, 25, 72, 0.35);
 }
@@ -558,12 +558,13 @@ body.dark-mode .rsi-form-group select:focus ~ .rsi-input-icon {
 }
 
 body.dark-mode .rsi-btn-submit {
-    background: var(--rsi-gold-gradient);
-    color: var(--rsi-black);
+    background: linear-gradient(135deg, var(--rsi-primary), var(--rsi-primary-dark));
+    color: var(--rsi-btn-text-on-solid, #ffffff);
 }
 
 body.dark-mode .rsi-btn-submit:hover {
-    background: var(--rsi-gold-gradient-hover);
+    background: linear-gradient(135deg, var(--rsi-primary-light), var(--rsi-primary));
+    color: var(--rsi-btn-text-on-solid, #ffffff);
     box-shadow: var(--rsi-shadow-gold-lg);
 }
 
@@ -573,8 +574,8 @@ body.dark-mode .rsi-btn-secondary {
 }
 
 body.dark-mode .rsi-btn-secondary:hover {
-    background: var(--rsi-gold-gradient);
-    color: var(--rsi-black);
+    background: var(--rsi-primary);
+    color: var(--rsi-btn-text-on-solid, #ffffff);
     border-color: transparent;
 }
 

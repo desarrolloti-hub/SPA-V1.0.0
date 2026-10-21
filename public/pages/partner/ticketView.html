@@ -159,13 +159,48 @@
                     </div>
                 </div>
 
-                <!-- Colaboradores asignados -->
+                <!-- Colaboradores asignados y estado de aceptación -->
                 <div class="rsi-view-section">
                     <h4 class="rsi-section-title">
-                        <i class="fas fa-users"></i> Colaboradores Asignados
+                        <i class="fas fa-users"></i> Colaboradores Asignados y Estado de Aceptación
                     </h4>
-                    <div id="viewColaboradores" class="rsi-view-colaboradores">
-                        <span style="color: var(--rsi-gray-500);">Sin colaboradores asignados</span>
+                    <div id="viewColaboradores" class="ta-collab-list">
+                        <span style="color: var(--rsi-text-secondary);">Sin colaboradores asignados</span>
+                    </div>
+                </div>
+
+                <!-- Actividades Desarrolladas -->
+                <div class="rsi-view-section">
+                    <h4 class="rsi-section-title">
+                        <i class="fas fa-clipboard-list"></i> Actividades Desarrolladas
+                    </h4>
+                    <div id="viewActividadesDesarrolladas" class="ta-description-box">
+                        Sin actividades desarrolladas registradas aún.
+                    </div>
+                </div>
+
+                <!-- Evidencias Fotográficas (Antes, Durante y Después) -->
+                <div class="rsi-view-section">
+                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--rsi-spacing-sm); margin-bottom: var(--rsi-spacing-md);">
+                        <h4 class="rsi-section-title" style="margin: 0;">
+                            <i class="fas fa-camera-retro"></i> Evidencias Fotográficas (Antes, Durante y Después)
+                        </h4>
+                        <button type="button" id="btnReporteFotograficoTop" class="ta-btn ta-btn-secondary">
+                            <i class="fas fa-file-pdf"></i> Reporte Fotográfico PDF
+                        </button>
+                    </div>
+                    <div id="viewEvidenciasContainer" style="display: flex; flex-direction: column; gap: var(--rsi-spacing-lg);">
+                        <!-- Renderizado dinámico por ticketViewController -->
+                    </div>
+                </div>
+
+                <!-- Comentarios del Ticket -->
+                <div class="rsi-view-section">
+                    <h4 class="rsi-section-title">
+                        <i class="fas fa-comments"></i> Comentarios y Seguimiento
+                    </h4>
+                    <div id="viewComentariosContainer" class="ta-comments-list">
+                        <!-- Renderizado dinámico por ticketViewController -->
                     </div>
                 </div>
             </div>
@@ -184,9 +219,12 @@
             </div>
 
             <!-- Botones de acción -->
-            <div class="rsi-view-actions">
+            <div class="rsi-view-actions" style="flex-wrap: wrap; gap: var(--rsi-spacing-sm);">
                 <button type="button" id="backBtn" class="rsi-btn-crud rsi-btn-crud-outline">
                     <i class="fas fa-arrow-left"></i> Volver
+                </button>
+                <button type="button" id="reporteFotograficoBtn" class="ta-btn ta-btn-secondary">
+                    <i class="fas fa-file-pdf"></i> Reporte Fotográfico PDF
                 </button>
                 <button type="button" id="editBtn" class="rsi-btn-crud rsi-btn-crud-primary">
                     <i class="fas fa-edit"></i> Editar Ticket

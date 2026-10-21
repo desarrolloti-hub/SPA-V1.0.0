@@ -1,0 +1,53 @@
+<!-- ========================================
+   BUYER WISHLIST VIEW - RSI Enterprise
+   Lista de deseos / productos favoritos del comprador
+   ======================================== -->
+
+<section class="rsi-facturas-section rsi-wishlist-section" style="padding: 40px 0 80px; min-height: 75vh;">
+    <div class="rsi-container">
+        
+        <!-- ENCABEZADO -->
+        <div class="rsi-carrusel-header-wrapper" style="margin-bottom: var(--rsi-spacing-xl);">
+            <div>
+                <span class="rsi-badge rsi-badge-primary" style="margin-bottom: var(--rsi-spacing-xs);">
+                    <i class="fas fa-heart" style="color: #ef4444;"></i> Favoritos
+                </span>
+                <h1 class="rsi-page-title">
+                    Tu Lista de <span class="rsi-text-gold">Deseos</span>
+                </h1>
+                <p class="rsi-page-subtitle">
+                    Equipos y soluciones tecnológicas que has guardado. Puedes transferirlos a tu carrito de compras en cualquier momento.
+                </p>
+            </div>
+            <div class="rsi-carrusel-header-actions">
+                <a href="/products" class="rsi-btn-crud rsi-btn-crud-secondary" data-link>
+                    <i class="fas fa-store"></i> Explorar Catálogo
+                </a>
+                <a href="/buyer/cart" class="rsi-btn-crud rsi-btn-crud-primary" data-link>
+                    <i class="fas fa-shopping-cart"></i> Ver Carrito
+                </a>
+            </div>
+        </div>
+
+        <!-- CONTENEDOR DE PRODUCTOS FAVORITOS -->
+        <div id="wishlistEmptyState" style="display: none; background: var(--rsi-card-bg, #ffffff); border-radius: 16px; padding: 60px 24px; text-align: center; border: 1px solid var(--rsi-border-color, #e2e8f0);">
+            <div style="width: 80px; height: 80px; border-radius: 50%; background: rgba(239, 68, 68, 0.1); color: #ef4444; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 20px;">
+                <i class="far fa-heart"></i>
+            </div>
+            <h3 style="margin: 0 0 8px; font-size: 1.4rem; font-weight: 700; color: var(--rsi-text-primary);">
+                No tienes productos en tu lista de deseos
+            </h3>
+            <p style="margin: 0 0 24px; color: var(--rsi-gray-500); font-size: 0.95rem;">
+                Cuando encuentres un equipo que te interese, haz clic en el icono de corazón para guardarlo aquí.
+            </p>
+            <a href="/products" class="rsi-btn-crud rsi-btn-crud-primary" data-link style="display: inline-flex; padding: 12px 24px; font-size: 1rem;">
+                <i class="fas fa-store"></i> Ir a la Tienda
+            </a>
+        </div>
+
+        <div class="rsi-products-grid" id="wishlistProductsGrid">
+            <!-- Grid dinámico -->
+        </div>
+
+    </div>
+</section>

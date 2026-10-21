@@ -16,7 +16,7 @@
         <!-- ===== FORMULARIO ===== -->
         <form id="productoForm" class="rsi-form-steps" autocomplete="off">
 
-            <!-- Indicador de pasos (igual que áreas) -->
+            <!-- Indicador de pasos -->
             <div class="rsi-steps-indicator">
                 <div class="rsi-step-dot">
                     <span class="rsi-step-number active" data-step="1">1</span>
@@ -50,6 +50,7 @@
                     </div>
 
                     <div class="rsi-step-body">
+                        <!-- Nombre -->
                         <div class="rsi-form-group">
                             <label for="nombre">Nombre del producto/servicio <span class="rsi-required">*</span></label>
                             <div class="rsi-input-wrapper">
@@ -61,6 +62,7 @@
                             <div class="rsi-form-error-message" id="errorNombre"></div>
                         </div>
 
+                        <!-- Categoría -->
                         <div class="rsi-form-group">
                             <label for="categoriaId">Categoría <span class="rsi-required">*</span></label>
                             <div class="rsi-input-wrapper">
@@ -73,6 +75,7 @@
                             <div class="rsi-form-error-message" id="errorCategoria"></div>
                         </div>
 
+                        <!-- Precio -->
                         <div class="rsi-form-group">
                             <label for="precioUnitario">Precio Unitario <span class="rsi-required">*</span></label>
                             <div class="rsi-input-wrapper">
@@ -81,6 +84,35 @@
                                        placeholder="0.00" step="0.01" min="0" required>
                             </div>
                             <div class="rsi-form-error-message" id="errorPrecio"></div>
+                        </div>
+
+                        <!-- ========================================== -->
+                        <!-- 🔑 NUEVO CAMPO: CLAVE SAT (opcional)       -->
+                        <!-- ========================================== -->
+                        <div class="rsi-form-group">
+                            <label for="claveSat">
+                                Clave SAT (opcional)
+                                <span class="rsi-field-info" title="Clave del catálogo de productos y servicios del SAT">
+                                    <i class="fas fa-info-circle"></i>
+                                </span>
+                            </label>
+                            <div class="rsi-input-wrapper" style="display: flex; gap: 8px; align-items: center;">
+                                <i class="fas fa-hashtag rsi-input-icon"></i>
+                                <input type="text" id="claveSat" name="claveSat" 
+                                       placeholder="Ej: 01010101, 10101500" 
+                                       maxlength="20" style="flex: 1;">
+                                <button type="button" id="buscarClaveSatBtn" class="rsi-btn-sm" 
+                                        style="padding: 6px 12px; background: var(--rsi-primary); color: white; border: none; border-radius: 6px; cursor: pointer;">
+                                    <i class="fas fa-search"></i> Buscar
+                                </button>
+                            </div>
+                            <!-- Sugerencias de claves SAT (autocompletado) -->
+                            <div id="sugerenciasSat" class="rsi-sugerencias-container" style="display: none; position: absolute; background: white; border: 1px solid var(--rsi-gray-300); border-radius: 8px; max-height: 200px; overflow-y: auto; z-index: 1000; width: calc(100% - 100px); box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                            </div>
+                            <div id="infoClaveSat" class="rsi-form-help" style="font-size: 0.75rem; color: var(--rsi-gray-500); margin-top: 4px;">
+                                <span id="descripcionSatMostrada">Clave del catálogo SAT (opcional)</span>
+                            </div>
+                            <div class="rsi-form-error-message" id="errorClaveSat"></div>
                         </div>
 
                         <!-- Estado -->
@@ -120,7 +152,7 @@
                     </div>
 
                     <div class="rsi-step-body">
-                        <!-- Vista previa de imagen -->
+                        <!-- Vista previa -->
                         <div class="rsi-image-preview-container">
                             <div class="rsi-image-preview" id="imagePreview">
                                 <i class="fas fa-image" style="font-size: 3rem; color: var(--rsi-gray-300);"></i>
@@ -142,7 +174,7 @@
                             <div class="rsi-form-error-message" id="errorImagen"></div>
                         </div>
 
-                        <!-- Botón para eliminar imagen -->
+                        <!-- Eliminar imagen -->
                         <button type="button" id="removeImageBtn" class="rsi-btn-remove-image" style="display: none;">
                             <i class="fas fa-trash"></i> Eliminar imagen
                         </button>
@@ -179,6 +211,15 @@
                             <div class="rsi-confirmacion-item">
                                 <span class="rsi-confirmacion-label">Precio:</span>
                                 <span id="confirmPrecio" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <!-- 🔑 CLAVE SAT en confirmación -->
+                            <div class="rsi-confirmacion-item">
+                                <span class="rsi-confirmacion-label">Clave SAT:</span>
+                                <span id="confirmClaveSat" class="rsi-confirmacion-value">-</span>
+                            </div>
+                            <div class="rsi-confirmacion-item" id="confirmDescripcionSatContainer">
+                                <span class="rsi-confirmacion-label">Descripción SAT:</span>
+                                <span id="confirmDescripcionSat" class="rsi-confirmacion-value">-</span>
                             </div>
                             <div class="rsi-confirmacion-item">
                                 <span class="rsi-confirmacion-label">Estado:</span>

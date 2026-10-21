@@ -3,7 +3,7 @@
    Estructura de datos para Clientes
    ======================================== */
 
-import { obtenerCodigoRegimen } from '../utils/regimenesSAT.js';
+import { obtenerCodigoRegimen } from '../utils/regimenesSat.js';
 
 export class ClienteModel {
     
@@ -27,6 +27,8 @@ export class ClienteModel {
             nombreComercial: data.nombreComercial?.trim() || '',
             regimen: data.regimen?.trim() || '',
             regimenCodigo: regimenCodigo || '',
+            tipoRfc: (data.rfc?.toUpperCase() === 'XAXX010101000') ? 'nacional' : (data.rfc?.toUpperCase() === 'XEXX010101000') ? 'extranjero' : 'especifico',
+            esGenerico: (data.rfc?.toUpperCase() === 'XAXX010101000' || data.rfc?.toUpperCase() === 'XEXX010101000'),
             // Domicilio
             codigoPostal: data.codigoPostal || '',
             tipoVialidad: data.tipoVialidad?.trim() || '',

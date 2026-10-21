@@ -5,6 +5,7 @@
         </a>
     </div>
 
+    <!-- Botón Hamburguesa (mobile) -->
     <button class="nan_hamburger" aria-label="Abrir menú">
         <i class="fas fa-bars"></i>
     </button>
@@ -12,56 +13,84 @@
     <ul class="nan_menu">
         <li><a href="/" data-link><i class="fas fa-home"></i> Inicio</a></li>
         
-        <!-- Productos con dropdown -->
+        <!-- Productos con dropdown dinámico -->
         <li class="nan_dropdown-item">
             <a href="#" class="nan_dropdown-trigger" data-dropdown="products">
                 <i class="fas fa-box"></i> Productos
                 <i class="fas fa-chevron-down nan_arrow"></i>
             </a>
-            <ul class="nan_dropdown-menu">
-                <li><a href="/productos/software" data-link><i class="fas fa-code"></i> Software</a></li>
-                <li><a href="/productos/hardware" data-link><i class="fas fa-microchip"></i> Hardware</a></li>
-                <li><a href="/productos/cloud" data-link><i class="fas fa-cloud"></i> Cloud Solutions</a></li>
-                <li><a href="/productos/seguridad" data-link><i class="fas fa-shield-alt"></i> Seguridad</a></li>
+            <ul class="nan_dropdown-menu" id="navbarProductsDropdown">
+                <li><a href="/products" data-link><i class="fas fa-th"></i> Todos los productos</a></li>
+                <li><a href="/products?categoria=videovigilancia" data-link><i class="fas fa-video"></i> Videovigilancia</a></li>
+                <li><a href="/products?categoria=alarmas" data-link><i class="fas fa-bell"></i> Alarmas</a></li>
+                <li><a href="/products?categoria=control-de-acceso" data-link><i class="fas fa-fingerprint"></i> Control de Acceso</a></li>
             </ul>
         </li>
         
-        <!-- Servicios con dropdown -->
-        <li class="nan_dropdown-item">
-            <a href="#" class="nan_dropdown-trigger" data-dropdown="services">
-                <i class="fas fa-tools"></i> Servicios
-                <i class="fas fa-chevron-down nan_arrow"></i>
-            </a>
-            <ul class="nan_dropdown-menu">
-                <li><a href="/servicios/consultoria" data-link><i class="fas fa-chart-line"></i> Consultoría</a></li>
-                <li><a href="/servicios/desarrollo" data-link><i class="fas fa-laptop-code"></i> Desarrollo a Medida</a></li>
-                <li><a href="/servicios/soporte" data-link><i class="fas fa-headset"></i> Soporte 24/7</a></li>
-                <li><a href="/servicios/entrenamiento" data-link><i class="fas fa-chalkboard-teacher"></i> Entrenamiento</a></li>
-            </ul>
-        </li>
-        
+        <li><a href="/catalogos" data-link><i class="fas fa-tools"></i> Servicios</a></li>
         <li><a href="/nosotros" data-link><i class="fas fa-users"></i> Nosotros</a></li>
         <li><a href="/contacto" data-link><i class="fas fa-envelope"></i> Contacto</a></li>
-        <li><a href="/blogs" data-link><i class="fas fa-pencil"></i> Blogs</a></li>
-        <li><a href="/login" data-link><i class="fas fa-sign-in-alt"></i> Login</a></li>
+
+        <!-- Iconos discretos en Mobile -->
+        <li class="nan_mobile_icon_row" style="display: none;">
+            <div style="display: flex; gap: 14px; justify-content: center; width: 100%; padding: 10px 0;">
+                <a href="/buyer/wishlist" data-link class="nan_icon_link" title="Lista de Deseos">
+                    <i class="fas fa-heart" style="color: #ef4444;"></i>
+                    <span class="rsi-wishlist-badge rsi-badge rsi-badge-danger" style="display: none;">0</span>
+                </a>
+                <a href="/buyer/cart" data-link class="nan_icon_link" title="Carrito de Compras">
+                    <i class="fas fa-shopping-cart" style="color: var(--rsi-gold, #c5a059);"></i>
+                    <span class="rsi-cart-badge rsi-badge rsi-badge-primary" style="display: none;">0</span>
+                </a>
+            </div>
+        </li>
+
+        <!-- Login / Mi Cuenta dinámico -->
+        <li id="navItemAuth">
+            <a href="/login" data-link id="navLinkAuth">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+        </li>
         
-        <li class="nan_theme-item">
+        <!-- Theme Switch Mobile -->
+        <li class="nan_theme-item nan_theme-mobile">
             <div class="rsi-theme-toggle-container">
-                <span class="rsi-theme-label">
-                    <i class="fas fa-sun"></i>
-                </span>
+                <span class="rsi-theme-label"><i class="fas fa-sun"></i></span>
                 <label class="rsi-theme-switch">
-                    <input type="checkbox" id="themeToggleDesktop">
+                    <input type="checkbox" id="themeToggleMobile">
                     <span class="rsi-theme-slider"></span>
                 </label>
-                <span class="rsi-theme-label">
-                    <i class="fas fa-moon"></i>
-                </span>
+                <span class="rsi-theme-label"><i class="fas fa-moon"></i></span>
             </div>
         </li>
     </ul>
-    
-    <!-- Botón cerrar fuera del menú para mobile -->
+
+    <!-- ACCIONES DE ESCRITORIO (ICONOS DISCRETOS DE DESEOS Y CARRITO + TEMA) -->
+    <div class="nan_desktop_actions">
+        <!-- Favoritos con Badge discreto -->
+        <a href="/buyer/wishlist" data-link class="nan_icon_link" title="Lista de Deseos">
+            <i class="fas fa-heart" style="color: #ef4444;"></i>
+            <span class="rsi-wishlist-badge rsi-badge rsi-badge-danger" style="display: none;">0</span>
+        </a>
+
+        <!-- Carrito con Badge discreto -->
+        <a href="/buyer/cart" data-link class="nan_icon_link" title="Carrito de Compras">
+            <i class="fas fa-shopping-cart" style="color: var(--rsi-gold, #c5a059);"></i>
+            <span class="rsi-cart-badge rsi-badge rsi-badge-primary" style="display: none;">0</span>
+        </a>
+
+        <!-- Theme Toggle Desktop -->
+        <div class="rsi-theme-toggle-container">
+            <span class="rsi-theme-label"><i class="fas fa-sun"></i></span>
+            <label class="rsi-theme-switch">
+                <input type="checkbox" id="themeToggleDesktop">
+                <span class="rsi-theme-slider"></span>
+            </label>
+            <span class="rsi-theme-label"><i class="fas fa-moon"></i></span>
+        </div>
+    </div>
+
+    <!-- Botón cerrar flotante para mobile -->
     <button class="nan_close" aria-label="Cerrar menú">
         <i class="fas fa-times"></i>
     </button>

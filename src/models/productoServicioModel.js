@@ -20,6 +20,10 @@ export class ProductoServicioModel {
             precioUnitario: parseFloat(data.precioUnitario) || 0,
             categoriaId: data.categoriaId || '',
             
+            // 🔑 CLAVE SAT (opcional)
+            claveSat: data.claveSat || '',           // c_ClaveProdServ del catálogo SAT
+            descripcionSat: data.descripcionSat || '', // Descripción del catálogo SAT
+            
             // ✅ Imagen
             imagenBase64: data.imagenBase64 || '',
             imagenNombre: data.imagenNombre || '',
@@ -27,7 +31,7 @@ export class ProductoServicioModel {
             // Estado
             activo: data.activo !== undefined ? data.activo : true,
             
-            // Auditoría - creadoPor como mapa con datos del usuario
+            // Auditoría
             creadoPor: {
                 uid: uid || '',
                 nombre: userData?.nombre || '',
@@ -45,9 +49,6 @@ export class ProductoServicioModel {
 
     /**
      * Actualiza los campos de auditoría para modificación
-     * @param {Object} data - Datos a actualizar
-     * @param {string} uid - UID del usuario que modifica
-     * @param {Object} userData - Datos del usuario (nombre, email, uid)
      */
     static update(data, uid, userData) {
         return {
@@ -55,7 +56,9 @@ export class ProductoServicioModel {
             nombre: data.nombre || '',
             precioUnitario: parseFloat(data.precioUnitario) || 0,
             categoriaId: data.categoriaId || '',
-            // ✅ Imagen - se mantiene o se actualiza
+            // 🔑 CLAVE SAT (opcional)
+            claveSat: data.claveSat || '',
+            descripcionSat: data.descripcionSat || '',
             imagenBase64: data.imagenBase64 || '',
             imagenNombre: data.imagenNombre || '',
             activo: data.activo !== undefined ? data.activo : true,
@@ -86,6 +89,8 @@ export class ProductoServicioModel {
             errors.categoriaId = 'La categoría es requerida';
         }
 
+        // ✅ claveSat es opcional, no se valida
+
         return {
             valid: Object.keys(errors).length === 0,
             errors
@@ -101,7 +106,9 @@ export class ProductoServicioModel {
             nombre: data.nombre || '-',
             precioUnitario: data.precioUnitario || 0,
             categoriaId: data.categoriaId || '',
-            // ✅ Imagen para mostrar
+            // 🔑 CLAVE SAT
+            claveSat: data.claveSat || '',
+            descripcionSat: data.descripcionSat || '',
             imagenBase64: data.imagenBase64 || '',
             imagenNombre: data.imagenNombre || '',
             activo: data.activo !== undefined ? data.activo : true,

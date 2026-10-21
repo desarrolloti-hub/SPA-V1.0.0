@@ -1,0 +1,396 @@
+<!-- ========================================
+   FORMULARIO DE PRODUCTO (CREAR / EDITAR) - RSI ENTERPRISE
+   Formulario por pasos (Stepper) con galería, ficha técnica y Live Preview
+   ======================================== -->
+
+<section class="rsi-new-collaborator-section">
+    <div class="rsi-container">
+        
+        <!-- BARRA DE NAVEGACIÓN SUPERIOR -->
+        <div class="rsi-form-nav-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--rsi-spacing-lg);">
+            <a href="/ecommerce/productos" class="rsi-btn-crud rsi-btn-crud-secondary" data-link>
+                <i class="fas fa-arrow-left"></i> Volver a Productos
+            </a>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <span class="rsi-badge rsi-badge-primary" id="badgeModoProd">
+                    <i class="fas fa-box"></i> Nuevo Producto
+                </span>
+                <span class="rsi-badge rsi-badge-secondary" id="badgeEstadoProd">
+                    <i class="fas fa-circle"></i> Publicado
+                </span>
+            </div>
+        </div>
+
+        <!-- TÍTULO DINÁMICO -->
+        <h1 class="rsi-page-title" id="pageTitleProd">
+            <span class="rsi-text-gold" id="txtAccionTituloProd">Nuevo</span> Producto
+        </h1>
+        <p class="rsi-page-subtitle" id="pageSubtitleProd">
+            Configura la información del producto, valores comerciales, homologación SAT, galería fotográfica y ficha técnica.
+        </p>
+
+        <!-- ===== FORMULARIO POR PASOS ===== -->
+        <form id="formProducto" class="rsi-form-steps" autocomplete="off">
+            <input type="hidden" id="productoDocId" value="" />
+
+            <!-- Indicador de pasos -->
+            <div class="rsi-steps-indicator">
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number active" data-step="1">1</span>
+                    <span class="rsi-step-label active" data-step="1">Identificación</span>
+                </div>
+                <div class="rsi-step-line" data-step="1"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number" data-step="2">2</span>
+                    <span class="rsi-step-label" data-step="2">Precios y SAT</span>
+                </div>
+                <div class="rsi-step-line" data-step="2"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number" data-step="3">3</span>
+                    <span class="rsi-step-label" data-step="3">Características</span>
+                </div>
+                <div class="rsi-step-line" data-step="3"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number" data-step="4">4</span>
+                    <span class="rsi-step-label" data-step="4">Galería y Preview</span>
+                </div>
+            </div>
+
+            <!-- Contenedor de pasos -->
+            <div class="rsi-steps-container">
+
+                <!-- ===== PASO 1: IDENTIFICACIÓN Y CLASIFICACIÓN ===== -->
+                <div class="rsi-step-panel active" data-step="1">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <h3>Identificación del Producto</h3>
+                        <p>Nombre comercial, modelo del fabricante y clasificación</p>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="inputProdNombre">Nombre del Producto <span class="rsi-required">*</span></label>
+                        <div class="rsi-input-wrapper">
+                            <i class="fas fa-box rsi-input-icon"></i>
+                            <input type="text" id="inputProdNombre" name="nombre" placeholder="Ej: Cámara Domo IP 4K ColorVu con Audio" required>
+                        </div>
+                        <small style="color: var(--rsi-gray-400); font-size: 0.8rem; margin-top: 4px; display: block;">
+                            Slug: <code id="txtProdSlug" style="color: var(--rsi-gold, #c5a059); font-weight: 600;">automático</code>
+                        </small>
+                        <div class="rsi-form-error-message" id="errorProdNombre"></div>
+                    </div>
+
+                    <div class="rsi-form-row">
+                        <div class="rsi-form-group">
+                            <label for="selectProdCategoria">Categoría <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-tags rsi-input-icon"></i>
+                                <select id="selectProdCategoria" name="categoriaId" required>
+                                    <option value="">Selecciona una categoría...</option>
+                                </select>
+                            </div>
+                            <div class="rsi-form-error-message" id="errorProdCat"></div>
+                        </div>
+
+                        <div class="rsi-form-group">
+                            <label for="selectProdMarca">Marca / Fabricante <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-certificate rsi-input-icon"></i>
+                                <select id="selectProdMarca" name="marcaId" required>
+                                    <option value="">Selecciona una marca...</option>
+                                </select>
+                            </div>
+                            <div class="rsi-form-error-message" id="errorProdMarca"></div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-row">
+                        <div class="rsi-form-group">
+                            <label for="inputProdModelo">Modelo del Fabricante</label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-barcode rsi-input-icon"></i>
+                                <input type="text" id="inputProdModelo" name="modelo" placeholder="Ej: DS-2CD2147G2-SU">
+                            </div>
+                        </div>
+
+                        <div class="rsi-form-group">
+                            <label for="inputProdCodigo">Código Interno / SKU</label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-hashtag rsi-input-icon"></i>
+                                <input type="text" id="inputProdCodigo" name="codigoInterno" placeholder="Ej: RSI-CAM-0042">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label>Destacado en portada</label>
+                        <div style="padding: 10px 0; display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="checkProdDestacado" style="width: 20px; height: 20px; accent-color: var(--rsi-gold, #c5a059); cursor: pointer;" />
+                            <span style="font-weight: 500; font-size: 0.95rem;">Mostrar en la sección de Productos Destacados del Home y Catálogo</span>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <a href="/ecommerce/productos" class="rsi-btn-prev" data-link style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-arrow-left"></i> Cancelar
+                        </a>
+                        <button type="button" class="rsi-btn-next" data-next="2">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>1</span> de 4</div>
+                </div>
+
+                <!-- ===== PASO 2: PRECIOS, INVENTARIO Y SAT ===== -->
+                <div class="rsi-step-panel" data-step="2">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <h3>Precios, Stock y Homologación SAT</h3>
+                        <p>Valores comerciales para tienda y claves para facturación CFDI 4.0</p>
+                    </div>
+
+                    <div class="rsi-form-row">
+                        <div class="rsi-form-group">
+                            <label for="inputProdPrecio">Precio de Venta ($ MXN) <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-dollar-sign rsi-input-icon"></i>
+                                <input type="number" id="inputProdPrecio" name="precio" placeholder="0.00" step="0.01" min="0" required>
+                            </div>
+                            <div class="rsi-form-error-message" id="errorProdPrecio"></div>
+                        </div>
+
+                        <div class="rsi-form-group">
+                            <label for="inputProdStock">Inventario Disponible (Unidades) <span class="rsi-required">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-cubes rsi-input-icon"></i>
+                                <input type="number" id="inputProdStock" name="stock" placeholder="10" min="0" step="1" required>
+                            </div>
+                            <div class="rsi-form-error-message" id="errorProdStock"></div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="selectProdEstado">Estado de Publicación <span class="rsi-required">*</span></label>
+                        <div class="rsi-input-wrapper">
+                            <i class="fas fa-toggle-on rsi-input-icon"></i>
+                            <select id="selectProdEstado" name="estado">
+                                <option value="publicado">Publicado (Visible para compradores)</option>
+                                <option value="borrador">Borrador (Solo visible para administración)</option>
+                                <option value="desactivado">Desactivado (Oculto)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Homologación SAT -->
+                    <div style="background: rgba(197, 160, 89, 0.05); border: 1px solid rgba(197, 160, 89, 0.2); border-radius: 12px; padding: 18px; margin-top: var(--rsi-spacing-md);">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--rsi-gold, #c5a059); font-weight: 700;">
+                            <i class="fas fa-file-invoice"></i> Catálogo Fiscal SAT (CFDI 4.0)
+                        </div>
+
+                        <div class="rsi-form-row">
+                            <div class="rsi-form-group">
+                                <label for="inputProdClaveSat">Clave Prod/Serv SAT</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-fingerprint rsi-input-icon"></i>
+                                    <input type="text" id="inputProdClaveSat" name="claveSat" placeholder="Ej: 43211500" value="43211500">
+                                </div>
+                                <small style="color: var(--rsi-gray-400); font-size: 0.8rem;">Ej. 43211500 Computadoras, 46171600 Equipos de vigilancia</small>
+                            </div>
+
+                            <div class="rsi-form-group">
+                                <label for="inputProdUnidadSat">Clave Unidad SAT</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-ruler rsi-input-icon"></i>
+                                    <input type="text" id="inputProdUnidadSat" name="claveUnidadSat" placeholder="Ej: H87 o E48" value="H87">
+                                </div>
+                                <small style="color: var(--rsi-gray-400); font-size: 0.8rem;">H87 = Pieza, E48 = Unidad de servicio</small>
+                            </div>
+                        </div>
+
+                        <div class="rsi-form-group" style="margin-bottom: 0;">
+                            <label for="inputProdDescSat">Descripción Fiscal SAT</label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-file-alt rsi-input-icon"></i>
+                                <input type="text" id="inputProdDescSat" name="descripcionSat" placeholder="Equipos de seguridad y telecomunicaciones" value="Equipos de seguridad y telecomunicaciones">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button type="button" class="rsi-btn-prev" data-prev="1">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="button" class="rsi-btn-next" data-next="3">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>2</span> de 4</div>
+                </div>
+
+                <!-- ===== PASO 3: CARACTERÍSTICAS Y DESCRIPCIÓN ===== -->
+                <div class="rsi-step-panel" data-step="3">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-list-ul"></i>
+                        </div>
+                        <h3>Descripción y Especificaciones</h3>
+                        <p>Detalle técnico y viñetas para informar al cliente en el catálogo</p>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="inputProdDescripcion">Descripción General</label>
+                        <div class="rsi-input-wrapper">
+                            <textarea id="inputProdDescripcion" name="descripcion" rows="4" placeholder="Describe los beneficios, uso recomendado y alcance de este producto..." style="width: 100%; border: none; background: transparent; padding: 12px 14px; font-family: inherit; font-size: 0.95rem; resize: vertical; outline: none;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="rsi-form-group">
+                        <label for="inputProdCaracteristicas">Características Principales (1 por línea)</label>
+                        <div class="rsi-input-wrapper">
+                            <textarea id="inputProdCaracteristicas" name="caracteristicas" rows="5" placeholder="Resolución 4K Ultra HD (3840 x 2160)&#10;Tecnología ColorVu para imágenes en color 24/7&#10;Micrófono integrado para audio en vivo&#10;Protección para intemperie IP67&#10;Compresión de video inteligente H.265+" style="width: 100%; border: none; background: transparent; padding: 12px 14px; font-family: inherit; font-size: 0.95rem; resize: vertical; outline: none;"></textarea>
+                        </div>
+                        <small style="color: var(--rsi-gray-400); font-size: 0.8rem; margin-top: 4px; display: block;">
+                            Escribe una característica técnica en cada renglón. Se mostrarán como viñetas en la ficha del producto.
+                        </small>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button type="button" class="rsi-btn-prev" data-prev="2">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="button" class="rsi-btn-next" data-next="4">
+                            Siguiente <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>3</span> de 4</div>
+                </div>
+
+                <!-- ===== PASO 4: MULTIMEDIA, PDF Y VISTA PREVIA ===== -->
+                <div class="rsi-step-panel" data-step="4">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <h3>Galería, Ficha Técnica y Vista Previa</h3>
+                        <p>Carga las fotos del producto, adjunta el PDF y valida la apariencia final</p>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--rsi-spacing-lg); align-items: start;">
+                        <!-- Columna de Archivos -->
+                        <div>
+                            <!-- Galería -->
+                            <div style="margin-bottom: var(--rsi-spacing-lg);">
+                                <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px;">
+                                    Galería de Imágenes <span class="rsi-required">*</span>
+                                </label>
+                                <div id="dropzoneProd" style="border: 2px dashed var(--rsi-gold, #c5a059); border-radius: 12px; padding: 20px; text-align: center; cursor: pointer; background: rgba(197, 160, 89, 0.04); transition: background 0.2s;">
+                                    <i class="fas fa-images fa-2x" style="color: var(--rsi-gold, #c5a059); margin-bottom: 6px;"></i>
+                                    <p style="margin: 0; font-weight: 600; font-size: 0.95rem;">Haz clic o arrastra fotos aquí</p>
+                                    <small style="color: var(--rsi-gray-500); display: block; margin-top: 4px;">Puedes subir varias fotos (JPG, PNG, WEBP)</small>
+                                    <input type="file" id="fileProdImages" accept="image/png,image/jpeg,image/webp" multiple style="display: none;" />
+                                </div>
+
+                                <!-- Miniaturas de la Galería -->
+                                <div id="galeriaThumbsContainer" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px;"></div>
+                            </div>
+
+                            <!-- Ficha Técnica PDF -->
+                            <div>
+                                <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 6px;">
+                                    Ficha Técnica Oficial (PDF)
+                                </label>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <input type="file" id="fileProdPdf" accept="application/pdf" style="display: none;" />
+                                    <button type="button" id="btnSelectPdf" class="rsi-btn-crud rsi-btn-crud-secondary" style="font-size: 0.85rem; padding: 8px 14px;">
+                                        <i class="fas fa-file-pdf" style="color: #ef4444;"></i> Seleccionar PDF
+                                    </button>
+                                    <span id="txtPdfSeleccionado" style="font-size: 0.85rem; color: var(--rsi-gray-500);">Ningún archivo seleccionado</span>
+                                </div>
+
+                                <!-- PDF Actual existente -->
+                                <div id="pdfActualContainer" style="display: none; align-items: center; justify-content: space-between; background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 8px; padding: 10px 14px; margin-top: 10px;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-file-pdf fa-lg" style="color: #ef4444;"></i>
+                                        <div>
+                                            <strong id="pdfActualNombre" style="font-size: 0.85rem; display: block;">ficha_tecnica.pdf</strong>
+                                            <small id="pdfActualTamano" style="color: var(--rsi-gray-400); font-size: 0.75rem;">0 KB</small>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <a id="linkVerPdf" href="#" target="_blank" class="rsi-btn-crud rsi-btn-crud-secondary" style="font-size: 0.75rem; padding: 4px 8px;">
+                                            <i class="fas fa-external-link-alt"></i> Ver
+                                        </a>
+                                        <button type="button" id="btnEliminarPdf" class="rsi-btn-crud rsi-btn-crud-danger" style="font-size: 0.75rem; padding: 4px 8px;">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Columna Live Preview -->
+                        <div>
+                            <label style="display: block; font-weight: 600; font-size: 0.9rem; margin-bottom: 8px; color: var(--rsi-gray-600);">
+                                <i class="fas fa-eye"></i> Vista Previa en Tienda
+                            </label>
+                            <div style="border-radius: 12px; overflow: hidden; border: 1px solid var(--rsi-gray-300); box-shadow: var(--rsi-shadow-sm); background: var(--rsi-bg-card);">
+                                <div style="height: 180px; position: relative; background: var(--rsi-gray-200); display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                    <img id="previewProdImg" src="" alt="Preview" style="width: 100%; height: 100%; object-fit: contain; background: #ffffff; display: none;" />
+                                    <div id="previewProdPlaceholder" style="text-align: center; color: var(--rsi-gray-400);">
+                                        <i class="fas fa-box-open fa-2x"></i>
+                                        <p style="margin: 6px 0 0; font-size: 0.8rem;">Sin imagen principal</p>
+                                    </div>
+                                    <span id="previewProdBadgeEstado" class="rsi-badge rsi-badge-primary" style="position: absolute; top: 10px; right: 10px; font-size: 0.75rem;">
+                                        Publicado
+                                    </span>
+                                    <span id="previewProdBadgeDestacado" class="rsi-badge rsi-badge-warning" style="position: absolute; top: 10px; left: 10px; font-size: 0.75rem; display: none;">
+                                        <i class="fas fa-star"></i> Destacado
+                                    </span>
+                                </div>
+                                <div style="padding: 14px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--rsi-gray-400); margin-bottom: 6px;">
+                                        <span id="previewProdMarca">MARCA</span>
+                                        <span id="previewProdCat">CATEGORÍA</span>
+                                    </div>
+                                    <h4 id="previewProdTitulo" style="margin: 0 0 6px; font-size: 1rem; font-weight: 700; color: var(--rsi-text-primary); line-height: 1.3;">
+                                        Nombre del Producto
+                                    </h4>
+                                    <div id="previewProdModelo" style="font-size: 0.78rem; color: var(--rsi-gray-500); margin-bottom: 8px;">
+                                        Mod: DS-2CD2147G2-SU
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--rsi-gray-200); padding-top: 10px;">
+                                        <div>
+                                            <span style="font-size: 0.75rem; color: var(--rsi-gray-400); display: block;">Precio unitario</span>
+                                            <strong id="previewProdPrecio" style="font-size: 1.15rem; color: var(--rsi-gold, #c5a059);">$0.00 MXN</strong>
+                                        </div>
+                                        <span id="previewProdStock" class="rsi-badge rsi-badge-success" style="font-size: 0.75rem;">
+                                            10 en stock
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions" style="margin-top: var(--rsi-spacing-xl);">
+                        <button type="button" class="rsi-btn-prev" data-prev="3">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="submit" class="rsi-btn-submit-step" id="btnGuardarProducto">
+                            <i class="fas fa-save"></i> Guardar Producto
+                        </button>
+                    </div>
+                    <div class="rsi-step-counter">Paso <span>4</span> de 4</div>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</section>

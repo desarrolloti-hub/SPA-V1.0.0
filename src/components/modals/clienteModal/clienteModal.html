@@ -1,0 +1,100 @@
+<!-- ========================================
+   MODAL: Registro rápido de Cliente
+   ======================================== -->
+<div class="rsi-modal-backdrop">
+    <div class="rsi-modal" role="dialog" aria-modal="true" aria-labelledby="clienteModalTitle">
+
+        <!-- Header -->
+        <div class="rsi-modal-header">
+            <h2 id="clienteModalTitle">
+                <i class="fas fa-user-plus"></i>
+                <span class="rsi-text-gold">Nuevo</span> Cliente
+            </h2>
+            <button type="button" class="rsi-modal-close" data-modal-close aria-label="Cerrar">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Body -->
+        <form id="clienteModalForm" class="rsi-modal-body" autocomplete="off">
+
+            <div class="rsi-form-row">
+                <div class="rsi-form-group">
+                    <label for="modalRfc">RFC <span class="rsi-required">*</span></label>
+                    <div class="rsi-input-wrapper">
+                        <i class="fas fa-id-card rsi-input-icon"></i>
+                        <input type="text" id="modalRfc" placeholder="ABC123456789" required maxlength="13">
+                    </div>
+                    <div class="rsi-form-error-message"></div>
+                </div>
+
+                <div class="rsi-form-group">
+                    <label for="modalRazonSocial">Razón Social <span class="rsi-required">*</span></label>
+                    <div class="rsi-input-wrapper">
+                        <i class="fas fa-building rsi-input-icon"></i>
+                        <input type="text" id="modalRazonSocial" placeholder="Nombre o empresa" required>
+                    </div>
+                    <div class="rsi-form-error-message"></div>
+                </div>
+            </div>
+
+            <div class="rsi-form-row">
+                <div class="rsi-form-group">
+                    <label for="modalRegimen">Régimen Fiscal</label>
+                    <div class="rsi-input-wrapper">
+                        <i class="fas fa-scale-balanced rsi-input-icon"></i>
+                        <input type="text" id="modalRegimen" placeholder="Busca el régimen" list="modalRegimenesList">
+                        <datalist id="modalRegimenesList"></datalist>
+                    </div>
+                    <div class="rsi-form-error-message"></div>
+                </div>
+
+                <div class="rsi-form-group">
+                    <label for="modalCodigoPostal">Código Postal <span class="rsi-required">*</span></label>
+                    <div class="rsi-input-wrapper">
+                        <i class="fas fa-envelope rsi-input-icon"></i>
+                        <input type="text" id="modalCodigoPostal" placeholder="12345" required maxlength="5">
+                    </div>
+                    <div class="rsi-form-error-message"></div>
+                </div>
+            </div>
+
+            <div class="rsi-form-row">
+                <div class="rsi-form-group">
+                    <label for="modalEmail">Correo Electrónico <span class="rsi-required">*</span></label>
+                    <div class="rsi-input-wrapper">
+                        <i class="fas fa-envelope rsi-input-icon"></i>
+                        <input type="email" id="modalEmail" placeholder="cliente@empresa.com" required>
+                    </div>
+                    <div class="rsi-form-error-message"></div>
+                </div>
+
+                <div class="rsi-form-group">
+                    <label for="modalTelefono">Teléfono Móvil <span class="rsi-required">*</span></label>
+                    <div class="rsi-input-wrapper">
+                        <i class="fas fa-mobile-alt rsi-input-icon"></i>
+                        <input type="tel" id="modalTelefono" placeholder="55 1234 5678" required>
+                    </div>
+                    <div class="rsi-form-error-message"></div>
+                </div>
+            </div>
+
+            <p class="rsi-modal-hint">
+                <i class="fas fa-info-circle"></i>
+                Para capturar el domicilio fiscal completo, usa el
+                <a href="/partner/crudClientes/nuevo">formulario completo</a>.
+            </p>
+        </form>
+
+        <!-- Footer -->
+        <div class="rsi-modal-footer">
+            <button type="button" class="rsi-btn-prev" data-modal-close>
+                Cancelar
+            </button>
+            <button type="button" class="rsi-btn-submit-step" id="modalSubmitCliente">
+                <i class="fas fa-save"></i> Registrar Cliente
+            </button>
+        </div>
+
+    </div>
+</div>

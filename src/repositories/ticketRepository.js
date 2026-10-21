@@ -18,7 +18,8 @@ import {
     limit,
     startAfter,
     Timestamp,
-    setDoc
+    setDoc,
+    runTransaction
 } from '../config/firebaseConfig.js';
 import BaseRepository from './baseRepository.js';
 
@@ -59,31 +60,31 @@ export class TicketRepository extends BaseRepository {
     }
 
     /**
-     * Obtiene el contador actual y genera un nuevo ID
-     * ✅ Asegura que nunca devuelva null
+     * Obtiene el contador actual y genera un nuevo ID de forma atómica transaccional
      */
     async _getNextTicketId() {
         const contadorRef = doc(db, 'contadorTickets', 'contadorTicketsMesa');
         
         try {
-            const docSnap = await getDoc(contadorRef);
-            let nuevoContador;
-            
-            if (!docSnap.exists()) {
-                nuevoContador = 1;
-                await setDoc(contadorRef, { contador: nuevoContador });
-            } else {
-                nuevoContador = docSnap.data().contador + 1;
-                await updateDoc(contadorRef, { contador: nuevoContador });
-            }
+            const nuevoContador = await runTransaction(db, async (transaction) => {
+                const docSnap = await transaction.get(contadorRef);
+                let count = 1;
+                if (!docSnap.exists()) {
+                    transaction.set(contadorRef, { contador: count });
+                } else {
+                    count = (docSnap.data().contador || 0) + 1;
+                    transaction.update(contadorRef, { contador: count });
+                }
+                return count;
+            });
             
             return {
                 contador: nuevoContador,
                 idTicket: `Ticket-RSI-${nuevoContador}`
             };
         } catch (error) {
-            console.error('❌ Error generando ID de ticket:', error);
-            // ✅ Fallback seguro: usar timestamp
+            console.error('❌ Error generando ID de ticket atómicamente:', error);
+            // Fallback seguro: usar timestamp
             const timestamp = Date.now();
             return {
                 contador: timestamp,
@@ -263,29 +264,82 @@ export class TicketRepository extends BaseRepository {
     }
 
     /**
-     * Obtiene tickets por colaborador
+     * Obtiene tickets por colaborador utilizando índice compuesto (colaboradoresIds + fechaCreacion DESC) y caché en memoria
      */
-    async getTicketsByColaborador(colaboradorId) {
+    async getTicketsByColaborador(colaboradorId, forceRefresh = false) {
+        const candidateIds = (Array.isArray(colaboradorId) ? colaboradorId : [colaboradorId])
+            .map(id => (typeof id === 'string' ? id.trim() : ''))
+            .filter(Boolean);
+
+        const uniqueIds = [...new Set(candidateIds)].slice(0, 10);
+        if (uniqueIds.length === 0) {
+            return [];
+        }
+
+        const cacheKey = uniqueIds.slice().sort().join('|');
+
+        if (forceRefresh) {
+            this.clearCache();
+        } else if (this.cache.byColaborador && this.cache.byColaborador[cacheKey]) {
+            const cachedEntry = this.cache.byColaborador[cacheKey];
+            if (Date.now() - cachedEntry.timestamp < (this.cacheTTL || 60000)) {
+                return cachedEntry.data;
+            }
+        }
+
+        const colRef = this._getCollection();
+        const whereClause = uniqueIds.length === 1
+            ? where('colaboradoresIds', 'array-contains', uniqueIds[0])
+            : where('colaboradoresIds', 'array-contains-any', uniqueIds);
+
         try {
-            const q = query(
-                this._getCollection(),
-                where('colaboradoresIds', 'array-contains', colaboradorId),
+            // Consulta primaria optimizada con índice compuesto en Firestore
+            const qIndexed = query(
+                colRef,
+                whereClause,
                 orderBy('fechaCreacion', 'desc')
             );
-            const snapshot = await getDocs(q);
-            
-            const tickets = [];
-            snapshot.forEach(doc => {
-                tickets.push({
-                    id: doc.id,
-                    ...doc.data()
-                });
-            });
-            
+
+            const snapshot = await getDocs(qIndexed);
+            const tickets = snapshot.docs.map(docSnap => ({
+                id: docSnap.id,
+                ...docSnap.data()
+            }));
+
+            if (!this.cache.byColaborador) this.cache.byColaborador = {};
+            this.cache.byColaborador[cacheKey] = {
+                data: tickets,
+                timestamp: Date.now()
+            };
+
             return tickets;
         } catch (error) {
-            console.error(`❌ Error obteniendo tickets del colaborador ${colaboradorId}:`, error);
-            return [];
+            console.warn(`⚠️ Índice compuesto en construcción o pendiente para ticketsOperaciones (${error.code || error.message}), ejecutando consulta indexada simple:`, error.message);
+            try {
+                const qFallback = query(colRef, whereClause);
+                const snapshot = await getDocs(qFallback);
+                const tickets = snapshot.docs.map(docSnap => ({
+                    id: docSnap.id,
+                    ...docSnap.data()
+                }));
+
+                tickets.sort((a, b) => {
+                    const dateA = new Date(a.fechaCreacion || a.createdAt || 0).getTime();
+                    const dateB = new Date(b.fechaCreacion || b.createdAt || 0).getTime();
+                    return (isNaN(dateB) ? 0 : dateB) - (isNaN(dateA) ? 0 : dateA);
+                });
+
+                if (!this.cache.byColaborador) this.cache.byColaborador = {};
+                this.cache.byColaborador[cacheKey] = {
+                    data: tickets,
+                    timestamp: Date.now()
+                };
+
+                return tickets;
+            } catch (fallbackError) {
+                console.error(`❌ Error obteniendo tickets del colaborador ${colaboradorId}:`, fallbackError);
+                return [];
+            }
         }
     }
 
@@ -559,13 +613,17 @@ export class TicketRepository extends BaseRepository {
     /**
      * Marca que las notificaciones fueron enviadas
      */
-    async marcarNotificacionesEnviadas(ticketId) {
+    async marcarNotificacionesEnviadas(ticketId, notificadosIds = []) {
         try {
             const docRef = doc(db, this.collectionName, ticketId);
-            await updateDoc(docRef, {
+            const updatePayload = {
                 notificacionesEnviadas: true,
                 fechaUltimaNotificacion: new Date().toISOString()
-            });
+            };
+            if (Array.isArray(notificadosIds) && notificadosIds.length > 0) {
+                updatePayload.notificadosIds = notificadosIds;
+            }
+            await updateDoc(docRef, updatePayload);
             this.clearCache();
             console.log(`✅ Notificaciones marcadas como enviadas para ticket ${ticketId}`);
         } catch (error) {

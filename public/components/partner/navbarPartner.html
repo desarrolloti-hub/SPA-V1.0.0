@@ -17,7 +17,7 @@
 
     <!-- Menú principal -->
     <ul class="nan_menu">
-        <!-- 👥 Recursos Humanos -->
+        <!-- Recursos Humanos -->
         <li class="nan_dropdown-item">
             <a href="#" class="nan_dropdown-trigger" data-dropdown="hr">
                 <i class="fas fa-users"></i> Recursos Humanos
@@ -26,26 +26,30 @@
             <ul class="nan_dropdown-menu">
                 <li><a href="/partner/crudPartners" data-link><i class="fas fa-user-friends"></i> Colaboradores</a></li>
                 <li><a href="/partner/crudAreas" data-link><i class="fas fa-building"></i> Áreas</a></li>
-                <li><a href="/hr/asistencias" data-link><i class="fas fa-clipboard-check"></i> Asistencias</a></li>
+                <li><a href="/partner/crudAsistencias" data-link><i class="fas fa-clipboard-check"></i> Asistencias</a></li>
                 <li><a href="/hr/reembolsos" data-link><i class="fas fa-hand-holding-usd"></i> Reembolsos</a></li>
             </ul>
         </li>
 
-        <!-- 📋 Operaciones -->
+        <!-- Operaciones -->
         <li class="nan_dropdown-item">
             <a href="#" class="nan_dropdown-trigger" data-dropdown="ops">
                 <i class="fas fa-clipboard-list"></i> Operaciones
                 <i class="fas fa-chevron-down nan_arrow"></i>
             </a>
             <ul class="nan_dropdown-menu">
-                <li><a href="/ops/checklist" data-link><i class="fas fa-check-double"></i> Checklist</a></li>
-                <li><a href="/ops/historial" data-link><i class="fas fa-history"></i> Historial</a></li>
-                <li><a href="/ops/manuales" data-link><i class="fas fa-book"></i> Manuales</a></li>
-                <li><a href="/ops/notas" data-link><i class="fas fa-sticky-note"></i> Notas</a></li>
+                <li><a href="/partner/dashboard" data-link><i class="fas fa-tachometer-alt"></i> Dashboard Operativo</a></li>
+                <li><a href="/partner/asistencia" data-link><i class="fas fa-user-clock"></i> Mi Asistencia</a></li>
+                <li><a href="/partner/mis-salidas" data-link><i class="fas fa-file-signature"></i> Mis Checklists y Firmas</a></li>
+                <li><a href="/partner/reembolsos" data-link><i class="fas fa-hand-holding-usd"></i> Solicitud de Reembolsos</a></li>
+                <li class="nan_dropdown-divider" style="border-top: 1px solid var(--rsi-border-color, #e2e8f0); margin: 6px 0; opacity: 0.5;"></li>
+                <li><a href="/partner/vehiculos" data-link><i class="fas fa-car"></i> Parque Vehicular</a></li>
+                <li><a href="/partner/checklist-salida" data-link><i class="fas fa-check-double"></i> Checklist de Salida</a></li>
+                <li><a href="/partner/checklists-vehiculos" data-link><i class="fas fa-history"></i> Historial de Salidas</a></li>
             </ul>
         </li>
 
-        <!-- 🎫 Soporte -->
+        <!-- Soporte -->
         <li class="nan_dropdown-item">
             <a href="#" class="nan_dropdown-trigger" data-dropdown="support">
                 <i class="fas fa-headset"></i> Soporte
@@ -58,7 +62,7 @@
             </ul>
         </li>
 
-        <!-- 💼 Finanzas -->
+        <!-- Finanzas -->
         <li class="nan_dropdown-item">
             <a href="#" class="nan_dropdown-trigger" data-dropdown="commercial">
                 <i class="fas fa-briefcase"></i> Finanzas
@@ -72,7 +76,7 @@
             </ul>
         </li>
 
-        <!-- 🛒 Ecommerce -->
+        <!-- Ecommerce -->
         <li class="nan_dropdown-item">
             <a href="#" class="nan_dropdown-trigger" data-dropdown="ecommerce">
                 <i class="fas fa-store"></i> Ecommerce
@@ -83,11 +87,13 @@
                 <li><a href="/ecommerce/pedidos" data-link><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
                 <li><a href="/ecommerce/ventas" data-link><i class="fas fa-chart-line"></i> Ventas</a></li>
                 <li><a href="/ecommerce/categorias" data-link><i class="fas fa-tags"></i> Categorías</a></li>
+                <li><a href="/ecommerce/marcas" data-link><i class="fas fa-certificate"></i> Marcas</a></li>
                 <li><a href="/ecommerce/opiniones" data-link><i class="fas fa-star"></i> Opiniones</a></li>
                 <li><a href="/ecommerce/usuarios" data-link><i class="fas fa-user"></i> Usuarios</a></li>
                 <li><a href="/ecommerce/entregas" data-link><i class="fas fa-truck"></i> Entregas</a></li>
                 <li><a href="/ecommerce/carrusel" data-link><i class="fas fa-images"></i> Carrusel</a></li>
                 <li><a href="/ecommerce/contactos" data-link><i class="fas fa-address-book"></i> Contactos</a></li>
+                <li><a href="/partner/crudCatalogos" data-link><i class="fas fa-address-book"></i> Gestión de catalogos</a></li>
             </ul>
         </li>
         
@@ -106,7 +112,11 @@
                     </div>
                 </li>
                 <li><a href="/partner/profile" data-link><i class="fas fa-user"></i> Mi cuenta</a></li>
-                <li><a href="#" id="terminarAsistenciaMobile"><i class="fas fa-clock"></i> Terminar asistencia</a></li>
+                <li><a href="/partner/dashboard" data-link><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="/partner/asistencia" data-link><i class="fas fa-user-clock"></i> Mi asistencia</a></li>
+                <li><a href="/partner/mis-salidas" data-link><i class="fas fa-file-signature"></i> Mis Checklists y Firmas</a></li>
+                <li><a href="/partner/reembolsos" data-link><i class="fas fa-hand-holding-usd"></i> Solicitud de Reembolsos</a></li>
+                <li><a href="#" id="terminarAsistenciaMobile"><i class="fas fa-door-open"></i> Terminar asistencia</a></li>
                 <li class="nan-menu-theme-in-dropdown">
                     <div class="nan-menu-theme-container">
                         <span class="rsi-theme-label">
@@ -163,7 +173,11 @@
                 </div>
                 <hr>
                 <a href="/partner/profile" data-link><i class="fas fa-user"></i> Mi cuenta</a>
-                <a href="#" id="terminarAsistencia"><i class="fas fa-clock"></i> Terminar asistencia</a>
+                <a href="/partner/dashboard" data-link><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="/partner/asistencia" data-link><i class="fas fa-user-clock"></i> Mi asistencia</a>
+                <a href="/partner/mis-salidas" data-link><i class="fas fa-file-signature"></i> Mis Checklists y Firmas</a>
+                <a href="/partner/reembolsos" data-link><i class="fas fa-hand-holding-usd"></i> Solicitud de Reembolsos</a>
+                <a href="#" id="terminarAsistencia"><i class="fas fa-door-open"></i> Terminar asistencia</a>
                 <hr>
                 <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
             </div>

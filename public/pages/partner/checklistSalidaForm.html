@@ -1,0 +1,345 @@
+<!-- ========================================
+   CHECKLIST DE SALIDA DE VEHÍCULO - RSI ENTERPRISE
+   Inspección guiada por pasos unificada con formSteps.css y variables.css
+   ======================================== -->
+
+<section class="rsi-ticket-section">
+    <div class="rsi-container">
+
+        <!-- Barra de navegación superior -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--rsi-spacing-lg); flex-wrap: wrap; gap: var(--rsi-spacing-md);">
+            <a href="/partner/vehiculos" class="rsi-btn-action rsi-btn-action-outline" data-link>
+                <i class="fas fa-arrow-left"></i> Volver al Parque Vehicular
+            </a>
+            <span class="rsi-badge rsi-badge-primary" style="font-size: 0.88rem; padding: 6px 14px;">
+                <i class="fas fa-clipboard-check"></i> Inspección Oficial Pre-Salida
+            </span>
+        </div>
+
+        <!-- Título -->
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Checklist</span> de Salida Vehicular
+        </h1>
+        <p class="rsi-page-subtitle">
+            Documenta las condiciones mecánicas, físicas y fotográficas del automóvil antes de su liberación operativa.
+        </p>
+
+        <!-- ===== FORMULARIO POR PASOS RSI ===== -->
+        <form id="formChecklistSalida" class="rsi-form-steps" autocomplete="off">
+            
+            <!-- Indicador Oficial de Pasos -->
+            <div class="rsi-steps-indicator">
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number active veh-step" data-step="1">1</span>
+                    <span class="rsi-step-label active" data-step="1">Vehículo y Conductor</span>
+                </div>
+                <div class="rsi-step-line" data-step="1"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number veh-step" data-step="2">2</span>
+                    <span class="rsi-step-label" data-step="2">Checklist Físico</span>
+                </div>
+                <div class="rsi-step-line" data-step="2"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number veh-step" data-step="3">3</span>
+                    <span class="rsi-step-label" data-step="3">Evidencias con Sello</span>
+                </div>
+                <div class="rsi-step-line" data-step="3"></div>
+                
+                <div class="rsi-step-dot">
+                    <span class="rsi-step-number veh-step" data-step="4">4</span>
+                    <span class="rsi-step-label" data-step="4">Confirmación</span>
+                </div>
+            </div>
+
+            <!-- Contenedor de Paneles de Pasos -->
+            <div class="rsi-steps-container">
+
+                <!-- ==========================================
+                     PASO 1: SELECCIÓN DE VEHÍCULO Y CONDUCTOR
+                     ========================================== -->
+                <div class="rsi-step-panel active veh-wizard-step" id="wizardStep1" data-step-content="1">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <h3>1. Selección de Automóvil y Asignación</h3>
+                        <p>Solo se listan los automóviles activos y disponibles para una nueva salida.</p>
+                    </div>
+
+                    <div class="rsi-step-body">
+                        
+                        <!-- Selector de Vehículo -->
+                        <div class="rsi-form-group">
+                            <label for="selectVehiculo">Automóvil Disponible <span class="rsi-required" style="color: var(--rsi-danger);">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-car rsi-input-icon"></i>
+                                <select id="selectVehiculo" required>
+                                    <option value="">-- Selecciona una unidad disponible --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Ficha rápida del vehículo seleccionado -->
+                        <div id="vehiculoQuickInfo" style="display: none; background: var(--rsi-bg-secondary); border: 1.5px solid var(--rsi-primary); border-radius: var(--rsi-radius-lg); padding: var(--rsi-spacing-md); margin-bottom: var(--rsi-spacing-lg); align-items: center; gap: var(--rsi-spacing-md);">
+                            <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--rsi-primary); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <h4 id="bannerVehiculoTitulo" style="margin: 0 0 4px 0; color: var(--rsi-text-primary); font-size: 1.05rem; font-weight: 700;">-</h4>
+                                <p id="bannerVehiculoSub" style="margin: 0; color: var(--rsi-text-secondary); font-size: 0.88rem;">-</p>
+                            </div>
+                        </div>
+
+                        <!-- Colaborador receptor -->
+                        <div class="rsi-form-group">
+                            <label for="selectReceptor">Colaborador Asignado que Retirará el Vehículo <span class="rsi-required" style="color: var(--rsi-danger);">*</span></label>
+                            <div class="rsi-input-wrapper">
+                                <i class="fas fa-user-check rsi-input-icon"></i>
+                                <select id="selectReceptor" required>
+                                    <option value="">-- Seleccionar colaborador receptor --</option>
+                                </select>
+                            </div>
+                            <small style="font-size: 0.8rem; color: var(--rsi-text-muted); margin-top: 4px; display: block;">
+                                Este colaborador será el responsable operativo de la unidad y deberá firmar la conformidad en su perfil.
+                            </small>
+                        </div>
+
+                        <div class="rsi-form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--rsi-spacing-md);">
+                            <!-- Kilometraje de Salida -->
+                            <div class="rsi-form-group">
+                                <label for="inputKmSalida">Kilometraje de Salida <span class="rsi-required" style="color: var(--rsi-danger);">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-tachometer-alt rsi-input-icon"></i>
+                                    <input type="number" id="inputKmSalida" placeholder="0" min="0" step="1" required />
+                                </div>
+                                <small id="helpKmActual" style="font-size: 0.78rem; color: var(--rsi-text-muted); margin-top: 4px; display: block;">Kilometraje actual: 0 km</small>
+                            </div>
+
+                            <!-- Nivel de Combustible -->
+                            <div class="rsi-form-group">
+                                <label for="selectCombustibleSalida">Nivel de Combustible <span class="rsi-required" style="color: var(--rsi-danger);">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-gas-pump rsi-input-icon"></i>
+                                    <select id="selectCombustibleSalida" required>
+                                        <option value="Reserva">Reserva (E)</option>
+                                        <option value="1/4">1/4 de Tanque</option>
+                                        <option value="1/2" selected>1/2 Tanque</option>
+                                        <option value="3/4">3/4 de Tanque</option>
+                                        <option value="Lleno">Tanque Lleno (F)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="rsi-form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--rsi-spacing-md);">
+                            <!-- Motivo de Salida -->
+                            <div class="rsi-form-group">
+                                <label for="inputMotivoSalida">Motivo de Salida / Actividad <span class="rsi-required" style="color: var(--rsi-danger);">*</span></label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-clipboard-list rsi-input-icon"></i>
+                                    <input type="text" id="inputMotivoSalida" placeholder="Ej: Servicio de CCTV en Corporativo" required />
+                                </div>
+                            </div>
+
+                            <!-- Destino -->
+                            <div class="rsi-form-group">
+                                <label for="inputDestinoSalida">Destino / Zona Prevista</label>
+                                <div class="rsi-input-wrapper">
+                                    <i class="fas fa-map-marker-alt rsi-input-icon"></i>
+                                    <input type="text" id="inputDestinoSalida" placeholder="Ej: Naucalpan / CDMX" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Botones de Navegación -->
+                    <div class="rsi-step-actions">
+                        <div></div>
+                        <button type="button" class="rsi-btn-step rsi-btn-next btn-next-step" data-next="2">
+                            Continuar al Checklist <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ==========================================
+                     PASO 2: CHECKLIST DE CONDICIONES FÍSICAS
+                     ========================================== -->
+                <div class="rsi-step-panel veh-wizard-step" id="wizardStep2" data-step-content="2" style="display: none;">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h3>2. Inspección Física y Mecánica</h3>
+                        <p>Evalúa cada componente con atención. Ningún punto puede quedar sin responder.</p>
+                    </div>
+
+                    <div class="rsi-step-body" id="checklistCategoriesContainer">
+                        <!-- Generación dinámica de categorías e ítems de inspección -->
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button type="button" class="rsi-btn-step rsi-btn-prev btn-prev-step" data-prev="1">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="button" class="rsi-btn-step rsi-btn-next btn-next-step" data-next="3">
+                            Continuar a Fotografías <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ==========================================
+                     PASO 3: EVIDENCIAS FOTOGRÁFICAS
+                     ========================================== -->
+                <div class="rsi-step-panel veh-wizard-step" id="wizardStep3" data-step-content="3" style="display: none;">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3>3. Evidencias Fotográficas Obligatorias</h3>
+                        <p>Cada fotografía se estampa con el sello institucional de RSI, fecha, hora, placas y coordenadas GPS.</p>
+                    </div>
+
+                    <div class="rsi-step-body">
+                        <!-- Inputs ocultos para captura directa de cámara móvil / archivo -->
+                        <input type="file" id="cameraInputMobile" accept="image/*" capture="environment" style="display: none;" />
+                        <input type="file" id="fileInputGallery" accept="image/*" style="display: none;" />
+
+                        <div class="veh-photos-grid" id="photosGridContainer" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--rsi-spacing-md);">
+                            <!-- Tarjetas dinámicas para Frente, Trasera, Lateral Izq, Lateral Der, Tablero Km, Interior -->
+                        </div>
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button type="button" class="rsi-btn-step rsi-btn-prev btn-prev-step" data-prev="2">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="button" class="rsi-btn-step rsi-btn-next btn-next-step" data-next="4">
+                            Revisar Resumen <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ==========================================
+                     PASO 4: RESUMEN Y CONFIRMACIÓN
+                     ========================================== -->
+                <div class="rsi-step-panel veh-wizard-step" id="wizardStep4" data-step-content="4" style="display: none;">
+                    <div class="rsi-step-header">
+                        <div class="rsi-step-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>4. Resumen y Emisión de Salida</h3>
+                        <p>Verifica los datos antes de emitir la orden. El vehículo quedará reservado a la espera de la firma del conductor.</p>
+                    </div>
+
+                    <div class="rsi-step-body">
+                        
+                        <!-- Resumen en Grid -->
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--rsi-spacing-md); margin-bottom: var(--rsi-spacing-lg);">
+                            <div style="background: var(--rsi-bg-secondary); border: 1px solid var(--rsi-border-color); border-radius: var(--rsi-radius-md); padding: var(--rsi-spacing-md);">
+                                <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--rsi-text-primary); margin: 0 0 6px 0; display: flex; align-items: center; gap: 6px;">
+                                    <i class="fas fa-car" style="color: var(--rsi-primary);"></i> Vehículo
+                                </h4>
+                                <p id="summaryVehiculo" style="margin: 0; font-weight: 600;">-</p>
+                                <p id="summaryPlacas" style="margin: 4px 0 0 0; color: var(--rsi-text-gold); font-family: monospace; font-weight: 700;">-</p>
+                            </div>
+
+                            <div style="background: var(--rsi-bg-secondary); border: 1px solid var(--rsi-border-color); border-radius: var(--rsi-radius-md); padding: var(--rsi-spacing-md);">
+                                <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--rsi-text-primary); margin: 0 0 6px 0; display: flex; align-items: center; gap: 6px;">
+                                    <i class="fas fa-user-check" style="color: var(--rsi-primary);"></i> Conductor Asignado
+                                </h4>
+                                <p id="summaryReceptor" style="margin: 0; font-weight: 600;">-</p>
+                                <small style="color: var(--rsi-text-muted); font-size: 0.78rem;">Deberá firmar en su perfil para liberar la unidad.</small>
+                            </div>
+
+                            <div style="background: var(--rsi-bg-secondary); border: 1px solid var(--rsi-border-color); border-radius: var(--rsi-radius-md); padding: var(--rsi-spacing-md);">
+                                <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--rsi-text-primary); margin: 0 0 6px 0; display: flex; align-items: center; gap: 6px;">
+                                    <i class="fas fa-tachometer-alt" style="color: var(--rsi-primary);"></i> Salida Operativa
+                                </h4>
+                                <p style="margin: 0; font-size: 0.88rem;">Km de Salida: <strong id="summaryKm" style="font-family: monospace;">-</strong></p>
+                                <p style="margin: 4px 0 0 0; font-size: 0.88rem;">Combustible: <strong id="summaryCombustible">-</strong></p>
+                            </div>
+
+                            <div style="background: var(--rsi-bg-secondary); border: 1px solid var(--rsi-border-color); border-radius: var(--rsi-radius-md); padding: var(--rsi-spacing-md);">
+                                <h4 style="font-size: 0.9rem; font-weight: 700; color: var(--rsi-text-primary); margin: 0 0 6px 0; display: flex; align-items: center; gap: 6px;">
+                                    <i class="fas fa-images" style="color: var(--rsi-primary);"></i> Evidencias
+                                </h4>
+                                <p style="margin: 0; font-size: 0.88rem;"><strong id="summaryFotosCount">0</strong> fotografías capturadas con sello y GPS.</p>
+                            </div>
+                        </div>
+
+                        <!-- Observaciones Finales -->
+                        <div class="rsi-form-group">
+                            <label for="inputObservacionesGenerales">Observaciones Finales de la Inspección</label>
+                            <div class="rsi-input-wrapper">
+                                <textarea id="inputObservacionesGenerales" rows="3" placeholder="Comentarios generales sobre la salida, condiciones climáticas o requerimientos especiales..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Alerta Informativa de Firma -->
+                        <div style="background: rgba(245, 158, 11, 0.08); border-left: 4px solid var(--rsi-warning); border-radius: var(--rsi-radius-md); padding: var(--rsi-spacing-md); display: flex; gap: var(--rsi-spacing-md); align-items: flex-start; margin-top: var(--rsi-spacing-md);">
+                            <i class="fas fa-exclamation-triangle" style="color: var(--rsi-warning); font-size: 1.3rem; margin-top: 2px;"></i>
+                            <div style="font-size: 0.88rem; color: var(--rsi-text-primary); line-height: 1.5;">
+                                <strong>Importante sobre la aceptación de la unidad:</strong>
+                                Al registrar esta salida, el automóvil cambiará a estado <em>"Por Firmar"</em>.
+                                El colaborador receptor deberá ingresar a su perfil y registrar su firma digital para formalizar la recepción y que la unidad pase a estado <em>"En Ruta"</em>.
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="rsi-step-actions">
+                        <button type="button" class="rsi-btn-step rsi-btn-prev btn-prev-step" data-prev="3">
+                            <i class="fas fa-arrow-left"></i> Anterior
+                        </button>
+                        <button type="submit" class="rsi-btn-crud rsi-btn-crud-primary" id="btnGuardarChecklist" style="padding: 12px 32px; font-size: 1rem;">
+                            <i class="fas fa-save"></i> Emitir Salida Vehicular
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+</section>
+
+<!-- ========================================
+   MODAL DE CÁMARA WEBRTC CON SELLO INSTITUCIONAL
+   ======================================== -->
+<div class="rsi-modal" id="vehCameraModal" style="display: none;">
+    <div class="rsi-modal-content" style="max-width: 600px;">
+        <div class="rsi-modal-header">
+            <h3 id="vehCameraTitle">
+                <i class="fas fa-camera"></i> Tomar Fotografía con Cámara
+            </h3>
+            <button type="button" class="rsi-modal-close" id="btnCloseVehCamera">&times;</button>
+        </div>
+        <div class="rsi-modal-body">
+            <div style="position: relative; width: 100%; aspect-ratio: 4/3; background: #000000; border-radius: var(--rsi-radius-md); overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                <video id="vehCameraVideo" autoplay playsinline muted style="width: 100%; height: 100%; object-fit: cover;"></video>
+                <img id="vehCameraPreviewImg" alt="Vista previa con marca de agua" style="display: none; width: 100%; height: 100%; object-fit: contain; background: #000000;" />
+                <div style="position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.65); color: #ffffff; padding: 4px 10px; border-radius: var(--rsi-radius-full); font-size: 0.75rem; display: flex; align-items: center; gap: 6px;">
+                    <i class="fas fa-shield-alt" style="color: var(--rsi-accent);"></i> Sello RSI + GPS activo
+                </div>
+            </div>
+
+            <div style="display: flex; gap: var(--rsi-spacing-sm); justify-content: center; margin-top: var(--rsi-spacing-lg); flex-wrap: wrap;">
+                <button type="button" class="rsi-btn-crud rsi-btn-crud-outline" id="btnSwitchVehCamera">
+                    <i class="fas fa-sync"></i> Cambiar Cámara
+                </button>
+                <button type="button" class="rsi-btn-crud rsi-btn-crud-primary" id="btnTakeVehSnapshot">
+                    <i class="fas fa-camera"></i> Capturar Foto
+                </button>
+                <button type="button" class="rsi-btn-crud rsi-btn-crud-outline" id="btnRetakeVehPhoto" style="display: none;">
+                    <i class="fas fa-redo"></i> Tomar Otra
+                </button>
+                <button type="button" class="rsi-btn-crud rsi-btn-crud-primary" id="btnConfirmVehPhoto" style="display: none;">
+                    <i class="fas fa-check"></i> Usar Fotografía
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

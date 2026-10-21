@@ -16,8 +16,9 @@
     margin-top: 30px;
 }
 
+body.dark-mode .rsi-profile-container,
 [data-theme="dark"] .rsi-profile-container {
-    background: var(--rsi-gray-800);
+    background: var(--rsi-bg-card);
 }
 
 /* ===== HEADER DEL PERFIL ===== */
@@ -79,7 +80,7 @@
     background: var(--rsi-danger);
 }
 
-.rsi-profile-info h2 {
+.rsi-profile-info-profile h2 {
     margin: 0 0 4px 0;
     font-size: 28px;
     font-weight: 700;
@@ -117,9 +118,10 @@
     overflow-x: auto;
 }
 
+body.dark-mode .rsi-tabs,
 [data-theme="dark"] .rsi-tabs {
-    background: var(--rsi-gray-700);
-    border-bottom-color: var(--rsi-gray-600);
+    background: var(--rsi-bg-secondary);
+    border-bottom-color: var(--rsi-border-color);
 }
 
 .rsi-tab {
@@ -139,8 +141,9 @@
     font-family: inherit;
 }
 
+body.dark-mode .rsi-tab,
 [data-theme="dark"] .rsi-tab {
-    color: var(--rsi-gray-400);
+    color: var(--rsi-text-muted);
 }
 
 .rsi-tab:hover {
@@ -187,13 +190,14 @@
     color: var(--rsi-gray-800);
 }
 
+body.dark-mode .rsi-panel-header h3,
 [data-theme="dark"] .rsi-panel-header h3 {
-    color: var(--rsi-white);
+    color: var(--rsi-text-light);
 }
 
 .rsi-panel-header p {
     margin: 0;
-    color: var(--rsi-gray-500);
+    color: var(--rsi-text-muted);
     font-size: 14px;
 }
 
@@ -212,7 +216,7 @@
 .rsi-info-item label {
     font-size: 12px;
     font-weight: 600;
-    color: var(--rsi-gray-500);
+    color: var(--rsi-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-bottom: 4px;
@@ -221,37 +225,39 @@
 .rsi-info-item p {
     margin: 0;
     padding: 10px 14px;
-    background: var(--rsi-gray-50);
+    background: var(--rsi-bg-input);
     border-radius: var(--rsi-radius-sm);
-    border: 1px solid var(--rsi-gray-200);
-    color: var(--rsi-gray-800);
+    border: 1px solid var(--rsi-border-color);
+    color: var(--rsi-text-primary);
     font-size: 14px;
 }
 
+body.dark-mode .rsi-info-item p,
 [data-theme="dark"] .rsi-info-item p {
-    background: var(--rsi-gray-700);
-    border-color: var(--rsi-gray-600);
-    color: var(--rsi-white);
+    background: var(--rsi-bg-input);
+    border-color: var(--rsi-border-color);
+    color: var(--rsi-text-primary);
 }
 
 /* ===== TARJETAS DE PERMISOS ===== */
 .rsi-permission-card {
-    background: var(--rsi-white);
-    border: 2px solid var(--rsi-gray-200);
+    background: var(--rsi-bg-card);
+    border: 2px solid var(--rsi-border-color);
     border-radius: var(--rsi-radius-md);
     padding: 24px;
     margin-bottom: 20px;
     transition: all 0.3s ease;
 }
 
+body.dark-mode .rsi-permission-card,
 [data-theme="dark"] .rsi-permission-card {
-    background: var(--rsi-gray-800);
-    border-color: var(--rsi-gray-600);
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-border-color);
 }
 
 .rsi-permission-card.rsi-active {
     border-color: var(--rsi-success);
-    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
+    box-shadow: 0 0 0 4px var(--rsi-success-light);
 }
 
 .rsi-permission-header {
@@ -273,13 +279,14 @@
     flex-shrink: 0;
 }
 
+body.dark-mode .rsi-permission-icon,
 [data-theme="dark"] .rsi-permission-icon {
-    background: var(--rsi-gray-700);
+    background: var(--rsi-bg-secondary);
 }
 
 .rsi-permission-card.rsi-active .rsi-permission-icon {
     background: var(--rsi-success-light);
-    color: var(--rsi-success);
+    color: var(--rsi-success-text);
 }
 
 .rsi-permission-info {
@@ -289,35 +296,37 @@
 .rsi-permission-info h4 {
     margin: 0 0 4px 0;
     font-size: 16px;
-    color: var(--rsi-gray-800);
+    color: var(--rsi-text-primary);
 }
 
+body.dark-mode .rsi-permission-info h4,
 [data-theme="dark"] .rsi-permission-info h4 {
-    color: var(--rsi-white);
+    color: var(--rsi-text-light);
 }
 
 .rsi-permission-info p {
     margin: 0;
     font-size: 14px;
-    color: var(--rsi-gray-500);
+    color: var(--rsi-text-muted);
 }
 
 .rsi-permission-status {
     margin-top: 16px;
     padding-top: 16px;
-    border-top: 1px solid var(--rsi-gray-200);
+    border-top: 1px solid var(--rsi-border-color);
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
+body.dark-mode .rsi-permission-status,
 [data-theme="dark"] .rsi-permission-status {
-    border-top-color: var(--rsi-gray-600);
+    border-top-color: var(--rsi-border-color);
 }
 
 .rsi-status-label {
     font-size: 13px;
-    color: var(--rsi-gray-500);
+    color: var(--rsi-text-muted);
     font-weight: 600;
 }
 
@@ -330,29 +339,30 @@
 }
 
 .rsi-status-granted {
-    color: var(--rsi-success);
+    color: var(--rsi-success-text);
 }
 
 .rsi-status-denied {
-    color: var(--rsi-danger);
+    color: var(--rsi-danger-text);
 }
 
 .rsi-permission-detail {
     margin-top: 12px;
     padding: 10px 14px;
-    background: var(--rsi-gray-50);
+    background: var(--rsi-bg-secondary);
     border-radius: var(--rsi-radius-sm);
     font-size: 13px;
-    color: var(--rsi-gray-600);
+    color: var(--rsi-text-secondary);
     display: flex;
     align-items: center;
     gap: 10px;
     font-family: monospace;
 }
 
+body.dark-mode .rsi-permission-detail,
 [data-theme="dark"] .rsi-permission-detail {
-    background: var(--rsi-gray-700);
-    color: var(--rsi-gray-300);
+    background: var(--rsi-bg-secondary);
+    color: var(--rsi-text-secondary);
 }
 
 .rsi-permission-detail i {
@@ -388,8 +398,9 @@
     transition: all 0.3s ease;
 }
 
+body.dark-mode .rsi-toggle-slider,
 [data-theme="dark"] .rsi-toggle-slider {
-    background: var(--rsi-gray-600);
+    background: var(--rsi-gray-500);
 }
 
 .rsi-toggle-slider::before {
@@ -418,12 +429,13 @@
     gap: 12px;
     margin-top: 24px;
     padding-top: 24px;
-    border-top: 1px solid var(--rsi-gray-200);
+    border-top: 1px solid var(--rsi-border-color);
     flex-wrap: wrap;
 }
 
+body.dark-mode .rsi-profile-actions,
 [data-theme="dark"] .rsi-profile-actions {
-    border-top-color: var(--rsi-gray-600);
+    border-top-color: var(--rsi-border-color);
 }
 
 .rsi-btn {
@@ -442,7 +454,7 @@
 
 .rsi-btn-primary {
     background: var(--rsi-primary);
-    color: var(--rsi-white);
+    color: var(--rsi-text-light);
 }
 
 .rsi-btn-primary:hover {
@@ -453,12 +465,15 @@
 
 .rsi-btn-secondary {
     background: var(--rsi-gray-200);
-    color: var(--rsi-gray-700);
+    color: var(--rsi-text-primary);
+    border: 1px solid var(--rsi-border-color);
 }
 
+body.dark-mode .rsi-btn-secondary,
 [data-theme="dark"] .rsi-btn-secondary {
-    background: var(--rsi-gray-600);
-    color: var(--rsi-gray-200);
+    background: var(--rsi-bg-secondary);
+    color: var(--rsi-text-primary);
+    border-color: var(--rsi-border-color);
 }
 
 .rsi-btn-secondary:hover {
@@ -466,8 +481,9 @@
     transform: translateY(-2px);
 }
 
+body.dark-mode .rsi-btn-secondary:hover,
 [data-theme="dark"] .rsi-btn-secondary:hover {
-    background: var(--rsi-gray-500);
+    background: var(--rsi-gray-200);
 }
 
 .rsi-btn:disabled {
@@ -533,8 +549,9 @@
     color: var(--rsi-gray-800);
 }
 
+body.dark-mode .rsi-error-state h3,
 [data-theme="dark"] .rsi-error-state h3 {
-    color: var(--rsi-white);
+    color: var(--rsi-text-light);
 }
 
 .rsi-error-state p {

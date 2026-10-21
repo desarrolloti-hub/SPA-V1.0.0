@@ -1,0 +1,229 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "asistencias",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "colaboradorUid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fecha",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "asistencias",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "colaboradorUid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fecha",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "asistencias",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "estado",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fecha",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "justificaciones",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "colaboradorUid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fechaInasistencia",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "justificaciones",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "colaboradorUid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fechaInasistencia",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "justificaciones",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "estado",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fechaInasistencia",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "ticketsOperaciones",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "colaboradoresIds",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "fechaCreacion",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "ticketsOperaciones",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "clienteId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fechaCreacion",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "reembolsos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "colaboradorUid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fechaRegistro",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "reembolsos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "estado",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "fechaRegistro",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "ecommerceProductos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "estado",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "ecommerceProductos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "categoriaId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "estado",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "ecommerceProductos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "marcaId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "estado",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "ecommerceProductos",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "estado",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "precio",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "ecommerceCategorias",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "activo",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "orden",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "ecommerceMarcas",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "activo",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "nombre",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
