@@ -348,7 +348,7 @@ async function timbrarDesdeVistaMobile() {
         `,
         icon: 'question',
         showCancelButton: true,
-        confirmButtonText: '✅ Sí, timbrar',
+        confirmButtonText: 'Sí, timbrar',
         cancelButtonText: 'Cancelar',
         confirmButtonColor: '#28a745'
     });

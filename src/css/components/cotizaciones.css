@@ -61,15 +61,131 @@
 }
 
 /* ==========================================
-   TABLA DE ITEMS
+   TABLA DE ITEMS Y LIBERACIÓN DE CONTENEDOR
    ========================================== */
+
+/* Asegurar que ningún contenedor padre recorte el menú desplegable del buscador */
+.rsi-cotizacion-form-section,
+.rsi-cotizacion-form-section .rsi-form-steps,
+.rsi-cotizacion-form-section .rsi-steps-container,
+.rsi-cotizacion-form-section .rsi-step-panel,
+.rsi-cotizacion-form-section .rsi-step-body,
+#cotizacionForm,
+#cotizacionForm .rsi-steps-container,
+#cotizacionForm .rsi-step-panel,
+#cotizacionForm .rsi-step-body,
+.rsi-table-container,
+.rsi-table-wrapper,
+.rsi-table-container .rsi-table-wrapper {
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+}
+
+#cotizacionForm .rsi-step-panel.active {
+    transform: none !important;
+}
 
 .rsi-table-container {
     background: var(--rsi-bg-card);
     border-radius: var(--rsi-radius-md);
     border: 1px solid var(--rsi-gray-200);
-    overflow: hidden;
+    overflow: visible !important;
     margin-bottom: var(--rsi-spacing-lg);
+    position: relative !important;
+    z-index: 40;
+}
+
+.rsi-table-container .rsi-table-wrapper {
+    overflow: visible !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.rsi-items-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    overflow: visible !important;
+}
+
+.rsi-items-table tbody tr {
+    position: relative;
+    transition: background 0.15s ease;
+}
+
+.rsi-items-table tbody tr.active-search-row {
+    position: relative !important;
+    z-index: 999999 !important;
+}
+
+.rsi-items-table tbody tr.active-search-row td {
+    position: relative !important;
+    z-index: 999999 !important;
+}
+
+.rsi-producto-search-container-fila {
+    position: relative !important;
+    width: 100% !important;
+}
+
+.rsi-producto-search-container-fila.active-search-container {
+    position: relative !important;
+    z-index: 9999999 !important;
+}
+
+.producto-dropdown-fila {
+    position: absolute !important;
+    top: calc(100% + 4px) !important;
+    left: 0 !important;
+    min-width: 380px !important;
+    max-width: 550px !important;
+    max-height: 260px !important;
+    overflow-y: auto !important;
+    background: var(--rsi-bg-card, #ffffff) !important;
+    border: 2px solid var(--rsi-primary, #1c1948) !important;
+    border-radius: var(--rsi-radius-md, 8px) !important;
+    box-shadow: 0 20px 35px -5px rgba(0, 0, 0, 0.35), 0 10px 15px -5px rgba(0, 0, 0, 0.2) !important;
+    z-index: 99999999 !important;
+    padding: 4px 0 !important;
+}
+
+/* Cuando se abre hacia arriba (por encima del contenedor) */
+.producto-dropdown-fila.dropdown-open-up {
+    top: auto !important;
+    bottom: calc(100% + 4px) !important;
+    box-shadow: 0 -20px 35px -5px rgba(0, 0, 0, 0.35), 0 -10px 15px -5px rgba(0, 0, 0, 0.2) !important;
+}
+
+body.dark-mode .producto-dropdown-fila {
+    background: #1e293b !important;
+    border-color: var(--rsi-gold, #f59e0b) !important;
+    box-shadow: 0 20px 35px -5px rgba(0, 0, 0, 0.7) !important;
+}
+
+.producto-dropdown-fila .rsi-producto-option {
+    padding: 10px 14px !important;
+    cursor: pointer !important;
+    transition: background 0.15s ease !important;
+    border-bottom: 1px solid var(--rsi-gray-100, #e2e8f0) !important;
+}
+
+.producto-dropdown-fila .rsi-producto-option:last-child {
+    border-bottom: none !important;
+}
+
+.producto-dropdown-fila .rsi-producto-option:hover {
+    background: var(--rsi-gray-100, #f1f5f9) !important;
+}
+
+body.dark-mode .producto-dropdown-fila .rsi-producto-option {
+    border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+body.dark-mode .producto-dropdown-fila .rsi-producto-option:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
 }
 
 .rsi-table-header-actions {
@@ -448,7 +564,7 @@
 
 @media (max-width: 768px) {
     .rsi-table-container {
-        overflow-x: auto;
+        overflow: visible !important;
     }
     
     .rsi-items-table {

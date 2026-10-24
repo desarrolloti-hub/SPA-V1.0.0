@@ -2258,7 +2258,7 @@ async function handleSubmit(timbrar = false) {
                                 ${archivosHtml ? `<hr style="margin: 10px 0;"><div style="margin-top: 10px;">${archivosHtml}</div>` : ''}
                             </div>
                         `,
-                        confirmButtonText: '📄 Ver PDF',
+                        confirmButtonText: 'Ver PDF',
                         confirmButtonColor: '#1c1948',
                         showCancelButton: true,
                         cancelButtonText: 'Ir al listado',
@@ -2348,7 +2348,7 @@ async function handleSubmit(timbrar = false) {
         if (storageSuccess && borradorPdfUrl) {
             mensajeHTML += `
                 <p style="color: var(--rsi-success);">
-                    <i class="fas fa-check-circle"></i> ✅ PDF borrador almacenado en la nube
+                    <i class="fas fa-check-circle"></i> PDF borrador almacenado en la nube
                 </p>
                 <p style="font-size: 0.85rem; color: var(--rsi-gray-500);">
                     Puedes previsualizar y descargar el borrador antes de timbrarlo.
@@ -2367,10 +2367,10 @@ async function handleSubmit(timbrar = false) {
             icon: 'success',
             title: 'Factura guardada como borrador',
             html: mensajeHTML,
-            confirmButtonText: '📥 Descargar PDF',
+            confirmButtonText: 'Descargar PDF',
             showDenyButton: true,
-            denyButtonText: '✏️ Seguir editando',
-            cancelButtonText: '📋 Ir al listado',
+            denyButtonText: 'Seguir editando',
+            cancelButtonText: 'Ir al listado',
             showCancelButton: true,
             confirmButtonColor: '#1c1948',
             denyButtonColor: '#28a745',
@@ -2385,7 +2385,7 @@ async function handleSubmit(timbrar = false) {
                 link.click();
                 document.body.removeChild(link);
                 URL.revokeObjectURL(pdfUrlLocal);
-                mostrarAlerta('✅ PDF de borrador descargado correctamente', 'success');
+                mostrarAlerta('PDF de borrador descargado correctamente', 'success');
             }
 
             if (res.isDenied) {

@@ -25,7 +25,8 @@ import {
     setDoc,
     Timestamp,
     writeBatch,
-    runTransaction
+    runTransaction,
+    increment
 } from 'firebase/firestore';
 
 import { 
@@ -125,7 +126,8 @@ export {
     endAt,
     Timestamp,
     writeBatch,
-    runTransaction
+    runTransaction,
+    increment
 };
 
 // ✅ Exportar funciones de Auth

@@ -1,3 +1,4 @@
+import CotizacionService from '../../services/cotizacionService.js';
 /* ========================================
    TICKET VIEW CONTROLLER
    Controlador para ver detalle del ticket
@@ -214,7 +215,80 @@ function renderTicketData() {
         document.getElementById('viewProyecto').textContent = ticketData.proyecto || 'N/A';
         document.getElementById('viewServicio').textContent = ticketData.servicio || 'N/A';
         document.getElementById('viewSistemas').textContent = (ticketData.sistemas || []).join(', ') || 'Ninguno';
-        document.getElementById('viewCotizacion').textContent = ticketData.cotizacionNumero || 'No asociada';
+        const cotizacionEl = document.getElementById('viewCotizacion');
+        if (cotizacionEl) {
+            if (ticketData.cotizacionNumero) {
+                cotizacionEl.innerHTML = `
+                    <span style="font-weight: 600; color: var(--rsi-primary);"><i class="fas fa-file-invoice"></i> ${ticketData.cotizacionNumero}</span>
+                    <button type="button" class="rsi-btn-icon" id="btnVerCotizacionDesdeTicketView" style="margin-left: 8px; font-size: 0.85rem;" title="Ver cotización">
+                        <i class="fas fa-external-link-alt"></i>
+                    </button>
+                    <button type="button" class="rsi-btn-icon" id="btnDesvincularCotizacionDesdeTicketView" style="margin-left: 4px; font-size: 0.85rem; color: #ef4444;" title="Desvincular cotización">
+                        <i class="fas fa-unlink"></i>
+                    </button>
+                `;
+                document.getElementById('btnVerCotizacionDesdeTicketView')?.addEventListener('click', () => {
+                    const url = ticketData.cotizacionId ? `/partner/cotizacion?id=${ticketData.cotizacionId}` : '/partner/crudCotizaciones';
+                    if (window.navigateTo) window.navigateTo(url);
+                    else window.location.href = url;
+                });
+                document.getElementById('btnDesvincularCotizacionDesdeTicketView')?.addEventListener('click', async () => {
+                    const confirm = await Swal.fire({
+                        title: '¿Desvincular cotización?',
+                        text: `Se desvinculará la cotización ${ticketData.cotizacionNumero} de este ticket.`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sí, desvincular',
+                        cancelButtonText: 'Cancelar',
+                        confirmButtonColor: '#dc2626'
+                    });
+                    if (confirm.isConfirmed) {
+                        await service.desvincularCotizacion(ticketData.id, ticketData.cotizacionId);
+                        ticketData.cotizacionNumero = '';
+                        ticketData.cotizacionId = null;
+                        await loadTicket();
+                        Swal.fire({ icon: 'success', title: 'Cotización desvinculada', timer: 1500, showConfirmButton: false });
+                    }
+                });
+            } else {
+                cotizacionEl.innerHTML = `
+                    <span style="color: var(--rsi-gray-400);">No asociada</span>
+                    <button type="button" class="rsi-btn-crud rsi-btn-crud-outline" id="btnVincularCotizacionDesdeTicketView" style="margin-left: 8px; padding: 2px 8px; font-size: 0.75rem;">
+                        <i class="fas fa-link"></i> Vincular
+                    </button>
+                `;
+                document.getElementById('btnVincularCotizacionDesdeTicketView')?.addEventListener('click', async () => {
+                    try {
+                        const cotiService = new CotizacionService();
+                        const cotizaciones = await cotiService.getAllCotizaciones();
+                        if (!cotizaciones || cotizaciones.length === 0) {
+                            Swal.fire({ icon: 'info', title: 'Sin cotizaciones', text: 'No hay cotizaciones para vincular.' });
+                            return;
+                        }
+                        const optionsHtml = cotizaciones.map(c => `<option value="${c.id}" data-num="${c.cotizacionNumero}">${c.cotizacionNumero || 'S/N'} - ${c.clienteNombre || 'Sin cliente'}</option>`).join('');
+                        const { value: sel } = await Swal.fire({
+                            title: 'Vincular Cotización',
+                            html: `<select id="swalCotiViewSel" class="swal2-input"><option value="">-- Selecciona cotización --</option>${optionsHtml}</select>`,
+                            showCancelButton: true,
+                            confirmButtonText: 'Vincular',
+                            confirmButtonColor: '#1c1948',
+                            preConfirm: () => {
+                                const el = document.getElementById('swalCotiViewSel');
+                                if (!el.value) { Swal.showValidationMessage('Selecciona una cotización'); return false; }
+                                return { id: el.value, num: el.options[el.selectedIndex].dataset.num };
+                            }
+                        });
+                        if (sel) {
+                            await service.vincularCotizacion(ticketData.id, sel.id, sel.num);
+                            await loadTicket();
+                            Swal.fire({ icon: 'success', title: 'Vinculada con éxito', timer: 1500, showConfirmButton: false });
+                        }
+                    } catch (e) {
+                        Swal.fire({ icon: 'error', title: 'Error', text: e.message });
+                    }
+                });
+            }
+        }
     } else {
         document.getElementById('viewOperativoFields').style.display = 'none';
         document.getElementById('viewAdminFields').style.display = 'block';
@@ -717,6 +791,17 @@ function initReporteFotograficoButton() {
 
     const handler = async () => {
         if (!ticketData) return;
+
+        // Validar que el ticket esté cerrado (finalizado o abandonado)
+        if (ticketData.estado !== 'finalizado' && ticketData.estado !== 'abandonado') {
+            await Swal.fire({
+                icon: 'warning',
+                title: 'Ticket en proceso',
+                text: 'El reporte fotográfico PDF de este ticket no se puede generar si no se ha cerrado el ticket.',
+                confirmButtonColor: 'var(--rsi-primary)'
+            });
+            return;
+        }
 
         // Si ya existe el reporte fotográfico almacenado en Storage, abrirlo directamente sin volver a generarlo
         if (ticketData.reporteFotograficoUrl) {

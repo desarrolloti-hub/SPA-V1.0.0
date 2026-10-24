@@ -37,6 +37,7 @@ const corsHandler = (req, res) => {
 // ==========================================
 const facturamaController = require("./controllers/facturama.controller");
 const emailController = require("./controllers/email.controller");
+const ticketsController = require("./controllers/tickets.controller");
 
 // ==========================================
 // 4. FUNCIONES DE NOTIFICACIONES
@@ -480,6 +481,39 @@ exports.procesarRecordatoriosAsistencia = functions.https.onRequest((req, res) =
     }
 
     asistenciaController.procesarRecordatorios(req, res, {
+        EMAIL_USER,
+        EMAIL_PASSWORD
+    });
+});
+
+// ==========================================
+// 15.4. REVISIÓN PROGRAMADA DE TICKETS (ABANDONO Y RECORDATORIO 1 DÍA ANTES)
+// Se ejecuta automáticamente todos los días a las 08:00 hrs (Zona Horaria México)
+// ==========================================
+exports.revisionTicketsAbandono0800 = onSchedule({
+    schedule: "0 8 * * *",
+    timeZone: "America/Mexico_City",
+    retryCount: 1
+}, async (event) => {
+    console.log("⏰ [AUTOMÁTICO] Ejecutando revisión de tickets (abandono y recordatorios 1 día antes) 08:00 AM...");
+    return await ticketsController.ejecutarRevisionProgramada({
+        EMAIL_USER,
+        EMAIL_PASSWORD
+    });
+});
+
+// 15.5. Endpoint HTTP auxiliar para procesar revisión de tickets bajo demanda
+exports.procesarRevisionTickets = functions.https.onRequest((req, res) => {
+    if (corsHandler(req, res)) return;
+
+    if (req.method !== "POST" && req.method !== "GET") {
+        return res.status(405).json({
+            success: false,
+            error: "Método no permitido. Use POST o GET"
+        });
+    }
+
+    ticketsController.procesarRevisionTickets(req, res, {
         EMAIL_USER,
         EMAIL_PASSWORD
     });

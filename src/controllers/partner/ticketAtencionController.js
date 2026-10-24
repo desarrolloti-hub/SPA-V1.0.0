@@ -747,6 +747,30 @@ export class TicketAtencionController {
         this._updateChecklistRow('chkDespues', 'chkDespuesPill', countDespues > 0, `${countDespues} foto${countDespues === 1 ? '' : 's'}`);
         this._updateChecklistRow('chkActividades', 'chkActividadesPill', hasActividades, hasActividades ? 'Completado' : 'Pendiente');
 
+        // Validación de evidencias de todas las personas asignadas
+        const validation = TicketModel.validateForCierre(this.ticket, currentActividades);
+        const colabEvCheck = validation.checks?.colaboradoresEvidencias;
+        if (colabEvCheck) {
+            const allUploaded = colabEvCheck.cumpleTodos;
+            const pillText = allUploaded 
+                ? 'Todos subieron' 
+                : `${colabEvCheck.faltantes.length} pendiente${colabEvCheck.faltantes.length === 1 ? '' : 's'}`;
+            this._updateChecklistRow('chkColaboradoresEvidencias', 'chkColaboradoresEvidenciasPill', allUploaded, pillText);
+
+            const detalleEl = document.getElementById('taColaboradoresEvidenciasDetalle');
+            if (detalleEl && Array.isArray(colabEvCheck.detalle) && colabEvCheck.detalle.length > 0) {
+                detalleEl.style.display = 'block';
+                detalleEl.innerHTML = colabEvCheck.detalle.map(d => `
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px; padding: 2px 0;">
+                        <span><i class="fas ${d.tieneEvidencia ? 'fa-check text-success' : 'fa-times text-danger'}" style="margin-right: 6px;"></i>${this._escapeHtml(d.nombre)}</span>
+                        <span style="font-size: 0.75rem; color: ${d.tieneEvidencia ? 'var(--rsi-success)' : 'var(--rsi-danger)'}; font-weight: 600;">
+                            ${d.totalEvidencias} evidencia${d.totalEvidencias === 1 ? '' : 's'}
+                        </span>
+                    </div>
+                `).join('');
+            }
+        }
+
         const isClosed = this.ticket.estado === 'finalizado' || this.ticket.estado === 'cancelado';
         const formArea = document.getElementById('taCierreFormArea');
         const btnCerrar = document.getElementById('btnCerrarTicket');
@@ -1426,6 +1450,17 @@ export class TicketAtencionController {
 
     async handleGenerarReporteFotografico() {
         if (!this.ticket) return;
+
+        // Validar que el ticket esté cerrado (finalizado o abandonado)
+        if (this.ticket.estado !== 'finalizado' && this.ticket.estado !== 'abandonado') {
+            await Swal.fire({
+                icon: 'warning',
+                title: 'Ticket en proceso',
+                text: 'El reporte fotográfico PDF de este ticket no se puede generar si no se ha cerrado el ticket.',
+                confirmButtonColor: 'var(--rsi-primary)'
+            });
+            return;
+        }
 
         // Si ya existe el reporte fotográfico almacenado en Storage, abrirlo directamente sin volver a generarlo
         if (this.ticket.reporteFotograficoUrl) {

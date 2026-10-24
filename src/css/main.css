@@ -37,8 +37,11 @@
 @import url('./pages/404.css');
 @import url('./pages/aboutus.css');
 @import url('./pages/contact.css');
+@import url('./pages/sitemap.css');
 @import url('./pages/catalogsPublicStyles.css');
 @import url('./pages/viewCatalogPublic.css');
+@import url('./pages/blogsPublic.css');
+@import url('./pages/viewBlogPublic.css');
 @import url('./pages/partner/newPartner.css');
 @import url('./pages/partner/areas.css');
 @import url('./pages/partner/dashboard.css');
@@ -49,6 +52,8 @@
 @import url('./pages/partner/catalog.css');
 @import url('./pages/partner/crudCatalogs.css');
 @import url('./pages/partner/viewCatalog.css');
+@import url('./pages/partner/blogsCrud.css');
+@import url('./pages/partner/blogForm.css');
 @import url('./pages/partner/asistencia.css');
 @import url('./pages/partner/reembolsos.css');
 @import url('./pages/partner/ticketAtencion.css');

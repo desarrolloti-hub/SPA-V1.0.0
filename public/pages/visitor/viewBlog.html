@@ -1,0 +1,149 @@
+<!-- ========================================
+   VISUALIZADOR DE ARTÍCULO DE BLOG - RSI Enterprise
+   Vista de lectura de artículo enriquecido
+   ======================================== -->
+
+<section class="rsi-public-section rsi-view-blog-section">
+    <div class="rsi-view-blog-container">
+
+        <!-- Estado: Cargando -->
+        <div id="viewBlogLoading" class="rsi-public-state rsi-public-loading">
+            <div class="rsi-public-spinner"></div>
+            <p>Cargando artículo...</p>
+        </div>
+
+        <!-- Estado: No Encontrado -->
+        <div id="viewBlogNotFound" class="rsi-public-state rsi-public-empty is-hidden">
+            <i class="fas fa-exclamation-circle"></i>
+            <h2>Artículo no encontrado</h2>
+            <p>El artículo solicitado no existe o no se encuentra disponible públicamente.</p>
+            <a href="/blogs" class="rsi-btn-back-blogs mt-3">
+                <i class="fas fa-arrow-left"></i> Explorar Artículos en el Blog
+            </a>
+        </div>
+
+        <!-- Contenido Principal del Artículo -->
+        <article id="viewBlogArticle" class="rsi-blog-single-article is-hidden">
+            
+            <!-- Barra de Navegación Superior -->
+            <nav class="rsi-blog-nav-bar">
+                <a href="/blogs" class="rsi-btn-back-blogs">
+                    <i class="fas fa-arrow-left"></i> Volver a Blogs
+                </a>
+                <div class="rsi-blog-breadcrumbs">
+                    <a href="/">Inicio</a>
+                    <span>/</span>
+                    <a href="/blogs">Blog</a>
+                    <span>/</span>
+                    <span id="breadcrumbCategory" class="current-crumb">Categoría</span>
+                </div>
+            </nav>
+
+            <!-- Encabezado del Artículo -->
+            <header class="rsi-article-header">
+                <div class="rsi-article-category-wrapper">
+                    <span id="articleCategoryBadge" class="rsi-article-badge">Categoría</span>
+                </div>
+                
+                <h1 id="articleTitle" class="rsi-article-title">
+                    Título del Artículo
+                </h1>
+
+                <!-- Resumen / Bajada -->
+                <p id="articleExcerpt" class="rsi-article-lead">
+                    Resumen del artículo introductorio.
+                </p>
+
+                <!-- Metadatos de Publicación -->
+                <div class="rsi-article-meta-bar">
+                    <div class="rsi-article-author-info">
+                        <div class="rsi-author-avatar-circle">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="rsi-author-text">
+                            <strong id="articleAuthor">RSI Enterprise</strong>
+                            <span id="articleDate">24 de Octubre, 2026</span>
+                        </div>
+                    </div>
+
+                    <div class="rsi-article-stats-info">
+                        <span><i class="fas fa-clock"></i> <span id="articleReadTime">5 min de lectura</span></span>
+                        <span><i class="fas fa-eye"></i> <span id="articleViews">0</span> lecturas</span>
+                    </div>
+
+                    <!-- Botones Rápidos para Compartir -->
+                    <div class="rsi-share-buttons-compact">
+                        <button type="button" class="btn-share-social btn-share-wa" id="btnShareWhatsApp" title="Compartir en WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </button>
+                        <button type="button" class="btn-share-social btn-share-in" id="btnShareLinkedIn" title="Compartir en LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </button>
+                        <button type="button" class="btn-share-social btn-share-tw" id="btnShareTwitter" title="Compartir en X / Twitter">
+                            <i class="fab fa-x-twitter"></i>
+                        </button>
+                        <button type="button" class="btn-share-social btn-share-copy" id="btnCopyArticleUrl" title="Copiar enlace">
+                            <i class="fas fa-link"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Carátula Principal / Hero Cover -->
+            <div id="articleHeroCoverWrapper" class="rsi-article-hero-cover is-hidden">
+                <img id="articleHeroImg" src="" alt="Portada del artículo" loading="eager">
+            </div>
+
+            <!-- Cuerpo del Artículo Renderizado en HTML -->
+            <div id="articleBodyContent" class="rsi-article-html-content">
+                <!-- Aquí se inyecta el contenido enriquecido con formato e imágenes -->
+            </div>
+
+            <!-- Etiquetas / Tags -->
+            <div id="articleTagsWrapper" class="rsi-article-tags-wrapper is-hidden">
+                <span class="tags-label"><i class="fas fa-tags"></i> Temas relacionados:</span>
+                <div id="articleTagsList" class="rsi-article-tags-list"></div>
+            </div>
+
+            <!-- Firma Institucional -->
+            <footer class="rsi-article-footer-box">
+                <div class="rsi-company-signature">
+                    <div class="rsi-sig-logo">
+                        <i class="fas fa-shield-alt fa-2x"></i>
+                    </div>
+                    <div class="rsi-sig-text">
+                        <h4>Fénix RSI Enterprise México</h4>
+                        <p>Especialistas en ingeniería de seguridad electrónica, sistemas de videovigilancia CCTV, control de acceso, telecomunicaciones y redes corporativas.</p>
+                        <a href="/contact" class="rsi-sig-contact-link">¿Necesitas asesoría en tu proyecto? Contáctanos <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Barra para Compartir al Final -->
+                <div class="rsi-article-share-bottom">
+                    <span>¿Te pareció útil este artículo? Compártelo:</span>
+                    <div class="rsi-share-buttons-compact">
+                        <button type="button" class="btn-share-social btn-share-wa" id="btnShareWhatsAppBottom">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </button>
+                        <button type="button" class="btn-share-social btn-share-in" id="btnShareLinkedInBottom">
+                            <i class="fab fa-linkedin-in"></i> LinkedIn
+                        </button>
+                        <button type="button" class="btn-share-social btn-share-copy" id="btnCopyArticleUrlBottom">
+                            <i class="fas fa-link"></i> Copiar Enlace
+                        </button>
+                    </div>
+                </div>
+            </footer>
+
+            <!-- Sección de Artículos Relacionados -->
+            <section id="relatedArticlesSection" class="rsi-related-articles-section is-hidden">
+                <h3 class="rsi-related-title">
+                    Artículos <span class="rsi-text-gold">Relacionados</span>
+                </h3>
+                <div id="relatedArticlesGrid" class="rsi-blog-public-grid"></div>
+            </section>
+
+        </article>
+
+    </div>
+</section>

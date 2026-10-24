@@ -1,0 +1,155 @@
+<!-- ========================================
+   PANEL CRUD - Gestión de Blogs y Artículos
+   RSI Enterprise México
+   ======================================== -->
+
+<section class="rsi-facturas-section rsi-blogs-crud-section">
+    <div class="rsi-container">
+        
+        <!-- Header Principal -->
+        <header class="rsi-page-header">
+            <h1 class="rsi-page-title">
+                Gestión de <span class="rsi-text-gold">Blogs</span>
+            </h1>
+            <p class="rsi-page-subtitle">
+                Crea, redacta y administra los artículos técnicos y comerciales para el portal público.
+            </p>
+        </header>
+
+        <!-- ===== PANEL CRUD ===== -->
+        <div class="rsi-panel-crud">
+            
+            <!-- Barra Superior del Panel -->
+            <div class="rsi-panel-header">
+                <h2>
+                    <i class="fas fa-newspaper"></i>
+                    Artículos Registrados
+                    <span id="blogCount" class="rsi-badge rsi-badge-primary">0</span>
+                </h2>
+                <div class="rsi-panel-actions">
+                    <button id="refreshBlogsBtn" class="rsi-btn-crud rsi-btn-crud-outline" title="Recargar artículos">
+                        <i class="fas fa-sync"></i> Actualizar
+                    </button>
+                    <a href="/partner/blog" class="rsi-btn-crud rsi-btn-crud-primary">
+                        <i class="fas fa-plus"></i> Nuevo Blog
+                    </a>
+                </div>
+            </div>
+
+            <!-- Métricas / Estadísticas Rápidas -->
+            <div class="rsi-stats-container">
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" id="statTotalBlogs">0</span>
+                    <span class="rsi-stat-label">Total Artículos</span>
+                </div>
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" style="color: var(--rsi-success);" id="statPublishedBlogs">0</span>
+                    <span class="rsi-stat-label">Publicados</span>
+                </div>
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" style="color: var(--rsi-warning, #f59e0b);" id="statDraftBlogs">0</span>
+                    <span class="rsi-stat-label">Borradores</span>
+                </div>
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" style="color: var(--rsi-primary);" id="statTotalVistas">0</span>
+                    <span class="rsi-stat-label">Total Lecturas</span>
+                </div>
+            </div>
+
+            <!-- Filtros y Búsqueda -->
+            <div class="rsi-crud-filters-bar">
+                <div class="rsi-search-input-wrapper">
+                    <i class="fas fa-search search-icon"></i>
+                    <input 
+                        type="text" 
+                        id="searchBlogInput" 
+                        placeholder="Buscar por título, autor o tags..." 
+                        class="rsi-search-input"
+                        autocomplete="off"
+                    >
+                    <button id="clearSearchBlogBtn" class="rsi-btn-clear-search is-hidden" title="Limpiar búsqueda">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
+                </div>
+
+                <div class="rsi-filter-selects">
+                    <select id="filterCategory" class="rsi-filter-select">
+                        <option value="all">Todas las Categorías</option>
+                        <option value="Videovigilancia CCTV">Videovigilancia CCTV</option>
+                        <option value="Control de Acceso">Control de Acceso</option>
+                        <option value="Redes y Telecomunicaciones">Redes y Telecomunicaciones</option>
+                        <option value="Ciberseguridad">Ciberseguridad</option>
+                        <option value="Automatización y Domótica">Automatización y Domótica</option>
+                        <option value="Ingeniería y Mantenimiento">Ingeniería y Mantenimiento</option>
+                        <option value="Novedades y Consejos">Novedades y Consejos</option>
+                    </select>
+
+                    <select id="filterStatus" class="rsi-filter-select">
+                        <option value="all">Todos los Estatus</option>
+                        <option value="published">Publicados</option>
+                        <option value="draft">Borradores</option>
+                        <option value="inactive">Inactivos</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Mensaje de Búsqueda Activa -->
+            <div id="blogSearchResultsInfo" class="rsi-search-results-info is-hidden">
+                <span id="blogSearchResultsText"></span>
+                <button id="clearBlogSearchResults" class="rsi-btn-clear-results">
+                    <i class="fas fa-times"></i> Limpiar
+                </button>
+            </div>
+
+            <!-- Tabla de Blogs -->
+            <div class="rsi-table-responsive">
+                <table class="rsi-table" id="blogsTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 70px;">Carátula</th>
+                            <th>Título y Slug</th>
+                            <th>Categoría</th>
+                            <th>Autor</th>
+                            <th style="text-align: center;">Vistas</th>
+                            <th style="text-align: center;">Estatus</th>
+                            <th>Publicación</th>
+                            <th style="text-align: right; width: 140px;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="blogsTableBody">
+                        <!-- Estado inicial: Cargando -->
+                        <tr>
+                            <td colspan="8" class="text-center py-5">
+                                <div class="rsi-public-spinner" style="margin: 0 auto 10px;"></div>
+                                <p class="text-muted">Cargando blogs...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Estado Vacío -->
+            <div id="blogsEmptyState" class="rsi-empty-state is-hidden">
+                <i class="fas fa-feather-alt empty-icon"></i>
+                <h3>No se encontraron artículos</h3>
+                <p>Comienza redactando tu primer artículo técnico o comercial para RSI Enterprise.</p>
+                <a href="/partner/blog" class="rsi-btn-crud rsi-btn-crud-primary mt-3">
+                    <i class="fas fa-plus"></i> Redactar Primer Blog
+                </a>
+            </div>
+
+            <!-- Paginación -->
+            <div id="blogsPagination" class="rsi-pagination is-hidden">
+                <button id="blogsPrevPage" class="rsi-btn-page" disabled>
+                    <i class="fas fa-chevron-left"></i> Anterior
+                </button>
+                <span id="blogsPageInfo" class="rsi-page-info">Página 1 de 1</span>
+                <button id="blogsNextPage" class="rsi-btn-page" disabled>
+                    Siguiente <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+</section>

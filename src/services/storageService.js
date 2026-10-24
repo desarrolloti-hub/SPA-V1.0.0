@@ -873,6 +873,118 @@ export class StorageService {
             return { success: false, error: error.message };
         }
     }
+    /**
+     * Sube la imagen de portada de un blog a Firebase Storage
+     * @param {File|Blob} imageFile - Archivo de imagen
+     * @param {string} slug - Slug identificador del blog
+     * @returns {Promise<{success: boolean, url: string|null, path: string|null, error: string|null}>}
+     */
+    async uploadBlogCover(imageFile, slug = 'blog') {
+        try {
+            const timestamp = Date.now();
+            const safeSlug = String(slug || 'blog').replace(/[^a-zA-Z0-9_-]/g, '_');
+            const ext = (imageFile.name && imageFile.name.split('.').pop()) || 'jpg';
+            const filePath = `blogs/portadas/${safeSlug}_${timestamp}.${ext}`;
+            const storageRef = ref(this.storage, filePath);
+
+            const metadata = {
+                contentType: imageFile.type || 'image/jpeg',
+                customMetadata: {
+                    slug: safeSlug,
+                    uploadedAt: new Date().toISOString()
+                }
+            };
+
+            const snapshot = await uploadBytes(storageRef, imageFile, metadata);
+            const downloadURL = await getDownloadURL(snapshot.ref);
+
+            console.log(`✅ Portada de blog subida a Storage: ${filePath}`);
+            return {
+                success: true,
+                url: downloadURL,
+                path: filePath,
+                error: null
+            };
+        } catch (error) {
+            console.error('❌ Error subiendo portada de blog a Storage:', error);
+            return {
+                success: false,
+                url: null,
+                path: null,
+                error: error.message || 'Error al subir imagen de portada'
+            };
+        }
+    }
+
+    /**
+     * Sube una imagen insertada en el contenido de un blog a Firebase Storage
+     * @param {File|Blob} imageFile - Archivo de imagen
+     * @param {string} slug - Slug identificador del blog
+     * @returns {Promise<{success: boolean, url: string|null, path: string|null, error: string|null}>}
+     */
+    async uploadBlogContentImage(imageFile, slug = 'blog') {
+        try {
+            const timestamp = Date.now();
+            const random = Math.random().toString(36).substring(2, 7);
+            const safeSlug = String(slug || 'blog').replace(/[^a-zA-Z0-9_-]/g, '_');
+            const ext = (imageFile.name && imageFile.name.split('.').pop()) || 'jpg';
+            const filePath = `blogs/contenido/${safeSlug}_${timestamp}_${random}.${ext}`;
+            const storageRef = ref(this.storage, filePath);
+
+            const metadata = {
+                contentType: imageFile.type || 'image/jpeg',
+                customMetadata: {
+                    slug: safeSlug,
+                    uploadedAt: new Date().toISOString()
+                }
+            };
+
+            const snapshot = await uploadBytes(storageRef, imageFile, metadata);
+            const downloadURL = await getDownloadURL(snapshot.ref);
+
+            console.log(`✅ Imagen de contenido de blog subida a Storage: ${filePath}`);
+            return {
+                success: true,
+                url: downloadURL,
+                path: filePath,
+                error: null
+            };
+        } catch (error) {
+            console.error('❌ Error subiendo imagen de contenido a Storage:', error);
+            return {
+                success: false,
+                url: null,
+                path: null,
+                error: error.message || 'Error al subir imagen para el contenido'
+            };
+        }
+    }
+
+    /**
+     * Elimina un archivo perteneciente a blogs de Firebase Storage
+     * @param {string} filePath - Ruta en Storage (ej. blogs/portadas/...)
+     * @returns {Promise<{success: boolean, error: string|null}>}
+     */
+    async deleteBlogFile(filePath) {
+        if (!filePath || !filePath.startsWith('blogs/')) {
+            return { success: true, error: null };
+        }
+        try {
+            const storageRef = ref(this.storage, filePath);
+            try {
+                await getMetadata(storageRef);
+            } catch (e) {
+                if (e.code === 'storage/object-not-found') return { success: true, error: null };
+                throw e;
+            }
+            await deleteObject(storageRef);
+            console.log(`✅ Archivo de blog eliminado de Storage: ${filePath}`);
+            return { success: true, error: null };
+        } catch (error) {
+            console.error('❌ Error eliminando archivo de blog de Storage:', error);
+            return { success: false, error: error.message };
+        }
+    }
 }
 
 export default StorageService;

@@ -226,6 +226,7 @@ export async function generarPDFReporteFotograficoTicket(ticket, options = {}) {
         pendiente: [217, 119, 6],
         en_proceso: [23, 162, 184],
         finalizado: [40, 167, 69],
+        abandonado: [40, 167, 69], // Para el cliente se presenta como finalizado
         cancelado: [220, 53, 69]
     };
 
@@ -233,6 +234,7 @@ export async function generarPDFReporteFotograficoTicket(ticket, options = {}) {
         pendiente: 'PENDIENTE',
         en_proceso: 'EN PROCESO',
         finalizado: 'FINALIZADO',
+        abandonado: 'FINALIZADO', // Para el cliente se marca como FINALIZADO
         cancelado: 'CANCELADO'
     };
 

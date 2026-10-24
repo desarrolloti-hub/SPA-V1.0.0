@@ -1,0 +1,316 @@
+<!-- ========================================
+   FORMULARIO DE REDACCIÓN DE BLOG - RSI Enterprise
+   Creación y edición de artículos enriquecidos con HTML
+   ======================================== -->
+
+<section class="rsi-facturas-section rsi-blog-form-section">
+    <div class="rsi-container">
+
+        <!-- Header -->
+        <header class="rsi-page-header rsi-form-header-flex">
+            <div>
+                <a href="/partner/crudBlogs" class="rsi-btn-back-link">
+                    <i class="fas fa-arrow-left"></i> Volver a Blogs
+                </a>
+                <h1 class="rsi-page-title mt-2" id="blogFormPageTitle">
+                    Nuevo <span class="rsi-text-gold">Artículo de Blog</span>
+                </h1>
+                <p class="rsi-page-subtitle">
+                    Redacta contenido técnico de alto valor con imágenes y formato HTML.
+                </p>
+            </div>
+            <div class="rsi-form-header-actions">
+                <button type="button" id="btnPreviewBlog" class="rsi-btn-crud rsi-btn-crud-outline">
+                    <i class="fas fa-eye"></i> Vista Previa
+                </button>
+                <button type="button" id="btnSaveDraft" class="rsi-btn-crud rsi-btn-crud-secondary">
+                    <i class="fas fa-save"></i> Guardar Borrador
+                </button>
+                <button type="button" id="btnPublishBlog" class="rsi-btn-crud rsi-btn-crud-primary">
+                    <i class="fas fa-paper-plane"></i> Publicar Artículo
+                </button>
+            </div>
+        </header>
+
+        <!-- Formulario Principal -->
+        <form id="blogForm" class="rsi-blog-form-layout" novalidate>
+            <input type="hidden" id="blogDocId" value="">
+
+            <div class="rsi-blog-form-main">
+                
+                <!-- Card: Información Principal -->
+                <div class="rsi-form-card">
+                    <div class="rsi-form-card-header">
+                        <h3><i class="fas fa-heading"></i> Título y Enlace Permanente</h3>
+                    </div>
+                    <div class="rsi-form-card-body">
+                        <div class="rsi-form-group">
+                            <label for="blogTitle" class="rsi-form-label">
+                                Título del Artículo <span class="rsi-text-danger">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="blogTitle" 
+                                class="rsi-form-control rsi-input-lg" 
+                                placeholder="Ej: Implementación de Sistemas CCTV con Analítica de Video e IA" 
+                                required
+                                autocomplete="off"
+                            >
+                        </div>
+
+                        <!-- Slug / URL limpia sin espacios -->
+                        <div class="rsi-form-group rsi-slug-group">
+                            <label for="blogSlug" class="rsi-form-label">
+                                Enlace URL del Artículo (Slug sin espacios) <span class="rsi-text-danger">*</span>
+                            </label>
+                            <div class="rsi-slug-preview-box">
+                                <span class="rsi-slug-prefix">https://rsienterprise.com/verBlog?slug=</span>
+                                <input 
+                                    type="text" 
+                                    id="blogSlug" 
+                                    class="rsi-slug-input" 
+                                    placeholder="titulo-del-articulo-sin-espacios"
+                                    required
+                                    autocomplete="off"
+                                >
+                                <button type="button" id="btnRegenerateSlug" class="rsi-btn-slug-action" title="Regenerar a partir del título">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                            <small class="rsi-form-hint">
+                                <i class="fas fa-info-circle"></i> Este parámetro se usará en la URL de consulta pública. Se actualiza automáticamente al escribir el título.
+                            </small>
+                        </div>
+
+                        <!-- Resumen / Excerpt -->
+                        <div class="rsi-form-group">
+                            <label for="blogResumen" class="rsi-form-label">
+                                Resumen Corto (Carátulas y SEO) <span class="rsi-text-danger">*</span>
+                            </label>
+                            <textarea 
+                                id="blogResumen" 
+                                rows="3" 
+                                class="rsi-form-control" 
+                                placeholder="Breve descripción introductoria de 2 a 3 oraciones que atraiga al lector..."
+                                maxlength="400"
+                            ></textarea>
+                            <div class="rsi-char-counter">
+                                <span id="resumenCharCount">0</span> / 400 caracteres
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card: Editor Enriquecido de Contenido HTML -->
+                <div class="rsi-form-card rsi-editor-card">
+                    <div class="rsi-form-card-header rsi-editor-header">
+                        <h3><i class="fas fa-edit"></i> Contenido del Artículo (HTML Enriquecido)</h3>
+                        <div class="rsi-editor-modes">
+                            <button type="button" id="btnModeVisual" class="rsi-editor-mode-btn active">
+                                <i class="fas fa-pen-nib"></i> Editor Visual
+                            </button>
+                            <button type="button" id="btnModeHtml" class="rsi-editor-mode-btn">
+                                <i class="fas fa-code"></i> Código HTML
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Barra de herramientas del editor (Toolbar) -->
+                    <div id="blogEditorToolbar" class="rsi-editor-toolbar">
+                        <div class="rsi-toolbar-group">
+                            <button type="button" data-command="formatBlock" data-value="p" title="Párrafo normal">P</button>
+                            <button type="button" data-command="formatBlock" data-value="h2" title="Encabezado H2"><strong>H2</strong></button>
+                            <button type="button" data-command="formatBlock" data-value="h3" title="Encabezado H3"><strong>H3</strong></button>
+                        </div>
+
+                        <div class="rsi-toolbar-separator"></div>
+
+                        <div class="rsi-toolbar-group">
+                            <button type="button" data-command="bold" title="Negrita (Ctrl+B)"><i class="fas fa-bold"></i></button>
+                            <button type="button" data-command="italic" title="Cursiva (Ctrl+I)"><i class="fas fa-italic"></i></button>
+                            <button type="button" data-command="underline" title="Subrayado"><i class="fas fa-underline"></i></button>
+                            <button type="button" data-command="strikeThrough" title="Tachado"><i class="fas fa-strikethrough"></i></button>
+                        </div>
+
+                        <div class="rsi-toolbar-separator"></div>
+
+                        <div class="rsi-toolbar-group">
+                            <button type="button" data-command="insertUnorderedList" title="Lista con viñetas"><i class="fas fa-list-ul"></i></button>
+                            <button type="button" data-command="insertOrderedList" title="Lista numerada"><i class="fas fa-list-ol"></i></button>
+                            <button type="button" data-command="formatBlock" data-value="blockquote" title="Cita en bloque"><i class="fas fa-quote-left"></i></button>
+                        </div>
+
+                        <div class="rsi-toolbar-separator"></div>
+
+                        <div class="rsi-toolbar-group">
+                            <button type="button" id="btnInsertLink" title="Insertar enlace web"><i class="fas fa-link"></i></button>
+                            <button type="button" data-command="unlink" title="Quitar enlace"><i class="fas fa-unlink"></i></button>
+                            <button type="button" id="btnInsertImageToolbar" class="rsi-btn-toolbar-highlight" title="Insertar imagen desde archivo">
+                                <i class="fas fa-image"></i> Insertar Imagen
+                            </button>
+                            <!-- Input de archivo oculto para insertar imágenes en contenido -->
+                            <input type="file" id="contentImageFileInput" accept="image/*" style="display: none;">
+                        </div>
+
+                        <div class="rsi-toolbar-separator"></div>
+
+                        <div class="rsi-toolbar-group">
+                            <button type="button" data-command="removeFormat" title="Limpiar formato"><i class="fas fa-eraser"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor editable Visual -->
+                    <div 
+                        id="blogContentVisual" 
+                        class="rsi-editor-content" 
+                        contenteditable="true" 
+                        spellcheck="true"
+                        data-placeholder="Comienza a redactar tu artículo aquí. Puedes usar títulos, párrafos, viñetas e insertar fotografías mediante la barra superior..."
+                    ></div>
+
+                    <!-- Contenedor de código HTML crudo -->
+                    <textarea 
+                        id="blogContentHtml" 
+                        class="rsi-editor-raw-html is-hidden" 
+                        rows="18" 
+                        placeholder="<p>Escribe o pega código HTML válido aquí...</p>"
+                    ></textarea>
+
+                    <div class="rsi-editor-footer">
+                        <span id="editorWordCount"><i class="fas fa-font"></i> 0 palabras</span>
+                        <span id="editorReadTime"><i class="fas fa-clock"></i> 1 min de lectura estimada</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Barra Lateral / Configuración -->
+            <aside class="rsi-blog-form-sidebar">
+                
+                <!-- Card: Imagen de Portada -->
+                <div class="rsi-form-card">
+                    <div class="rsi-form-card-header">
+                        <h3><i class="fas fa-camera"></i> Imagen de Portada</h3>
+                    </div>
+                    <div class="rsi-form-card-body">
+                        <div class="rsi-cover-upload-area" id="coverUploadArea">
+                            <input type="file" id="coverFileInput" accept="image/*" style="display: none;">
+                            
+                            <!-- Placeholder cuando no hay imagen -->
+                            <div id="coverPlaceholder" class="rsi-cover-placeholder">
+                                <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                                <p><strong>Haz clic o arrastra</strong> una imagen de portada</p>
+                                <span>Recomendado: 1200 x 630 px (JPG o PNG, máx. 5MB)</span>
+                            </div>
+
+                            <!-- Vista previa cuando hay imagen -->
+                            <div id="coverPreviewContainer" class="rsi-cover-preview-container is-hidden">
+                                <img id="coverPreviewImg" src="" alt="Portada" class="rsi-cover-preview-image">
+                                <div class="rsi-cover-actions-overlay">
+                                    <button type="button" id="btnChangeCover" class="rsi-btn-cover-action">
+                                        <i class="fas fa-camera"></i> Cambiar
+                                    </button>
+                                    <button type="button" id="btnRemoveCover" class="rsi-btn-cover-action rsi-btn-cover-remove">
+                                        <i class="fas fa-trash"></i> Quitar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card: Categoría y Etiquetas -->
+                <div class="rsi-form-card">
+                    <div class="rsi-form-card-header">
+                        <h3><i class="fas fa-tags"></i> Taxonomía</h3>
+                    </div>
+                    <div class="rsi-form-card-body">
+                        <div class="rsi-form-group">
+                            <label for="blogCategory" class="rsi-form-label">
+                                Categoría Temática <span class="rsi-text-danger">*</span>
+                            </label>
+                            <select id="blogCategory" class="rsi-form-control" required>
+                                <option value="">Selecciona una categoría...</option>
+                                <option value="Videovigilancia CCTV">Videovigilancia CCTV</option>
+                                <option value="Control de Acceso">Control de Acceso</option>
+                                <option value="Redes y Telecomunicaciones">Redes y Telecomunicaciones</option>
+                                <option value="Ciberseguridad">Ciberseguridad</option>
+                                <option value="Automatización y Domótica">Automatización y Domótica</option>
+                                <option value="Ingeniería y Mantenimiento">Ingeniería y Mantenimiento</option>
+                                <option value="Novedades y Consejos">Novedades y Consejos</option>
+                            </select>
+                        </div>
+
+                        <div class="rsi-form-group">
+                            <label for="blogTags" class="rsi-form-label">
+                                Etiquetas (separadas por coma)
+                            </label>
+                            <input 
+                                type="text" 
+                                id="blogTags" 
+                                class="rsi-form-control" 
+                                placeholder="cctv, seguridad, ia, dvr, fibra"
+                            >
+                            <small class="rsi-form-hint">Separa con comas cada etiqueta clave.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card: Publicación y Estado -->
+                <div class="rsi-form-card">
+                    <div class="rsi-form-card-header">
+                        <h3><i class="fas fa-sliders-h"></i> Estatus y Autor</h3>
+                    </div>
+                    <div class="rsi-form-card-body">
+                        <div class="rsi-form-group">
+                            <label for="blogStatus" class="rsi-form-label">Estado del Artículo</label>
+                            <select id="blogStatus" class="rsi-form-control">
+                                <option value="published">Publicado (Visible en portal)</option>
+                                <option value="draft" selected>Borrador (Solo colaboradores)</option>
+                                <option value="inactive">Inactivo (Oculto)</option>
+                            </select>
+                        </div>
+
+                        <div class="rsi-form-group">
+                            <label class="rsi-form-label">Autor / Redactor</label>
+                            <input 
+                                type="text" 
+                                id="blogAuthorName" 
+                                class="rsi-form-control" 
+                                readonly 
+                                disabled
+                                value="Cargando colaborador..."
+                            >
+                        </div>
+
+                        <div class="rsi-form-group" id="blogMetaStatsGroup" style="display: none;">
+                            <label class="rsi-form-label">Lecturas Registradas</label>
+                            <div class="rsi-stat-mini-pill">
+                                <i class="fas fa-eye"></i> <span id="blogViewsCount">0</span> vistas
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </aside>
+
+        </form>
+
+    </div>
+</section>
+
+<!-- Modal de Vista Previa -->
+<div id="modalBlogPreview" class="rsi-modal is-hidden">
+    <div class="rsi-modal-backdrop" id="modalPreviewBackdrop"></div>
+    <div class="rsi-modal-dialog rsi-modal-lg">
+        <div class="rsi-modal-header">
+            <h3><i class="fas fa-desktop"></i> Vista Previa del Artículo</h3>
+            <button type="button" class="rsi-modal-close" id="btnClosePreviewModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="rsi-modal-body" id="modalPreviewContent">
+            <!-- Contenido dinámico renderizado para vista previa -->
+        </div>
+    </div>
+</div>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+    <!-- 1. Inicio / Home Principal -->
+    <url>
+        <loc>https://rsienterprise.com/</loc>
+        <lastmod>2026-10-23</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- 2. Catálogo de Productos y Soluciones Tecnológicas -->
+    <url>
+        <loc>https://rsienterprise.com/products</loc>
+        <lastmod>2026-10-23</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <url>
+        <loc>https://rsienterprise.com/productos</loc>
+        <lastmod>2026-10-23</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- 3. Servicios Integrales de Seguridad y Telecomunicaciones -->
+    <url>
+        <loc>https://rsienterprise.com/services</loc>
+        <lastmod>2026-10-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <url>
+        <loc>https://rsienterprise.com/servicios</loc>
+        <lastmod>2026-10-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- 4. Catálogos Comerciales Públicos -->
+    <url>
+        <loc>https://rsienterprise.com/catalogos</loc>
+        <lastmod>2026-10-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.85</priority>
+    </url>
+
+    <!-- 5. Blog y Artículos Técnicos -->
+    <url>
+        <loc>https://rsienterprise.com/blogs</loc>
+        <lastmod>2026-10-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.85</priority>
+    </url>
+
+    <!-- 6. Identidad Institucional / Nosotros -->
+    <url>
+        <loc>https://rsienterprise.com/nosotros</loc>
+        <lastmod>2026-10-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.75</priority>
+    </url>
+
+    <url>
+        <loc>https://rsienterprise.com/aboutus</loc>
+        <lastmod>2026-10-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- 6. Contacto y Ubicación -->
+    <url>
+        <loc>https://rsienterprise.com/contacto</loc>
+        <lastmod>2026-10-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://rsienterprise.com/contact</loc>
+        <lastmod>2026-10-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <!-- 7. Portal de Clientes / Acceso -->
+    <url>
+        <loc>https://rsienterprise.com/login</loc>
+        <lastmod>2026-10-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <url>
+        <loc>https://rsienterprise.com/register</loc>
+        <lastmod>2026-10-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <url>
+        <loc>https://rsienterprise.com/registro</loc>
+        <lastmod>2026-10-23</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+    <!-- 8. Mapa del Sitio Visual para Visitantes -->
+    <url>
+        <loc>https://rsienterprise.com/sitemap</loc>
+        <lastmod>2026-10-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.65</priority>
+    </url>
+
+    <url>
+        <loc>https://rsienterprise.com/mapa-del-sitio</loc>
+        <lastmod>2026-10-23</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+</urlset>

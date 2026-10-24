@@ -5,6 +5,7 @@
 
 import CotizacionService from '../../services/cotizacionService.js';
 import FacturaService from '../../services/facturaService.js';
+import TicketService from '../../services/ticketService.js';
 import { generarPDFCotizacion } from '../../utils/pdfGenerator.js';
 
 /*Importaciones para que funcione el modal de clientes*/
@@ -14,6 +15,7 @@ import modalHtml from '../../components/modals/clienteModal/clienteModal.html?ra
 
 let service = null;
 let facturaService = null;
+let ticketService = null;
 let eventListeners = [];
 let cotizacionesData = [];
 let currentPage = 1;
@@ -43,6 +45,7 @@ export async function cotizacionesCrudController() {
     
     service = new CotizacionService();
     facturaService = new FacturaService();
+    ticketService = new TicketService();
     currentPage = 1;
     searchTerm = '';
     isSearching = false;
@@ -630,6 +633,22 @@ function initDeleteCotizacion() {
             openEnvioModal(cotizacionId);
             return;
         }
+
+        // ✅ CAMBIAR ESTATUS
+        const statusBtn = e.target.closest('.btn-status-cotizacion');
+        if (statusBtn) {
+            const cotizacionId = statusBtn.dataset.id;
+            await handleCambiarEstatus(cotizacionId);
+            return;
+        }
+
+        // ✅ GESTIONAR O VINCULAR TICKET
+        const ticketBtn = e.target.closest('.btn-ticket-cotizacion') || e.target.closest('.ticket-link-badge');
+        if (ticketBtn) {
+            const cotizacionId = ticketBtn.dataset.id;
+            await handleGestionarTicket(cotizacionId);
+            return;
+        }
     };
     
     tableBody.addEventListener('click', handler);
@@ -697,7 +716,7 @@ async function handleFacturarCotizacion(cotizacionId) {
             showCancelButton: true,
             confirmButtonColor: '#1c1948',
             cancelButtonColor: '#6c757d',
-            confirmButtonText: '✅ Sí, generar factura',
+            confirmButtonText: 'Sí, generar factura',
             cancelButtonText: 'Cancelar'
         });
 
@@ -1002,12 +1021,14 @@ async function loadCotizacionesTable() {
             const descripcionCorta = descripcion.length > 60 ? descripcion.substring(0, 60) + '...' : descripcion;
             const estatus = coti.estatus || coti.estado || 'en proceso';
             const tieneFactura = coti.tieneFactura || false;
+            const tieneTicket = !!coti.ticketAsociado;
             
             rowsHtml += `
                 <tr>
                     <td data-label="Número">
                         <span style="font-weight: 600; font-size: 0.85rem;">${coti.cotizacionNumero || '-'}</span>
-                        ${tieneFactura ? `<br><small style="color: var(--rsi-success); font-size: 0.65rem;">📄 Factura: ${coti.facturaNumero || ''}</small>` : ''}
+                        ${tieneFactura ? `<br><small style="color: var(--rsi-success); font-size: 0.65rem;"><i class="fas fa-file-invoice"></i> Factura: ${coti.facturaNumero || ''}</small>` : ''}
+                        ${tieneTicket ? `<br><small class="ticket-link-badge" data-ticket="${coti.ticketAsociado}" data-id="${coti.id}" style="color: #2563eb; font-size: 0.72rem; cursor: pointer; font-weight: 600;" title="Ver o gestionar ticket vinculado"><i class="fas fa-ticket-alt"></i> Ticket: ${coti.ticketAsociado}</small>` : ''}
                     </td>
                     <td data-label="Cliente">
                         <span style="font-weight: 500;">${coti.clienteNombre || '-'}</span>
@@ -1031,7 +1052,10 @@ async function loadCotizacionesTable() {
                         </span>
                     </td>
                     <td data-label="Estatus">
-                        ${getEstatusBadge(estatus)}
+                        <div class="rsi-status-badge-wrapper btn-status-cotizacion" data-id="${coti.id}" data-estatus="${estatus}" style="cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Haz clic para cambiar el estatus">
+                            ${getEstatusBadge(estatus)}
+                            <i class="fas fa-pencil-alt" style="font-size: 0.65rem; color: var(--rsi-gray-400); margin-left: 2px;"></i>
+                        </div>
                     </td>
                     <td data-label="Creado por">
                         <div style="display: flex; flex-direction: column;">
@@ -1054,6 +1078,20 @@ async function loadCotizacionesTable() {
                             </button>
                             <button class="rsi-btn-icon rsi-btn-icon-send btn-send-cotizacion" data-id="${coti.id}" title="Enviar cotización">
                                 <i class="fas fa-paper-plane"></i>
+                            </button>
+                            <!-- ✅ BOTÓN CAMBIAR ESTATUS -->
+                            <button class="rsi-btn-icon btn-status-cotizacion" 
+                                    data-id="${coti.id}" 
+                                    data-estatus="${estatus}" 
+                                    title="Cambiar estatus de la cotización">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+                            <!-- ✅ BOTÓN VINCULAR / CREAR TICKET -->
+                            <button class="rsi-btn-icon btn-ticket-cotizacion" 
+                                    data-id="${coti.id}" 
+                                    title="${tieneTicket ? 'Ticket: ' + coti.ticketAsociado : 'Vincular o crear Ticket'}"
+                                    style="${tieneTicket ? 'color: #2563eb;' : ''}">
+                                <i class="fas fa-ticket-alt"></i>
                             </button>
                             <!-- ✅ BOTÓN FACTURAR -->
                             <button class="rsi-btn-icon rsi-btn-icon-facturar btn-facturar-cotizacion" 
@@ -1216,7 +1254,7 @@ async function handleViewCotizacion(cotizacionId) {
             facturaInfo = `
                 <hr style="margin: var(--rsi-spacing-sm) 0; border-color: var(--rsi-gray-200);">
                 <div style="background: rgba(46, 204, 113, 0.1); padding: var(--rsi-spacing-md); border-radius: var(--rsi-radius-md);">
-                    <span style="color: var(--rsi-success); font-weight: 600;">📄 Factura asociada</span>
+                    <span style="color: var(--rsi-success); font-weight: 600;"><i class="fas fa-file-invoice"></i> Factura asociada</span>
                     <p style="margin: 0;"><strong>Número:</strong> ${factura.facturaNumero}</p>
                     <p style="margin: 0;"><strong>Estatus:</strong> ${factura.estatus || 'Pendiente'}</p>
                     <p style="margin: 0;"><strong>Total:</strong> ${formatCurrency(factura.totalFinal || 0)}</p>
@@ -1432,6 +1470,307 @@ function changePage(pageNumber) {
 /**
  * Limpia eventos
  */
+/**
+ * ✅ Maneja el cambio de estatus de una cotización
+ */
+async function handleCambiarEstatus(cotizacionId) {
+    const coti = cotizacionesData.find(c => c.id === cotizacionId);
+    if (!coti) return;
+
+    const estatusActual = (coti.estatus || coti.estado || 'en proceso').toLowerCase();
+
+    const { value: formValues } = await Swal.fire({
+        title: 'Cambiar Estatus de Cotización',
+        html: `
+            <div style="text-align: left; margin-top: 10px;">
+                <p><strong>Cotización:</strong> ${coti.cotizacionNumero || 'S/N'}</p>
+                <p><strong>Cliente:</strong> ${coti.clienteNombre || '-'}</p>
+                <div style="margin-top: 15px;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 6px;">Nuevo Estatus:</label>
+                    <select id="swalEstatusSelect" class="swal2-input" style="width: 100%; margin: 0; box-sizing: border-box;">
+                        <option value="en proceso" ${estatusActual === 'en proceso' ? 'selected' : ''}>En Proceso (Pendiente)</option>
+                        <option value="vendida" ${estatusActual === 'vendida' ? 'selected' : ''}>Vendida (Aprobada)</option>
+                        <option value="rechazada" ${estatusActual === 'rechazada' ? 'selected' : ''}>Rechazada</option>
+                        <option value="borrador" ${estatusActual === 'borrador' ? 'selected' : ''}>Borrador</option>
+                        <option value="completada" ${estatusActual === 'completada' ? 'selected' : ''}>Completada</option>
+                    </select>
+                </div>
+                <div id="swalMotivoContainer" style="margin-top: 15px; display: ${estatusActual === 'rechazada' ? 'block' : 'none'};">
+                    <label style="display: block; font-weight: 600; margin-bottom: 6px;">Motivo de Rechazo:</label>
+                    <textarea id="swalMotivoRechazo" class="swal2-textarea" style="width: 100%; margin: 0; box-sizing: border-box;" placeholder="Ingresa la razón del rechazo...">${coti.motivoRechazo || ''}</textarea>
+                </div>
+            </div>
+        `,
+        didOpen: () => {
+            const select = document.getElementById('swalEstatusSelect');
+            const motivoContainer = document.getElementById('swalMotivoContainer');
+            if (select && motivoContainer) {
+                select.addEventListener('change', () => {
+                    motivoContainer.style.display = select.value === 'rechazada' ? 'block' : 'none';
+                });
+            }
+        },
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonText: '<i class="fas fa-save"></i> Guardar Estatus',
+        cancelButtonText: 'Cancelar',
+        confirmButtonColor: '#1c1948',
+        cancelButtonColor: '#6c757d',
+        preConfirm: () => {
+            const estatus = document.getElementById('swalEstatusSelect').value;
+            const motivo = document.getElementById('swalMotivoRechazo')?.value?.trim() || '';
+            return { estatus, motivo };
+        }
+    });
+
+    if (!formValues) return;
+
+    try {
+        mostrarLoading(true);
+        await service.updateCotizacionEstatus(cotizacionId, formValues.estatus, formValues.motivo);
+        
+        coti.estatus = formValues.estatus;
+        if (formValues.motivo) coti.motivoRechazo = formValues.motivo;
+        
+        await loadCotizacionesTable();
+        await loadStats();
+        mostrarLoading(false);
+
+        // Si cambió a VENDIDA, ofrecer crear ticket operativo inmediatamente
+        if (formValues.estatus === 'vendida') {
+            const ticketPrompt = await Swal.fire({
+                title: '¡Cotización Marcada como Vendida!',
+                html: `
+                    <div style="text-align: left;">
+                        <p>La cotización <strong>${coti.cotizacionNumero}</strong> ha sido registrada como <strong>Vendida</strong>.</p>
+                        <p style="color: var(--rsi-text-secondary, #475569); margin-top: 8px;">
+                            ¿Deseas generar el <strong>ticket de servicio operativo</strong> ahora para comenzar la atención?
+                        </p>
+                    </div>
+                `,
+                icon: 'success',
+                showCancelButton: true,
+                confirmButtonText: '<i class="fas fa-ticket-alt"></i> Crear Ticket Ahora',
+                cancelButtonText: 'Más tarde',
+                confirmButtonColor: '#1c1948',
+                cancelButtonColor: '#6c757d'
+            });
+
+            if (ticketPrompt.isConfirmed) {
+                crearTicketDesdeCotizacion(coti);
+            }
+        } else {
+            mostrarAlerta(`Estatus actualizado a "${formValues.estatus}"`, 'success');
+        }
+    } catch (error) {
+        mostrarLoading(false);
+        console.error('❌ Error cambiando estatus:', error);
+        mostrarAlerta(error.message || 'Error al actualizar el estatus', 'error');
+    }
+}
+
+/**
+ * ✅ Maneja la vinculación o gestión de ticket para una cotización
+ */
+async function handleGestionarTicket(cotizacionId) {
+    const coti = cotizacionesData.find(c => c.id === cotizacionId);
+    if (!coti) return;
+
+    if (coti.ticketAsociado) {
+        const result = await Swal.fire({
+            title: 'Gestión de Ticket Vinculado',
+            html: `
+                <div style="text-align: left;">
+                    <p>Esta cotización está vinculada al ticket:</p>
+                    <div style="background: rgba(37, 99, 235, 0.08); border: 1px solid #3b82f6; border-radius: var(--rsi-radius-md); padding: 12px; margin: 10px 0;">
+                        <strong style="color: #1e40af; font-size: 1.1rem;"><i class="fas fa-ticket-alt"></i> ${coti.ticketAsociado}</strong>
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--rsi-gray-500);">¿Qué acción deseas realizar?</p>
+                </div>
+            `,
+            icon: 'info',
+            showCancelButton: true,
+            showDenyButton: true,
+            confirmButtonText: '<i class="fas fa-eye"></i> Ver Ticket',
+            denyButtonText: '<i class="fas fa-unlink"></i> Desvincular',
+            cancelButtonText: 'Cerrar',
+            confirmButtonColor: '#1c1948',
+            denyButtonColor: '#dc2626',
+            cancelButtonColor: '#6c757d'
+        });
+
+        if (result.isConfirmed) {
+            const targetUrl = coti.ticketId ? `/partner/ticketView?id=${coti.ticketId}` : `/partner/crudTickets`;
+            if (typeof window.navigateTo === 'function') {
+                window.navigateTo(targetUrl);
+            } else {
+                window.location.href = targetUrl;
+            }
+        } else if (result.isDenied) {
+            const confirmDesvincular = await Swal.fire({
+                title: '¿Desvincular Ticket?',
+                text: `Se eliminará la asociación entre la cotización ${coti.cotizacionNumero} y el ticket ${coti.ticketAsociado}.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, desvincular',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#dc2626'
+            });
+
+            if (confirmDesvincular.isConfirmed) {
+                try {
+                    mostrarLoading(true);
+                    await service.desvincularTicket(cotizacionId, coti.ticketId);
+                    coti.ticketAsociado = '';
+                    coti.ticketId = '';
+                    await loadCotizacionesTable();
+                    mostrarLoading(false);
+                    mostrarAlerta('Ticket desvinculado exitosamente', 'success');
+                } catch (error) {
+                    mostrarLoading(false);
+                    mostrarAlerta('Error desvinculando ticket: ' + error.message, 'error');
+                }
+            }
+        }
+    } else {
+        const result = await Swal.fire({
+            title: 'Asociar Ticket a Cotización',
+            html: `
+                <div style="text-align: left;">
+                    <p>Cotización: <strong>${coti.cotizacionNumero || 'S/N'}</strong></p>
+                    <p>Cliente: <strong>${coti.clienteNombre || '-'}</strong></p>
+                    <p style="margin-top: 12px; font-size: 0.9rem; color: var(--rsi-text-secondary);">Selecciona la opción deseada:</p>
+                </div>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            showDenyButton: true,
+            confirmButtonText: '<i class="fas fa-plus"></i> Crear Nuevo Ticket',
+            denyButtonText: '<i class="fas fa-link"></i> Vincular a Ticket Existente',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#1c1948',
+            denyButtonColor: '#2563eb',
+            cancelButtonColor: '#6c757d'
+        });
+
+        if (result.isConfirmed) {
+            crearTicketDesdeCotizacion(coti);
+        } else if (result.isDenied) {
+            await seleccionarTicketParaVincular(coti);
+        }
+    }
+}
+
+/**
+ * ✅ Selecciona un ticket existente de la base de datos para vincular a la cotización
+ */
+async function seleccionarTicketParaVincular(coti) {
+    try {
+        mostrarLoading(true);
+        if (!ticketService) {
+            ticketService = new TicketService();
+        }
+
+        const tickets = await ticketService.getAllTickets();
+        mostrarLoading(false);
+
+        if (!tickets || tickets.length === 0) {
+            Swal.fire({
+                icon: 'info',
+                title: 'No hay tickets disponibles',
+                text: 'No se encontraron tickets registrados en el sistema para vincular.',
+                confirmButtonColor: '#1c1948'
+            });
+            return;
+        }
+
+        const optionsHtml = tickets.map(t => {
+            const labelCliente = t.clienteNombre ? ` [${t.clienteNombre}]` : '';
+            const matchCliente = coti.clienteId && t.clienteId === coti.clienteId;
+            return `<option value="${t.id}" data-idticket="${t.idTicket}">${t.idTicket} - ${t.titulo || 'Sin título'}${labelCliente}${matchCliente ? ' ⭐ Coincide Cliente' : ''}</option>`;
+        }).join('');
+
+        const { value: selection } = await Swal.fire({
+            title: 'Seleccionar Ticket para Vincular',
+            html: `
+                <div style="text-align: left;">
+                    <p style="font-size: 0.9rem; color: var(--rsi-text-secondary); margin-bottom: 12px;">
+                        Selecciona el ticket que deseas asociar a la cotización <strong>${coti.cotizacionNumero}</strong>:
+                    </p>
+                    <select id="swalTicketSelect" class="swal2-input" style="width: 100%; margin: 0; box-sizing: border-box;">
+                        <option value="">-- Elige un ticket --</option>
+                        ${optionsHtml}
+                    </select>
+                </div>
+            `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: '<i class="fas fa-link"></i> Vincular Ticket',
+            cancelButtonText: 'Cancelar',
+            confirmButtonColor: '#1c1948',
+            cancelButtonColor: '#6c757d',
+            preConfirm: () => {
+                const select = document.getElementById('swalTicketSelect');
+                if (!select.value) {
+                    Swal.showValidationMessage('Debes seleccionar un ticket');
+                    return false;
+                }
+                const selectedOption = select.options[select.selectedIndex];
+                return {
+                    docId: select.value,
+                    idTicket: selectedOption.dataset.idticket
+                };
+            }
+        });
+
+        if (!selection) return;
+
+        mostrarLoading(true);
+        await service.vincularTicket(coti.id, selection.idTicket, selection.docId, coti.cotizacionNumero);
+        coti.ticketAsociado = selection.idTicket;
+        coti.ticketId = selection.docId;
+        await loadCotizacionesTable();
+        mostrarLoading(false);
+
+        mostrarAlerta(`Ticket ${selection.idTicket} vinculado exitosamente a la cotización`, 'success');
+    } catch (error) {
+        mostrarLoading(false);
+        console.error('❌ Error vinculando ticket:', error);
+        mostrarAlerta('Error al vincular ticket: ' + error.message, 'error');
+    }
+}
+
+/**
+ * ✅ Navega al formulario de creación de ticket pre-cargando los parámetros de la cotización
+ */
+function crearTicketDesdeCotizacion(coti) {
+    const partidasTexto = coti.items && coti.items.length 
+        ? '\n\nPartidas cotizadas:\n' + coti.items.map(i => `• ${i.cantidad || 1} ${i.tipoTecnologia || 'unidad'} - ${i.descripcion || ''}`).join('\n')
+        : '';
+
+    const params = new URLSearchParams({
+        cotizacionId: coti.id,
+        cotizacionNumero: coti.cotizacionNumero || '',
+        clienteId: coti.clienteId || '',
+        clienteNombre: coti.clienteNombre || '',
+        clienteRFC: coti.clienteRFC || '',
+        clienteEmail: coti.clienteEmail || '',
+        clienteTelefono: coti.clienteTelefono || '',
+        titulo: `Servicio Cotización ${coti.cotizacionNumero || ''}`,
+        descripcion: (coti.cotizacionDescripcion || '') + partidasTexto,
+        servicio: coti.tipoCotizacion || 'Proyecto / Instalación',
+        proyecto: coti.proyecto || coti.cotizacionProyecto || '',
+        atencionA: coti.contacto || coti.clienteContacto || coti.atencionA || ''
+    });
+
+    const targetUrl = `/partner/ticket?${params.toString()}`;
+    if (typeof window.navigateTo === 'function') {
+        window.navigateTo(targetUrl);
+    } else {
+        window.location.href = targetUrl;
+    }
+}
+
 export function destroyCotizacionesCrudController() {
     console.log('🧹 Destroying CotizacionesCrudController');
     

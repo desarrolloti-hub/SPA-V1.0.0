@@ -1,0 +1,300 @@
+<!-- ========================================
+   SITEMAP VIEW - RSI Enterprise México
+   Estructura general y mapa de navegación para visitantes
+   ======================================== -->
+
+<!-- 1. Hero Section -->
+<section class="rsi-sitemap-hero rsi-reveal" aria-label="Mapa del Sitio RSI Enterprise México">
+    <div class="rsi-container">
+        <div class="rsi-sitemap-hero-content">
+            <span class="rsi-section-badge">
+                <i class="fas fa-sitemap" aria-hidden="true"></i> Arquitectura Web y Navegación
+            </span>
+            <h1 class="rsi-sitemap-hero-title">
+                Mapa del <span class="rsi-text-gold">Sitio</span>
+            </h1>
+            <p class="rsi-sitemap-hero-subtitle">
+                Accede rápidamente a todas las páginas, productos tecnológicos, soluciones de ingeniería en seguridad y canales de contacto de RSI Enterprise México.
+            </p>
+
+            <!-- Buscador en tiempo real de páginas -->
+            <div class="rsi-sitemap-search-wrapper">
+                <i class="fas fa-search rsi-sitemap-search-icon" aria-hidden="true"></i>
+                <input 
+                    type="search" 
+                    id="sitemapSearchInput" 
+                    class="rsi-sitemap-search-input" 
+                    placeholder="Buscar página, producto o servicio... (Ej. CCTV, Catálogo, Contacto, Nosotros)" 
+                    aria-label="Buscar página en el mapa del sitio"
+                />
+            </div>
+            
+            <div class="rsi-sitemap-quick-filters" id="sitemapFilterChips">
+                <button type="button" class="rsi-sitemap-chip active" data-category="all">Todas</button>
+                <button type="button" class="rsi-sitemap-chip" data-category="principales">Principales</button>
+                <button type="button" class="rsi-sitemap-chip" data-category="soluciones">Productos y Servicios</button>
+                <button type="button" class="rsi-sitemap-chip" data-category="clientes">Clientes y Mi Cuenta</button>
+                <button type="button" class="rsi-sitemap-chip" data-category="soporte">Contacto y Soporte</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 2. Grid de Secciones del Sitemap -->
+<section class="rsi-sitemap-section" aria-labelledby="sitemapSectionsTitle">
+    <div class="rsi-container">
+        <h2 id="sitemapSectionsTitle" class="visually-hidden">Secciones del Portal Web</h2>
+
+        <div class="rsi-sitemap-grid" id="sitemapGrid">
+
+            <!-- Categoría 1: Principales e Institucional -->
+            <article class="rsi-sitemap-card" data-category="principales">
+                <div class="rsi-sitemap-card-header">
+                    <div class="rsi-sitemap-icon-box">
+                        <i class="fas fa-home" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h3 class="rsi-sitemap-card-title">Páginas Principales</h3>
+                        <span class="rsi-sitemap-card-desc">Información institucional y bienvenida</span>
+                    </div>
+                </div>
+                <ul class="rsi-sitemap-links-list">
+                    <li class="rsi-sitemap-item" data-keywords="inicio home portada principal">
+                        <a href="/" data-link class="rsi-sitemap-link">
+                            <i class="fas fa-angle-right" aria-hidden="true"></i>
+                            <div>
+                                <strong>Inicio</strong>
+                                <p>Portal corporativo, tecnologías clave y soluciones integrales.</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="rsi-sitemap-item" data-keywords="nosotros about historia mision vision valores trayectoria">
+                        <a href="/nosotros" data-link class="rsi-sitemap-link">
+                            <i class="fas fa-angle-right" aria-hidden="true"></i>
+                            <div>
+                                <strong>Nosotros</strong>
+                                <p>Trayectoria, certificaciones, filosofía de servicio y equipo técnico.</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="rsi-sitemap-item" data-keywords="contacto soporte ubicacion mapa telefonos correo">
+                        <a href="/contacto" data-link class="rsi-sitemap-link">
+                            <i class="fas fa-angle-right" aria-hidden="true"></i>
+                            <div>
+                                <strong>Contacto</strong>
+                                <p>Formulario directo, líneas telefónicas, ubicación y horarios de atención.</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="rsi-sitemap-item" data-keywords="sitemap mapa xml seo indexacion">
+                        <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer" class="rsi-sitemap-link">
+                            <i class="fas fa-file-code" aria-hidden="true"></i>
+                            <div>
+                                <strong>Sitemap XML Oficial</strong>
+                                <p>Estructura en formato XML estándar para indexación web y motores de búsqueda.</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </article>
+
+            <!-- Categoría 2: Soluciones y Catálogos -->
+            <article class="rsi-sitemap-card" data-category="soluciones">
+                <div class="rsi-sitemap-card-header">
+                    <div class="rsi-sitemap-icon-box">
+                        <i class="fas fa-boxes" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h3 class="rsi-sitemap-card-title">Productos y Catálogos</h3>
+                        <span class="rsi-sitemap-card-desc">Equipamiento tecnológico y folletos oficiales</span>
+                    </div>
+                </div>
+                <ul class="rsi-sitemap-links-list">
+                    <li class="rsi-sitemap-item" data-keywords="productos tienda catalogo cctv camaras alarmas biometricos redes">
+                        <a href="/products" data-link class="rsi-sitemap-link">
+                            <i class="fas fa-angle-right" aria-hidden="true"></i>
+                            <div>
+                                <strong>Catálogo de Productos</strong>
+                                <p>Sistemas de seguridad, CCTV, control de acceso, domótica y telecomunicaciones.</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="rsi-sitemap-item" data-keywords="catalogos folletos comerciales pdf folletería marcas">
+                        <a href="/catalogos" data-link class="rsi-sitemap-link">
+                            <i class="fas fa-angle-right" aria-hidden="true"></i>
+                            <div>
+                                <strong>Catálogos Comerciales</strong>
+                                <p>Folletería digital y visualizador interactivo de catálogos especializados.</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="rsi-sitemap-item" data-keywords="blog articulos publicaciones noticias novedades cctv tecnologia seguridad guias">
+                        <a href="/blogs" data-link class="rsi-sitemap-link">
+                            <i class="fas fa-angle-right" aria-hidden="true"></i>
+                            <div>
+                                <strong>Blog y Artículos Técnicos</strong>
+                                <p>Novedades, guías de instalación y artículos de ingeniería en seguridad electrónica.</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </article>
+
+            <!-- Categoría 3: Servicios Especializados -->
+            <article class="rsi-sitemap-card" data-category="soluciones">
+                <div class="rsi-sitemap-card-header">
+                    <div class="rsi-sitemap-icon-box">
+                        <i class="fas fa-tools" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h3 class="rsi-sitemap-card-title">Servicios de Ingeniería</h3>
+                        <span class="rsi-sitemap-card-desc">Instalación, mantenimiento y automatización</span>
+                    </div>
+                </div>
+                <ul class="rsi-sitemap-links-list">
+                    <li class="rsi-sitemap-item" data-keywords="servicios ingenieria instalacion mantenimiento preventivo correctivo cctv">
+                        <a href="/services" data-link class="rsi-sitemap-link">
+                            <i class="fas fa-angle-right" aria-hidden="true"></i>
+                            <div>
+                                <strong>Servicios Integrales</strong>
+                                <p>Pólizas de mantenimiento, cableado estructurado, fibra óptica y videovigilancia.</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="rsi-sitemap-item" data-keywords="cctv videovigilancia camaras ip inteligencia artificial">
+                        <a href="/services#cctv" data-link class="rsi-sitemap-link">
+                            <i class="fas fa-video" aria-hidden="true"></i>
+                            <div>
+                                <strong>Videovigilancia Inteligente (CCTV)</strong>
+                                <p>Reconocimiento facial, analítica de video y monitoreo en tiempo real.</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="rsi-sitemap-item" data-keywords="control acceso biometricos tarjetas torniquetes">
+                        <a href="/services#acceso" data-link class="rsi-sitemap-link">
+                            <i class="fas fa-id-card-alt" aria-hidden="true"></i>
+                            <div>
+                                <strong>Control de Acceso y Asistencia</strong>
+                                <p>Torniquetes, barreras vehiculares, chapas magnéticas y biométricos.</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </article>
+
+            <!-- Categoría 4: Portal de Clientes y Usuarios -->
+            <article class="rsi-sitemap-card" data-category="clientes">
+                <div class="rsi-sitemap-card-header">
+                    <div class="rsi-sitemap-icon-box">
+                        <i class="fas fa-user-circle" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h3 class="rsi-sitemap-card-title">Portal de Clientes</h3>
+                        <span class="rsi-sitemap-card-desc">Cuentas, pedidos y cotizaciones</span>
+                    </div>
+                </div>
+                <ul class="rsi-sitemap-links-list">
+                    <li class="rsi-sitemap-item" data-keywords="login entrar ingresar sesion cuenta password">
+                        <a href="/login" data-link class="rsi-sitemap-link">
+                            <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                            <div>
+                                <strong>Iniciar Sesión</strong>
+                                <p>Acceso seguro para clientes comerciales y colaboradores de RSI Enterprise.</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="rsi-sitemap-item" data-keywords="registro crear cuenta nuevo usuario sign up">
+                        <a href="/register" data-link class="rsi-sitemap-link">
+                            <i class="fas fa-user-plus" aria-hidden="true"></i>
+                            <div>
+                                <strong>Registro de Cliente</strong>
+                                <p>Crea tu cuenta institucional para compras, pedidos y seguimiento de tickets.</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="rsi-sitemap-item" data-keywords="carrito compras pedidos cotizacion items">
+                        <a href="/buyer/cart" data-link class="rsi-sitemap-link">
+                            <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+                            <div>
+                                <strong>Mi Carrito de Cotización</strong>
+                                <p>Revisión de productos seleccionados para solicitud de cotización formal.</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="rsi-sitemap-item" data-keywords="panel dashboard comprador cliente compras">
+                        <a href="/buyer/dashboard" data-link class="rsi-sitemap-link">
+                            <i class="fas fa-tachometer-alt" aria-hidden="true"></i>
+                            <div>
+                                <strong>Área de Cliente</strong>
+                                <p>Historial de solicitudes, pedidos, cotizaciones activas y seguimiento.</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </article>
+
+            <!-- Categoría 5: Contacto, Ubicación y Asistencia -->
+            <article class="rsi-sitemap-card" data-category="soporte">
+                <div class="rsi-sitemap-card-header">
+                    <div class="rsi-sitemap-icon-box">
+                        <i class="fas fa-headset" aria-hidden="true"></i>
+                    </div>
+                    <div>
+                        <h3 class="rsi-sitemap-card-title">Canales de Atención</h3>
+                        <span class="rsi-sitemap-card-desc">Comunícate con nuestro equipo especializado</span>
+                    </div>
+                </div>
+                <ul class="rsi-sitemap-links-list">
+                    <li class="rsi-sitemap-item" data-keywords="telefono whatsapp llamada asesor">
+                        <a href="tel:5551391533" class="rsi-sitemap-link">
+                            <i class="fas fa-phone-alt" aria-hidden="true"></i>
+                            <div>
+                                <strong>Línea Telefónica Directa</strong>
+                                <p>55 5139 1533 — Atención personalizada de lunes a sábado.</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="rsi-sitemap-item" data-keywords="correo email administracion contacto">
+                        <a href="mailto:aadministracion@rhafasoluciones.com" class="rsi-sitemap-link">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                            <div>
+                                <strong>Correo Corporativo</strong>
+                                <p>aadministracion@rhafasoluciones.com</p>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="rsi-sitemap-item" data-keywords="direccion ubicacion mapa cdmx estado de mexico nezahualcoyotl">
+                        <a href="https://maps.google.com/?cid=16455769269265573941&g_mp=CiVnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLkdldFBsYWNlEAMYASAF" target="_blank" rel="noopener noreferrer" class="rsi-sitemap-link">
+                            <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                            <div>
+                                <strong>Ubicación de Oficinas</strong>
+                                <p>C. 31 110, El Sol, 57200 Cdad. Nezahualcóyotl, Méx. (Ver en Google Maps).</p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </article>
+
+        </div>
+
+        <!-- Banner Inferior Informativo -->
+        <div class="rsi-sitemap-footer-banner">
+            <div class="rsi-sitemap-banner-text">
+                <i class="fas fa-code-branch" aria-hidden="true"></i>
+                <div>
+                    <h4>¿Buscas el formato XML estructurado para motores de búsqueda?</h4>
+                    <p>Contamos con el protocolo sitemap oficial actualizado para Google, Bing y sistemas de indexación.</p>
+                </div>
+            </div>
+            <div class="rsi-sitemap-banner-actions">
+                <a href="/sitemap.xml" target="_blank" rel="noopener noreferrer" class="rsi-primary-btn">
+                    <i class="fas fa-external-link-alt" aria-hidden="true"></i> Ver Sitemap XML
+                </a>
+                <a href="/" data-link class="rsi-secondary-btn">
+                    <i class="fas fa-arrow-left" aria-hidden="true"></i> Volver al Inicio
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>

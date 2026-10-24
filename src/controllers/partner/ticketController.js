@@ -4,6 +4,7 @@
    ======================================== */
 
 import TicketService from '../../services/ticketService.js';
+import TicketModel from '../../models/ticketModel.js';
 
 let service = null;
 let currentStep = 1;
@@ -13,6 +14,8 @@ let editingDocId = null;
 let isEditMode = false;
 let originalData = {};
 let selectedTicketType = 'operativo';
+let linkedCotizacionId = null;
+let linkedCotizacionNumero = null;
 let colaboradoresCargados = [];
 let clientesCargados = [];
 let colaboradoresSeleccionados = [];
@@ -60,6 +63,20 @@ export async function ticketController() {
     
     const urlParams = new URLSearchParams(window.location.search);
     const docId = urlParams.get('id');
+    const paramCotizacionId = urlParams.get('cotizacionId');
+    const paramCotizacionNumero = urlParams.get('cotizacionNumero');
+    const paramClienteId = urlParams.get('clienteId');
+    const paramTitulo = urlParams.get('titulo');
+    const paramDescripcion = urlParams.get('descripcion');
+    const paramServicio = urlParams.get('servicio');
+    const paramProyecto = urlParams.get('proyecto');
+    const paramAtencionA = urlParams.get('atencionA');
+
+    if (paramCotizacionId) {
+        linkedCotizacionId = paramCotizacionId;
+        linkedCotizacionNumero = paramCotizacionNumero || '';
+        console.log('🔗 Cotización enlazada detectada:', linkedCotizacionNumero, linkedCotizacionId);
+    }
     
     if (docId) {
         editingDocId = docId;
@@ -85,7 +102,7 @@ export async function ticketController() {
     } else {
         updateTitles();
         showStep(1);
-        const today = new Date().toISOString().split('T')[0];
+        const today = TicketModel.getTodayString();
         const fechaInicio = document.getElementById('fechaInicio');
         if (fechaInicio) {
             fechaInicio.min = today;
@@ -94,6 +111,59 @@ export async function ticketController() {
         const fechaFin = document.getElementById('fechaFin');
         if (fechaFin) {
             fechaFin.min = today;
+        }
+
+        // Si viene desde una cotización, configurar formulario automáticamente
+        if (linkedCotizacionId) {
+            selectedTicketType = 'operativo';
+            document.querySelectorAll('.rsi-ticket-type-btn').forEach(btn => {
+                if (btn.dataset.type === 'operativo') {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            showTipoFields('operativo');
+
+            const banner = document.getElementById('bannerCotizacionVinculada');
+            const bannerNum = document.getElementById('bannerCotizacionNumero');
+            if (banner && bannerNum) {
+                bannerNum.textContent = linkedCotizacionNumero || ('ID: ' + linkedCotizacionId);
+                banner.style.display = 'block';
+            }
+
+            const cotiNumInput = document.getElementById('cotizacionNumero');
+            const cotiIdInput = document.getElementById('cotizacionId');
+            if (cotiNumInput) cotiNumInput.value = linkedCotizacionNumero || '';
+            if (cotiIdInput) cotiIdInput.value = linkedCotizacionId;
+
+            if (paramTitulo) {
+                const tituloInput = document.getElementById('titulo');
+                if (tituloInput) tituloInput.value = paramTitulo;
+            }
+            if (paramDescripcion) {
+                const descInput = document.getElementById('descripcion');
+                if (descInput) descInput.value = paramDescripcion;
+            }
+            if (paramServicio) {
+                const servInput = document.getElementById('servicio');
+                if (servInput) servInput.value = paramServicio;
+            }
+            if (paramProyecto) {
+                const proyInput = document.getElementById('proyecto');
+                if (proyInput) proyInput.value = paramProyecto;
+            }
+            if (paramAtencionA) {
+                const atencionInput = document.getElementById('atencionA');
+                if (atencionInput) atencionInput.value = paramAtencionA;
+            }
+            if (paramClienteId) {
+                const clienteSelect = document.getElementById('clienteId');
+                if (clienteSelect) {
+                    clienteSelect.value = paramClienteId;
+                    loadClienteData(paramClienteId);
+                }
+            }
         }
     }
     
@@ -491,12 +561,12 @@ function loadClienteData(clienteId) {
 }
 
 /**
- * Inicializa validación de fechas - MEJORADA
+ * Inicializa validación de fechas - MEJORADA con soporte de día presente en zona horaria local
  */
 function initFechaValidation() {
     const fechaInicio = document.getElementById('fechaInicio');
     const fechaFin = document.getElementById('fechaFin');
-    const hoy = new Date().toISOString().split('T')[0];
+    const hoy = TicketModel.getTodayString();
     
     if (fechaInicio) {
         // ✅ Establecer min a hoy
@@ -671,32 +741,27 @@ function validateField(input) {
         return false;
     }
 
+    const hoyStr = TicketModel.getTodayString();
+
     const validations = {
         fechaInicio: {
             test: (v) => {
                 if (!v) return true;
-                const hoy = new Date();
-                hoy.setHours(0, 0, 0, 0);
-                const fecha = new Date(v);
-                fecha.setHours(0, 0, 0, 0);
-                return fecha >= hoy;
+                const valStr = v.split('T')[0];
+                return valStr >= hoyStr;
             },
             msg: 'La fecha de inicio no puede ser anterior a hoy'
         },
         fechaFin: {
             test: (v) => {
                 if (!v) return true;
-                const hoy = new Date();
-                hoy.setHours(0, 0, 0, 0);
-                const fecha = new Date(v);
-                fecha.setHours(0, 0, 0, 0);
-                if (fecha < hoy) return false;
+                const valStr = v.split('T')[0];
+                if (valStr < hoyStr) return false;
                 
                 const fechaInicio = document.getElementById('fechaInicio');
                 if (fechaInicio && fechaInicio.value) {
-                    const inicio = new Date(fechaInicio.value);
-                    inicio.setHours(0, 0, 0, 0);
-                    if (fecha < inicio) return false;
+                    const inicioStr = fechaInicio.value.split('T')[0];
+                    if (valStr < inicioStr) return false;
                 }
                 return true;
             },
@@ -1040,6 +1105,22 @@ async function loadTicketData(docId) {
             document.getElementById('proyecto').value = ticket.proyecto || '';
             document.getElementById('servicio').value = ticket.servicio || '';
             
+            linkedCotizacionId = ticket.cotizacionId || null;
+            linkedCotizacionNumero = ticket.cotizacionNumero || '';
+            const cotiNumInput = document.getElementById('cotizacionNumero');
+            const cotiIdInput = document.getElementById('cotizacionId');
+            if (cotiNumInput) cotiNumInput.value = linkedCotizacionNumero || '';
+            if (cotiIdInput) cotiIdInput.value = linkedCotizacionId || '';
+            
+            if (linkedCotizacionNumero) {
+                const banner = document.getElementById('bannerCotizacionVinculada');
+                const bannerNum = document.getElementById('bannerCotizacionNumero');
+                if (banner && bannerNum) {
+                    bannerNum.textContent = linkedCotizacionNumero;
+                    banner.style.display = 'block';
+                }
+            }
+            
             if (ticket.sistemas) {
                 document.querySelectorAll('input[name="sistemas"]').forEach(cb => {
                     cb.checked = ticket.sistemas.includes(cb.value);
@@ -1206,6 +1287,8 @@ function prepareData() {
         data.proyecto = getValue('proyecto');
         data.servicio = getValue('servicio');
         data.sistemas = sistemas;
+        data.cotizacionId = linkedCotizacionId || getValue('cotizacionId') || null;
+        data.cotizacionNumero = linkedCotizacionNumero || getValue('cotizacionNumero') || '';
     } else {
         data.fechaFinalizacionEstimada = getValue('fechaFinalizacionEstimada') || null;
         data.clienteId = null;
@@ -1334,6 +1417,8 @@ export function destroyTicketController() {
     service = null;
     editingDocId = null;
     isEditMode = false;
+    linkedCotizacionId = null;
+    linkedCotizacionNumero = null;
     originalData = {};
     colaboradoresCargados = [];
     clientesCargados = [];

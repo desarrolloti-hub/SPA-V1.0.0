@@ -14,6 +14,9 @@ import { catalogsPublicController } from '../controllers/visitor/catalogosPublic
 import { viewCatalogPublicController } from '../controllers/visitor/viewCatalogPublicController.js';
 import { productsController } from '../controllers/visitor/productsController.js';
 import { productDetailController } from '../controllers/visitor/productDetailController.js';
+import { sitemapController } from '../controllers/visitor/sitemapController.js';
+import { blogsPublicController } from '../controllers/visitor/blogsPublicController.js';
+import { viewBlogPublicController } from '../controllers/visitor/viewBlogPublicController.js';
 //Controllers de Partner
 import { dashboardController } from '../controllers/partner/dashboardController.js';
 import { newCollaboratorController } from '../controllers/partner/newCollaboratorController.js';
@@ -38,6 +41,8 @@ import {ticketAtencionController} from '../controllers/partner/ticketAtencionCon
 import {catalogController} from '../controllers/partner/catalogController.js';
 import {crudCatalogsController} from '../controllers/partner/crudCatalogsController.js';
 import {viewCatalogController} from '../controllers/partner/viewCatalogController.js';
+import { blogsCrudController } from '../controllers/partner/blogsCrudController.js';
+import { blogFormController } from '../controllers/partner/blogFormController.js';
 import { asistenciaController } from '../controllers/partner/asistenciaController.js';
 import { asistenciasCrudController } from '../controllers/partner/asistenciasCrudController.js';
 import { reembolsoFormController } from '../controllers/partner/reembolsoFormController.js';
@@ -138,6 +143,16 @@ export const routes = {
         view: "/pages/visitor/register.html",
         controller: registerController,
         title: "Registro de Cliente | RSI Enterprise"
+    },
+    "/sitemap": {
+        view: "/pages/visitor/sitemap.html",
+        controller: sitemapController,
+        title: "Mapa del Sitio | RSI Enterprise"
+    },
+    "/mapa-del-sitio": {
+        view: "/pages/visitor/sitemap.html",
+        controller: sitemapController,
+        title: "Mapa del Sitio | RSI Enterprise"
     },
     "/admin": {
         view: "/pages/shared/errors/404.html",
@@ -264,6 +279,21 @@ export const routes = {
         controller: viewCatalogController,
         title: "Visualizador de Catálogo | RSI Enterprise"
     },
+    "/partner/crudBlogs": {
+        view: '/pages/partner/blogsCrud.html',
+        controller: blogsCrudController,
+        title: "Gestión de Blogs | RSI Enterprise"
+    },
+    "/partner/blogs": {
+        view: '/pages/partner/blogsCrud.html',
+        controller: blogsCrudController,
+        title: "Gestión de Blogs | RSI Enterprise"
+    },
+    "/partner/blog": {
+        view: '/pages/partner/blogForm.html',
+        controller: blogFormController,
+        title: "Redactor de Blog | RSI Enterprise"
+    },
     "/catalogos": {
         view: '/pages/visitor/catalogsPublic.html',
         controller: catalogsPublicController,
@@ -273,6 +303,21 @@ export const routes = {
         view: '/pages/visitor/viewCatalogPublic.html',
         controller: viewCatalogPublicController,
         title: "Visualizador de Catálogo | RSI Enterprise"
+    },
+    "/blogs": {
+        view: '/pages/visitor/blogs.html',
+        controller: blogsPublicController,
+        title: "Blog y Artículos Técnicos | RSI Enterprise"
+    },
+    "/blog": {
+        view: '/pages/visitor/blogs.html',
+        controller: blogsPublicController,
+        title: "Blog y Artículos Técnicos | RSI Enterprise"
+    },
+    "/verBlog": {
+        view: '/pages/visitor/viewBlog.html',
+        controller: viewBlogPublicController,
+        title: "Artículo de Blog | RSI Enterprise"
     },
     "/partner/asistencia": {
         view: '/pages/partner/asistencia.html',

@@ -1,3 +1,4 @@
+import TicketRepository from '../repositories/ticketRepository.js';
 /* ========================================
    COTIZACION SERVICE
    Lógica de negocio para gestión de cotizaciones
@@ -138,6 +139,123 @@ export class CotizacionService {
 
         } catch (error) {
             console.error('❌ Error en updateCotizacion:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Actualiza el estatus de una cotización
+     * @param {string} cotizacionId - ID de la cotización
+     * @param {string} estatus - Nuevo estatus
+     * @param {string} motivoRechazo - Motivo de rechazo (opcional)
+     */
+    async updateCotizacionEstatus(cotizacionId, estatus, motivoRechazo = '') {
+        try {
+            const uid = this._getCurrentUserUid();
+            if (!uid) {
+                throw new Error('Usuario no autenticado');
+            }
+
+            const updateData = {
+                estatus,
+                updatedAt: new Date().toISOString()
+            };
+
+            if (motivoRechazo) {
+                updateData.motivoRechazo = motivoRechazo;
+            }
+
+            await this.repository.updateCotizacion(cotizacionId, updateData);
+            this.clearCache();
+
+            return {
+                success: true,
+                message: `Estatus actualizado a "${estatus}"`
+            };
+        } catch (error) {
+            console.error('❌ Error en updateCotizacionEstatus:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Vincula un ticket a la cotización (y opcionalmente la cotización al ticket)
+     * @param {string} cotizacionId - ID de la cotización
+     * @param {string} idTicket - ID visible del ticket (ej: Ticket-RSI-1001)
+     * @param {string} ticketDocId - ID del documento en Firestore del ticket (opcional)
+     * @param {string} cotizacionNumero - Número de la cotización (opcional)
+     */
+    async vincularTicket(cotizacionId, idTicket, ticketDocId = null, cotizacionNumero = '') {
+        try {
+            const uid = this._getCurrentUserUid();
+            if (!uid) {
+                throw new Error('Usuario no autenticado');
+            }
+
+            await this.repository.updateCotizacion(cotizacionId, {
+                ticketAsociado: idTicket || '',
+                ticketId: ticketDocId || ''
+            });
+            this.clearCache();
+
+            if (ticketDocId) {
+                try {
+                    const ticketRepo = new TicketRepository();
+                    await ticketRepo.updateTicket(ticketDocId, {
+                        cotizacionId: cotizacionId,
+                        cotizacionNumero: cotizacionNumero || ''
+                    });
+                } catch (tErr) {
+                    console.warn('⚠️ No se pudo sincronizar el ticket de retorno:', tErr);
+                }
+            }
+
+            return {
+                success: true,
+                message: 'Ticket vinculado exitosamente a la cotización'
+            };
+        } catch (error) {
+            console.error('❌ Error en vincularTicket:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Desvincula un ticket de la cotización
+     * @param {string} cotizacionId - ID de la cotización
+     * @param {string} ticketDocId - ID del ticket en Firestore (opcional)
+     */
+    async desvincularTicket(cotizacionId, ticketDocId = null) {
+        try {
+            const uid = this._getCurrentUserUid();
+            if (!uid) {
+                throw new Error('Usuario no autenticado');
+            }
+
+            await this.repository.updateCotizacion(cotizacionId, {
+                ticketAsociado: '',
+                ticketId: ''
+            });
+            this.clearCache();
+
+            if (ticketDocId) {
+                try {
+                    const ticketRepo = new TicketRepository();
+                    await ticketRepo.updateTicket(ticketDocId, {
+                        cotizacionId: null,
+                        cotizacionNumero: ''
+                    });
+                } catch (tErr) {
+                    console.warn('⚠️ No se pudo limpiar la vinculación en el ticket:', tErr);
+                }
+            }
+
+            return {
+                success: true,
+                message: 'Ticket desvinculado exitosamente'
+            };
+        } catch (error) {
+            console.error('❌ Error en desvincularTicket:', error);
             throw error;
         }
     }

@@ -1430,9 +1430,9 @@ function renderItemsTable() {
                     </select>
                 </td>
                 <td data-label="Descripción">
-                    <div class="rsi-producto-search-container-fila" style="position: relative;">
+                    <div class="rsi-producto-search-container-fila">
                         <input type="text" class="item-descripcion" value="${item.descripcion}" placeholder="Buscar o escribir producto...">
-                        <div class="producto-dropdown-fila" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--rsi-radius-md); box-shadow: var(--shadow-lg); max-height: 150px; overflow-y: auto; z-index: 100;"></div>
+                        <div class="producto-dropdown-fila" style="display: none;"></div>
                     </div>
                 </td>
                 <td data-label="Cantidad">
@@ -1463,17 +1463,65 @@ function renderItemsTable() {
         const removeBtn = row.querySelector('.rsi-btn-remove-item');
         const dropdown = row.querySelector('.producto-dropdown-fila');
         
+        const closeDropdown = () => {
+            dropdown.style.display = 'none';
+            dropdown.classList.remove('dropdown-open-up');
+            row.classList.remove('active-search-row');
+            row.style.zIndex = '';
+            if (dropdown.parentElement) {
+                dropdown.parentElement.classList.remove('active-search-container');
+                dropdown.parentElement.style.zIndex = '';
+            }
+        };
+
+        const openDropdown = () => {
+            tbody.querySelectorAll('.producto-dropdown-fila').forEach(d => {
+                if (d !== dropdown) {
+                    d.style.display = 'none';
+                    d.classList.remove('dropdown-open-up');
+                    const parentRow = d.closest('tr');
+                    if (parentRow) {
+                        parentRow.classList.remove('active-search-row');
+                        parentRow.style.zIndex = '';
+                    }
+                    if (d.parentElement) {
+                        d.parentElement.classList.remove('active-search-container');
+                        d.parentElement.style.zIndex = '';
+                    }
+                }
+            });
+
+            // Determinar si sale por arriba o por abajo del contenedor
+            const rect = descripcionInput.getBoundingClientRect();
+            const spaceBelow = window.innerHeight - rect.bottom;
+            if (spaceBelow < 260 && rect.top > 260) {
+                dropdown.classList.add('dropdown-open-up');
+            } else {
+                dropdown.classList.remove('dropdown-open-up');
+            }
+
+            row.classList.add('active-search-row');
+            row.style.zIndex = '999999';
+            if (dropdown.parentElement) {
+                dropdown.parentElement.classList.add('active-search-container');
+                dropdown.parentElement.style.zIndex = '9999999';
+            }
+            dropdown.style.zIndex = '99999999';
+            dropdown.style.display = 'block';
+        };
+
         descripcionInput.addEventListener('input', () => {
             const termino = descripcionInput.value.trim().toLowerCase();
             if (termino.length < 2) {
-                dropdown.style.display = 'none';
+                closeDropdown();
                 return;
             }
             
             const filtrados = productosList.filter(p => 
                 p.nombre && p.nombre.toLowerCase().includes(termino)
             );
-            mostrarOpcionesProductosFila(dropdown, filtrados, descripcionInput, precioInput, categoriaSelect);
+            openDropdown();
+            mostrarOpcionesProductosFila(dropdown, filtrados, descripcionInput, precioInput, categoriaSelect, closeDropdown);
         });
         
         descripcionInput.addEventListener('focus', () => {
@@ -1482,13 +1530,14 @@ function renderItemsTable() {
                 const filtrados = productosList.filter(p => 
                     p.nombre && p.nombre.toLowerCase().includes(termino)
                 );
-                mostrarOpcionesProductosFila(dropdown, filtrados, descripcionInput, precioInput, categoriaSelect);
+                openDropdown();
+                mostrarOpcionesProductosFila(dropdown, filtrados, descripcionInput, precioInput, categoriaSelect, closeDropdown);
             }
         });
         
         document.addEventListener('click', function(e) {
             if (!e.target.closest('.rsi-producto-search-container-fila')) {
-                dropdown.style.display = 'none';
+                closeDropdown();
             }
         });
         
@@ -1655,7 +1704,7 @@ function renderItemsTable() {
     });
 }
 
-function mostrarOpcionesProductosFila(dropdown, productosFiltrados, descripcionInput, precioInput, categoriaSelect) {
+function mostrarOpcionesProductosFila(dropdown, productosFiltrados, descripcionInput, precioInput, categoriaSelect, closeCallback) {
     if (!dropdown) return;
     
     dropdown.innerHTML = '';
@@ -1664,19 +1713,17 @@ function mostrarOpcionesProductosFila(dropdown, productosFiltrados, descripcionI
     if (productosFiltrados.length === 0) {
         const noResults = document.createElement('div');
         noResults.className = 'rsi-producto-option';
-        noResults.innerHTML = `<div style="color: #6b7280; font-style: italic; padding: 8px 12px;">No se encontraron productos</div>`;
+        noResults.innerHTML = `<div style="color: #6b7280; font-style: italic; padding: 10px 14px;">No se encontraron productos coincidentes</div>`;
         dropdown.appendChild(noResults);
     } else {
         productosFiltrados.slice(0, 10).forEach(producto => {
             const option = document.createElement('div');
             option.className = 'rsi-producto-option';
-            option.style.padding = '8px 12px';
-            option.style.cursor = 'pointer';
-            option.style.borderBottom = '1px solid var(--rsi-gray-100)';
             option.innerHTML = `
-                <strong>${producto.nombre}</strong>
-                <div style="font-size: 0.8rem; color: var(--rsi-gray-500);">
-                    Categoría: ${getCategoriaNombre(producto.categoriaId)} - Precio: ${formatCurrency(producto.precioUnitario || 0)}
+                <div style="font-weight: 600; color: var(--rsi-text-primary, #0f172a); font-size: 0.88rem;">${producto.nombre}</div>
+                <div style="font-size: 0.78rem; color: var(--rsi-gray-500, #64748b); display: flex; justify-content: space-between; align-items: center; margin-top: 3px;">
+                    <span><i class="fas fa-tag"></i> ${getCategoriaNombre(producto.categoriaId) || 'Sin categoría'}</span>
+                    <strong style="color: var(--rsi-primary, #1c1948); font-size: 0.85rem;">${formatCurrency(producto.precioUnitario || 0)}</strong>
                 </div>
             `;
             option.addEventListener('click', () => {
@@ -1685,7 +1732,14 @@ function mostrarOpcionesProductosFila(dropdown, productosFiltrados, descripcionI
                 if (categoriaSelect && producto.categoriaId) {
                     categoriaSelect.value = producto.categoriaId;
                 }
-                dropdown.style.display = 'none';
+                if (typeof closeCallback === 'function') {
+                    closeCallback();
+                } else {
+                    dropdown.style.display = 'none';
+                    const parentRow = dropdown.closest('tr');
+                    if (parentRow) parentRow.classList.remove('active-search-row');
+                    if (dropdown.parentElement) dropdown.parentElement.classList.remove('active-search-container');
+                }
                 const row = descripcionInput.closest('tr');
                 const index = parseInt(row.dataset.index);
                 if (!isNaN(index) && itemsData[index]) {

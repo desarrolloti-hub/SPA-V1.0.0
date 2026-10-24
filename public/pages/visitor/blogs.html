@@ -1,0 +1,100 @@
+<!-- ========================================
+   BLOGS PÚBLICOS - Catálogo de Artículos Técnicos
+   RSI Enterprise México
+   ======================================== -->
+
+<section class="rsi-public-section rsi-blogs-public-section">
+    <div class="rsi-public-container">
+
+        <!-- HEADER -->
+        <header class="rsi-public-header">
+            <h1 class="rsi-public-title">
+                Nuestro <span class="rsi-text-gold">Blog</span>
+            </h1>
+            <p class="rsi-public-subtitle">
+                Conoce las últimas tendencias, guías técnicas y novedades en seguridad electrónica, telecomunicaciones y automatización.
+            </p>
+        </header>
+
+        <!-- FILTROS Y BUSCADOR -->
+        <div class="rsi-blog-filter-section">
+            
+            <!-- BUSCADOR -->
+            <div class="rsi-public-search">
+                <i class="fas fa-search rsi-public-search-icon"></i>
+                <input 
+                    type="text" 
+                    id="blogSearchInput"
+                    class="rsi-public-search-input"
+                    placeholder="Buscar artículos por tema, título o palabra clave..."
+                    autocomplete="off"
+                >
+                <button id="blogSearchClear" class="rsi-public-search-clear is-hidden" title="Limpiar búsqueda">
+                    <i class="fas fa-times-circle"></i>
+                </button>
+            </div>
+
+            <!-- CATEGORÍAS EN PILLS HORIZONTALES -->
+            <div class="rsi-blog-categories-pills" id="blogCategoriesContainer">
+                <button type="button" class="rsi-pill-btn active" data-category="all">
+                    Todos
+                </button>
+                <button type="button" class="rsi-pill-btn" data-category="Videovigilancia CCTV">
+                    Videovigilancia CCTV
+                </button>
+                <button type="button" class="rsi-pill-btn" data-category="Control de Acceso">
+                    Control de Acceso
+                </button>
+                <button type="button" class="rsi-pill-btn" data-category="Redes y Telecomunicaciones">
+                    Redes y Telecomunicaciones
+                </button>
+                <button type="button" class="rsi-pill-btn" data-category="Ciberseguridad">
+                    Ciberseguridad
+                </button>
+                <button type="button" class="rsi-pill-btn" data-category="Automatización y Domótica">
+                    Automatización
+                </button>
+                <button type="button" class="rsi-pill-btn" data-category="Ingeniería y Mantenimiento">
+                    Mantenimiento
+                </button>
+                <button type="button" class="rsi-pill-btn" data-category="Novedades y Consejos">
+                    Novedades
+                </button>
+            </div>
+
+        </div>
+
+        <!-- CONTENEDOR DE RESULTADOS -->
+        <div id="blogResults" class="rsi-public-results">
+
+            <!-- Estado: cargando -->
+            <div id="blogLoading" class="rsi-public-state rsi-public-loading">
+                <div class="rsi-public-spinner"></div>
+                <p>Cargando artículos...</p>
+            </div>
+
+            <!-- Estado: sin blogs -->
+            <div id="blogEmpty" class="rsi-public-state rsi-public-empty is-hidden">
+                <i class="fas fa-newspaper"></i>
+                <h3 id="blogEmptyTitle">Aún no hay artículos publicados</h3>
+                <p id="blogEmptyText">Muy pronto compartiremos nuevo contenido técnico y comercial.</p>
+            </div>
+
+            <!-- Grid de Artículos -->
+            <div id="blogGrid" class="rsi-blog-public-grid is-hidden"></div>
+
+        </div>
+
+        <!-- PAGINACIÓN -->
+        <div id="blogPagination" class="rsi-public-pagination is-hidden">
+            <button id="blogPrevPage" class="rsi-public-page-btn" disabled>
+                <i class="fas fa-chevron-left"></i> Anterior
+            </button>
+            <span id="blogPageInfo" class="rsi-public-page-info">Página 1 de 1</span>
+            <button id="blogNextPage" class="rsi-public-page-btn" disabled>
+                Siguiente <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+
+    </div>
+</section>

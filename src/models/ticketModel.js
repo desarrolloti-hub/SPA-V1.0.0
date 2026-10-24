@@ -9,7 +9,7 @@
  * @property {string} titulo - Título del ticket
  * @property {string} descripcion - Descripción detallada
  * @property {string} tipo - 'operativo' | 'administracion'
- * @property {string} estado - 'pendiente' | 'en_proceso' | 'finalizado' | 'cancelado'
+ * @property {string} estado - 'pendiente' | 'en_proceso' | 'finalizado' | 'abandonado' | 'cancelado'
  * @property {string} prioridad - 'alta' | 'media' | 'baja'
  * @property {string} area - Área responsable
  * @property {Array<string>} colaboradoresIds - IDs de colaboradores asignados
@@ -58,6 +58,7 @@ export class TicketModel {
         PENDIENTE: 'pendiente',
         EN_PROCESO: 'en_proceso',
         FINALIZADO: 'finalizado',
+        ABANDONADO: 'abandonado',
         CANCELADO: 'cancelado'
     };
 
@@ -83,6 +84,22 @@ export class TicketModel {
     };
 
     /**
+     * Obtiene la fecha actual en formato YYYY-MM-DD en la zona horaria de México (America/Mexico_City)
+     * @returns {string} Fecha actual 'YYYY-MM-DD'
+     */
+    static getTodayString() {
+        try {
+            return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Mexico_City' }).format(new Date());
+        } catch (e) {
+            const d = new Date();
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${y}-${m}-${day}`;
+        }
+    }
+
+    /**
      * Crea un nuevo objeto Ticket para Firestore
      * @param {Object} data - Datos del ticket
      * @param {string} idTicket - ID auto-generado
@@ -93,11 +110,10 @@ export class TicketModel {
      */
     static create(data, idTicket, creadoPor, creadoPorNombre, tipo) {
         const now = new Date().toISOString();
-        const nowTimestamp = new Date();
 
         const tipoValido = Object.values(this.TIPOS).includes(tipo) ? tipo : this.TIPOS.OPERATIVO;
 
-        // ✅ Asegurar que idTicket no sea null
+        // Asegurar que idTicket no sea null
         const ticketId = idTicket || `Ticket-RSI-${Date.now()}`;
 
         const ticket = {
@@ -249,35 +265,21 @@ export class TicketModel {
             errors.prioridad = 'Seleccione una prioridad válida';
         }
 
-        // ✅ Validación de fechas - Permite fechas iguales o posteriores a hoy
-        const hoy = new Date();
-        hoy.setHours(0, 0, 0, 0);
+        // Validación de fechas en hora local de México (permite hoy y fechas futuras, solo rechaza anteriores)
+        const hoyStr = this.getTodayString();
+        const inicioStr = (data.fechaInicio || '').split('T')[0];
+        const finStr = (data.fechaFin || '').split('T')[0];
 
-        if (data.fechaInicio) {
-            const fechaInicio = new Date(data.fechaInicio);
-            fechaInicio.setHours(0, 0, 0, 0);
-            
-            // ✅ Permite fechas iguales o posteriores a hoy
-            if (fechaInicio < hoy) {
-                errors.fechaInicio = 'La fecha de inicio no puede ser anterior a hoy';
-            }
+        if (inicioStr && inicioStr < hoyStr) {
+            errors.fechaInicio = 'La fecha de inicio no puede ser anterior a hoy';
         }
 
-        if (data.fechaFin) {
-            const fechaFin = new Date(data.fechaFin);
-            fechaFin.setHours(0, 0, 0, 0);
-            
-            // ✅ Permite fechas iguales o posteriores a hoy
-            if (fechaFin < hoy) {
+        if (finStr) {
+            if (finStr < hoyStr) {
                 errors.fechaFin = 'La fecha de finalización no puede ser anterior a hoy';
             }
-            
-            if (data.fechaInicio) {
-                const fechaInicio = new Date(data.fechaInicio);
-                fechaInicio.setHours(0, 0, 0, 0);
-                if (fechaFin < fechaInicio) {
-                    errors.fechaFin = 'La fecha de finalización no puede ser anterior a la fecha de inicio';
-                }
+            if (inicioStr && finStr < inicioStr) {
+                errors.fechaFin = 'La fecha de finalización no puede ser anterior a la fecha de inicio';
             }
         }
 
@@ -314,6 +316,7 @@ export class TicketModel {
             'pendiente': 'Pendiente',
             'en_proceso': 'En Proceso',
             'finalizado': 'Finalizado',
+            'abandonado': 'Abandonado',
             'cancelado': 'Cancelado'
         };
         return labels[estado] || estado;
@@ -343,6 +346,7 @@ export class TicketModel {
             'pendiente': '#ffc107',
             'en_proceso': '#17a2b8',
             'finalizado': '#28a745',
+            'abandonado': '#6c757d',
             'cancelado': '#dc3545'
         };
         return colors[estado] || '#6c757d';
@@ -414,6 +418,7 @@ export class TicketModel {
      * - Evidencia fotográfica del DURANTE (>= 1)
      * - Evidencia fotográfica del DESPUÉS (>= 1)
      * - Actividades desarrolladas descritas (>= 5 caracteres)
+     * - Evidencias fotográficas subidas por TODAS las personas asignadas al ticket
      *
      * @param {Object} ticket - Datos actuales del ticket
      * @param {string} [actividadesOverride] - Texto de actividades desarrolladas en captura
@@ -423,6 +428,7 @@ export class TicketModel {
     static validateForCierre(ticket, actividadesOverride = undefined, userIds = []) {
         const evidencias = this.normalizeEvidencias(ticket);
         const aceptaciones = this.normalizeAceptaciones(ticket);
+        const todasEvidencias = [...evidencias.antes, ...evidencias.durante, ...evidencias.despues];
 
         const hasUserAccepted = userIds && userIds.length > 0
             ? aceptaciones.some(a => userIds.includes(a.colaboradorId) || (a.uid && userIds.includes(a.uid)))
@@ -434,6 +440,35 @@ export class TicketModel {
 
         const actividades = (actividadesOverride !== undefined ? actividadesOverride : (ticket?.actividadesDesarrolladas || '')).trim();
         const hasActividades = actividades.length >= 5;
+
+        // Validación estricta: Todas las personas asignadas deben haber subido evidencias de sus actividades desarrolladas
+        const asignadosIds = Array.isArray(ticket?.colaboradoresIds) ? ticket.colaboradoresIds : [];
+        const colaboradoresDetalle = Array.isArray(ticket?.colaboradores) ? ticket.colaboradores : [];
+        
+        const faltantesEvidencias = [];
+        const detalleColaboradores = [];
+
+        asignadosIds.forEach(colabId => {
+            const cInfo = colaboradoresDetalle.find(c => c.id === colabId || c.uid === colabId);
+            const nombreColab = cInfo?.nombre || (asignadosIds.length === 1 && ticket.responsableNombre ? ticket.responsableNombre : `Colaborador (${colabId})`);
+            
+            const count = todasEvidencias.filter(e => 
+                (e.subidoPorId && (e.subidoPorId === colabId || e.subidoPorUid === colabId)) ||
+                (e.subidoPorUid && (e.subidoPorUid === colabId || e.subidoPorId === colabId))
+            ).length;
+
+            const tiene = count > 0;
+            detalleColaboradores.push({
+                id: colabId,
+                nombre: nombreColab,
+                tieneEvidencia: tiene,
+                totalEvidencias: count
+            });
+
+            if (!tiene) {
+                faltantesEvidencias.push(nombreColab);
+            }
+        });
 
         const missing = [];
         if (!hasUserAccepted) {
@@ -451,6 +486,9 @@ export class TicketModel {
         if (!hasActividades) {
             missing.push('Describir las actividades desarrolladas en el ticket.');
         }
+        if (faltantesEvidencias.length > 0) {
+            missing.push(`Todos los colaboradores asignados deben subir evidencias de sus actividades desarrolladas. Faltan por subir evidencia: ${faltantesEvidencias.join(', ')}.`);
+        }
 
         return {
             valid: missing.length === 0,
@@ -461,7 +499,12 @@ export class TicketModel {
                 antes: hasAntes,
                 durante: hasDurante,
                 despues: hasDespues,
-                actividades: hasActividades
+                actividades: hasActividades,
+                colaboradoresEvidencias: {
+                    cumpleTodos: faltantesEvidencias.length === 0,
+                    faltantes: faltantesEvidencias,
+                    detalle: detalleColaboradores
+                }
             }
         };
     }

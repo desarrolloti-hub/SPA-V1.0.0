@@ -1,0 +1,286 @@
+/* ========================================
+   BLOGS PUBLIC STYLES - RSI Enterprise México
+   Listado de artículos para visitantes
+   Compatible con Modo Claro y Modo Oscuro
+   ======================================== */
+
+.rsi-blogs-public-section {
+    padding: 3rem 0 5rem;
+    background: var(--rsi-bg-primary);
+    min-height: 100vh;
+}
+
+/* Filtro de Categorías en Pills */
+.rsi-blog-filter-section {
+    max-width: 900px;
+    margin: 0 auto 2.5rem;
+}
+
+.rsi-blog-categories-pills {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.rsi-pill-btn {
+    border: 1px solid var(--rsi-border-color, #dee2e6);
+    background: var(--rsi-bg-card);
+    color: var(--rsi-text-secondary);
+    padding: 0.45rem 1rem;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.rsi-pill-btn:hover {
+    border-color: var(--rsi-primary);
+    color: var(--rsi-primary);
+}
+
+.rsi-pill-btn.active {
+    background: var(--rsi-primary);
+    color: #ffffff;
+    border-color: var(--rsi-primary);
+    box-shadow: 0 2px 8px rgba(28, 25, 72, 0.2);
+}
+
+/* Grid de Artículos */
+.rsi-blog-public-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 640px) {
+    .rsi-blog-public-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+/* Tarjeta de Blog */
+.rsi-blog-card {
+    background: var(--rsi-bg-card);
+    border: 1px solid var(--rsi-border-color, #e5e7eb);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    cursor: pointer;
+}
+
+.rsi-blog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    border-color: var(--rsi-primary);
+}
+
+/* Carátula */
+.rsi-blog-card .rsi-public-card-cover {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--rsi-bg-secondary);
+}
+
+.rsi-blog-card .rsi-public-card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.rsi-blog-card:hover .rsi-public-card-cover img {
+    transform: scale(1.05);
+}
+
+.rsi-blog-category-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(28, 25, 72, 0.85);
+    backdrop-filter: blur(4px);
+    color: #ffffff;
+    padding: 0.3rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    z-index: 2;
+}
+
+/* Cuerpo de la Tarjeta */
+.rsi-blog-card .rsi-public-card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.rsi-blog-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: var(--rsi-text-muted);
+    margin-bottom: 0.75rem;
+}
+
+.rsi-blog-card-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.rsi-blog-card h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--rsi-text-primary);
+    margin: 0 0 0.75rem;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.rsi-blog-card p {
+    font-size: 0.92rem;
+    color: var(--rsi-text-secondary);
+    line-height: 1.6;
+    margin: 0 0 1.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex: 1;
+}
+
+/* Footer de Tarjeta */
+.rsi-blog-author-meta {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--rsi-text-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.rsi-blog-footer-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.btn-share-blog {
+    background: rgba(37, 211, 102, 0.12);
+    color: #25D366;
+    border: 1px solid rgba(37, 211, 102, 0.3);
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.btn-share-blog:hover {
+    background: #25D366;
+    color: #ffffff;
+    transform: scale(1.08);
+}
+
+/* Toast Rápido */
+.rsi-quick-toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: #1c1948;
+    color: #ffffff;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.25s ease;
+    pointer-events: none;
+}
+
+.rsi-quick-toast.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================
+   MODO OSCURO (body.dark-mode)
+   ========================================== */
+body.dark-mode .rsi-blogs-public-section {
+    background: var(--rsi-bg-primary);
+}
+
+body.dark-mode .rsi-pill-btn {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-border-color);
+    color: var(--rsi-text-secondary);
+}
+
+body.dark-mode .rsi-pill-btn:hover {
+    border-color: var(--rsi-primary);
+    color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-pill-btn.active {
+    background: var(--rsi-primary);
+    color: #ffffff;
+    border-color: var(--rsi-primary);
+}
+
+body.dark-mode .rsi-blog-card {
+    background: var(--rsi-bg-card);
+    border-color: var(--rsi-border-color);
+}
+
+body.dark-mode .rsi-blog-card:hover {
+    border-color: var(--rsi-primary);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .rsi-blog-category-badge {
+    background: rgba(15, 17, 26, 0.85);
+    color: var(--rsi-primary-light, #7bb8ff);
+    border: 1px solid rgba(74, 158, 255, 0.3);
+}
+
+body.dark-mode .rsi-blog-card h3 {
+    color: var(--rsi-text-primary);
+}
+
+body.dark-mode .rsi-blog-card p {
+    color: var(--rsi-text-secondary);
+}
+
+body.dark-mode .rsi-blog-author-meta {
+    color: var(--rsi-text-muted);
+}
+
+body.dark-mode .rsi-quick-toast {
+    background: #25283a;
+    color: #ffffff;
+    border: 1px solid var(--rsi-border-color);
+}

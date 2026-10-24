@@ -186,6 +186,16 @@
     font-size: 0.9rem;
 }
 
+.rsi-footer-bottom-links {
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
+
+.rsi-footer-divider {
+    margin: 0 10px;
+    color: rgba(255, 255, 255, 0.35);
+}
+
 .rsi-footer-bottom a {
     color: rgba(255, 255, 255, 0.6);
     text-decoration: none;

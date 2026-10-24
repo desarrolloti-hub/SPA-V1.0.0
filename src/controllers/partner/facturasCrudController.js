@@ -672,7 +672,7 @@ async function descargarXml(factura) {
         document.body.removeChild(link);
         setTimeout(() => URL.revokeObjectURL(blobUrl), 1500);
 
-        mostrarAlerta('✅ XML descargado correctamente', 'success');
+        mostrarAlerta('XML descargado correctamente', 'success');
 
     } catch (error) {
         console.error('❌ Error descargando XML:', error);
@@ -826,7 +826,7 @@ async function handleTimbrarFactura(facturaId) {
         showCancelButton: true,
         confirmButtonColor: '#1c1948',
         cancelButtonColor: '#6c757d',
-        confirmButtonText: '✅ Sí, timbrar',
+        confirmButtonText: 'Sí, timbrar',
         cancelButtonText: 'Cancelar'
     });
 
@@ -860,7 +860,7 @@ async function handleTimbrarFactura(facturaId) {
             // ✅ Modal de éxito
             const successResult = await Swal.fire({
                 icon: 'success',
-                title: '✅ Factura timbrada exitosamente',
+                title: 'Factura timbrada exitosamente',
                 html: `
                     <div style="text-align: left;">
                         <p><strong>Factura:</strong> ${factura.facturaNumero}</p>
@@ -868,7 +868,7 @@ async function handleTimbrarFactura(facturaId) {
                         <p><strong>Fecha de timbrado:</strong> ${formatDate(timbradoResult.timbrado?.Complement?.TaxStamp?.Date || timbradoResult.timbrado?.Date)}</p>
                     </div>
                 `,
-                confirmButtonText: '📄 Ver factura',
+                confirmButtonText: 'Ver factura',
                 confirmButtonColor: '#1c1948',
                 showCancelButton: true,
                 cancelButtonText: 'Ir al listado',
@@ -1152,7 +1152,7 @@ async function handleCancelarFactura(facturaId) {
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#6c757d',
-        confirmButtonText: '🚫 Solicitar Cancelación',
+        confirmButtonText: 'Solicitar Cancelación',
         cancelButtonText: 'Cancelar',
         didOpen: () => {
             const selectMotivo = document.getElementById('swalCancelMotivo');
@@ -1209,7 +1209,7 @@ async function handleCancelarFactura(facturaId) {
         if (resultado.estatus === 'cancelada') {
             await Swal.fire({
                 icon: 'success',
-                title: '✅ Factura cancelada',
+                title: 'Factura cancelada',
                 html: `
                     <div style="text-align: left;">
                         <p><strong>Factura:</strong> ${factura.facturaNumero}</p>
@@ -1328,7 +1328,7 @@ async function handleEnviarFactura(facturaId) {
     }
 
     const result = await Swal.fire({
-        title: '📤 Enviar Factura por Correo',
+        title: 'Enviar Factura por Correo',
         html: `
             <div style="text-align: left;">
                 <p><strong>Factura:</strong> ${factura.facturaNumero}</p>
@@ -1336,12 +1336,12 @@ async function handleEnviarFactura(facturaId) {
                 <p><strong>Email:</strong> ${factura.clienteEmail}</p>
                 <p><strong>Total:</strong> ${formatCurrency(factura.totalFinal)}</p>
                 <p style="color: var(--rsi-success); margin-top: var(--rsi-spacing-md);">
-                    📄 Se enviarán el PDF de la factura y el XML fiscal (CFDI 4.0) como archivos adjuntos descargables.
+                    Se enviarán el PDF de la factura y el XML fiscal (CFDI 4.0) como archivos adjuntos descargables.
                 </p>
             </div>
         `,
         showCancelButton: true,
-        confirmButtonText: '✉️ Enviar por Email',
+        confirmButtonText: 'Enviar por Email',
         cancelButtonText: 'Cancelar',
         confirmButtonColor: '#1c1948',
         cancelButtonColor: '#6c757d'
@@ -1383,12 +1383,12 @@ async function handleEnviarFactura(facturaId) {
         if (data.success) {
             Swal.fire({
                 icon: 'success',
-                title: '✅ Email enviado',
+                title: 'Email enviado',
                 html: `
                     <div style="text-align: left;">
                         <p><strong>Destinatario:</strong> ${factura.clienteEmail}</p>
                         <p><strong>Factura:</strong> ${factura.facturaNumero}</p>
-                        <p style="color: var(--rsi-success);">✅ Los archivos PDF y XML han sido enviados por correo electrónico como documentos adjuntos descargables.</p>
+                        <p style="color: var(--rsi-success);"><i class="fas fa-check-circle"></i> Los archivos PDF y XML han sido enviados por correo electrónico como documentos adjuntos descargables.</p>
                     </div>
                 `,
                 confirmButtonText: 'Aceptar',
@@ -1408,7 +1408,7 @@ async function handleEnviarFactura(facturaId) {
             title: 'Error al enviar email',
             text: error.message || 'No se pudo enviar el correo electrónico',
             showCancelButton: true,
-            confirmButtonText: '📥 Descargar PDF',
+            confirmButtonText: 'Descargar PDF',
             cancelButtonText: 'Cancelar',
             confirmButtonColor: '#1c1948',
             cancelButtonColor: '#6c757d'
@@ -1639,7 +1639,7 @@ async function loadFacturasTable() {
                 <tr>
                     <td data-label="Número">
                         <span style="font-weight: 600; font-size: 0.85rem;">${fact.facturaNumero || '-'}</span>
-                        ${fact.cotizacionNumero ? `<br><small style="color: var(--rsi-gray-500); font-size: 0.65rem;">📄 Cot: ${fact.cotizacionNumero}</small>` : ''}
+                        ${fact.cotizacionNumero ? `<br><small style="color: var(--rsi-gray-500); font-size: 0.65rem;"><i class="fas fa-file-alt"></i> Cot: ${fact.cotizacionNumero}</small>` : ''}
                     </td>
                     <td data-label="Cliente">
                         <span style="font-weight: 500;">${fact.clienteRazonSocial || fact.clienteNombre || '-'}</span>

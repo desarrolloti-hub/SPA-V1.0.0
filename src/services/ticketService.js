@@ -1,3 +1,4 @@
+import CotizacionRepository from '../repositories/cotizacionRepository.js';
 /* ========================================
    TICKET SERVICE
    Lógica de negocio para gestión de tickets
@@ -185,6 +186,20 @@ export class TicketService {
                     }
                 );
                 await this.repository.marcarNotificacionesEnviadas(result.docId, data.colaboradoresIds);
+            }
+
+            // ✅ Si viene una cotización asociada, sincronizarla automáticamente
+            if (data.cotizacionId) {
+                try {
+                    const cotiRepo = new CotizacionRepository();
+                    await cotiRepo.updateCotizacion(data.cotizacionId, {
+                        ticketAsociado: result.idTicket,
+                        ticketId: result.docId
+                    });
+                    console.log(`✅ Cotización ${data.cotizacionId} vinculada automáticamente al ticket ${result.idTicket}`);
+                } catch (cotiErr) {
+                    console.warn('⚠️ No se pudo vincular la cotización automáticamente:', cotiErr);
+                }
             }
 
             return {
@@ -585,6 +600,101 @@ async _getNombresColaboradores(colaboradoresIds) {
 
         } catch (error) {
             console.error('❌ Error en deleteTicket:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Vincula una cotización al ticket
+     * @param {string} ticketId - ID del documento del ticket
+     * @param {string} cotizacionId - ID de la cotización en Firestore
+     * @param {string} cotizacionNumero - Número de la cotización
+     */
+    async vincularCotizacion(ticketId, cotizacionId, cotizacionNumero) {
+        try {
+            const uid = this._getCurrentUserUid();
+            const nombre = this._getCurrentUserName();
+            if (!uid) throw new Error('Usuario no autenticado');
+
+            await this.repository.updateTicket(ticketId, {
+                cotizacionId: cotizacionId || null,
+                cotizacionNumero: cotizacionNumero || ''
+            });
+
+            await this.repository.addHistorialEvent(
+                ticketId,
+                'edicion',
+                nombre,
+                uid,
+                cotizacionNumero 
+                    ? `Cotización ${cotizacionNumero} vinculada al ticket`
+                    : 'Cotización desvinculada del ticket'
+            );
+
+            // Sincronizar en la cotización
+            if (cotizacionId) {
+                try {
+                    const ticketDoc = await this.repository.getTicketById(ticketId);
+                    const cotiRepo = new CotizacionRepository();
+                    await cotiRepo.updateCotizacion(cotizacionId, {
+                        ticketAsociado: ticketDoc?.idTicket || '',
+                        ticketId: ticketId
+                    });
+                } catch (err) {
+                    console.warn('⚠️ No se pudo sincronizar la cotización asociada:', err);
+                }
+            }
+
+            return {
+                success: true,
+                message: 'Cotización vinculada exitosamente al ticket'
+            };
+        } catch (error) {
+            console.error('❌ Error en vincularCotizacion:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Desvincula una cotización del ticket
+     */
+    async desvincularCotizacion(ticketId, cotizacionId = null) {
+        try {
+            const uid = this._getCurrentUserUid();
+            const nombre = this._getCurrentUserName();
+            if (!uid) throw new Error('Usuario no autenticado');
+
+            await this.repository.updateTicket(ticketId, {
+                cotizacionId: null,
+                cotizacionNumero: ''
+            });
+
+            await this.repository.addHistorialEvent(
+                ticketId,
+                'edicion',
+                nombre,
+                uid,
+                'Cotización desvinculada del ticket'
+            );
+
+            if (cotizacionId) {
+                try {
+                    const cotiRepo = new CotizacionRepository();
+                    await cotiRepo.updateCotizacion(cotizacionId, {
+                        ticketAsociado: '',
+                        ticketId: ''
+                    });
+                } catch (err) {
+                    console.warn('⚠️ No se pudo desvincular en la cotización:', err);
+                }
+            }
+
+            return {
+                success: true,
+                message: 'Cotización desvinculada exitosamente'
+            };
+        } catch (error) {
+            console.error('❌ Error en desvincularCotizacion:', error);
             throw error;
         }
     }
@@ -1772,6 +1882,14 @@ async _getNombresColaboradores(colaboradoresIds) {
                 return { success: false, error: 'Ticket no encontrado' };
             }
 
+            // Validar que el ticket esté cerrado (finalizado o abandonado) antes de permitir generar el PDF
+            if (ticket.estado !== 'finalizado' && ticket.estado !== 'abandonado') {
+                return {
+                    success: false,
+                    error: 'El reporte fotográfico PDF de este ticket no se puede generar porque aún no ha sido cerrado.'
+                };
+            }
+
             // Si ya existe el reporte fotográfico almacenado en Storage, devolverlo directamente sin volver a generarlo
             if (ticket.reporteFotograficoUrl) {
                 return {
@@ -1816,6 +1934,95 @@ async _getNombresColaboradores(colaboradoresIds) {
                 success: false,
                 error: error.message || 'Error al generar y almacenar el reporte fotográfico en PDF'
             };
+        }
+    }
+
+    /**
+     * Verifica tickets activos para marcar como abandonados los vencidos sin evidencias completas
+     * y enviar recordatorios de abandono 1 día antes del cierre.
+     * Funciona como fallback y sincronizador en tiempo real del cliente.
+     */
+    async verificarTicketsVencidosYRecordatorios() {
+        try {
+            const hoyStr = TicketModel.getTodayString();
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Mexico_City' }).format(tomorrow);
+
+            const allTickets = await this.getAllTickets();
+            const activos = (allTickets || []).filter(t => t.estado === 'pendiente' || t.estado === 'en_proceso');
+            const now = new Date().toISOString();
+            let actualizados = 0;
+
+            for (const ticket of activos) {
+                const finStr = (ticket.fechaFin || '').split('T')[0];
+                if (!finStr) continue;
+
+                // 1. Si fechaFin < hoyStr y no ha sido cerrado formalmente con evidencias completas -> Marcar como 'abandonado'
+                if (finStr < hoyStr) {
+                    const validation = TicketModel.validateForCierre(ticket);
+                    if (!validation.valid) {
+                        const historialCambios = Array.isArray(ticket.historialCambios) ? [...ticket.historialCambios] : [];
+                        historialCambios.push({
+                            estadoAnterior: ticket.estado,
+                            estadoNuevo: 'abandonado',
+                            tipoEvento: 'abandono_automatico',
+                            cambiadoPor: 'Sistema RSI',
+                            cambiadoPorId: 'system',
+                            fechaCambio: now,
+                            motivo: `Ticket marcado en abandono por vencer su fecha límite (${finStr}) sin haber completado las evidencias requeridas.`
+                        });
+
+                        await this.repository.updateTicket(ticket.id, {
+                            estado: 'abandonado',
+                            fechaAbandono: now,
+                            historialCambios,
+                            motivoAbandono: `Vencimiento de fecha límite (${finStr}) sin completar evidencias requeridas de actividades.`
+                        });
+                        await this.repository.addHistorialEvent(
+                            ticket.id,
+                            'abandono',
+                            'Sistema RSI',
+                            'system',
+                            `Ticket marcado como Abandonado por vencer su fecha límite (${finStr}) sin haber sido cerrado.`
+                        );
+                        actualizados++;
+                    }
+                }
+                // 2. Si fechaFin == tomorrowStr (1 día antes) y no se ha enviado recordatorio
+                else if (finStr === tomorrowStr && !ticket.recordatorioAbandonoEnviado) {
+                    try {
+                        if (ticket.colaboradoresIds && ticket.colaboradoresIds.length > 0) {
+                            await this.enviarNotificacionesAsignacion(
+                                ticket.colaboradoresIds,
+                                ticket.idTicket || ticket.id,
+                                `⚠️ Recordatorio: Ticket próximo a vencer mañana (${finStr})`,
+                                'alta',
+                                ticket.tipo,
+                                {
+                                    descripcion: `Atención: Tu ticket vence mañana (${finStr}). Por favor sube tus evidencias y ciérralo a tiempo o pasará a estado Abandonado.`,
+                                    clienteNombre: ticket.clienteNombre,
+                                    area: ticket.area
+                                }
+                            );
+                        }
+                        await this.repository.updateTicket(ticket.id, {
+                            recordatorioAbandonoEnviado: true,
+                            fechaRecordatorioAbandono: now
+                        });
+                    } catch (notifErr) {
+                        console.warn(`No se pudo enviar recordatorio de abandono para ticket ${ticket.idTicket}:`, notifErr);
+                    }
+                }
+            }
+
+            if (actualizados > 0) {
+                this.clearCache();
+            }
+            return { success: true, actualizados };
+        } catch (error) {
+            console.error('❌ Error verificando tickets vencidos y recordatorios:', error);
+            return { success: false, error: error.message };
         }
     }
 
