@@ -1,74 +1,11 @@
-/* ========================================
-   RESPONSIVE - Breakpoints y utilidades
-   ======================================== */
+/* ==========================================================================
+   RESPONSIVE - Optimizaciones de Breakpoints y Adaptación para Tablet
+   SPA-V1.0.0 — Fénix RSI Enterprise
+   ========================================================================== */
 
-/* Breakpoints */
-/* 
-   xs: 0 - 575px
-   sm: 576px - 767px
-   md: 768px - 991px
-   lg: 992px - 1199px
-   xl: 1200px+
-*/
-
-/* Móviles pequeños */
-@media (max-width: 575px) {
-    .rsi-hide-xs {
-        display: none;
-    }
-    
-    .rsi-text-xs-center {
-        text-align: center;
-    }
-}
-
-/* Móviles */
-@media (max-width: 767px) {
-    .rsi-hide-sm {
-        display: none;
-    }
-    
-    .rsi-container {
-        padding: 0 var(--rsi-spacing-md);
-    }
-    
-    .rsi-section {
-        padding: var(--rsi-spacing-2xl) 0;
-    }
-}
-
-/* Tablets */
-@media (max-width: 991px) {
-    .rsi-hide-md {
-        display: none;
-    }
-    
-    .rsi-container {
-        padding: 0 var(--rsi-spacing-lg);
-    }
-}
-
-/* Desktop */
-@media (min-width: 992px) {
-    .rsi-show-md-only {
-        display: none;
-    }
-}
-
-/* Desktop grande */
-@media (min-width: 1200px) {
-    .rsi-container {
-        max-width: 1140px;
-    }
-}
-
-@media (min-width: 1400px) {
-    .rsi-container {
-        max-width: 1320px;
-    }
-}
-
-/* Utilidades responsive */
+/* ==========================================================================
+   1. VARIABLES Y UTILIDADES GENERALES
+   ========================================================================== */
 .rsi-responsive-img {
     max-width: 100%;
     height: auto;
@@ -90,55 +27,453 @@
     height: 100%;
 }
 
-/* Grid responsive */
-.rsi-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--rsi-spacing-lg);
-}
-
-@media (min-width: 768px) {
-    .rsi-row-cols-2 {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .rsi-row-cols-3 {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    
-    .rsi-row-cols-4 {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-@media (min-width: 992px) {
-    .rsi-row-cols-lg-2 {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .rsi-row-cols-lg-3 {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    
-    .rsi-row-cols-lg-4 {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-/* Ocultar elementos por defecto */
 .rsi-hidden {
-    display: none;
+    display: none !important;
 }
 
-/* Mostrar solo en ciertos breakpoints */
-@media (max-width: 767px) {
-    .rsi-visible-desktop {
-        display: none;
+/* ==========================================================================
+   2. REGLAS UNIFICADAS PARA TABLET (768px a 1199px)
+   ========================================================================== */
+@media (min-width: 768px) and (max-width: 1199px) {
+
+    /* --- Contenedor Global y Secciones --- */
+    .rsi-container {
+        width: 100%;
+        max-width: 100%;
+        padding-left: var(--rsi-spacing-lg, 24px) !important;
+        padding-right: var(--rsi-spacing-lg, 24px) !important;
+        box-sizing: border-box;
+    }
+
+    /* --- Modales del Sistema y SweetAlert2 --- */
+    .rsi-modal-content,
+    .modal-container,
+    .ta-modal-content,
+    .rf-modal-content,
+    .swal2-popup {
+        width: 86% !important;
+        max-width: 760px !important;
+        margin: auto !important;
+        border-radius: var(--rsi-radius-xl, 16px) !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-modal-body,
+    .modal-body {
+        max-height: 75vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* --- Paneles CRUD: Contenedor y Encabezado --- */
+    .rsi-panel-crud {
+        padding: var(--rsi-spacing-lg, 20px) !important;
+        border-radius: var(--rsi-radius-xl, 16px) !important;
+        overflow: visible !important;
+    }
+
+    .rsi-panel-header {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: var(--rsi-spacing-md, 16px) !important;
+        margin-bottom: var(--rsi-spacing-lg, 20px) !important;
+        padding-bottom: var(--rsi-spacing-md, 14px) !important;
+    }
+
+    .rsi-panel-header h2 {
+        text-align: left !important;
+        justify-content: flex-start !important;
+        font-size: 1.25rem !important;
+        margin: 0 !important;
+    }
+
+    .rsi-panel-header .rsi-panel-actions {
+        display: flex !important;
+        flex-direction: row !important;
+        width: auto !important;
+        align-items: center !important;
+        gap: var(--rsi-spacing-sm, 10px) !important;
+        flex-wrap: wrap !important;
+    }
+
+    .rsi-panel-header .rsi-panel-actions > * {
+        width: auto !important;
+        max-width: none !important;
+    }
+
+    .rsi-panel-header .rsi-panel-actions .rsi-btn-crud,
+    .rsi-panel-header .rsi-panel-actions > button,
+    .rsi-panel-header .rsi-panel-actions > a {
+        width: auto !important;
+        padding: 8px 16px !important;
+        font-size: 0.88rem !important;
+        white-space: nowrap !important;
+        box-sizing: border-box !important;
+    }
+
+    /* --- Buscadores y Filtros en Tablet --- */
+    .rsi-search-container {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        gap: var(--rsi-spacing-sm, 10px) !important;
+        padding: 10px 14px !important;
+        border-radius: var(--rsi-radius-lg, 12px) !important;
+    }
+
+    .rsi-search-box {
+        display: flex !important;
+        flex-direction: row !important;
+        flex: 1 1 320px !important;
+        min-width: 260px !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+
+    .rsi-search-input-wrapper {
+        flex: 1 !important;
+        height: 40px !important;
+    }
+
+    .rsi-search-input {
+        font-size: 0.9rem !important;
+    }
+
+    .rsi-btn-search {
+        padding: 8px 16px !important;
+        height: 40px !important;
+        font-size: 0.88rem !important;
+        white-space: nowrap !important;
+    }
+
+    /* --- Tarjetas de Estadísticas en Paneles CRUD --- */
+    .rsi-stats-container {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+        gap: var(--rsi-spacing-sm, 10px) !important;
+        padding: var(--rsi-spacing-sm, 10px) !important;
+        margin-bottom: var(--rsi-spacing-lg, 20px) !important;
+    }
+
+    .rsi-stat-item {
+        padding: var(--rsi-spacing-sm, 10px) !important;
+        min-height: 70px !important;
+    }
+
+    .rsi-stat-value {
+        font-size: 1.35rem !important;
+    }
+
+    .rsi-stat-label {
+        font-size: 0.72rem !important;
+    }
+
+    /* --- Tablas y Desplazamiento Táctil en Tablet --- */
+    .rsi-table-wrapper {
+        display: block !important;
+        width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        border-radius: var(--rsi-radius-md, 10px) !important;
+        margin-bottom: var(--rsi-spacing-md, 16px) !important;
+    }
+
+    .rsi-table {
+        min-width: 720px !important;
+        width: 100% !important;
+    }
+
+    .rsi-table th,
+    .rsi-table td {
+        padding: 10px 12px !important;
+        font-size: 0.85rem !important;
+        white-space: nowrap !important;
+    }
+
+    .rsi-table-actions,
+    .rsi-table td:last-child {
+        white-space: nowrap !important;
+    }
+
+    /* Botones de acción táctiles en tabla */
+    .rsi-btn-action,
+    .rsi-btn-icon,
+    .rsi-action-btn {
+        min-width: 34px !important;
+        min-height: 34px !important;
+        padding: 6px !important;
+        touch-action: manipulation;
+    }
+
+    /* --- Paginación en Tablet --- */
+    .rsi-pagination {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        padding: var(--rsi-spacing-md, 14px) 0 !important;
+        gap: var(--rsi-spacing-md, 16px) !important;
+    }
+
+    .rsi-pagination-info {
+        font-size: 0.85rem !important;
+        margin: 0 !important;
+        white-space: nowrap !important;
+    }
+
+    .rsi-pagination-controls {
+        display: flex !important;
+        flex-direction: row !important;
+        width: auto !important;
+        justify-content: flex-end !important;
+        gap: var(--rsi-spacing-sm, 10px) !important;
+    }
+
+    .rsi-btn-page {
+        flex: none !important;
+        width: auto !important;
+        min-width: 105px !important;
+        padding: 8px 16px !important;
+        font-size: 0.85rem !important;
+        box-sizing: border-box !important;
+    }
+
+    /* --- Formularios Multi-Columna y Asistentes (Steps) en Tablet --- */
+    .rsi-form-grid,
+    .rsi-form-row,
+    .cot-form-grid,
+    .fac-form-grid,
+    .rsi-form-grid-3,
+    .rsi-form-grid-4 {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: var(--rsi-spacing-md, 16px) !important;
+    }
+
+    .rsi-form-group.col-span-full,
+    .rsi-form-group.full-width {
+        grid-column: 1 / -1 !important;
+    }
+
+    .rsi-step-indicator,
+    .rsi-form-steps {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        padding: var(--rsi-spacing-sm, 8px) 0 !important;
+        gap: var(--rsi-spacing-xs, 6px) !important;
+    }
+
+    .rsi-step-title {
+        font-size: 0.8rem !important;
+        white-space: nowrap !important;
+    }
+
+    .rsi-btn-prev,
+    .rsi-btn-next,
+    .rsi-btn-submit {
+        min-height: 42px !important;
+        padding: 10px 20px !important;
+        font-size: 0.9rem !important;
+    }
+
+    /* --- Dashboard Operativo en Tablet --- */
+    .rsi-dashboard-section {
+        padding-left: var(--rsi-spacing-lg, 24px) !important;
+        padding-right: var(--rsi-spacing-lg, 24px) !important;
+    }
+
+    .rsi-dashboard-stats,
+    .rsi-stats-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: var(--rsi-spacing-md, 16px) !important;
+    }
+
+    .rsi-stat-card {
+        padding: var(--rsi-spacing-md, 16px) !important;
+        min-height: 90px !important;
+    }
+
+    .rsi-chart-row {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: var(--rsi-spacing-md, 16px) !important;
+    }
+
+    .rsi-chart-container {
+        height: 250px !important;
+        min-height: 220px !important;
+    }
+
+    .rsi-tickets-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: var(--rsi-spacing-md, 16px) !important;
+    }
+
+    .rsi-profile-card {
+        flex-direction: row !important;
+        align-items: center !important;
+        text-align: left !important;
+        padding: var(--rsi-spacing-lg, 20px) !important;
+    }
+
+    .rsi-profile-title-row,
+    .rsi-profile-info p {
+        justify-content: flex-start !important;
+    }
+
+    /* --- Footer Corporativo y Partner en Tablet --- */
+    .rsi-footer {
+        padding: var(--rsi-spacing-3xl, 36px) 0 var(--rsi-spacing-xl, 24px) !important;
+        margin-top: var(--rsi-spacing-3xl, 36px) !important;
+    }
+
+    .rsi-footer-content {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        text-align: left !important;
+        gap: var(--rsi-spacing-xl, 24px) var(--rsi-spacing-2xl, 32px) !important;
+    }
+
+    .rsi-footer-section h4 {
+        display: inline-block !important;
+        text-align: left !important;
+    }
+
+    .rsi-footer-section h4::after {
+        left: 0 !important;
+        transform: none !important;
+    }
+
+    .rsi-footer-section p,
+    .rsi-footer-section ul li a {
+        justify-content: flex-start !important;
+        text-align: left !important;
+    }
+
+    .rsi-social-links {
+        justify-content: flex-start !important;
+    }
+
+    .rsi-footer-partner-container {
+        padding: 0 var(--rsi-spacing-lg, 24px) !important;
+    }
+
+    .rsi-footer-partner-content {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        flex-wrap: wrap !important;
+        gap: var(--rsi-spacing-md, 14px) !important;
+        text-align: left !important;
+    }
+
+    .rsi-footer-partner-text {
+        justify-content: flex-start !important;
+        text-align: left !important;
+        font-size: 0.85rem !important;
+    }
+
+    .rsi-footer-partner-clock {
+        font-size: 0.8rem !important;
+        padding: 4px 10px !important;
+    }
+
+    /* --- Catálogos Públicos, Productos y Blogs en Tablet --- */
+    .rsi-services-grid,
+    .rsi-products-grid,
+    .catalog-grid,
+    .blog-grid,
+    .rsi-cards-grid,
+    .rsi-team-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: var(--rsi-spacing-lg, 20px) !important;
     }
 }
 
-@media (min-width: 768px) {
-    .rsi-visible-mobile {
-        display: none;
+/* ==========================================================================
+   3. TABLET PORTRAIT ESPECÍFICO (768px a 991px)
+   ========================================================================== */
+@media (min-width: 768px) and (max-width: 991px) {
+
+    body {
+        padding-top: 85px;
+    }
+
+    /* Menú móvil: contenedor 100% ancho para ocultamiento total con translateX(100%) */
+    .nan_menu {
+        width: 100% !important;
+        max-width: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        margin: 0 !important;
+        padding: 2.5rem 2rem !important;
+    }
+
+    /* Centrado de los elementos internos en tablet portrait */
+    .nan_menu li {
+        width: 100% !important;
+        max-width: 500px !important;
+        margin: 0 auto !important;
+    }
+
+    .nan-menu-profile-dropdown {
+        max-width: 500px !important;
+        margin: 12px auto 0 !important;
+    }
+
+    .nan_menu li a {
+        font-size: 1.05rem !important;
+        padding: 0.65rem 1rem !important;
+    }
+
+    .nan_logo img {
+        height: 52px;
+    }
+}
+
+/* ==========================================================================
+   4. TABLET LANDSCAPE ESPECÍFICO (992px a 1199px)
+   ========================================================================== */
+@media (min-width: 992px) and (max-width: 1199px) {
+
+    body {
+        padding-top: 92px;
+    }
+
+    /* Navbar horizontal compacto para evitar colisiones */
+    .nan_navbar {
+        padding: 0.55rem 2% !important;
+    }
+
+    .nan_menu {
+        gap: 1rem !important;
+    }
+
+    .nan_menu li a {
+        font-size: 0.88rem !important;
+        gap: 6px !important;
+    }
+
+    .nan_actions {
+        gap: 8px !important;
+    }
+
+    .nan_logo img {
+        height: 50px;
+    }
+
+    .nan_dropdown-menu {
+        min-width: 190px !important;
     }
 }

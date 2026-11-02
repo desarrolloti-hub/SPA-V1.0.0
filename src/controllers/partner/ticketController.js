@@ -1,3 +1,4 @@
+import { solicitarDatosNuevoClienteQuick } from '../../utils/clienteQuickModal.js';
 /* ========================================
    TICKET CONTROLLER
    Controlador para crear y editar tickets
@@ -194,7 +195,7 @@ async function loadInitialData() {
 /**
  * Carga clientes en el select
  */
-function cargarClientesEnSelect() {
+function cargarClientesEnSelect(selectedId = null) {
     const select = document.getElementById('clienteId');
     if (!select) return;
     
@@ -203,8 +204,16 @@ function cargarClientesEnSelect() {
         const option = document.createElement('option');
         option.value = cliente.id;
         option.textContent = cliente.nombre;
+        if (selectedId && cliente.id === selectedId) {
+            option.selected = true;
+        }
         select.appendChild(option);
     });
+
+    const optNuevo = document.createElement('option');
+    optNuevo.value = '__nuevo__';
+    optNuevo.textContent = '➕ Agregar nuevo cliente...';
+    select.appendChild(optNuevo);
 }
 
 /**
@@ -530,13 +539,45 @@ function showToast(message, type = 'info') {
  */
 function initClientesSelect() {
     const select = document.getElementById('clienteId');
+    const btnNuevo = document.getElementById('btnNuevoClienteTicket');
+
+    if (btnNuevo) {
+        btnNuevo.addEventListener('click', () => abrirModalNuevoCliente());
+    }
+
     if (!select) return;
     
-    select.addEventListener('change', (e) => {
+    select.addEventListener('change', async (e) => {
         const value = e.target.value;
+        if (value === '__nuevo__') {
+            select.value = '';
+            await abrirModalNuevoCliente();
+            return;
+        }
         loadClienteData(value);
         updateResumen();
     });
+}
+
+async function abrirModalNuevoCliente() {
+    try {
+        const result = await solicitarDatosNuevoClienteQuick();
+        if (!result || !result.success) return;
+
+        const ticketSvc = service || new TicketService();
+        const clientes = await ticketSvc.getClientesForSelect();
+        clientesCargados = clientes;
+        cargarClientesEnSelect(result.id);
+
+        const select = document.getElementById('clienteId');
+        if (select) {
+            select.value = result.id;
+        }
+        loadClienteData(result.id);
+        updateResumen();
+    } catch (error) {
+        console.error('❌ Error registrando cliente en ticket:', error);
+    }
 }
 
 /**

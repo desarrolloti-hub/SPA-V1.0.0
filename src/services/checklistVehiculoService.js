@@ -257,9 +257,10 @@ export class ChecklistVehiculoService {
 
     /**
      * Obtiene el listado de todas las salidas asignadas al colaborador actual (propias)
+     * @param {boolean} [forceRefresh=false]
      * @returns {Promise<Array>}
      */
-    async getMisSalidasVehiculares() {
+    async getMisSalidasVehiculares(forceRefresh = false) {
         try {
             const uid = this._getCurrentUserUid();
             if (!uid) return [];
@@ -396,6 +397,65 @@ export class ChecklistVehiculoService {
         } catch (error) {
             console.error('❌ Error cancelando salida vehicular:', error);
             return { success: false, error: error.message || 'Error al cancelar la salida' };
+        }
+    }
+
+    /**
+     * Registra el retorno del vehículo devolviéndolo a estado disponible
+     * @param {string} checklistId
+     * @param {Object} retornoData - { kilometrajeRetorno, nivelCombustibleRetorno, observacionesRetorno }
+     * @returns {Promise<{ success: boolean, message?: string, error?: string }>}
+     */
+    async registrarRetornoVehiculo(checklistId, retornoData) {
+        try {
+            const currentUid = this._getCurrentUserUid();
+            const currentNombre = this._getCurrentUserName();
+
+            if (!currentUid) {
+                return { success: false, error: 'Sesión no válida o expirada.' };
+            }
+
+            const checklist = await this.repository.getChecklistById(checklistId, true);
+            if (!checklist) {
+                return { success: false, error: 'El registro de salida vehicular no existe.' };
+            }
+
+            if (checklist.estado !== 'aceptada') {
+                return { success: false, error: `Esta salida vehicular no se encuentra activa en ruta (Estado actual: ${checklist.estado}).` };
+            }
+
+            // Validar que el usuario sea el receptor asignado o tenga rol administrativo
+            const user = this._getCurrentUser();
+            const esReceptor = checklist.receptorUid === currentUid;
+            const esAdmin = user && (user.rol === 'admin' || user.role === 'admin');
+
+            if (!esReceptor && !esAdmin) {
+                return { success: false, error: 'Solo el colaborador asignado a esta salida puede registrar el regreso del vehículo.' };
+            }
+
+            const validation = ChecklistVehiculoModel.validateRetorno(retornoData, checklist.kilometrajeSalida || 0);
+            if (!validation.valid) {
+                return { success: false, error: validation.errors.join('<br>') };
+            }
+
+            const result = await this.repository.registrarRetornoVehiculoAtomic(checklistId, {
+                kilometrajeRetorno: retornoData.kilometrajeRetorno,
+                nivelCombustibleRetorno: retornoData.nivelCombustibleRetorno,
+                observacionesRetorno: retornoData.observacionesRetorno || '',
+                retornadoPorUid: currentUid,
+                retornadoPorNombre: currentNombre
+            });
+
+            // Limpiar caché de vehículos para que el parque vehicular refleje inmediatamente el estado disponible
+            this.vehiculoRepository.clearCache();
+
+            return {
+                success: true,
+                message: `El vehículo con placas ${checklist.vehiculoPlacas} ha sido devuelto exitosamente. La salida ${result.folio} concluyó y la unidad vuelve a estar disponible.`
+            };
+        } catch (error) {
+            console.error('❌ Error en registrarRetornoVehiculo:', error);
+            return { success: false, error: error.message || 'Error al procesar el retorno del vehículo.' };
         }
     }
 }

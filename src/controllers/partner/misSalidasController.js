@@ -14,6 +14,7 @@ export class MisSalidasController {
         this.salidas = [];
         this.signaturePad = null;
         this.salidaSeleccionadaParaFirmar = null;
+        this.salidaSeleccionadaParaRetorno = null;
     }
 
     async init() {
@@ -73,7 +74,18 @@ export class MisSalidasController {
             modalDetalleTitle: document.getElementById('modalDetallePropiaTitle'),
             modalDetalleContent: document.getElementById('modalDetallePropiaContent'),
             btnCloseModalDetalle: document.getElementById('btnCloseModalDetallePropia'),
-            btnCerrarModalDetalle: document.getElementById('btnCerrarModalDetallePropia')
+            btnCerrarModalDetalle: document.getElementById('btnCerrarModalDetallePropia'),
+            // Modal Retorno
+            modalRetorno: document.getElementById('modalRetornarVehiculo'),
+            modalRetornoTitle: document.getElementById('modalRetornoTitle'),
+            retornoSalidaResumen: document.getElementById('retornoSalidaResumen'),
+            retornoKilometraje: document.getElementById('retornoKilometraje'),
+            retornoCombustible: document.getElementById('retornoCombustible'),
+            retornoObservaciones: document.getElementById('retornoObservaciones'),
+            retornoKmAyuda: document.getElementById('retornoKmAyuda'),
+            btnCloseModalRetorno: document.getElementById('btnCloseModalRetorno'),
+            btnCancelModalRetorno: document.getElementById('btnCancelModalRetorno'),
+            btnConfirmarRetorno: document.getElementById('btnConfirmarRetorno')
         };
     }
 
@@ -122,6 +134,19 @@ export class MisSalidasController {
             this.dom.btnCerrarModalDetalle.addEventListener('click', () => this.cerrarModalDetalle());
         }
 
+        // Modal Retorno eventos
+        if (this.dom.btnCloseModalRetorno) {
+            this.dom.btnCloseModalRetorno.addEventListener('click', () => this.cerrarModalRetorno());
+        }
+
+        if (this.dom.btnCancelModalRetorno) {
+            this.dom.btnCancelModalRetorno.addEventListener('click', () => this.cerrarModalRetorno());
+        }
+
+        if (this.dom.btnConfirmarRetorno) {
+            this.dom.btnConfirmarRetorno.addEventListener('click', () => this.procesarRetorno());
+        }
+
         // Delegación de eventos en tabla
         if (this.dom.tableBody) {
             this.dom.tableBody.addEventListener('click', (e) => {
@@ -129,6 +154,13 @@ export class MisSalidasController {
                 if (btnFirmar) {
                     const id = btnFirmar.dataset.id;
                     this.abrirModalFirmar(id);
+                    return;
+                }
+
+                const btnRetorno = e.target.closest('.btn-abrir-retorno');
+                if (btnRetorno) {
+                    const id = btnRetorno.dataset.id;
+                    this.abrirModalRetorno(id);
                     return;
                 }
 
@@ -245,15 +277,16 @@ export class MisSalidasController {
                 const km = (item.kilometrajeSalida || 0).toLocaleString();
                 const badge = estadoBadges[item.estado] || `<span class="rsi-badge rsi-badge-secondary">${item.estado}</span>`;
                 const esPendiente = item.estado === 'pendiente_aceptacion';
+                const esAceptada = item.estado === 'aceptada';
 
                 return `
                     <tr style="${esPendiente ? 'background: rgba(245, 158, 11, 0.04);' : ''}">
-                        <td>
+                        <td data-label="Folio">
                             <strong style="color: var(--rsi-text-gold); font-family: monospace; font-size: 0.95rem;">
                                 ${item.folio || 'S/F'}
                             </strong>
                         </td>
-                        <td>
+                        <td data-label="Vehículo">
                             <div style="font-weight: 600; color: var(--rsi-text-primary);">
                                 ${item.vehiculoInfo?.marca || ''} ${item.vehiculoInfo?.modelo || ''}
                             </div>
@@ -264,24 +297,34 @@ export class MisSalidasController {
                                 ${item.vehiculoNumEconomico ? `<span style="margin-left: 6px;">Eco: <strong>${item.vehiculoNumEconomico}</strong></span>` : ''}
                             </div>
                         </td>
-                        <td>
+                        <td data-label="Inspector">
                             <span style="font-size: 0.88rem; color: var(--rsi-text-primary);">${item.inspectorNombre || 'Inspector'}</span>
                         </td>
-                        <td>
+                        <td data-label="Odómetro Salida">
                             <span style="font-family: monospace; font-weight: 600;">${km} km</span>
                             <div style="font-size: 0.75rem; color: var(--rsi-text-muted);">Combustible: ${item.nivelCombustibleSalida || '1/2'}</div>
+                            ${item.retorno?.kilometrajeRetorno ? `
+                                <div style="font-size: 0.75rem; color: var(--rsi-success); font-family: monospace; margin-top: 2px;">
+                                    <i class="fas fa-undo"></i> Llegada: ${item.retorno.kilometrajeRetorno.toLocaleString()} km
+                                </div>
+                            ` : ''}
                         </td>
-                        <td>
+                        <td data-label="Fecha Registro">
                             <span style="font-size: 0.82rem; color: var(--rsi-text-muted);">${fechaStr}</span>
                         </td>
-                        <td>
+                        <td data-label="Estado">
                             ${badge}
                         </td>
-                        <td>
-                            <div class="rsi-table-actions" style="justify-content: center; gap: 8px;">
+                        <td data-label="Acciones" style="text-align: center;">
+                            <div class="rsi-table-actions">
                                 ${esPendiente ? `
-                                    <button type="button" class="rsi-btn-action rsi-btn-action-primary btn-abrir-firma-salida" data-id="${item.id}" style="padding: 6px 12px; font-size: 0.82rem; display: inline-flex; align-items: center; gap: 6px;" title="Firmar y Recibir Automóvil">
-                                        <i class="fas fa-signature"></i> Firmar Salida
+                                    <button type="button" class="rsi-btn-icon rsi-btn-icon-warning btn-abrir-firma-salida" data-id="${item.id}" title="Firmar Salida">
+                                        <i class="fas fa-file-signature"></i>
+                                    </button>
+                                ` : ''}
+                                ${esAceptada ? `
+                                    <button type="button" class="rsi-btn-icon rsi-btn-icon-return btn-abrir-retorno" data-id="${item.id}" title="Regresar Vehículo">
+                                        <i class="fas fa-undo"></i>
                                     </button>
                                 ` : ''}
                                 <button type="button" class="rsi-btn-icon rsi-btn-icon-view btn-ver-salida-propia" data-id="${item.id}" title="Ver Inspección y Fotos">
@@ -429,6 +472,162 @@ export class MisSalidasController {
         }
     }
 
+    abrirModalRetorno(checklistId) {
+        const item = this.salidas.find(s => s.id === checklistId);
+        if (!item) return;
+
+        this.salidaSeleccionadaParaRetorno = item;
+
+        if (this.dom.modalRetornoTitle) {
+            this.dom.modalRetornoTitle.innerHTML = `<i class="fas fa-undo"></i> Registrar Regreso de Vehículo: ${item.folio} (${item.vehiculoPlacas})`;
+        }
+
+        if (this.dom.retornoSalidaResumen) {
+            this.dom.retornoSalidaResumen.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; font-size: 0.88rem;">
+                    <div>
+                        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--rsi-text-muted); display: block;">Vehículo:</span>
+                        <strong>${item.vehiculoInfo?.marca || ''} ${item.vehiculoInfo?.modelo || ''}</strong>
+                    </div>
+                    <div>
+                        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--rsi-text-muted); display: block;">Placas / No. Eco:</span>
+                        <strong style="color: var(--rsi-text-gold); font-family: monospace;">${item.vehiculoPlacas} ${item.vehiculoNumEconomico ? `(${item.vehiculoNumEconomico})` : ''}</strong>
+                    </div>
+                    <div>
+                        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--rsi-text-muted); display: block;">Odómetro Inicial Salida:</span>
+                        <strong style="font-family: monospace;">${(item.kilometrajeSalida || 0).toLocaleString()} km</strong>
+                    </div>
+                    <div>
+                        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--rsi-text-muted); display: block;">Combustible Salida:</span>
+                        <span>${item.nivelCombustibleSalida || '1/2'}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        const kmMin = item.kilometrajeSalida || 0;
+        if (this.dom.retornoKilometraje) {
+            this.dom.retornoKilometraje.value = kmMin;
+            this.dom.retornoKilometraje.min = kmMin;
+        }
+
+        if (this.dom.retornoKmAyuda) {
+            this.dom.retornoKmAyuda.textContent = `Mínimo permitido: ${kmMin.toLocaleString()} km (odómetro de salida).`;
+        }
+
+        if (this.dom.retornoCombustible) {
+            this.dom.retornoCombustible.value = item.nivelCombustibleSalida || '1/2';
+        }
+
+        if (this.dom.retornoObservaciones) {
+            this.dom.retornoObservaciones.value = '';
+        }
+
+        if (this.dom.modalRetorno) {
+            this.dom.modalRetorno.style.display = 'flex';
+        }
+    }
+
+    cerrarModalRetorno() {
+        if (this.dom.modalRetorno) {
+            this.dom.modalRetorno.style.display = 'none';
+        }
+        this.salidaSeleccionadaParaRetorno = null;
+    }
+
+    async procesarRetorno() {
+        if (!this.salidaSeleccionadaParaRetorno) return;
+
+        const item = this.salidaSeleccionadaParaRetorno;
+        const kmSalida = item.kilometrajeSalida || 0;
+        const kmRetornoVal = parseFloat(this.dom.retornoKilometraje?.value);
+
+        if (isNaN(kmRetornoVal) || kmRetornoVal < 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Odómetro requerido',
+                text: 'Por favor ingresa un odómetro numérico válido para registrar el regreso del vehículo.',
+                confirmButtonColor: '#D4AF37'
+            });
+            return;
+        }
+
+        if (kmRetornoVal < kmSalida) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Odómetro inválido',
+                text: `El odómetro de llegada (${kmRetornoVal.toLocaleString()} km) no puede ser menor al de salida (${kmSalida.toLocaleString()} km).`,
+                confirmButtonColor: '#D4AF37'
+            });
+            return;
+        }
+
+        const combustibleRetorno = this.dom.retornoCombustible?.value || '1/2';
+        const observaciones = (this.dom.retornoObservaciones?.value || '').trim();
+        const kmRecorridos = Math.max(0, kmRetornoVal - kmSalida);
+
+        const confirmResult = await Swal.fire({
+            title: '¿Confirmar retorno del vehículo?',
+            html: `
+                <div style="text-align: left; font-size: 0.9rem; line-height: 1.6;">
+                    <p style="margin: 0 0 6px 0;"><strong>Vehículo:</strong> ${item.vehiculoInfo?.marca || ''} ${item.vehiculoInfo?.modelo || ''} (${item.vehiculoPlacas})</p>
+                    <p style="margin: 0 0 6px 0;"><strong>Odómetro de Llegada:</strong> <span style="font-family: monospace; font-weight: 700; color: #d4af37;">${kmRetornoVal.toLocaleString()} km</span> (+${kmRecorridos.toLocaleString()} km recorridos)</p>
+                    <p style="margin: 0 0 6px 0;"><strong>Nivel de Combustible:</strong> ${combustibleRetorno}</p>
+                    <p style="margin: 0; color: #16a34a; font-weight: 600;"><i class="fas fa-check-circle"></i> La unidad quedará disponible de inmediato en el parque vehicular.</p>
+                </div>
+            `,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#16a34a',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: '<i class="fas fa-undo"></i> Sí, registrar regreso',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (!confirmResult.isConfirmed) return;
+
+        Swal.fire({
+            title: 'Registrando retorno del vehículo...',
+            text: 'Actualizando estado a Disponible y concluyendo la salida operativa...',
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading()
+        });
+
+        try {
+            const res = await this.service.registrarRetornoVehiculo(item.id, {
+                kilometrajeRetorno: kmRetornoVal,
+                nivelCombustibleRetorno: combustibleRetorno,
+                observacionesRetorno: observaciones
+            });
+
+            if (res.success) {
+                this.cerrarModalRetorno();
+                await this.cargarSalidas();
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Vehículo Regresado con Éxito!',
+                    text: res.message,
+                    confirmButtonColor: '#D4AF37'
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No se pudo registrar el retorno',
+                    text: res.error || 'Ocurrió un error al procesar el retorno del vehículo.',
+                    confirmButtonColor: '#D4AF37'
+                });
+            }
+        } catch (error) {
+            console.error('❌ Error procesando retorno de vehículo:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error de procesamiento',
+                text: error.message,
+                confirmButtonColor: '#D4AF37'
+            });
+        }
+    }
+
     abrirModalDetalle(checklistId) {
         const item = this.salidas.find(s => s.id === checklistId);
         if (!item || !this.dom.modalDetalle || !this.dom.modalDetalleContent) return;
@@ -546,6 +745,41 @@ export class MisSalidasController {
                     </div>
                 `}
             </div>
+
+            <!-- Retorno y Devolución del Vehículo (si concluida) -->
+            ${item.retorno && item.retorno.completado ? `
+                <div style="margin-top: var(--rsi-spacing-lg);">
+                    <h4 style="font-size: 1rem; font-weight: 700; color: var(--rsi-text-primary); margin-bottom: var(--rsi-spacing-sm); display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-check-circle" style="color: var(--rsi-success);"></i> Devolución y Retorno del Vehículo
+                    </h4>
+                    <div style="background: rgba(34, 197, 94, 0.08); border: 1.5px solid rgba(34, 197, 94, 0.3); border-radius: var(--rsi-radius-lg); padding: var(--rsi-spacing-md);">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; font-size: 0.88rem;">
+                            <div>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--rsi-text-muted); display: block;">Fecha y Hora Retorno:</span>
+                                <strong>${item.retorno.fechaHoraRetorno ? new Date(item.retorno.fechaHoraRetorno).toLocaleString('es-MX') : '-'}</strong>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--rsi-text-muted); display: block;">Odómetro Llegada:</span>
+                                <strong style="font-family: monospace; color: var(--rsi-text-gold); font-size: 0.95rem;">${(item.retorno.kilometrajeRetorno || 0).toLocaleString()} km</strong>
+                                <small style="display: block; color: var(--rsi-text-secondary);">(Recorrido: +${Math.max(0, (item.retorno.kilometrajeRetorno || 0) - (item.kilometrajeSalida || 0)).toLocaleString()} km)</small>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--rsi-text-muted); display: block;">Combustible Llegada:</span>
+                                <strong>${item.retorno.nivelCombustibleRetorno || '-'}</strong>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--rsi-text-muted); display: block;">Regresado por:</span>
+                                <strong>${item.retorno.retornadoPorNombre || item.receptorNombre || '-'}</strong>
+                            </div>
+                        </div>
+                        ${item.retorno.observacionesRetorno ? `
+                            <div style="margin-top: 10px; font-size: 0.85rem; border-top: 1px dashed rgba(34, 197, 94, 0.3); padding-top: 8px;">
+                                <strong>Observaciones al entregar:</strong> ${item.retorno.observacionesRetorno}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            ` : ''}
         `;
 
         this.dom.modalDetalle.style.display = 'flex';

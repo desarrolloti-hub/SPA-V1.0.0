@@ -155,10 +155,15 @@
                         </button>
                     </div>
 
-                    <!-- Inputs de archivo/cámara nativa ocultos por etapa -->
+                    <!-- Inputs de captura nativa con cámara ocultos por etapa -->
                     <input type="file" id="fileInputAntes" accept="image/*" capture="environment" style="display: none;" />
                     <input type="file" id="fileInputDurante" accept="image/*" capture="environment" style="display: none;" />
                     <input type="file" id="fileInputDespues" accept="image/*" capture="environment" style="display: none;" />
+
+                    <!-- Inputs de galería independiente por etapa con selección múltiple -->
+                    <input type="file" id="galleryInputAntes" accept="image/*" multiple style="display: none;" />
+                    <input type="file" id="galleryInputDurante" accept="image/*" multiple style="display: none;" />
+                    <input type="file" id="galleryInputDespues" accept="image/*" multiple style="display: none;" />
 
                     <!-- Panel Etapa: ANTES -->
                     <div class="ta-stage-panel active" id="panelStageAntes" data-stage-panel="antes">

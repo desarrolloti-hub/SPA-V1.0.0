@@ -1044,6 +1044,21 @@
     .veh-specs-grid {
         grid-template-columns: 1fr;
     }
+
+    .veh-header-actions {
+        width: 100% !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    .veh-header-actions .veh-btn,
+    .veh-header-actions > * {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        justify-content: center !important;
+        text-align: center !important;
+    }
 }
 
 .veh-specs-card {

@@ -171,12 +171,12 @@ export class ChecklistsCrudController {
 
                 return `
                     <tr>
-                        <td>
+                        <td data-label="Folio">
                             <strong style="color: var(--rsi-text-gold); font-family: monospace; font-size: 0.95rem;">
                                 ${item.folio || 'S/F'}
                             </strong>
                         </td>
-                        <td>
+                        <td data-label="Vehículo">
                             <span class="rsi-badge rsi-badge-outline" style="font-family: monospace; font-weight: 700;">
                                 ${item.vehiculoPlacas || 'S/P'}
                             </span>
@@ -184,31 +184,46 @@ export class ChecklistsCrudController {
                                 ${item.vehiculoNumEconomico ? `Eco: ${item.vehiculoNumEconomico} · ` : ''}${item.vehiculoInfo?.marca || ''} ${item.vehiculoInfo?.modelo || ''}
                             </div>
                         </td>
-                        <td>
+                        <td data-label="Conductor">
                             <strong style="color: var(--rsi-text-primary);">${item.receptorNombre || 'Colaborador'}</strong>
                             <div style="font-size: 0.78rem; color: var(--rsi-text-muted);">${item.receptorPuesto || ''}</div>
                         </td>
-                        <td>
+                        <td data-label="Inspector">
                             <span style="font-size: 0.88rem; color: var(--rsi-text-secondary);">${item.inspectorNombre || 'Inspector'}</span>
                         </td>
-                        <td>
+                        <td data-label="Odómetro">
                             <span style="font-family: monospace; font-weight: 600;">${km} km</span>
+                            ${item.retorno?.kilometrajeRetorno ? `
+                                <div style="font-size: 0.75rem; color: var(--rsi-success); font-family: monospace; margin-top: 2px;">
+                                    <i class="fas fa-undo"></i> Llegada: ${item.retorno.kilometrajeRetorno.toLocaleString()} km
+                                </div>
+                            ` : ''}
                         </td>
-                        <td>
+                        <td data-label="Fecha / Hora">
                             <span style="font-size: 0.82rem; color: var(--rsi-text-muted);">${fechaStr}</span>
+                            ${item.retorno?.fechaHoraRetorno ? `
+                                <div style="font-size: 0.72rem; color: var(--rsi-text-secondary); margin-top: 2px;">
+                                    Fin: ${new Date(item.retorno.fechaHoraRetorno).toLocaleDateString('es-MX')}
+                                </div>
+                            ` : ''}
                         </td>
-                        <td>
+                        <td data-label="Estado y Firma">
                             <div>${badge}</div>
                             <small style="font-size: 0.75rem; color: ${firmada ? 'var(--rsi-success)' : 'var(--rsi-warning)'}; display: inline-flex; align-items: center; gap: 4px; margin-top: 3px; font-weight: 600;">
                                 <i class="fas ${firmada ? 'fa-signature' : 'fa-hourglass-half'}"></i>
                                 ${firmada ? 'Firmado' : 'Sin firma'}
                             </small>
                         </td>
-                        <td>
+                        <td data-label="Acciones" style="text-align: center;">
                             <div class="rsi-table-actions">
                                 ${item.estado === 'pendiente_aceptacion' && item.receptorUid === this.currentUid ? `
-                                    <a href="/partner/mis-salidas?firmarId=${item.id}" class="rsi-btn-icon rsi-btn-icon-success" data-link title="Firmar Aceptación">
-                                        <i class="fas fa-signature"></i>
+                                    <a href="/partner/mis-salidas?firmarId=${item.id}" class="rsi-btn-icon rsi-btn-icon-warning" data-link title="Firmar Aceptación">
+                                        <i class="fas fa-file-signature"></i>
+                                    </a>
+                                ` : ''}
+                                ${item.estado === 'aceptada' && item.receptorUid === this.currentUid ? `
+                                    <a href="/partner/mis-salidas" class="rsi-btn-icon rsi-btn-icon-return" data-link title="Regresar Vehículo en Mis Salidas">
+                                        <i class="fas fa-undo"></i>
                                     </a>
                                 ` : ''}
                                 <button type="button" class="rsi-btn-icon rsi-btn-icon-view btn-ver-detalle-chk" data-id="${item.id}" title="Ver Inspección y Fotos">
@@ -340,6 +355,41 @@ export class ChecklistsCrudController {
                     </div>
                 `}
             </div>
+
+            <!-- Retorno y Devolución del Vehículo (si concluida) -->
+            ${item.retorno && item.retorno.completado ? `
+                <div style="margin-top: var(--rsi-spacing-lg);">
+                    <h4 style="font-size: 1rem; font-weight: 700; color: var(--rsi-text-primary); margin-bottom: var(--rsi-spacing-sm); display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-check-circle" style="color: var(--rsi-success);"></i> Devolución y Retorno del Vehículo
+                    </h4>
+                    <div style="background: rgba(34, 197, 94, 0.08); border: 1.5px solid rgba(34, 197, 94, 0.3); border-radius: var(--rsi-radius-lg); padding: var(--rsi-spacing-md);">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; font-size: 0.88rem;">
+                            <div>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--rsi-text-muted); display: block;">Fecha y Hora Retorno:</span>
+                                <strong>${item.retorno.fechaHoraRetorno ? new Date(item.retorno.fechaHoraRetorno).toLocaleString('es-MX') : '-'}</strong>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--rsi-text-muted); display: block;">Odómetro Llegada:</span>
+                                <strong style="font-family: monospace; color: var(--rsi-text-gold); font-size: 0.95rem;">${(item.retorno.kilometrajeRetorno || 0).toLocaleString()} km</strong>
+                                <small style="display: block; color: var(--rsi-text-secondary);">(Recorrido: +${Math.max(0, (item.retorno.kilometrajeRetorno || 0) - (item.kilometrajeSalida || 0)).toLocaleString()} km)</small>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--rsi-text-muted); display: block;">Combustible Llegada:</span>
+                                <strong>${item.retorno.nivelCombustibleRetorno || '-'}</strong>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--rsi-text-muted); display: block;">Regresado por:</span>
+                                <strong>${item.retorno.retornadoPorNombre || item.receptorNombre || '-'}</strong>
+                            </div>
+                        </div>
+                        ${item.retorno.observacionesRetorno ? `
+                            <div style="margin-top: 10px; font-size: 0.85rem; border-top: 1px dashed rgba(34, 197, 94, 0.3); padding-top: 8px;">
+                                <strong>Observaciones al entregar:</strong> ${item.retorno.observacionesRetorno}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            ` : ''}
         `;
 
         this.dom.modal.style.display = 'flex';

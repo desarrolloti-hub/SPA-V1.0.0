@@ -972,25 +972,15 @@ export class FacturaService {
             };
 
             // Verificar PDF
-            if (factura.pdfUrl) {
-                try {
-                    const response = await fetch(factura.pdfUrl, { method: 'HEAD' });
-                    result.pdf.existe = response.ok;
-                    result.pdf.url = factura.pdfUrl;
-                } catch (error) {
-                    console.error('❌ Error verificando PDF:', error);
-                }
+            if (factura.pdfUrl && typeof factura.pdfUrl === 'string' && factura.pdfUrl.trim().length > 0) {
+                result.pdf.existe = true;
+                result.pdf.url = factura.pdfUrl;
             }
 
             // Verificar XML
-            if (factura.xmlUrl) {
-                try {
-                    const response = await fetch(factura.xmlUrl, { method: 'HEAD' });
-                    result.xml.existe = response.ok;
-                    result.xml.url = factura.xmlUrl;
-                } catch (error) {
-                    console.error('❌ Error verificando XML:', error);
-                }
+            if (factura.xmlUrl && typeof factura.xmlUrl === 'string' && factura.xmlUrl.trim().length > 0) {
+                result.xml.existe = true;
+                result.xml.url = factura.xmlUrl;
             }
 
             return result;

@@ -166,15 +166,23 @@ export class BlogService {
 
             // Validar esquema
             const validation = BlogModel.validate(blogData);
-            if (!validation.isValid) {
-                return { success: false, error: validation.errors.join(' | ') };
+            if (!validation.valid && !validation.isValid) {
+                const errorMsg = Array.isArray(validation.errors)
+                    ? validation.errors.join(' | ')
+                    : (typeof validation.errors === 'object' && validation.errors !== null)
+                        ? Object.values(validation.errors).join(' | ')
+                        : String(validation.errors || 'Datos inválidos para el blog');
+                return { success: false, error: errorMsg };
             }
 
-            const docId = await this.repository.createBlog(blogData);
+            const createRes = await this.repository.createBlog(blogData);
+            if (!createRes.success) {
+                return { success: false, error: createRes.error || 'Error al guardar el blog en base de datos.' };
+            }
 
             return {
                 success: true,
-                id: docId,
+                id: createRes.id,
                 slug: blogData.slug,
                 message: 'Blog publicado / guardado exitosamente.'
             };
@@ -233,11 +241,19 @@ export class BlogService {
 
             // Validar campos actualizados
             const validation = BlogModel.validate({ ...existing, ...updateData });
-            if (!validation.isValid) {
-                return { success: false, error: validation.errors.join(' | ') };
+            if (!validation.valid && !validation.isValid) {
+                const errorMsg = Array.isArray(validation.errors)
+                    ? validation.errors.join(' | ')
+                    : (typeof validation.errors === 'object' && validation.errors !== null)
+                        ? Object.values(validation.errors).join(' | ')
+                        : String(validation.errors || 'Datos inválidos para el blog');
+                return { success: false, error: errorMsg };
             }
 
-            await this.repository.updateBlog(id, updateData);
+            const updateRes = await this.repository.updateBlog(id, updateData);
+            if (!updateRes.success) {
+                return { success: false, error: updateRes.error || 'Error al actualizar el blog en base de datos.' };
+            }
 
             return {
                 success: true,
@@ -289,7 +305,10 @@ export class BlogService {
                 return { success: false, error: 'El blog a eliminar no existe.' };
             }
 
-            await this.repository.deleteBlog(id);
+            const delRes = await this.repository.deleteBlog(id);
+            if (!delRes.success) {
+                return { success: false, error: delRes.error || 'Error al eliminar el artículo de base de datos.' };
+            }
 
             // Eliminar imagen de portada asociada si existe
             if (existing.imagenPortadaPath) {

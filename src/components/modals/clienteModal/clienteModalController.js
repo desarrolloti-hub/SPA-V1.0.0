@@ -25,6 +25,7 @@ export async function clienteModalController({ close, onSuccess } = {}) {
     loadRegimenesList();
     initValidation();
     initRegimenListener();
+    initRfcShortcuts();
     initSubmit({ close, onSuccess });
 
     console.log('✅ ClienteModal Controller listo');
@@ -51,12 +52,37 @@ function initRegimenListener() {
     if (!input) return;
 
     const handler = () => {
-        // Solo actualiza el código interno (no hay display visible en el modal)
         obtenerCodigoRegimen(input.value);
     };
 
     input.addEventListener('input', handler);
     eventListeners.push({ element: input, event: 'input', handler });
+}
+
+function initRfcShortcuts() {
+    const rfcInput = document.getElementById('modalRfc');
+    const btnPublico = document.getElementById('modalBtnRfcPublico');
+    const btnExtranjero = document.getElementById('modalBtnRfcExtranjero');
+
+    if (btnPublico && rfcInput) {
+        const handlerPub = () => {
+            rfcInput.value = 'XAXX010101000';
+            validateField(rfcInput);
+            rfcInput.focus();
+        };
+        btnPublico.addEventListener('click', handlerPub);
+        eventListeners.push({ element: btnPublico, event: 'click', handler: handlerPub });
+    }
+
+    if (btnExtranjero && rfcInput) {
+        const handlerExt = () => {
+            rfcInput.value = 'XEXX010101000';
+            validateField(rfcInput);
+            rfcInput.focus();
+        };
+        btnExtranjero.addEventListener('click', handlerExt);
+        eventListeners.push({ element: btnExtranjero, event: 'click', handler: handlerExt });
+    }
 }
 
 function initValidation() {
@@ -113,14 +139,17 @@ function clearError(group) {
 }
 
 function prepareData() {
-    const get = (id) => document.getElementById(id)?.value || '';
+    const get = (id) => document.getElementById(id)?.value?.trim() || '';
     const regimen = get('modalRegimen');
+    const rfc = get('modalRfc').toUpperCase();
+
+    const esGenerico = (rfc === 'XAXX010101000' || rfc === 'XEXX010101000');
 
     return {
-        rfc: get('modalRfc'),
+        rfc,
         razonSocial: get('modalRazonSocial'),
-        regimen,
-        regimenCodigo: obtenerCodigoRegimen(regimen) || '',
+        regimen: regimen || (esGenerico ? 'Sin obligaciones fiscales' : ''),
+        regimenCodigo: obtenerCodigoRegimen(regimen) || (esGenerico ? '616' : ''),
         codigoPostal: get('modalCodigoPostal'),
         email: get('modalEmail'),
         telefonoMovil: get('modalTelefono'),
@@ -160,6 +189,7 @@ function initSubmit({ close, onSuccess }) {
 
             if (!result.success) throw new Error(result.message);
 
+            const Swal = window.Swal;
             Swal.fire({
                 icon: 'success',
                 title: '¡Cliente registrado!',
@@ -167,14 +197,14 @@ function initSubmit({ close, onSuccess }) {
                     <div style="text-align:left;">
                         <p><strong>Razón Social:</strong> ${data.razonSocial}</p>
                         <p><strong>RFC:</strong> ${data.rfc}</p>
-                        <p><strong>Email:</strong> ${data.email}</p>
+                        ${data.email ? `<p><strong>Email:</strong> ${data.email}</p>` : ''}
                     </div>
                 `,
                 timer: 2500,
                 showConfirmButton: false
             });
 
-            // Cerrar modal (dispara onClose del manager)
+            // Cerrar modal
             if (typeof close === 'function') close();
 
             // Callback opcional para la vista
@@ -190,6 +220,7 @@ function initSubmit({ close, onSuccess }) {
                 try { msg = Object.values(JSON.parse(msg)).join('\n'); } catch {}
             }
 
+            const Swal = window.Swal;
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -210,7 +241,7 @@ function initSubmit({ close, onSuccess }) {
 function destroyClienteModalController() {
     console.log('🧹 Destroying ClienteModalController');
     eventListeners.forEach(({ element, event, handler }) => {
-        element.removeEventListener(event, handler);
+        element?.removeEventListener(event, handler);
     });
     eventListeners = [];
     service = null;

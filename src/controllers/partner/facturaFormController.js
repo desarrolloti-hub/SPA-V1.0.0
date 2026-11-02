@@ -1,3 +1,4 @@
+import { solicitarDatosNuevoClienteQuick, RFC_PUBLICO_GENERAL, RFC_EXTRANJERO } from '../../utils/clienteQuickModal.js';
 /* ========================================
    FACTURA FORM CONTROLLER
    Controlador para crear/editar una factura
@@ -610,6 +611,43 @@ async function loadFacturaData(id) {
 // =================================================================================
 
 function initClienteSearch() {
+    document.getElementById('btnNuevoClienteFactura')?.addEventListener('click', () => agregarNuevoCliente(''));
+
+    document.getElementById('btnRfcPublicoFactura')?.addEventListener('click', () => {
+        const rfcInput = document.getElementById('clienteRFC');
+        if (rfcInput) {
+            rfcInput.value = RFC_PUBLICO_GENERAL;
+            rfcInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        const regInput = document.getElementById('clienteRegimenCodigo');
+        if (regInput && !regInput.value) {
+            regInput.value = '616';
+            regInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        const usoInput = document.getElementById('usoCFDI');
+        if (usoInput && (!usoInput.value || usoInput.value === 'G03')) {
+            usoInput.value = 'S01';
+            usoInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+
+    document.getElementById('btnRfcExtranjeroFactura')?.addEventListener('click', () => {
+        const rfcInput = document.getElementById('clienteRFC');
+        if (rfcInput) {
+            rfcInput.value = RFC_EXTRANJERO;
+            rfcInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        const regInput = document.getElementById('clienteRegimenCodigo');
+        if (regInput && !regInput.value) {
+            regInput.value = '616';
+            regInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+        const usoInput = document.getElementById('usoCFDI');
+        if (usoInput && (!usoInput.value || usoInput.value === 'G03')) {
+            usoInput.value = 'S01';
+            usoInput.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
     const searchInput = document.getElementById('clienteSearch');
     
     if (!searchInput) return;

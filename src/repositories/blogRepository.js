@@ -145,6 +145,34 @@ export class BlogRepository extends BaseRepository {
     }
 
     /**
+     * Verifica si un slug está disponible
+     * @param {string} slug
+     * @param {string|null} excludeId - ID a ignorar (útil al editar)
+     * @returns {Promise<boolean>} - true si está disponible, false si ya existe
+     */
+    async isSlugAvailable(slug, excludeId = null) {
+        try {
+            if (!slug) return false;
+            const colRef = collection(db, this.collectionName);
+            const q = query(colRef, where('slug', '==', slug), limit(2));
+            const snapshot = await getDocs(q);
+
+            if (snapshot.empty) return true;
+
+            if (excludeId) {
+                // Si el único documento encontrado es el que estamos editando, está disponible
+                const otherDocs = snapshot.docs.filter(d => d.id !== excludeId);
+                return otherDocs.length === 0;
+            }
+
+            return false;
+        } catch (error) {
+            console.error('❌ Error verificando disponibilidad de slug:', error);
+            return true;
+        }
+    }
+
+    /**
      * Crea un nuevo documento de blog
      * @param {Object} blogData
      * @returns {Promise<{ success: boolean, id?: string, error?: string }>}

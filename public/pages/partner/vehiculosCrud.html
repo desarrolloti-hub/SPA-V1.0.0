@@ -69,6 +69,17 @@
                         </select>
                     </div>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                        <label for="filterTipo" style="font-size: 0.85rem; font-weight: 600; color: var(--rsi-text-secondary);">Tipo:</label>
+                        <select id="filterTipo" class="rsi-filter-select" style="padding: 7px 12px; border-radius: var(--rsi-radius-md); border: 1.5px solid var(--rsi-border-color); background: var(--rsi-bg-input); color: var(--rsi-text-primary); font-size: 0.88rem;">
+                            <option value="todos">Todos los tipos</option>
+                            <option value="Automóvil">Automóvil</option>
+                            <option value="Camioneta">Camioneta / SUV</option>
+                            <option value="Pickup">Pickup</option>
+                            <option value="Utilitario">Utilitario</option>
+                            <option value="Motocicleta">Motocicleta</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
                         <label for="filterActivo" style="font-size: 0.85rem; font-weight: 600; color: var(--rsi-text-secondary);">Condición:</label>
                         <select id="filterActivo" class="rsi-filter-select" style="padding: 7px 12px; border-radius: var(--rsi-radius-md); border: 1.5px solid var(--rsi-border-color); background: var(--rsi-bg-input); color: var(--rsi-text-primary); font-size: 0.88rem;">
                             <option value="todos">Todos</option>
@@ -79,21 +90,21 @@
                 </div>
             </div>
 
-            <!-- Estadísticas Unificadas -->
+            <!-- Estadísticas Unificadas con Filtro Rápido -->
             <div class="rsi-stats-container">
-                <div class="rsi-stat-item">
+                <div class="rsi-stat-item stat-filter-btn" data-estado="todos" style="cursor: pointer;" title="Filtrar: Todos los automóviles">
                     <span class="rsi-stat-value" id="statTotalVehiculos">0</span>
                     <span class="rsi-stat-label">Total Unidades</span>
                 </div>
-                <div class="rsi-stat-item">
+                <div class="rsi-stat-item stat-filter-btn" data-estado="disponible" style="cursor: pointer;" title="Filtrar: Solo Disponibles">
                     <span class="rsi-stat-value" style="color: var(--rsi-success);" id="statDisponibles">0</span>
                     <span class="rsi-stat-label">Disponibles</span>
                 </div>
-                <div class="rsi-stat-item">
+                <div class="rsi-stat-item stat-filter-btn" data-estado="en_salida" style="cursor: pointer;" title="Filtrar: En Salida / Ruta">
                     <span class="rsi-stat-value" style="color: var(--rsi-accent);" id="statEnSalida">0</span>
                     <span class="rsi-stat-label">En Ruta</span>
                 </div>
-                <div class="rsi-stat-item">
+                <div class="rsi-stat-item stat-filter-btn" data-estado="salida_pendiente" style="cursor: pointer;" title="Filtrar: Por Firmar">
                     <span class="rsi-stat-value" style="color: var(--rsi-warning);" id="statPorFirmar">0</span>
                     <span class="rsi-stat-label">Por Firmar</span>
                 </div>

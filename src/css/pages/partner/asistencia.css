@@ -1614,3 +1614,41 @@ body.dark-mode .rsi-colab-detail-panel {
 }
 
 
+
+
+/* Responsive Asistencias & Quincenas */
+@media (max-width: 768px) {
+    .rsi-quincena-bar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-quincena-tabs {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 6px !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-quincena-tab {
+        width: 100% !important;
+        justify-content: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-colab-detail-panel {
+        margin: 12px 0 !important;
+        padding: 12px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-colab-detail-kpis {
+        grid-template-columns: 1fr !important;
+    }
+}

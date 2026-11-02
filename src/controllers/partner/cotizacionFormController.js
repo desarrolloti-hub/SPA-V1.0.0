@@ -1,3 +1,4 @@
+import { solicitarDatosNuevoClienteQuick, RFC_PUBLICO_GENERAL, RFC_EXTRANJERO } from '../../utils/clienteQuickModal.js';
 /* ========================================
    COTIZACION FORM CONTROLLER
    Controlador para crear/editar una cotización
@@ -937,6 +938,23 @@ function initEnterNavigation() {
 // =================================================================================
 
 function initClienteSearch() {
+    document.getElementById('btnNuevoClienteCotizacion')?.addEventListener('click', () => agregarNuevoCliente(''));
+
+    document.getElementById('btnRfcPublicoCotizacion')?.addEventListener('click', () => {
+        const rfcInput = document.getElementById('clienteRFC');
+        if (rfcInput) {
+            rfcInput.value = RFC_PUBLICO_GENERAL;
+            rfcInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+    });
+
+    document.getElementById('btnRfcExtranjeroCotizacion')?.addEventListener('click', () => {
+        const rfcInput = document.getElementById('clienteRFC');
+        if (rfcInput) {
+            rfcInput.value = RFC_EXTRANJERO;
+            rfcInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+    });
     const searchInput = document.getElementById('clienteSearch');
     
     if (!searchInput) return;
@@ -1037,137 +1055,22 @@ function mostrarOpcionesClientes(clientesFiltrados, termino = '') {
  * AGREGA UN NUEVO CLIENTE DESDE EL FORMULARIO
  */
 async function agregarNuevoCliente(nombre) {
-    mostrarLoading(true);
     try {
-        const { value: formValues } = await Swal.fire({
-            title: 'Agregar Nuevo Cliente',
-            html: `
-                <div style="text-align: left; max-height: 400px; overflow-y: auto;">
-                    <div style="margin-bottom: 10px;">
-                        <label style="font-weight: 600;">Nombre/Razón Social *</label>
-                        <input id="swal-nombre" class="swal2-input" value="${nombre}" placeholder="Razón Social">
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <label style="font-weight: 600;">RFC *</label>
-                        <input id="swal-rfc" class="swal2-input" placeholder="RFC (ej: XAXX010101000)">
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <label style="font-weight: 600;">Régimen Fiscal</label>
-                        <input id="swal-regimen" class="swal2-input" placeholder="Régimen Fiscal">
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <label style="font-weight: 600;">Código Postal</label>
-                        <input id="swal-cp" class="swal2-input" placeholder="Código Postal">
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <label style="font-weight: 600;">Vialidad</label>
-                        <input id="swal-vialidad" class="swal2-input" placeholder="Calle">
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <label style="font-weight: 600;">Número Exterior</label>
-                        <input id="swal-num-ext" class="swal2-input" placeholder="Número Exterior">
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <label style="font-weight: 600;">Colonia</label>
-                        <input id="swal-colonia" class="swal2-input" placeholder="Colonia">
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <label style="font-weight: 600;">Municipio</label>
-                        <input id="swal-municipio" class="swal2-input" placeholder="Municipio">
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <label style="font-weight: 600;">Estado</label>
-                        <input id="swal-estado" class="swal2-input" placeholder="Estado">
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <label style="font-weight: 600;">Teléfono Móvil</label>
-                        <input id="swal-telefono" class="swal2-input" placeholder="Teléfono Móvil">
-                    </div>
-                    <div style="margin-bottom: 10px;">
-                        <label style="font-weight: 600;">Email</label>
-                        <input id="swal-email" class="swal2-input" placeholder="Email" type="email">
-                    </div>
-                </div>
-            `,
-            showCancelButton: true,
-            confirmButtonText: '✅ Guardar Cliente',
-            cancelButtonText: '❌ Cancelar',
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#6b7280',
-            width: '550px',
-            preConfirm: () => {
-                const nombreCliente = document.getElementById('swal-nombre').value.trim();
-                const rfc = document.getElementById('swal-rfc').value.trim();
-                if (!nombreCliente) {
-                    Swal.showValidationMessage('El nombre es requerido');
-                    return false;
-                }
-                if (!rfc || rfc.length < 12) {
-                    Swal.showValidationMessage('El RFC es requerido (mínimo 12 caracteres)');
-                    return false;
-                }
-                return {
-                    nombre: nombreCliente,
-                    rfc: rfc.toUpperCase(),
-                    regimen: document.getElementById('swal-regimen').value.trim(),
-                    codigoPostal: document.getElementById('swal-cp').value.trim(),
-                    vialidad: document.getElementById('swal-vialidad').value.trim(),
-                    numExt: document.getElementById('swal-num-ext').value.trim(),
-                    colonia: document.getElementById('swal-colonia').value.trim(),
-                    municipio: document.getElementById('swal-municipio').value.trim(),
-                    estado: document.getElementById('swal-estado').value.trim(),
-                    telefono: document.getElementById('swal-telefono').value.trim(),
-                    email: document.getElementById('swal-email').value.trim()
-                };
-            }
-        });
+        const result = await solicitarDatosNuevoClienteQuick({ initialName: nombre || '' });
+        if (!result || !result.success) return;
 
-        if (!formValues) {
-            mostrarLoading(false);
-            return;
+        await loadClientes();
+        const nuevoCliente = clientesList.find(c => c.id === result.id || c.rfc === result.cliente?.rfc) || result.cliente;
+        if (nuevoCliente) {
+            seleccionarCliente(nuevoCliente);
         }
-
-        const clienteData = {
-            razonSocial: formValues.nombre,
-            rfc: formValues.rfc,
-            nombreComercial: formValues.nombre,
-            regimen: formValues.regimen || 'Sin régimen',
-            codigoPostal: formValues.codigoPostal || '00000',
-            nombreVialidad: formValues.vialidad || 'Sin vialidad',
-            numeroExterior: formValues.numExt || '',
-            colonia: formValues.colonia || 'Sin colonia',
-            municipio: formValues.municipio || 'Sin municipio',
-            estado: formValues.estado || 'Sin estado',
-            telefonoMovil: formValues.telefono || '',
-            email: formValues.email || ''
-        };
-
-        const result = await clienteService.createCliente(clienteData);
-        
-        if (result.success) {
-            mostrarAlerta('✅ Cliente agregado exitosamente', 'success');
-            await loadClientes();
-            
-            const nuevoCliente = clientesList.find(c => c.rfc === formValues.rfc);
-            if (nuevoCliente) {
-                seleccionarCliente(nuevoCliente);
-            }
-        } else {
-            throw new Error(result.message || 'Error al crear el cliente');
-        }
-        
-        mostrarLoading(false);
-        
+        mostrarAlerta('✅ Cliente registrado y seleccionado para la cotización', 'success');
     } catch (error) {
-        console.error('Error al agregar cliente:', error);
-        mostrarAlerta('Error al agregar cliente: ' + error.message, 'error');
-        mostrarLoading(false);
+        console.error('❌ Error al agregar cliente desde cotización:', error);
+        mostrarAlerta(error.message || 'Error al agregar cliente', 'error');
     }
 }
 
-/**
- * SELECCIÓN DE CLIENTE - CARGA TODOS LOS DATOS
- */
 function seleccionarCliente(cliente) {
     isManualEntry = false;
     clienteSeleccionadoId = cliente.id || null;
@@ -1182,6 +1085,8 @@ function seleccionarCliente(cliente) {
     setField('clienteSearch', cliente.razonSocial || cliente.nombre || '');
     setField('clienteNombre', cliente.razonSocial || cliente.nombre || '');
     setField('clienteRFC', cliente.rfc || '');
+    const rfcQuickBtns = document.getElementById('containerRfcQuickButtons');
+    if (rfcQuickBtns) rfcQuickBtns.style.display = 'none';
     
     const direccionParts = [
         cliente.nombreVialidad || '',
@@ -1231,6 +1136,8 @@ function seleccionarCliente(cliente) {
 function activarEntradaManual() {
     isManualEntry = true;
     clienteSeleccionadoId = null;
+    const rfcQuickBtns = document.getElementById('containerRfcQuickButtons');
+    if (rfcQuickBtns) rfcQuickBtns.style.display = 'flex';
     document.getElementById('clienteSearch').value = '';
     ['clienteNombre', 'clienteRFC', 'clienteDireccion', 'clienteTelefono', 'clienteEmail'].forEach(id => {
         const field = document.getElementById(id);
@@ -1436,7 +1343,7 @@ function renderItemsTable() {
                     </div>
                 </td>
                 <td data-label="Cantidad">
-                    <input type="number" class="item-cantidad" value="${item.cantidad}" min="0.01" step="0.01">
+                    <input type="number" class="item-cantidad" value="${item.cantidad}" min="1" step="1">
                 </td>
                 <td data-label="Precio Unit.">
                     <input type="number" class="item-precio" value="${item.precio}" min="0" step="0.01">

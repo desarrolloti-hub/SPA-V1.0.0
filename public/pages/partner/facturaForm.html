@@ -71,7 +71,12 @@
 
                         <!-- Buscador de Clientes -->
                         <div class="rsi-form-group">
-                            <label for="clienteSearch">Buscar cliente</label>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                <label for="clienteSearch" style="margin-bottom: 0;">Buscar cliente</label>
+                                <button type="button" id="btnNuevoClienteFactura" style="background: none; border: none; color: var(--rsi-primary); font-size: 0.85rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+                                    <i class="fas fa-plus-circle"></i> Nuevo Cliente
+                                </button>
+                            </div>
                             <div class="rsi-cliente-search-container" style="position: relative;">
                                 <div class="rsi-input-wrapper">
                                     <i class="fas fa-search rsi-input-icon"></i>
@@ -100,6 +105,14 @@
                                 <div class="rsi-input-wrapper">
                                     <i class="fas fa-id-card rsi-input-icon"></i>
                                     <input type="text" id="clienteRFC" required maxlength="13" placeholder="Ej: XAXX010101000">
+                                </div>
+                                <div style="display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;">
+                                    <button type="button" id="btnRfcPublicoFactura" style="background: #eef2ff; color: #3730a3; border: 1px solid #c7d2fe; border-radius: 4px; padding: 3px 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer;">
+                                        <i class="fas fa-users"></i> Público en General
+                                    </button>
+                                    <button type="button" id="btnRfcExtranjeroFactura" style="background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; border-radius: 4px; padding: 3px 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer;">
+                                        <i class="fas fa-globe"></i> Extranjero
+                                    </button>
                                 </div>
                                 <div class="rsi-form-error-message" id="errorClienteRFC"></div>
                             </div>

@@ -4,7 +4,7 @@
    Homologado con panelCrud.css, details.css y variables.css
    ======================================== -->
 
-<section class="rsi-tickets-section">
+<section class="rsi-vehiculos-section rsi-checklists-section">
     <div class="rsi-container">
 
         <!-- Encabezado de Página -->
@@ -181,11 +181,11 @@
             </div>
 
         </div>
-        <div class="rsi-modal-actions" style="justify-content: flex-end; gap: 10px;">
-            <button type="button" class="rsi-btn-action rsi-btn-action-secondary" id="btnCancelModalFirmar">
+        <div class="rsi-modal-footer">
+            <button type="button" class="rsi-btn-crud rsi-btn-crud-outline" id="btnCancelModalFirmar">
                 Cancelar
             </button>
-            <button type="button" class="rsi-btn-action rsi-btn-action-primary" id="btnConfirmarFirma">
+            <button type="button" class="rsi-btn-crud rsi-btn-crud-primary" id="btnConfirmarFirma">
                 <i class="fas fa-check-circle"></i> Confirmar y Firmar Salida
             </button>
         </div>
@@ -206,9 +206,103 @@
         <div class="rsi-modal-body" id="modalDetallePropiaContent">
             <!-- Renderizado dinámico -->
         </div>
-        <div class="rsi-modal-actions" style="justify-content: flex-end;">
-            <button type="button" class="rsi-btn-action rsi-btn-action-secondary" id="btnCerrarModalDetallePropia">
+        <div class="rsi-modal-footer">
+            <button type="button" class="rsi-btn-crud rsi-btn-crud-outline" id="btnCerrarModalDetallePropia">
                 Cerrar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ========================================
+   MODAL PARA REGRESAR / RETORNAR VEHÍCULO
+   ======================================== -->
+<div class="rsi-modal" id="modalRetornarVehiculo" style="display: none;">
+    <div class="rsi-modal-content" style="max-width: 600px;">
+        <div class="rsi-modal-header">
+            <h3 id="modalRetornoTitle">
+                <i class="fas fa-undo"></i> Registrar Regreso de Vehículo
+            </h3>
+            <button type="button" class="rsi-modal-close" id="btnCloseModalRetorno" aria-label="Cerrar">&times;</button>
+        </div>
+        <div class="rsi-modal-body">
+            
+            <!-- Resumen de la Salida a Retornar -->
+            <div id="retornoSalidaResumen" style="background: var(--rsi-bg-secondary); border: 1px solid var(--rsi-border-color); border-radius: var(--rsi-radius-md); padding: var(--rsi-spacing-md); margin-bottom: var(--rsi-spacing-md);">
+                <!-- Dinámico -->
+            </div>
+
+            <!-- Formulario de Retorno -->
+            <form id="formRetornoVehiculo" onsubmit="return false;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--rsi-spacing-md); margin-bottom: var(--rsi-spacing-md);">
+                    <!-- Odómetro de Retorno -->
+                    <div class="rsi-form-group">
+                        <label for="retornoKilometraje" class="rsi-form-label" style="display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 6px; color: var(--rsi-text-primary);">
+                            Odómetro de Llegada (km) <span style="color: var(--rsi-danger);">*</span>:
+                        </label>
+                        <input 
+                            type="number" 
+                            id="retornoKilometraje" 
+                            class="rsi-form-input" 
+                            placeholder="Ej: 45200"
+                            step="any"
+                            min="0"
+                            required
+                            style="font-family: monospace; font-weight: 600;"
+                        >
+                        <small id="retornoKmAyuda" style="color: var(--rsi-text-muted); font-size: 0.78rem; display: block; margin-top: 4px;">
+                            Debe ser igual o mayor al odómetro de salida.
+                        </small>
+                    </div>
+
+                    <!-- Nivel de Combustible al Retorno -->
+                    <div class="rsi-form-group">
+                        <label for="retornoCombustible" class="rsi-form-label" style="display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 6px; color: var(--rsi-text-primary);">
+                            Combustible al Retorno <span style="color: var(--rsi-danger);">*</span>:
+                        </label>
+                        <select id="retornoCombustible" class="rsi-form-select" required>
+                            <option value="Lleno">Lleno (4/4)</option>
+                            <option value="3/4">3/4 de Tanque</option>
+                            <option value="1/2" selected>1/2 Tanque</option>
+                            <option value="1/4">1/4 de Tanque</option>
+                            <option value="1/8">1/8 (Bajo)</option>
+                            <option value="Reserva">Reserva</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Observaciones del Retorno -->
+                <div class="rsi-form-group" style="margin-bottom: var(--rsi-spacing-md);">
+                    <label for="retornoObservaciones" class="rsi-form-label" style="display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 6px; color: var(--rsi-text-primary);">
+                        Observaciones / Condiciones de Entrega:
+                    </label>
+                    <textarea 
+                        id="retornoObservaciones" 
+                        rows="3" 
+                        class="rsi-form-input" 
+                        placeholder="Describe el estado en el que devuelves el vehículo (limpieza, incidencias de trayecto, novedades o sin observaciones)..."
+                        style="resize: vertical; min-height: 80px;"
+                    ></textarea>
+                </div>
+
+                <!-- Aviso de Liberación -->
+                <div style="background: rgba(34, 197, 94, 0.08); border: 1.5px solid rgba(34, 197, 94, 0.3); border-radius: var(--rsi-radius-md); padding: 10px 14px;">
+                    <div style="display: flex; align-items: center; gap: 10px; font-size: 0.84rem; color: var(--rsi-text-primary);">
+                        <i class="fas fa-check-circle" style="color: var(--rsi-success); font-size: 1.1rem; flex-shrink: 0;"></i>
+                        <span>
+                            Al confirmar, el vehículo quedará liberado automáticamente como <strong>Disponible</strong> en el parque vehicular con su kilometraje actualizado.
+                        </span>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="rsi-modal-footer">
+            <button type="button" class="rsi-btn-crud rsi-btn-crud-outline" id="btnCancelModalRetorno">
+                Cancelar
+            </button>
+            <button type="button" class="rsi-btn-crud rsi-btn-crud-primary" id="btnConfirmarRetorno" style="background: var(--rsi-success); border-color: var(--rsi-success); color: #ffffff;">
+                <i class="fas fa-undo"></i> Confirmar Retorno
             </button>
         </div>
     </div>

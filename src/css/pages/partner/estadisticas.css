@@ -692,4 +692,16 @@
     .rsi-stats-filter-buttons button {
         flex: 1;
     }
+
+    .rsi-table-search-inline {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-table-search-inline input {
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
 }

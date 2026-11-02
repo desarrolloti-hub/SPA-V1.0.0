@@ -17,7 +17,12 @@
 .rsi-tickets-section,
 .rsi-asistencias-crud-section,
 .rsi-asistencia-section,
-.rsi-vehiculos-section {
+.rsi-vehiculos-section,
+.rsi-carrusel-section,
+.rsi-reembolsos-section,
+.rsi-checklists-section,
+.rsi-cxc-section,
+.rsi-catalogs-section {
     padding: var(--rsi-spacing-2xl) 0 var(--rsi-spacing-3xl);
     min-height: calc(100vh - 180px);
     background-color: var(--rsi-bg-secondary);
@@ -33,7 +38,12 @@
 .rsi-tickets-section > .rsi-container,
 .rsi-asistencias-crud-section > .rsi-container,
 .rsi-asistencia-section > .rsi-container,
-.rsi-vehiculos-section > .rsi-container {
+.rsi-vehiculos-section > .rsi-container,
+.rsi-carrusel-section > .rsi-container,
+.rsi-reembolsos-section > .rsi-container,
+.rsi-checklists-section > .rsi-container,
+.rsi-cxc-section > .rsi-container,
+.rsi-catalogs-section > .rsi-container {
     max-width: 1380px;
     margin: 0 auto;
     padding: 0 var(--rsi-spacing-xl);
@@ -151,6 +161,8 @@
     gap: var(--rsi-spacing-sm);
     text-decoration: none;
     line-height: 1.2;
+    box-sizing: border-box;
+    max-width: 100%;
 }
 
 .rsi-btn-crud-primary {
@@ -548,6 +560,25 @@
     background: var(--rsi-bg-card, #ffffff);
     color: var(--rsi-text-secondary);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+/* Badge de horarios o avisos en panel actions */
+.rsi-schedule-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--rsi-spacing-xs);
+    padding: 8px 14px;
+    background: var(--rsi-bg-secondary);
+    border: 1px solid var(--rsi-border-color);
+    border-radius: var(--rsi-radius-md);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--rsi-text-secondary);
+    white-space: nowrap;
+    box-sizing: border-box;
 }
 
 .rsi-btn-icon:hover {
@@ -647,6 +678,19 @@
 
 .rsi-btn-icon-facturar.has-factura:hover {
     color: var(--rsi-primary);
+}
+
+.rsi-table .rsi-btn-icon-return,
+.rsi-btn-icon-return {
+    color: var(--rsi-success, #22c55e);
+    transition: var(--rsi-transition-base);
+}
+
+.rsi-table .rsi-btn-icon-return:hover,
+.rsi-btn-icon-return:hover {
+    background: var(--rsi-success, #22c55e);
+    color: #ffffff;
+    border-color: var(--rsi-success, #22c55e);
 }
 
 /* ==========================================
@@ -1098,6 +1142,24 @@
     border-color: var(--rsi-primary);
 }
 
+.rsi-modal-footer,
+.rsi-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--rsi-spacing-sm);
+    padding: var(--rsi-spacing-md) var(--rsi-spacing-lg);
+    border-top: 1px solid var(--rsi-border-color);
+    background: var(--rsi-bg-secondary);
+    box-sizing: border-box;
+}
+
+body.dark-mode .rsi-modal-footer,
+body.dark-mode .rsi-modal-actions {
+    background: var(--rsi-bg-secondary);
+    border-top-color: var(--rsi-border-color);
+}
+
 .rsi-envio-buttons {
     display: flex;
     gap: var(--rsi-spacing-md);
@@ -1354,7 +1416,13 @@ body.dark-mode .rsi-modal-header h3 {
     .rsi-categorias-section > .rsi-container,
     .rsi-tickets-section > .rsi-container,
     .rsi-asistencias-crud-section > .rsi-container,
-    .rsi-asistencia-section > .rsi-container {
+    .rsi-asistencia-section > .rsi-container,
+    .rsi-vehiculos-section > .rsi-container,
+    .rsi-carrusel-section > .rsi-container,
+    .rsi-reembolsos-section > .rsi-container,
+    .rsi-checklists-section > .rsi-container,
+    .rsi-cxc-section > .rsi-container,
+    .rsi-catalogs-section > .rsi-container {
         padding: 0 var(--rsi-spacing-lg);
     }
 
@@ -1370,6 +1438,7 @@ body.dark-mode .rsi-modal-header h3 {
 
     .rsi-panel-header h2 {
         justify-content: center;
+        text-align: center;
     }
 
     .rsi-panel-header .rsi-panel-actions {
@@ -1387,7 +1456,13 @@ body.dark-mode .rsi-modal-header h3 {
     .rsi-categorias-section,
     .rsi-tickets-section,
     .rsi-asistencias-crud-section,
-    .rsi-asistencia-section {
+    .rsi-asistencia-section,
+    .rsi-vehiculos-section,
+    .rsi-carrusel-section,
+    .rsi-reembolsos-section,
+    .rsi-checklists-section,
+    .rsi-cxc-section,
+    .rsi-catalogs-section {
         padding: var(--rsi-spacing-xl) 0 var(--rsi-spacing-2xl);
     }
 
@@ -1400,46 +1475,279 @@ body.dark-mode .rsi-modal-header h3 {
     .rsi-categorias-section > .rsi-container,
     .rsi-tickets-section > .rsi-container,
     .rsi-asistencias-crud-section > .rsi-container,
-    .rsi-asistencia-section > .rsi-container {
+    .rsi-asistencia-section > .rsi-container,
+    .rsi-vehiculos-section > .rsi-container,
+    .rsi-carrusel-section > .rsi-container,
+    .rsi-reembolsos-section > .rsi-container,
+    .rsi-checklists-section > .rsi-container,
+    .rsi-cxc-section > .rsi-container,
+    .rsi-catalogs-section > .rsi-container {
         padding: 0 var(--rsi-spacing-md);
     }
 
     .rsi-panel-crud {
         padding: var(--rsi-spacing-md);
         border-radius: var(--rsi-radius-lg);
+        overflow: visible;
+    }
+
+    .rsi-panel-header {
+        margin-bottom: 12px !important;
+        padding-bottom: 10px !important;
     }
 
     .rsi-panel-header .rsi-panel-actions {
-        flex-direction: column;
-        width: 100%;
+        flex-direction: column !important;
+        width: 100% !important;
+        align-items: stretch !important;
+        gap: var(--rsi-spacing-sm) !important;
+    }
+
+    .rsi-panel-header .rsi-panel-actions > * {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     .rsi-panel-header .rsi-panel-actions .rsi-btn-crud,
-    .rsi-panel-header .rsi-panel-actions > button:not(.rsi-btn-crud) {
-        width: 100%;
+    .rsi-panel-header .rsi-panel-actions > button,
+    .rsi-panel-header .rsi-panel-actions > a {
+        width: 100% !important;
+        justify-content: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
     }
 
-    .rsi-panel-header .rsi-panel-actions > button:not(.rsi-btn-crud) .rsi-btn-crud {
-        width: 100%;
-    }
-
+    /* ==========================================
+       BUSCADORES, FILTROS Y CONTENEDORES EN MÓVIL
+       ========================================== */
     .rsi-search-container {
-        padding: var(--rsi-spacing-md);
+        padding: 8px 10px !important;
+        margin-bottom: 12px !important;
+        border-radius: var(--rsi-radius-md, 8px) !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        gap: 6px !important;
     }
 
     .rsi-search-box {
-        flex-direction: column;
-        align-items: stretch;
-        gap: var(--rsi-spacing-sm);
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 6px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-search-input-wrapper {
+        flex: 1 !important;
+        width: auto !important;
+        min-width: 0 !important;
+        height: 38px !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-search-input-wrapper .rsi-search-icon {
+        padding: 0 4px 0 10px !important;
+        font-size: 0.88rem !important;
+    }
+
+    .rsi-search-input {
+        width: 100% !important;
+        min-width: 0 !important;
+        padding: 6px 10px !important;
+        font-size: 0.88rem !important;
+        height: 36px !important;
+        box-sizing: border-box !important;
     }
 
     .rsi-btn-search {
-        width: 100%;
+        width: auto !important;
+        max-width: none !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        padding: 0 12px !important;
+        font-size: 0.84rem !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 5px !important;
+        box-sizing: border-box !important;
     }
 
+    .rsi-search-results-info {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        text-align: left !important;
+        gap: 6px !important;
+        padding-top: 4px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        font-size: 0.82rem !important;
+    }
+
+    .rsi-btn-clear-results {
+        width: auto !important;
+        padding: 4px 8px !important;
+        font-size: 0.8rem !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Contenedores de filtros avanzados (ej. Asistencias, Reembolsos) */
+    .rsi-filters-container {
+        padding: 10px 12px !important;
+        margin-bottom: 12px !important;
+        border-radius: var(--rsi-radius-md, 8px) !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        margin-bottom: var(--rsi-spacing-md) !important;
+    }
+
+    .rsi-filters-container [style*="grid-template-columns"],
+    .rsi-filters-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-filters-container .rsi-form-group,
+    .rsi-filters-container .rsi-form-control,
+    .rsi-filters-container select,
+    .rsi-filters-container input {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-filters-container button,
+    .rsi-filters-container .rsi-btn-search {
+        width: 100% !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Barra de herramientas / buscadores en ecommerce (Productos, Categorías, Marcas) */
+    .rsi-carrusel-toolbar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-carrusel-toolbar > div {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        flex: none !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-carrusel-toolbar .rsi-input,
+    .rsi-carrusel-toolbar select,
+    .rsi-carrusel-toolbar input {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-carrusel-toolbar > div:last-child {
+        display: flex !important;
+        width: 100% !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }
+
+    .rsi-carrusel-toolbar .filter-cat-btn,
+    .rsi-carrusel-toolbar .filter-marca-btn {
+        flex: 1 1 calc(33.333% - 6px) !important;
+        min-width: 0 !important;
+        padding: 8px 6px !important;
+        font-size: 0.82rem !important;
+        justify-content: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Pestañas de quincena y periodo (Asistencias, Reembolsos) */
+    .rsi-quincena-bar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-quincena-tabs {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 6px !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-quincena-tab {
+        width: 100% !important;
+        justify-content: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-quincena-hint {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        font-size: 0.78rem !important;
+        line-height: 1.4 !important;
+    }
+
+    /* Pestañas de filtros (Catálogos, Carrusel) */
+    .rsi-filter-tabs {
+        width: 100% !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-filter-tab {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        justify-content: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Selects en barra de acciones del panel (Asistencia, Mis Reembolsos) */
+    .rsi-panel-header .rsi-panel-actions select,
+    .rsi-panel-header .rsi-panel-actions .rsi-form-control {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Estadísticas en móvil */
     .rsi-stats-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--rsi-spacing-sm);
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: var(--rsi-spacing-sm) !important;
+        padding: var(--rsi-spacing-sm) !important;
+        margin-bottom: 12px !important;
+        border-radius: var(--rsi-radius-md, 8px) !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
     }
 
     /* En móvil, la tabla se convierte en tarjetas */
@@ -1487,8 +1795,22 @@ body.dark-mode .rsi-modal-header h3 {
         flex-wrap: wrap;
     }
 
-    .rsi-table tbody td:last-child {
-        border-bottom: none;
+    .rsi-table tbody td:last-child,
+    .rsi-table td[data-label="Acciones"],
+    .rsi-table td:has(.rsi-table-actions),
+    .rsi-table td:has(.rsi-btn-icon),
+    .rsi-cotizaciones-section .rsi-table tbody td:last-child {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        white-space: normal !important;
+        border-bottom: none !important;
+        padding: var(--rsi-spacing-xs) 0 !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        box-sizing: border-box !important;
     }
 
     .rsi-table tbody td::before {
@@ -1500,39 +1822,106 @@ body.dark-mode .rsi-modal-header h3 {
         min-width: 80px;
     }
 
-    .rsi-table .rsi-table-actions {
-        justify-content: flex-end;
-        width: 100%;
-        gap: var(--rsi-spacing-sm);
+    /* Evitar espacio fantasma si no hay data-label o si data-label es Acciones */
+    .rsi-table tbody td:not([data-label])::before,
+    .rsi-table tbody td[data-label=""]::before,
+    .rsi-table tbody td[data-label="Acciones"]::before {
+        display: none;
     }
 
-    .rsi-table .rsi-table-actions::before {
+    /* Contenedor de acciones fluido que envuelve botones sin recortar */
+    .rsi-table .rsi-table-actions,
+    .rsi-table-actions {
+        display: flex !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex-wrap: wrap !important;
+        white-space: normal !important;
+        justify-content: flex-end !important;
+        align-items: center !important;
+        gap: 6px !important;
+        box-sizing: border-box !important;
+    }
+
+    .rsi-table .rsi-table-actions::before,
+    .rsi-table-actions::before {
         content: "Acciones";
         font-weight: 600;
         color: var(--rsi-text-secondary);
         font-size: 0.8rem;
         flex-shrink: 0;
-        min-width: 80px;
+        min-width: 65px;
         margin-right: auto;
+    }
+
+    /* Botones de iconos nunca colapsan */
+    .rsi-table .rsi-btn-icon,
+    .rsi-btn-icon,
+    .rsi-action-btn {
+        flex-shrink: 0 !important;
+        box-sizing: border-box !important;
     }
 
     .rsi-pagination {
         flex-direction: column;
         align-items: center;
+        gap: var(--rsi-spacing-sm);
     }
 
     .rsi-pagination-controls {
         width: 100%;
         justify-content: center;
+        gap: var(--rsi-spacing-sm);
     }
 
     .rsi-btn-page {
         flex: 1;
         justify-content: center;
+        min-width: 0;
+        box-sizing: border-box;
     }
 
     .rsi-envio-buttons {
         flex-direction: column;
+    }
+
+    .rsi-modal {
+        padding: var(--rsi-spacing-xs);
+    }
+
+    .rsi-modal-content {
+        max-width: 100% !important;
+        margin: 0;
+        border-radius: var(--rsi-radius-lg);
+        max-height: 92vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .rsi-modal-header {
+        padding: var(--rsi-spacing-md);
+    }
+
+    .rsi-modal-body {
+        padding: var(--rsi-spacing-md);
+        overflow-y: auto;
+    }
+
+    .rsi-modal-footer,
+    .rsi-modal-actions {
+        padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+        flex-direction: column-reverse;
+        gap: var(--rsi-spacing-xs);
+    }
+
+    .rsi-modal-footer button,
+    .rsi-modal-actions button,
+    .rsi-modal-footer .rsi-btn-action,
+    .rsi-modal-actions .rsi-btn-action,
+    .rsi-modal-footer .rsi-btn-crud,
+    .rsi-modal-actions .rsi-btn-crud {
+        width: 100% !important;
+        justify-content: center;
     }
 }
 
@@ -1546,11 +1935,63 @@ body.dark-mode .rsi-modal-header h3 {
     .rsi-categorias-section > .rsi-container,
     .rsi-tickets-section > .rsi-container,
     .rsi-asistencias-crud-section > .rsi-container,
-    .rsi-asistencia-section > .rsi-container {
+    .rsi-asistencia-section > .rsi-container,
+    .rsi-vehiculos-section > .rsi-container,
+    .rsi-carrusel-section > .rsi-container,
+    .rsi-reembolsos-section > .rsi-container,
+    .rsi-checklists-section > .rsi-container,
+    .rsi-cxc-section > .rsi-container,
+    .rsi-catalogs-section > .rsi-container {
         padding: 0 var(--rsi-spacing-sm);
     }
 
     .rsi-panel-crud {
-        padding: var(--rsi-spacing-md);
+        padding: var(--rsi-spacing-sm) var(--rsi-spacing-md);
+    }
+
+    .rsi-search-container {
+        padding: 6px 8px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .rsi-filters-container {
+        padding: 8px 10px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .rsi-stats-container {
+        padding: 6px !important;
+        margin-bottom: 10px !important;
+        gap: 6px !important;
+    }
+
+    .rsi-filter-tabs {
+        flex-direction: column !important;
+    }
+
+    .rsi-filter-tab {
+        width: 100% !important;
+    }
+
+    .rsi-table tbody tr {
+        padding: 10px 12px;
+    }
+
+    .rsi-table .rsi-table-actions,
+    .rsi-table-actions {
+        gap: 4px !important;
+    }
+
+    .rsi-table .rsi-btn-icon,
+    .rsi-btn-icon {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 0.85rem !important;
+    }
+}
+
+@media (max-width: 380px) {
+    .rsi-stats-container {
+        grid-template-columns: 1fr !important;
     }
 }

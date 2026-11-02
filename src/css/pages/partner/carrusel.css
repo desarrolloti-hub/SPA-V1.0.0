@@ -668,3 +668,20 @@
     border-radius: 3px;
     color: var(--rsi-gold, #c5a059);
 }
+
+/* Responsive Header Actions */
+@media (max-width: 768px) {
+    .rsi-carrusel-header-actions {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: var(--rsi-spacing-sm, 8px) !important;
+    }
+
+    .rsi-carrusel-header-actions > * {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        justify-content: center !important;
+        text-align: center !important;
+    }
+}

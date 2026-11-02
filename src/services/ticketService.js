@@ -1636,6 +1636,135 @@ async _getNombresColaboradores(colaboradoresIds) {
     }
 
     /**
+     * Sube múltiples imágenes de evidencia para una etapa específica (antes, durante o despues)
+     * procesando cada una con marca de agua institucional y actualizando el ticket.
+     * @param {string} ticketId - ID del ticket
+     * @param {Object} params
+     * @param {Array<File|Blob>} params.files - Lista de archivos a subir
+     * @param {string} params.etapa - 'antes' | 'durante' | 'despues'
+     * @param {string} [params.descripcion=''] - Descripción o nota opcional
+     * @param {Function} [params.onProgress=null] - Callback ({ current, total, file })
+     * @returns {Promise<{success: boolean, count?: number, evidencias?: Object, error?: string}>}
+     */
+    async subirMultiplesEvidenciasTicket(ticketId, { files = [], etapa, descripcion = '', onProgress = null }) {
+        try {
+            const etapaKey = (etapa || '').toLowerCase().trim();
+            if (!['antes', 'durante', 'despues'].includes(etapaKey)) {
+                return { success: false, error: 'La etapa de evidencia debe ser "antes", "durante" o "despues"' };
+            }
+
+            if (!Array.isArray(files) || files.length === 0) {
+                return { success: false, error: 'No se seleccionaron archivos para subir' };
+            }
+
+            const ticket = await this.getTicketById(ticketId, true);
+            if (!ticket) {
+                return { success: false, error: 'Ticket no encontrado' };
+            }
+
+            const collabCtx = await this._resolveCurrentCollaboratorContext();
+            if (!this._hasCollaboratorAcceptedTicket(ticket, collabCtx)) {
+                return {
+                    success: false,
+                    error: 'Debes aceptar el ticket primero antes de poder subir evidencias fotográficas.'
+                };
+            }
+
+            const geo = await GeoMapHelper.obtenerPosicionActual();
+            const now = new Date().toISOString();
+            const etapaNombres = { antes: 'Antes', durante: 'Durante', despues: 'Después' };
+
+            const evidencias = TicketModel.normalizeEvidencias(ticket);
+            const historialCambios = Array.isArray(ticket.historialCambios) ? [...ticket.historialCambios] : [];
+            const nuevasEvidenciasSubidas = [];
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                if (typeof onProgress === 'function') {
+                    onProgress({ current: i + 1, total: files.length, file });
+                }
+
+                const watermarkResult = await TicketWatermarkHelper.aplicarMarcaDeAgua({
+                    source: file,
+                    idTicket: ticket.idTicket || ticketId,
+                    etapa: etapaKey,
+                    colaboradorNombre: collabCtx.nombre,
+                    ubicacion: geo
+                });
+
+                const uploadResult = await this.storageService.uploadTicketEvidencia(
+                    watermarkResult.blob,
+                    ticket.idTicket || ticketId,
+                    etapaKey
+                );
+
+                if (watermarkResult.previewUrl) {
+                    URL.revokeObjectURL(watermarkResult.previewUrl);
+                }
+
+                const evNow = new Date().toISOString();
+                const nuevaEvidencia = {
+                    id: `ev_${etapaKey}_${Date.now()}_${Math.random().toString(36).substring(2, 6)}_${i}`,
+                    etapa: etapaKey,
+                    url: uploadResult.url,
+                    path: uploadResult.path,
+                    descripcion: descripcion ? descripcion.trim() : '',
+                    subidoPorId: collabCtx.collaboratorId,
+                    subidoPorUid: collabCtx.uid,
+                    subidoPorNombre: collabCtx.nombre,
+                    fechaHora: watermarkResult.fechaHora || evNow,
+                    fechaSubida: evNow,
+                    ubicacion: {
+                        latitud: watermarkResult.ubicacion?.latitud ?? null,
+                        longitud: watermarkResult.ubicacion?.longitud ?? null,
+                        precision: watermarkResult.ubicacion?.precision ?? null,
+                        timestamp: watermarkResult.ubicacion?.timestamp || evNow,
+                        estadoCaptura: watermarkResult.ubicacion?.estadoCaptura || (watermarkResult.ubicacion?.latitud != null ? 'capturada' : 'no_disponible')
+                    }
+                };
+
+                evidencias[etapaKey].push(nuevaEvidencia);
+                nuevasEvidenciasSubidas.push(nuevaEvidencia);
+
+                historialCambios.push({
+                    estadoAnterior: ticket.estado,
+                    estadoNuevo: ticket.estado,
+                    tipoEvento: 'evidencia',
+                    cambiadoPor: collabCtx.nombre,
+                    cambiadoPorId: collabCtx.collaboratorId || collabCtx.uid,
+                    fechaCambio: evNow,
+                    motivo: `Evidencia fotográfica subida (${etapaNombres[etapaKey]})${nuevaEvidencia.descripcion ? `: ${nuevaEvidencia.descripcion}` : ''}`,
+                    ubicacion: nuevaEvidencia.ubicacion
+                });
+            }
+
+            await this.repository.updateTicket(ticket.id, {
+                evidencias,
+                historialCambios,
+                modificadoPor: collabCtx.uid || collabCtx.collaboratorId
+            });
+            await this.repository.addHistorialEvent(
+                ticket.id,
+                'evidencia',
+                collabCtx.nombre,
+                collabCtx.uid || collabCtx.collaboratorId,
+                `${files.length} evidencias fotográficas subidas (${etapaNombres[etapaKey]})`
+            );
+            this.repository.clearCache();
+
+            return {
+                success: true,
+                count: nuevasEvidenciasSubidas.length,
+                evidencias,
+                message: `${nuevasEvidenciasSubidas.length} evidencias de "${etapaNombres[etapaKey]}" guardadas correctamente`
+            };
+        } catch (error) {
+            console.error('❌ Error subiendo múltiples evidencias del ticket:', error);
+            return { success: false, error: error.message || 'Error al subir las evidencias fotográficas' };
+        }
+    }
+
+    /**
      * Elimina una evidencia fotográfica de una etapa mientras el ticket sigue abierto
      */
     async eliminarEvidenciaTicket(ticketId, etapa, evidenciaId) {

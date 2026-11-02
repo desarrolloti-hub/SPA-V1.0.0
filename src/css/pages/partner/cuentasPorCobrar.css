@@ -1,0 +1,102 @@
+/* ==========================================================================
+   CUENTAS POR COBRAR - ESTILOS
+   Fénix RSI Enterprise (Alineado con panelCrud.css)
+   ========================================================================== */
+
+/* Filtros interactivos en las tarjetas de estadísticas */
+#cxcStats .rsi-stat-item {
+    cursor: pointer;
+    transition: all var(--rsi-transition-fast, 0.2s ease);
+    position: relative;
+    user-select: none;
+}
+
+#cxcStats .rsi-stat-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--rsi-shadow-sm, 0 2px 4px rgba(0, 0, 0, 0.05));
+    border-color: var(--rsi-primary, #1c1948);
+}
+
+#cxcStats .rsi-stat-item.active {
+    border-color: var(--rsi-primary, #1c1948);
+    background: var(--rsi-bg-secondary, #f8fafc);
+    box-shadow: 0 0 0 2px rgba(28, 25, 72, 0.15);
+}
+
+/* Modal de registro de pago - inputs compactos */
+#modalRegistrarPago .rsi-form-group {
+    margin-bottom: 0;
+}
+
+#modalRegistrarPago .rsi-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#modalRegistrarPago .rsi-input-wrapper input,
+#modalRegistrarPago .rsi-input-wrapper select {
+    width: 100%;
+    padding: 8px 10px 8px 32px;
+    border: 1px solid var(--rsi-border-color, #cbd5e1);
+    border-radius: var(--rsi-radius-sm, 6px);
+    font-size: 0.88rem;
+    background: var(--rsi-bg-input, #ffffff);
+    color: var(--rsi-text-primary, #0f172a);
+    box-sizing: border-box;
+}
+
+#modalRegistrarPago .rsi-input-wrapper .rsi-input-icon {
+    position: absolute;
+    left: 10px;
+    font-size: 0.85rem;
+    color: var(--rsi-text-muted, #94a3b8);
+    pointer-events: none;
+}
+
+/* Switch compacto */
+.rsi-switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+    flex-shrink: 0;
+}
+
+.rsi-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.rsi-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #cbd5e1;
+    transition: .3s;
+    border-radius: 22px;
+}
+
+.rsi-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+}
+
+input:checked + .rsi-slider {
+    background-color: var(--rsi-success, #16a34a);
+}
+
+input:checked + .rsi-slider:before {
+    transform: translateX(18px);
+}

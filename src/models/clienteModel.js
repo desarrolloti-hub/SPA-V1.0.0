@@ -17,18 +17,24 @@ export class ClienteModel {
     static create(data, uid, creadoPor, modificadoPor = null) {
         const now = new Date().toISOString();
         
-        const regimenCodigo = obtenerCodigoRegimen(data.regimen);
+        const rfcUpper = (data.rfc || '').toUpperCase().trim();
+        const esNacionalGen = rfcUpper === 'XAXX010101000';
+        const esExtranjeroGen = rfcUpper === 'XEXX010101000';
+        const esGenerico = esNacionalGen || esExtranjeroGen;
+        const regimenCodigo = obtenerCodigoRegimen(data.regimen) || (data.regimenCodigo || (esGenerico ? '616' : ''));
+        const regimenNombre = data.regimen?.trim() || (esGenerico ? 'Sin obligaciones fiscales' : '');
+        const razonSocialFinal = data.razonSocial?.trim() || data.nombre?.trim() || '';
         
         return {
             uid: uid,
             // Datos SAT
-            rfc: data.rfc?.toUpperCase() || '',
-            razonSocial: data.razonSocial?.trim() || '',
-            nombreComercial: data.nombreComercial?.trim() || '',
-            regimen: data.regimen?.trim() || '',
+            rfc: rfcUpper,
+            razonSocial: razonSocialFinal,
+            nombreComercial: data.nombreComercial?.trim() || razonSocialFinal,
+            regimen: regimenNombre,
             regimenCodigo: regimenCodigo || '',
-            tipoRfc: (data.rfc?.toUpperCase() === 'XAXX010101000') ? 'nacional' : (data.rfc?.toUpperCase() === 'XEXX010101000') ? 'extranjero' : 'especifico',
-            esGenerico: (data.rfc?.toUpperCase() === 'XAXX010101000' || data.rfc?.toUpperCase() === 'XEXX010101000'),
+            tipoRfc: esNacionalGen ? 'nacional' : esExtranjeroGen ? 'extranjero' : 'especifico',
+            esGenerico: esGenerico,
             // Domicilio
             codigoPostal: data.codigoPostal || '',
             tipoVialidad: data.tipoVialidad?.trim() || '',
@@ -76,43 +82,37 @@ export class ClienteModel {
 
     /**
      * Valida los datos del cliente
+     * Permite el registro rápido únicamente con nombre y RFC.
+     * Los demás campos son opcionales y solo se validan si fueron capturados.
      */
     static validate(data) {
         const errors = {};
 
-        if (!data.rfc || data.rfc.length < 12) {
+        const rfc = (data.rfc || '').trim().toUpperCase();
+        if (!rfc || rfc.length < 12) {
             errors.rfc = 'RFC inválido (mínimo 12 caracteres)';
         }
 
-        if (!data.razonSocial || data.razonSocial.trim().length < 3) {
-            errors.razonSocial = 'La razón social es requerida (mínimo 3 caracteres)';
+        const razonSocial = (data.razonSocial || data.nombre || '').trim();
+        if (!razonSocial || razonSocial.length < 2) {
+            errors.razonSocial = 'El nombre o razón social es requerido (mínimo 2 caracteres)';
         }
 
-        if (!data.codigoPostal || data.codigoPostal.length !== 5) {
+        // Código postal opcional: si se captura debe tener 5 dígitos
+        const cp = (data.codigoPostal || '').trim();
+        if (cp.length > 0 && cp.length !== 5) {
             errors.codigoPostal = 'Código postal inválido (5 dígitos)';
         }
 
-        if (!data.nombreVialidad || data.nombreVialidad.trim().length < 2) {
-            errors.nombreVialidad = 'La vialidad es requerida';
-        }
-
-        if (!data.colonia || data.colonia.trim().length < 2) {
-            errors.colonia = 'La colonia es requerida';
-        }
-
-        if (!data.municipio || data.municipio.trim().length < 2) {
-            errors.municipio = 'El municipio es requerido';
-        }
-
-        if (!data.estado || data.estado.trim().length < 2) {
-            errors.estado = 'El estado es requerido';
-        }
-
-        if (!data.telefonoMovil || data.telefonoMovil.length < 10) {
+        // Teléfono móvil opcional: si se captura debe tener al menos 10 dígitos
+        const tel = (data.telefonoMovil || '').trim();
+        if (tel.length > 0 && tel.length < 10) {
             errors.telefonoMovil = 'Teléfono móvil inválido (mínimo 10 dígitos)';
         }
 
-        if (!data.email || !this._isValidEmail(data.email)) {
+        // Email opcional: si se captura debe tener formato válido
+        const email = (data.email || '').trim();
+        if (email.length > 0 && !this._isValidEmail(email)) {
             errors.email = 'Correo electrónico inválido';
         }
 

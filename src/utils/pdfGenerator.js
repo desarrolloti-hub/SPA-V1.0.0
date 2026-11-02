@@ -1295,11 +1295,493 @@ export async function descargarPDFFactura(factura, options = {}) {
 // EXPORTACIÓN POR DEFECTO
 // =================================================================================
 
+/**
+ * Genera el PDF oficial para un Complemento de Recepción de Pagos (REP 2.0 / CFDI 4.0)
+ * siguiendo exactamente la identidad visual, tipografías, colores y bloques fiscales de las facturas.
+ * @param {Object} comp - Datos del complemento de pago
+ * @param {Object} [options={}] - Opciones adicionales
+ * @returns {Promise<Blob>}
+ */
+export async function generarPDFComplementoPago(comp, options = {}) {
+    try {
+        const jsPDF = await loadJsPDF();
+        if (!jsPDF) {
+            throw new Error('No se pudo cargar la librería jsPDF');
+        }
+
+        const logoUrl = options.logoUrl || '/assets/icons/logo.png';
+        let timbradoData = { ...(comp.timbrado || {}) };
+
+        // Si existe XML, enriquecer con datos fiscales auténticos
+        let xmlParaExtraer = options.xmlContent || comp.xmlContent || comp.xmlString || null;
+        if (!xmlParaExtraer && (options.xmlUrl || comp.xmlUrl) && typeof fetch !== 'undefined') {
+            try {
+                const xmlRes = await fetch(options.xmlUrl || comp.xmlUrl);
+                if (xmlRes.ok) xmlParaExtraer = await xmlRes.text();
+            } catch (e) {
+                console.warn('⚠️ No se pudo obtener el XML para enriquecer PDF de complemento:', e);
+            }
+        }
+
+        if (xmlParaExtraer) {
+            const fiscalXml = extraerDatosFiscalesDesdeXML(xmlParaExtraer);
+            if (fiscalXml) {
+                timbradoData = { ...fiscalXml, ...timbradoData };
+            }
+        }
+
+        if (!timbradoData.cadenaOriginal && (timbradoData.uuid || comp.uuid)) {
+            const uuidVal = timbradoData.uuid || comp.uuid || '';
+            const fechaVal = timbradoData.fechaTimbrado || comp.fechaPago || '';
+            const rfcProvVal = timbradoData.rfcProveedor || 'FLI080612495';
+            const selloCfdVal = timbradoData.sello || '';
+            const noCertSatVal = timbradoData.noCertificado || '';
+            if (uuidVal && selloCfdVal) {
+                timbradoData.cadenaOriginal = `||1.1|${uuidVal}|${fechaVal}|${rfcProvVal}|${selloCfdVal}|${noCertSatVal}||`;
+            }
+        }
+
+        const esCancelada = comp.estatus === 'cancelada';
+        const tieneTimbrado = Boolean((timbradoData.uuid || comp.uuid) && !esCancelada);
+        const esBorrador = options.esBorrador !== undefined 
+            ? Boolean(options.esBorrador) 
+            : (!tieneTimbrado && !esCancelada);
+
+        const pdf = new jsPDF();
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const margin = 15;
+        const headerHeight = 70;
+        const footerHeight = 15;
+        const contentStartY = headerHeight;
+        const contentMaxY = pageHeight - footerHeight - 10;
+
+        const textColor = '#000000';
+        const gray = '#6b7280';
+        const navy = '#0d2c54';
+        const lightGray = '#f5f5f5';
+        const danger = '#dc3545';
+
+        let page = 1;
+        let y = contentStartY;
+
+        const dibujarMarcaAgua = () => {
+            if (!esBorrador && !esCancelada) return;
+            pdf.saveGraphicsState();
+            if (pdf.GState) {
+                pdf.setGState(new pdf.GState({ opacity: esBorrador ? 0.08 : 0.09 }));
+            }
+            pdf.setFontSize(esCancelada ? 60 : 65);
+            pdf.setTextColor(danger);
+            pdf.setFont('helvetica', 'bold');
+            const centerX = pageWidth / 2;
+            const centerY = pageHeight / 2;
+            pdf.text(esCancelada ? 'CANCELADA' : 'BORRADOR', centerX, centerY - 10, { align: 'center', angle: 45 });
+            pdf.setFontSize(14);
+            pdf.text(esCancelada ? 'CANCELADA ANTE EL SAT' : 'DOCUMENTO SIN VALIDEZ FISCAL', centerX, centerY + 25, { align: 'center', angle: 45 });
+            pdf.restoreGraphicsState();
+        };
+
+        const dibujarEncabezado = async () => {
+            try {
+                if (logoUrl) {
+                    const logoData = await getBase64ImageFromURL(logoUrl);
+                    if (logoData) {
+                        pdf.addImage(logoData, 'PNG', pageWidth - margin - 40, margin, 40, 40);
+                    }
+                }
+            } catch (e) {
+                console.warn('⚠️ No se pudo cargar el logo para complemento:', e);
+            }
+
+            const emisorNombre = comp.empresaNombre || "RSI ENTERPRISE NEZAHUALCÓYOTL";
+            const emisorRFC = comp.empresaRFC || "RSI1810319G0";
+            const emisorRegimen = comp.empresaRegimen || "601";
+            const emisorCP = comp.empresaCodigoPostal || "57200";
+
+            pdf.setFontSize(9.5).setTextColor(navy).setFont('helvetica', 'bold')
+                .text(emisorNombre, margin, margin + 4);
+            pdf.setFontSize(7.5).setTextColor(textColor).setFont('helvetica', 'bold')
+                .text("RFC: ", margin, margin + 8);
+            pdf.setFont('helvetica', 'normal').setTextColor(gray)
+                .text(emisorRFC, margin + 7.5, margin + 8);
+
+            pdf.setFont('helvetica', 'bold').setTextColor(textColor)
+                .text("Régimen Fiscal: ", margin, margin + 11.8);
+            pdf.setFont('helvetica', 'normal').setTextColor(gray)
+                .text(`${emisorRegimen} — General de Ley Personas Morales`, margin + 21, margin + 11.8);
+
+            pdf.setFont('helvetica', 'bold').setTextColor(textColor)
+                .text("Lugar de Expedición: ", margin, margin + 15.6);
+            pdf.setFont('helvetica', 'normal').setTextColor(gray)
+                .text(`C.P. ${emisorCP}`, margin + 29, margin + 15.6);
+
+            // Caja identificadora del Complemento de Pago (Esquina superior derecha)
+            const boxWidth = 72;
+            const boxHeight = 44;
+            const boxX = pageWidth - margin - boxWidth;
+            const boxY = margin;
+
+            pdf.setFillColor(navy).rect(boxX, boxY, boxWidth, 7, 'F');
+            pdf.setFontSize(8).setTextColor('#ffffff').setFont('helvetica', 'bold')
+                .text("RECIBO ELECTRÓNICO DE PAGO", boxX + boxWidth / 2, boxY + 4.8, { align: 'center' });
+
+            pdf.setDrawColor(navy).setLineWidth(0.3).rect(boxX, boxY, boxWidth, boxHeight, 'S');
+
+            let by = boxY + 11;
+            const folioText = `${comp.serie || 'PAG'}-${comp.folio || '1'}`;
+
+            pdf.setFontSize(7.5).setTextColor(textColor).setFont('helvetica', 'bold')
+                .text("Serie y Folio:", boxX + 3, by);
+            pdf.setFont('helvetica', 'bold').setTextColor(navy)
+                .text(folioText, boxX + 22, by);
+
+            by += 4.5;
+            pdf.setFont('helvetica', 'bold').setTextColor(textColor).text("Tipo Comprobante:", boxX + 3, by);
+            pdf.setFont('helvetica', 'normal').setTextColor(gray).text("P — Pago (CFDI 4.0)", boxX + 27, by);
+
+            by += 4.5;
+            pdf.setFont('helvetica', 'bold').setTextColor(textColor).text("Fecha Emisión:", boxX + 3, by);
+            pdf.setFont('helvetica', 'normal').setTextColor(gray)
+                .text(formatearFechaHora(comp.fechaPago || comp.createdAt), boxX + 23, by);
+
+            by += 4.5;
+            pdf.setFont('helvetica', 'bold').setTextColor(textColor).text("Versión REP:", boxX + 3, by);
+            pdf.setFont('helvetica', 'normal').setTextColor(gray).text("2.0 (Complemento)", boxX + 21, by);
+
+            by += 4.5;
+            pdf.setFont('helvetica', 'bold').setTextColor(textColor).text("Folio Fiscal (UUID):", boxX + 3, by);
+            by += 3.5;
+            const uuidDisplay = timbradoData.uuid || comp.uuid || (esBorrador ? 'DOCUMENTO BORRADOR' : 'SIN TIMBRAR');
+            pdf.setFontSize(6.2).setFont('helvetica', 'bold').setTextColor(tieneTimbrado ? navy : danger)
+                .text(uuidDisplay, boxX + 3, by);
+        };
+
+        const dibujarPiePagina = () => {
+            const footerY = pageHeight - footerHeight;
+            pdf.setDrawColor(gray).setLineWidth(0.2).line(margin, footerY, pageWidth - margin, footerY);
+            pdf.setFontSize(6.5).setTextColor(gray).setFont('helvetica', 'normal')
+                .text("RSI ENTERPRISE — Seguridad Electrónica, Automatización y Telecomunicaciones | www.rsienterprise.com", margin, footerY + 4);
+            pdf.text(`Página ${page}`, pageWidth - margin, footerY + 4, { align: 'right' });
+        };
+
+        const nuevaPagina = async () => {
+            dibujarPiePagina();
+            pdf.addPage();
+            page++;
+            y = margin + 10;
+            dibujarMarcaAgua();
+        };
+
+        // RENDER INICIAL
+        dibujarMarcaAgua();
+        await dibujarEncabezado();
+        y = headerHeight - 12;
+
+        // =======================================================
+        // SECCIÓN: DATOS DEL RECEPTOR (CLIENTE)
+        // =======================================================
+        pdf.setFillColor(navy).rect(margin, y, pageWidth - 2 * margin, 5.5, 'F');
+        pdf.setFontSize(7.5).setTextColor('#ffffff').setFont('helvetica', 'bold')
+            .text("RECEPTOR DEL PAGO (CLIENTE)", margin + 3, y + 3.8);
+        y += 8.5;
+
+        const clienteNombre = (comp.clienteRazonSocial || comp.clienteNombre || "PÚBLICO EN GENERAL").toUpperCase();
+        pdf.setFontSize(8).setTextColor(navy).setFont('helvetica', 'bold')
+            .text(clienteNombre, margin, y);
+        y += 4;
+
+        pdf.setFontSize(7).setTextColor(textColor).setFont('helvetica', 'bold').text("RFC: ", margin, y);
+        pdf.setFont('helvetica', 'normal').setTextColor(gray).text(comp.clienteRFC || 'XAXX010101000', margin + 8, y);
+
+        pdf.setFont('helvetica', 'bold').setTextColor(textColor).text("Domicilio Fiscal (C.P.): ", margin + 50, y);
+        pdf.setFont('helvetica', 'normal').setTextColor(gray).text(comp.clienteCodigoPostal || '00000', margin + 80, y);
+
+        pdf.setFont('helvetica', 'bold').setTextColor(textColor).text("Régimen: ", margin + 105, y);
+        pdf.setFont('helvetica', 'normal').setTextColor(gray).text(comp.clienteRegimenCodigo || '616', margin + 118, y);
+
+        pdf.setFont('helvetica', 'bold').setTextColor(textColor).text("Uso CFDI: ", margin + 145, y);
+        pdf.setFont('helvetica', 'normal').setTextColor(gray).text("CP01 — Pagos", margin + 158, y);
+        y += 7;
+
+        // =======================================================
+        // SECCIÓN: DETALLES DEL PAGO RECIBIDO
+        // =======================================================
+        pdf.setFillColor(navy).rect(margin, y, pageWidth - 2 * margin, 5.5, 'F');
+        pdf.setFontSize(7.5).setTextColor('#ffffff').setFont('helvetica', 'bold')
+            .text("INFORMACIÓN DEL PAGO RECIBIDO", margin + 3, y + 3.8);
+        y += 8;
+
+        const formasPagoNombres = {
+            '01': '01 — Efectivo',
+            '02': '02 — Cheque nominativo',
+            '03': '03 — Transferencia electrónica de fondos',
+            '04': '04 — Tarjeta de crédito',
+            '28': '28 — Tarjeta de débito',
+            '99': '99 — Por definir'
+        };
+        const formaPagoStr = formasPagoNombres[comp.formaPago] || `${comp.formaPago || '03'} — Transferencia`;
+
+        // Cuadrícula de datos del pago
+        pdf.setFillColor(lightGray).rect(margin, y, pageWidth - 2 * margin, 18, 'F');
+        pdf.setDrawColor('#e5e7eb').setLineWidth(0.2).rect(margin, y, pageWidth - 2 * margin, 18, 'S');
+
+        let py = y + 4.5;
+        pdf.setFontSize(7).setFont('helvetica', 'bold').setTextColor(navy).text("Fecha y Hora de Pago:", margin + 3, py);
+        pdf.setFont('helvetica', 'normal').setTextColor(textColor).text(formatearFechaHora(comp.fechaPago), margin + 32, py);
+
+        pdf.setFont('helvetica', 'bold').setTextColor(navy).text("Forma de Pago:", margin + 95, py);
+        pdf.setFont('helvetica', 'normal').setTextColor(textColor).text(formaPagoStr, margin + 116, py);
+
+        py += 5;
+        pdf.setFont('helvetica', 'bold').setTextColor(navy).text("Moneda:", margin + 3, py);
+        pdf.setFont('helvetica', 'normal').setTextColor(textColor).text("MXN (Pesos Mexicanos)", margin + 15, py);
+
+        pdf.setFont('helvetica', 'bold').setTextColor(navy).text("Tipo de Cambio:", margin + 50, py);
+        pdf.setFont('helvetica', 'normal').setTextColor(textColor).text("1.00", margin + 70, py);
+
+        pdf.setFont('helvetica', 'bold').setTextColor(navy).text("No. de Operación / Rastreo:", margin + 95, py);
+        pdf.setFont('helvetica', 'normal').setTextColor(textColor).text(comp.numeroOperacion || 'N/A', margin + 130, py);
+
+        py += 5;
+        pdf.setFont('helvetica', 'bold').setTextColor(navy).text("Monto del Pago:", margin + 3, py);
+        pdf.setFontSize(8).setFont('helvetica', 'bold').setTextColor('#16a34a')
+            .text(`${formatearNumero(comp.monto)} MXN`, margin + 25, py);
+
+        pdf.setFontSize(7).setFont('helvetica', 'italic').setTextColor(gray)
+            .text(`(${numeroALetras(comp.monto)})`, margin + 60, py);
+
+        y += 22;
+
+        // =======================================================
+        // SECCIÓN: TABLA DE DOCUMENTOS RELACIONADOS (FACTURA PPD)
+        // =======================================================
+        pdf.setFillColor(navy).rect(margin, y, pageWidth - 2 * margin, 5.5, 'F');
+        pdf.setFontSize(7.5).setTextColor('#ffffff').setFont('helvetica', 'bold')
+            .text("DOCUMENTOS RELACIONADOS (FACTURAS PAGADAS)", margin + 3, y + 3.8);
+        y += 6.5;
+
+        // Encabezados de columnas de documentos relacionados
+        const colRel = {
+            uuid: margin + 2,
+            folio: margin + 65,
+            moneda: margin + 92,
+            parc: margin + 107,
+            saldoAnt: margin + 125,
+            pagado: margin + 148,
+            saldoIns: margin + 170
+        };
+
+        pdf.setFillColor('#e2e8f0').rect(margin, y, pageWidth - 2 * margin, 5, 'F');
+        pdf.setFontSize(6.2).setFont('helvetica', 'bold').setTextColor(navy);
+        pdf.text("Folio Fiscal (UUID Relacionado)", colRel.uuid, y + 3.5);
+        pdf.text("Folio / Serie", colRel.folio, y + 3.5);
+        pdf.text("Moneda", colRel.moneda, y + 3.5);
+        pdf.text("Parcialidad", colRel.parc, y + 3.5);
+        pdf.text("Saldo Ant.", colRel.saldoAnt, y + 3.5);
+        pdf.text("Imp. Pagado", colRel.pagado, y + 3.5);
+        pdf.text("Saldo Insoluto", colRel.saldoIns, y + 3.5);
+        y += 5.5;
+
+        // Fila del documento relacionado
+        pdf.setFillColor('#ffffff').rect(margin, y, pageWidth - 2 * margin, 8, 'F');
+        pdf.setDrawColor('#cbd5e1').setLineWidth(0.15).rect(margin, y, pageWidth - 2 * margin, 8, 'S');
+
+        pdf.setFontSize(6.5).setFont('helvetica', 'normal').setTextColor(textColor);
+        const docUuid = comp.facturaUuid || comp.facturaId || 'N/A';
+        pdf.text(docUuid, colRel.uuid, y + 5);
+        pdf.text(comp.facturaNumero || 'S/N', colRel.folio, y + 5);
+        pdf.text(comp.monedaFactura || 'MXN', colRel.moneda, y + 5);
+        pdf.setFont('helvetica', 'bold').text(`#${comp.parcialidad || 1}`, colRel.parc + 2, y + 5);
+        pdf.setFont('helvetica', 'normal').text(`${formatearNumero(comp.saldoAnterior)}`, colRel.saldoAnt, y + 5);
+        pdf.setFont('helvetica', 'bold').setTextColor('#16a34a').text(`${formatearNumero(comp.monto)}`, colRel.pagado, y + 5);
+        pdf.setTextColor(textColor).text(`${formatearNumero(comp.saldoInsoluto)}`, colRel.saldoIns, y + 5);
+        y += 12;
+
+        // Resumen de saldos en recuadro a la derecha
+        const totWidth = 75;
+        const totX = pageWidth - margin - totWidth;
+        pdf.setFillColor(lightGray).rect(totX, y, totWidth, 20, 'F');
+        pdf.setDrawColor(navy).setLineWidth(0.3).rect(totX, y, totWidth, 20, 'S');
+
+        let ty = y + 4.5;
+        pdf.setFontSize(7).setFont('helvetica', 'normal').setTextColor(textColor)
+            .text("Saldo Anterior del Documento:", totX + 3, ty);
+        pdf.setFont('helvetica', 'bold').setTextColor(navy)
+            .text(`${formatearNumero(comp.saldoAnterior)}`, totX + totWidth - 3, ty, { align: 'right' });
+
+        ty += 5;
+        pdf.setFont('helvetica', 'bold').setTextColor(textColor)
+            .text("Monto Total Aplicado:", totX + 3, ty);
+        pdf.setFont('helvetica', 'bold').setTextColor('#16a34a')
+            .text(`${formatearNumero(comp.monto)}`, totX + totWidth - 3, ty, { align: 'right' });
+
+        ty += 5;
+        pdf.setFont('helvetica', 'bold').setTextColor(textColor)
+            .text("Saldo Insoluto Restante:", totX + 3, ty);
+        pdf.setFont('helvetica', 'bold').setTextColor(comp.saldoInsoluto > 0 ? navy : '#16a34a')
+            .text(`${formatearNumero(comp.saldoInsoluto)}`, totX + totWidth - 3, ty, { align: 'right' });
+
+        y += 25;
+
+        // =======================================================
+        // SECCIÓN: TIMBRE FISCAL DIGITAL Y QR SAT
+        // =======================================================
+        if (tieneTimbrado && timbradoData.uuid) {
+            if (y + 50 > contentMaxY) await nuevaPagina();
+
+            pdf.setFillColor(navy).rect(margin, y, pageWidth - 2 * margin, 5.5, 'F');
+            pdf.setFontSize(7.5).setTextColor('#ffffff').setFont('helvetica', 'bold')
+                .text("COMPLEMENTO DE CERTIFICACIÓN DIGITAL DEL SAT", margin + 3, y + 3.8);
+            y += 8;
+
+            const qrSize = 28;
+            const qrX = margin;
+            const qrY = y;
+            const textStartX = margin + qrSize + 4;
+
+            try {
+                const satUrl = construirSatUrl(
+                    timbradoData.uuid,
+                    comp.empresaRFC || 'RSI1810319G0',
+                    comp.clienteRFC || 'XAXX010101000',
+                    comp.monto || 0,
+                    timbradoData.sello || ''
+                );
+                dibujarQRVectorial(pdf, satUrl, qrX, qrY, qrSize);
+            } catch (qrErr) {
+                console.error('❌ Error renderizando QR SAT:', qrErr);
+            }
+
+            pdf.setFontSize(6.5).setTextColor(navy).setFont('helvetica', 'bold')
+                .text("Folio Fiscal (UUID):", textStartX, y + 3.5);
+            pdf.setFontSize(6.5).setTextColor(textColor).setFont('helvetica', 'normal')
+                .text(timbradoData.uuid || comp.uuid || '', textStartX + 22, y + 3.5);
+
+            pdf.setFontSize(6.5).setTextColor(navy).setFont('helvetica', 'bold')
+                .text("No. Certificado SAT:", textStartX, y + 8);
+            pdf.setFontSize(6.5).setTextColor(textColor).setFont('helvetica', 'normal')
+                .text(timbradoData.noCertificado || comp.timbrado?.noCertificado || 'N/A', textStartX + 26, y + 8);
+
+            pdf.setFontSize(6.5).setTextColor(navy).setFont('helvetica', 'bold')
+                .text("Fecha Certificación:", textStartX, y + 12.5);
+            pdf.setFontSize(6.5).setTextColor(textColor).setFont('helvetica', 'normal')
+                .text(formatearFechaHora(timbradoData.fechaTimbrado || comp.timbrado?.fechaTimbrado), textStartX + 25, y + 12.5);
+
+            pdf.setFontSize(6.5).setTextColor(navy).setFont('helvetica', 'bold')
+                .text("RFC Proveedor Certif.:", textStartX, y + 17);
+            pdf.setFontSize(6.5).setTextColor(textColor).setFont('helvetica', 'normal')
+                .text(timbradoData.rfcProveedor || 'FLI080612495', textStartX + 28, y + 17);
+
+            y += Math.max(qrSize + 4, 32);
+
+            // Cadena original
+            if (timbradoData.cadenaOriginal) {
+                if (y + 10 > contentMaxY) await nuevaPagina();
+                pdf.setFontSize(5.8).setTextColor(navy).setFont('helvetica', 'bold')
+                    .text("Cadena Original del Timbre Fiscal Digital del SAT:", margin, y);
+                y += 2.8;
+                pdf.setFontSize(4.8).setTextColor(textColor).setFont('helvetica', 'normal');
+                const coLines = pdf.splitTextToSize(timbradoData.cadenaOriginal, pageWidth - 2 * margin);
+                for (const l of coLines) {
+                    if (y + 2.4 > contentMaxY) await nuevaPagina();
+                    pdf.text(l, margin, y);
+                    y += 2.2;
+                }
+                y += 1;
+            }
+
+            // Sello digital emisor
+            if (timbradoData.sello) {
+                if (y + 10 > contentMaxY) await nuevaPagina();
+                pdf.setFontSize(5.8).setTextColor(navy).setFont('helvetica', 'bold')
+                    .text("Sello Digital del Emisor (CFD):", margin, y);
+                y += 2.8;
+                pdf.setFontSize(4.8).setTextColor(textColor).setFont('helvetica', 'normal');
+                const seLines = pdf.splitTextToSize(timbradoData.sello, pageWidth - 2 * margin);
+                for (const l of seLines) {
+                    if (y + 2.4 > contentMaxY) await nuevaPagina();
+                    pdf.text(l, margin, y);
+                    y += 2.2;
+                }
+                y += 1;
+            }
+
+            // Sello digital SAT
+            if (timbradoData.selloSat) {
+                if (y + 10 > contentMaxY) await nuevaPagina();
+                pdf.setFontSize(5.8).setTextColor(navy).setFont('helvetica', 'bold')
+                    .text("Sello Digital del SAT:", margin, y);
+                y += 2.8;
+                pdf.setFontSize(4.8).setTextColor(textColor).setFont('helvetica', 'normal');
+                const ssLines = pdf.splitTextToSize(timbradoData.selloSat, pageWidth - 2 * margin);
+                for (const l of seLines) {
+                    if (y + 2.4 > contentMaxY) await nuevaPagina();
+                    pdf.text(l, margin, y);
+                    y += 2.2;
+                }
+            }
+
+            pdf.setFontSize(6).setTextColor(gray).setFont('helvetica', 'italic')
+                .text("Este documento es una representación impresa de un CFDI versión 4.0 con Complemento de Recepción de Pagos 2.0", pageWidth / 2, y + 3, { align: 'center' });
+            y += 6;
+        }
+
+        if (esBorrador) {
+            if (y + 16 > contentMaxY) await nuevaPagina();
+            pdf.setFillColor(255, 243, 205).rect(margin, y, pageWidth - 2 * margin, 10, 'F');
+            pdf.setDrawColor(255, 193, 7).rect(margin, y, pageWidth - 2 * margin, 10, 'S');
+            pdf.setFontSize(7).setTextColor('#856404').setFont('helvetica', 'bold')
+                .text("ESTE DOCUMENTO ES UN COMPROBANTE BORRADOR SIN VALIDEZ FISCAL ANTE EL SAT", pageWidth / 2, y + 4, { align: 'center' });
+            pdf.setFontSize(6).setFont('helvetica', 'normal')
+                .text("Corresponde a la previsualización del recibo de pago previo a su timbrado con Facturama.", pageWidth / 2, y + 7.5, { align: 'center' });
+            y += 13;
+        }
+
+        dibujarPiePagina();
+        return pdf.output('blob');
+
+    } catch (error) {
+        console.error('❌ Error generando PDF de complemento de pago:', error);
+        throw error;
+    }
+}
+
+/**
+ * Abre el PDF del Complemento de Pago en una nueva ventana
+ */
+export async function abrirPDFComplementoPago(comp, options = {}) {
+    const blob = await generarPDFComplementoPago(comp, options);
+    const url = URL.createObjectURL(blob);
+    const newWindow = window.open(url, '_blank');
+    setTimeout(() => URL.revokeObjectURL(url), 120000);
+    return newWindow;
+}
+
+/**
+ * Descarga el PDF del Complemento de Pago localmente
+ */
+export async function descargarPDFComplementoPago(comp, options = {}) {
+    const blob = await generarPDFComplementoPago(comp, options);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    const esBorrador = comp.estatus === 'borrador' || !comp.uuid;
+    link.download = `ComplementoPago-${comp.serie || 'PAG'}-${comp.folio || '1'}${esBorrador ? '-BORRADOR' : ''}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
 export default {
     generarPDFCotizacion,
     generarPDFFactura,
     abrirPDFFactura,
     descargarPDFFactura,
+    generarPDFComplementoPago,
+    abrirPDFComplementoPago,
+    descargarPDFComplementoPago,
     loadJsPDF,
     getBase64ImageFromURL,
     formatearNumero,

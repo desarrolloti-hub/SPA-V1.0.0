@@ -125,23 +125,42 @@ export class TicketAtencionController {
             });
         });
 
-        // Botones para seleccionar archivo o galería del dispositivo
+        // Botones para seleccionar múltiples archivos desde galería por etapa
         document.querySelectorAll('.btn-select-file').forEach(btn => {
             btn.addEventListener('click', async () => {
                 if (!(await this._ensureTicketAcceptedOrPrompt())) return;
                 const stage = btn.getAttribute('data-stage') || 'antes';
                 this.pendingStage = stage;
                 const inputId = stage === 'antes'
-                    ? 'fileInputAntes'
+                    ? 'galleryInputAntes'
                     : stage === 'durante'
-                        ? 'fileInputDurante'
-                        : 'fileInputDespues';
+                        ? 'galleryInputDurante'
+                        : 'galleryInputDespues';
                 const fileInput = document.getElementById(inputId);
                 if (fileInput) {
-                    fileInput.removeAttribute('capture');
                     fileInput.value = '';
                     fileInput.click();
                 }
+            });
+        });
+
+        // Listeners de inputs de galería múltiple independientes por etapa
+        ['antes', 'durante', 'despues'].forEach(stage => {
+            const galleryId = stage === 'antes'
+                ? 'galleryInputAntes'
+                : stage === 'durante'
+                    ? 'galleryInputDurante'
+                    : 'galleryInputDespues';
+            const inputEl = document.getElementById(galleryId);
+            inputEl?.addEventListener('change', async (e) => {
+                const files = Array.from(e.target.files || []);
+                if (files.length === 0) return;
+                if (!(await this._ensureTicketAcceptedOrPrompt())) {
+                    e.target.value = '';
+                    return;
+                }
+                await this.handleMultipleGalleryFilesSelectedForStage(stage, files);
+                e.target.value = '';
             });
         });
 
@@ -1314,6 +1333,134 @@ export class TicketAtencionController {
                 text: error.message || 'No se pudo procesar la captura.',
                 confirmButtonColor: 'var(--rsi-primary)'
             });
+        }
+    }
+
+    async handleMultipleGalleryFilesSelectedForStage(stage, files) {
+        if (!files || files.length === 0) return;
+
+        const stageLabels = { antes: '1. Antes', durante: '2. Durante', despues: '3. Después' };
+        const stageName = stageLabels[stage] || stage;
+        const count = files.length;
+
+        // Crear URLs para previsualizaciones de miniaturas
+        const previewUrls = files.slice(0, 10).map(f => ({
+            name: f.name,
+            url: URL.createObjectURL(f)
+        }));
+
+        try {
+            const { value: formValues, isConfirmed } = await Swal.fire({
+                title: '<i class="fas fa-images" style="color: var(--rsi-primary);"></i> Subir Fotografías',
+                html: `
+                    <div style="text-align: left; font-size: 0.95rem;">
+                        <p style="margin: 0 0 10px 0; color: #374151;">
+                            Has seleccionado <strong>${count} ${count === 1 ? 'fotografía' : 'fotografías'}</strong> para la etapa: 
+                            <span class="ta-badge" style="background: rgba(28,25,72,0.1); color: var(--rsi-primary); font-weight: 700; padding: 2px 8px; border-radius: 4px;">${stageName}</span>
+                        </p>
+
+                        <div style="display: flex; gap: 8px; overflow-x: auto; padding: 8px; margin-bottom: 14px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb;">
+                            ${previewUrls.map(item => `
+                                <div style="flex-shrink: 0; width: 68px; height: 68px; border-radius: 6px; overflow: hidden; border: 1px solid #d1d5db; position: relative;">
+                                    <img src="${item.url}" style="width: 100%; height: 100%; object-fit: cover;" alt="${item.name}" />
+                                </div>
+                            `).join('')}
+                            ${count > 10 ? `
+                                <div style="display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 68px; height: 68px; background: #e5e7eb; border-radius: 6px; font-weight: 700; color: #4b5563; font-size: 0.85rem;">
+                                    +${count - 10} más
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <div style="margin-bottom: 12px;">
+                            <label for="swal-batch-descripcion" style="font-weight: 600; display: block; margin-bottom: 4px; font-size: 0.85rem; color: #1f2937;">
+                                Nota o descripción breve de estas fotografías (opcional):
+                            </label>
+                            <input id="swal-batch-descripcion" class="swal2-input" placeholder="Ej. Registro fotográfico de avances en sitio..." style="width: 100%; margin: 0; box-sizing: border-box; font-size: 0.9rem; height: 38px;">
+                        </div>
+
+                        <div style="font-size: 0.8rem; color: #6b7280; background: #f8fafc; padding: 8px; border-radius: 6px; border-left: 3px solid var(--rsi-primary);">
+                            <i class="fas fa-stamp"></i> A cada fotografía se le estampará de forma independiente el logotipo oficial de RSI, fecha, hora, ubicación GPS y etapa (${stageName}).
+                        </div>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: `<i class="fas fa-cloud-upload-alt"></i> Subir ${count} ${count === 1 ? 'Fotografía' : 'Fotografías'}`,
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#1c1948',
+                cancelButtonColor: '#6b7280',
+                width: '540px',
+                preConfirm: () => {
+                    const desc = document.getElementById('swal-batch-descripcion')?.value || '';
+                    return { descripcion: desc.trim() };
+                }
+            });
+
+            if (!isConfirmed) return;
+
+            // Mostrar modal de progreso
+            Swal.fire({
+                title: `Subiendo ${count} ${count === 1 ? 'fotografía' : 'fotografías'} (${stageName})`,
+                html: `
+                    <div style="margin: 15px 0; text-align: center;">
+                        <p id="swalProgressStageText" style="margin-bottom: 10px; font-size: 0.95rem; font-weight: 600; color: #1f2937;">
+                            Preparando evidencias y coordenadas GPS...
+                        </p>
+                        <div style="width: 100%; background: #e5e7eb; border-radius: 9999px; height: 12px; overflow: hidden; margin-bottom: 8px;">
+                            <div id="swalProgressBar" style="width: 0%; height: 100%; background: #1c1948; transition: width 0.3s ease;"></div>
+                        </div>
+                        <span id="swalProgressPercent" style="font-size: 0.85rem; font-weight: 600; color: #6b7280;">0%</span>
+                    </div>
+                `,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            const res = await this.service.subirMultiplesEvidenciasTicket(this.ticketId, {
+                files,
+                etapa: stage,
+                descripcion: formValues?.descripcion || '',
+                onProgress: ({ current, total }) => {
+                    const pct = Math.round((current / total) * 100);
+                    const pText = document.getElementById('swalProgressStageText');
+                    const pBar = document.getElementById('swalProgressBar');
+                    const pPct = document.getElementById('swalProgressPercent');
+                    if (pText) pText.textContent = `Estampando marca de agua y subiendo foto ${current} de ${total}...`;
+                    if (pBar) pBar.style.width = `${pct}%`;
+                    if (pPct) pPct.textContent = `${pct}%`;
+                }
+            });
+
+            if (!res.success) {
+                throw new Error(res.error || 'Ocurrió un error al subir las evidencias');
+            }
+
+            await Swal.fire({
+                icon: 'success',
+                title: '¡Evidencias subidas!',
+                text: `Se han subido exitosamente ${res.count || count} fotografías para la etapa ${stageName}.`,
+                timer: 2500,
+                showConfirmButton: false
+            });
+
+            this.switchStageTab(stage);
+            await this.loadTicketData();
+
+        } catch (err) {
+            console.error('❌ Error subiendo evidencias de galería:', err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al subir evidencias',
+                text: err.message || 'No fue posible completar la subida de las fotografías.',
+                confirmButtonColor: '#1c1948'
+            });
+        } finally {
+            // Revocar URLs temporales
+            previewUrls.forEach(item => URL.revokeObjectURL(item.url));
         }
     }
 

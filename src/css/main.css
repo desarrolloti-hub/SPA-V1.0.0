@@ -61,9 +61,9 @@
 @import url('./pages/partner/estadisticas.css');
 @import url('./pages/partner/carrusel.css');
 @import url('./pages/partner/clienteForm.css');
-/* Utilidades (opcional) */
-/* @import url('utils/helpers.css'); */
-/* @import url('utils/responsive.css'); */
+@import url('./pages/partner/cuentasPorCobrar.css');
+@import url('./utils/responsive.css');
+
 /* Estilos base adicionales */
 body {
     padding-top: 95px;
@@ -73,7 +73,7 @@ body {
     min-height: calc(100vh - 400px);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     body {
         padding-top: 70px;
     }

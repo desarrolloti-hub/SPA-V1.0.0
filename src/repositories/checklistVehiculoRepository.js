@@ -344,6 +344,85 @@ export class ChecklistVehiculoRepository extends BaseRepository {
             throw error;
         }
     }
+
+    /**
+     * Registra el retorno del vehículo y lo libera devolviéndolo a estado disponible atómicamente
+     * @param {string} checklistId
+     * @param {Object} retornoData - { kilometrajeRetorno, nivelCombustibleRetorno, observacionesRetorno, retornadoPorUid, retornadoPorNombre, evidenciasRetorno }
+     * @returns {Promise<{ success: boolean, folio: string, vehiculoId: string }>}
+     */
+    async registrarRetornoVehiculoAtomic(checklistId, retornoData) {
+        try {
+            const checklistRef = doc(db, this.collectionName, checklistId);
+
+            const result = await runTransaction(db, async (transaction) => {
+                const checkDoc = await transaction.get(checklistRef);
+                if (!checkDoc.exists()) {
+                    throw new Error('La inspección de salida vehicular no existe.');
+                }
+
+                const checkData = checkDoc.data();
+                if (checkData.estado !== 'aceptada') {
+                    throw new Error(`Esta salida no está activa para retorno (Estado actual: ${checkData.estado}).`);
+                }
+
+                const vehiculoRef = doc(db, 'vehiculos', checkData.vehiculoId);
+                const vehiculoDoc = await transaction.get(vehiculoRef);
+                if (!vehiculoDoc.exists()) {
+                    throw new Error('El vehículo asociado no fue encontrado en la base de datos.');
+                }
+
+                const kmRetorno = parseFloat(retornoData.kilometrajeRetorno);
+                const kmSalida = parseFloat(checkData.kilometrajeSalida || 0);
+                if (kmRetorno < kmSalida) {
+                    throw new Error(`El odómetro de retorno (${kmRetorno} km) no puede ser menor al de salida (${kmSalida} km).`);
+                }
+
+                const now = new Date().toISOString();
+
+                // 1. Actualizar checklist a concluida con datos de retorno
+                transaction.update(checklistRef, {
+                    estado: 'concluida',
+                    retorno: {
+                        completado: true,
+                        fechaHoraRetorno: now,
+                        kilometrajeRetorno: kmRetorno,
+                        nivelCombustibleRetorno: retornoData.nivelCombustibleRetorno || '1/2',
+                        recibidoPorUid: retornoData.retornadoPorUid || null,
+                        recibidoPorNombre: retornoData.retornadoPorNombre || null,
+                        retornadoPorUid: retornoData.retornadoPorUid || null,
+                        retornadoPorNombre: retornoData.retornadoPorNombre || null,
+                        observacionesRetorno: (retornoData.observacionesRetorno || '').trim(),
+                        evidenciasRetorno: retornoData.evidenciasRetorno || []
+                    },
+                    updatedAt: now
+                });
+
+                // 2. Liberar vehículo a disponible, actualizar odómetro y combustible
+                transaction.update(vehiculoRef, {
+                    estadoOperativo: 'disponible',
+                    kilometrajeActual: kmRetorno,
+                    combustibleNivel: retornoData.nivelCombustibleRetorno || '1/2',
+                    responsableActualUid: null,
+                    responsableActualNombre: null,
+                    updatedAt: now,
+                    updatedBy: retornoData.retornadoPorUid || 'sistema'
+                });
+
+                return {
+                    success: true,
+                    folio: checkData.folio,
+                    vehiculoId: checkData.vehiculoId
+                };
+            });
+
+            this.clearCache();
+            return result;
+        } catch (error) {
+            console.error('❌ Error en registrarRetornoVehiculoAtomic:', error);
+            throw error;
+        }
+    }
 }
 
 export default ChecklistVehiculoRepository;

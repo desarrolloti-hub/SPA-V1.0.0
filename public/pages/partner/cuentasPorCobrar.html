@@ -1,0 +1,334 @@
+<!-- ========================================
+   PANEL CRUD - Cuentas por Cobrar (REP 2.0 / PPD)
+   Estandarizado conforme a Facturas y Cotizaciones
+   ======================================== -->
+
+<section class="rsi-facturas-section">
+    <div class="rsi-container">
+        
+        <!-- Título -->
+        <h1 class="rsi-page-title">
+            <span class="rsi-text-gold">Cuentas</span> por Cobrar
+        </h1>
+        <p class="rsi-page-subtitle">
+            Seguimiento de facturas en parcialidades (PPD), saldos insolutos y emisión de Complementos de Pago (REP 2.0).
+        </p>
+
+        <!-- ===== PANEL CRUD ===== -->
+        <div class="rsi-panel-crud">
+            
+            <!-- Header -->
+            <div class="rsi-panel-header">
+                <h2>
+                    <i class="fas fa-hand-holding-usd"></i>
+                    Facturas en Parcialidades (PPD)
+                    <span id="cxcCount" class="rsi-badge rsi-badge-primary" style="font-size: 0.8rem;">0</span>
+                </h2>
+                <div class="rsi-panel-actions">
+                    <button id="refreshCxc" class="rsi-btn-crud rsi-btn-crud-outline">
+                        <i class="fas fa-sync"></i> Actualizar
+                    </button>
+                </div>
+            </div>
+
+            <!-- 🔥 BUSCADOR (IDÉNTICO A FACTURAS Y COTIZACIONES) -->
+            <div class="rsi-search-container">
+                <div class="rsi-search-box">
+                    <div class="rsi-search-input-wrapper">
+                        <input 
+                            type="text" 
+                            id="searchCxc" 
+                            placeholder="Buscar por número, cliente o RFC..." 
+                            class="rsi-search-input"
+                            autocomplete="off"
+                        >
+                        <button id="clearSearchBtn" class="rsi-btn-clear-search" style="display: none;" title="Limpiar búsqueda">
+                            <i class="fas fa-times-circle"></i>
+                        </button>
+                    </div>
+                    <button id="searchCxcBtn" class="rsi-btn-search">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
+                </div>
+                
+                <!-- Resultados de búsqueda -->
+                <div id="searchResultsInfo" class="rsi-search-results-info" style="display: none;">
+                    <span id="searchResultsText"></span>
+                    <button id="clearSearchResults" class="rsi-btn-clear-results">
+                        <i class="fas fa-times"></i> Limpiar búsqueda
+                    </button>
+                </div>
+            </div>
+
+            <!-- Estadísticas (IDÉNTICO A FACTURAS Y COTIZACIONES) -->
+            <div id="cxcStats" class="rsi-stats-container">
+                <div class="rsi-stat-item" style="cursor: pointer;" data-filter="todas" title="Ver todas las facturas PPD">
+                    <span class="rsi-stat-value" id="statTotal">0</span>
+                    <span class="rsi-stat-label">Total PPD</span>
+                </div>
+                <div class="rsi-stat-item" style="cursor: pointer;" data-filter="pendiente" title="Filtrar facturas sin abonos">
+                    <span class="rsi-stat-value" style="color: var(--rsi-danger);" id="statPendientes">0</span>
+                    <span class="rsi-stat-label">Sin Pagos</span>
+                </div>
+                <div class="rsi-stat-item" style="cursor: pointer;" data-filter="parcial" title="Filtrar facturas con parcialidades">
+                    <span class="rsi-stat-value" style="color: var(--rsi-warning);" id="statParciales">0</span>
+                    <span class="rsi-stat-label">En Parcialidades</span>
+                </div>
+                <div class="rsi-stat-item" style="cursor: pointer;" data-filter="pagada" title="Filtrar facturas liquidadas">
+                    <span class="rsi-stat-value" style="color: var(--rsi-success);" id="statLiquidadas">0</span>
+                    <span class="rsi-stat-label">Liquidadas</span>
+                </div>
+                <div class="rsi-stat-item">
+                    <span class="rsi-stat-value" style="color: var(--rsi-primary);" id="statTotalSaldo">$0.00</span>
+                    <span class="rsi-stat-label">Saldo por Cobrar</span>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loadingState" class="rsi-loading-state">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Cargando cuentas por cobrar...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="rsi-empty-state" style="display: none;">
+                <i class="fas fa-hand-holding-usd"></i>
+                <h3 id="emptyStateTitle">No hay cuentas por cobrar registradas</h3>
+                <p id="emptyStateText">Las facturas emitidas con método de pago PPD aparecerán aquí automáticamente.</p>
+                <a href="/partner/crudFacturas" class="rsi-btn-crud rsi-btn-crud-primary" data-link>
+                    <i class="fas fa-file-invoice"></i> Ver Facturas
+                </a>
+            </div>
+
+            <!-- Tabla -->
+            <div class="rsi-table-wrapper" style="display: none;">
+                <table class="rsi-table">
+                    <thead>
+                        <tr>
+                            <th>Factura</th>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th style="text-align: right;">Total Factura</th>
+                            <th style="text-align: right;">Total Pagado</th>
+                            <th style="text-align: right;">Saldo Pendiente</th>
+                            <th style="text-align: center;">Parcialidades</th>
+                            <th style="text-align: center;">Estatus</th>
+                            <th style="text-align: center;">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cxcTableBody">
+                        <!-- Se llena dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div id="paginationContainer" class="rsi-pagination" style="display: none;">
+                <div class="rsi-pagination-info">
+                    <span id="pageInfo">Página 1 de 1 (0 items)</span>
+                </div>
+                <div class="rsi-pagination-controls">
+                    <button id="prevPage" class="rsi-btn-page" disabled>
+                        <i class="fas fa-chevron-left"></i> Anterior
+                    </button>
+                    <button id="nextPage" class="rsi-btn-page" disabled>
+                        Siguiente <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     MODAL: REGISTRAR COMPLEMENTO DE PAGO (REP 2.0 / CFDI 4.0)
+     ========================================================================== -->
+<div id="modalRegistrarPago" class="rsi-modal-backdrop" style="display: none;">
+    <div class="rsi-modal" style="max-width: 620px;" role="dialog" aria-modal="true" aria-labelledby="modalPagoTitle">
+        
+        <div class="rsi-modal-header">
+            <h2 id="modalPagoTitle">
+                <i class="fas fa-hand-holding-usd" style="color: var(--rsi-primary);"></i>
+                <span>Nuevo</span> Complemento de Pago
+            </h2>
+            <button type="button" class="rsi-modal-close" id="btnCloseModalPago" aria-label="Cerrar">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <form id="formRegistrarPago" class="rsi-modal-body" autocomplete="off" style="padding: 18px 22px;">
+
+            <!-- Tarjeta Informativa Compacta de la Factura Original -->
+            <div style="background: var(--rsi-bg-secondary, #f8fafc); border: 1px solid var(--rsi-border-color, #e2e8f0); border-radius: 8px; padding: 12px 14px; margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <div>
+                        <strong id="modalFacFolio" style="font-size: 0.95rem; color: var(--rsi-text-primary, #0f172a);">FAC-000</strong>
+                        <span id="modalFacCliente" style="margin-left: 8px; font-size: 0.88rem; color: var(--rsi-text-secondary, #475569);">Cliente</span>
+                    </div>
+                    <span class="rsi-badge rsi-badge-primary" id="modalFacParcialidadBadge" style="font-size: 0.75rem;">Parcialidad #1</span>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--rsi-text-muted, #64748b); margin-bottom: 8px; font-family: monospace;">
+                    <span>UUID:</span> <span id="modalFacUuid" style="font-weight: 600;">-</span>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; font-size: 0.82rem; border-top: 1px dashed var(--rsi-border-color, #cbd5e1); padding-top: 8px;">
+                    <div><span style="color: var(--rsi-text-muted);">Total:</span> <strong id="modalFacTotal" style="display: block;">$0.00</strong></div>
+                    <div><span style="color: var(--rsi-text-muted);">Pagado:</span> <strong id="modalFacPagado" style="display: block; color: var(--rsi-success, #16a34a);">$0.00</strong></div>
+                    <div><span style="color: var(--rsi-text-muted);">Saldo Insoluto:</span> <strong id="modalFacSaldoActual" style="display: block; color: var(--rsi-danger, #dc2626);">$0.00</strong></div>
+                </div>
+            </div>
+
+            <!-- Campos del Formulario de Pago -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+                <div class="rsi-form-group">
+                    <label for="pagoMonto" style="font-size: 0.85rem; font-weight: 600;">Monto a Pagar <span style="color: red;">*</span></label>
+                    <div class="rsi-input-wrapper">
+                        <i class="fas fa-dollar-sign rsi-input-icon"></i>
+                        <input type="number" id="pagoMonto" step="0.01" min="0.01" placeholder="0.00" required style="width: 100%;">
+                    </div>
+                    <div style="display: flex; justify-content: flex-end; margin-top: 4px;">
+                        <button type="button" id="btnSaldarTotalidad" style="font-size: 0.75rem; font-weight: 600; color: var(--rsi-primary); background: none; border: none; cursor: pointer; padding: 0;">
+                            <i class="fas fa-check-double"></i> Liquidar totalidad
+                        </button>
+                    </div>
+                </div>
+
+                <div class="rsi-form-group">
+                    <label for="pagoSaldoRestantePreview" style="font-size: 0.85rem; font-weight: 600;">Saldo Insoluto Restante</label>
+                    <div class="rsi-input-wrapper">
+                        <i class="fas fa-calculator rsi-input-icon"></i>
+                        <input type="text" id="pagoSaldoRestantePreview" readonly value="$0.00" style="background: var(--rsi-bg-secondary, #f8fafc); font-weight: 700; width: 100%;">
+                    </div>
+                    <span style="font-size: 0.72rem; color: var(--rsi-text-muted);">Cálculo automático SAT</span>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+                <div class="rsi-form-group">
+                    <label for="pagoFecha" style="font-size: 0.85rem; font-weight: 600;">Fecha y Hora <span style="color: red;">*</span></label>
+                    <div class="rsi-input-wrapper">
+                        <i class="fas fa-calendar-alt rsi-input-icon"></i>
+                        <input type="datetime-local" id="pagoFecha" required style="width: 100%;">
+                    </div>
+                </div>
+
+                <div class="rsi-form-group">
+                    <label for="pagoFormaPago" style="font-size: 0.85rem; font-weight: 600;">Forma de Pago (SAT) <span style="color: red;">*</span></label>
+                    <div class="rsi-input-wrapper">
+                        <i class="fas fa-money-check rsi-input-icon"></i>
+                        <select id="pagoFormaPago" required style="width: 100%;">
+                            <option value="03">03 — Transferencia de fondos</option>
+                            <option value="01">01 — Efectivo</option>
+                            <option value="02">02 — Cheque nominativo</option>
+                            <option value="04">04 — Tarjeta de crédito</option>
+                            <option value="28">28 — Tarjeta de débito</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+                <div class="rsi-form-group">
+                    <label for="pagoNumOperacion" style="font-size: 0.85rem; font-weight: 600;">No. de Operación / Rastreo</label>
+                    <div class="rsi-input-wrapper">
+                        <i class="fas fa-barcode rsi-input-icon"></i>
+                        <input type="text" id="pagoNumOperacion" placeholder="Opcional" style="width: 100%;">
+                    </div>
+                </div>
+
+                <div class="rsi-form-group">
+                    <label for="pagoObservaciones" style="font-size: 0.85rem; font-weight: 600;">Observaciones</label>
+                    <div class="rsi-input-wrapper">
+                        <i class="fas fa-comment-dots rsi-input-icon"></i>
+                        <input type="text" id="pagoObservaciones" placeholder="Opcional" style="width: 100%;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Opción de Timbrado Inmediato -->
+            <div style="background: rgba(22, 163, 74, 0.08); border: 1px solid rgba(22, 163, 74, 0.25); border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-stamp" style="font-size: 1.2rem; color: var(--rsi-success, #16a34a);"></i>
+                    <div>
+                        <strong style="font-size: 0.85rem; color: var(--rsi-success-text, #166534); display: block;">Timbrado Oficial SAT vía Facturama</strong>
+                        <span style="font-size: 0.74rem; color: var(--rsi-text-secondary, #475569);">Genera Folio Fiscal UUID y representación impresa PDF.</span>
+                    </div>
+                </div>
+                <label class="rsi-switch" style="position: relative; display: inline-block; width: 40px; height: 22px;">
+                    <input type="checkbox" id="chkAutoTimbrar" checked>
+                    <span class="rsi-slider round"></span>
+                </label>
+            </div>
+
+        </form>
+
+        <div class="rsi-modal-footer">
+            <button type="button" class="rsi-btn-crud rsi-btn-crud-outline" id="btnCancelModalPago">
+                Cancelar
+            </button>
+            <button type="button" class="rsi-btn-crud rsi-btn-crud-primary" id="btnConfirmarPago">
+                <i class="fas fa-cloud-upload-alt"></i> Emitir Complemento
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- ==========================================================================
+     MODAL: HISTORIAL DE COMPLEMENTOS Y PARCIALIDADES
+     ========================================================================== -->
+<div id="modalHistorialPagos" class="rsi-modal-backdrop" style="display: none;">
+    <div class="rsi-modal" style="max-width: 760px;" role="dialog" aria-modal="true" aria-labelledby="modalHistorialTitle">
+        
+        <div class="rsi-modal-header">
+            <h2 id="modalHistorialTitle">
+                <i class="fas fa-history" style="color: var(--rsi-primary);"></i>
+                <span>Historial</span> de Parcialidades y Pagos
+            </h2>
+            <button type="button" class="rsi-modal-close" id="btnCloseModalHistorial" aria-label="Cerrar">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="rsi-modal-body" style="padding: 16px 20px;">
+
+            <!-- Resumen de la Factura -->
+            <div id="historialFacturaHeader" style="background: var(--rsi-bg-secondary, #f8fafc); border: 1px solid var(--rsi-border-color, #e2e8f0); border-radius: 8px; padding: 12px 14px; margin-bottom: 14px;">
+                <!-- Dinámico -->
+            </div>
+
+            <!-- Barra de Progreso de Pago -->
+            <div style="margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 600; margin-bottom: 4px; color: var(--rsi-text-secondary, #475569);">
+                    <span>Progreso de Cobro:</span>
+                    <span id="historialPorcentajeTexto">0% Cobrado</span>
+                </div>
+                <div style="width: 100%; height: 8px; background: var(--rsi-border-color, #e2e8f0); border-radius: 999px; overflow: hidden;">
+                    <div id="historialProgressBar" style="width: 0%; height: 100%; background: var(--rsi-success, #16a34a); transition: width 0.4s ease;"></div>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h4 style="margin: 0; font-size: 0.9rem; color: var(--rsi-text-primary);">
+                    <i class="fas fa-receipt" style="color: var(--rsi-primary);"></i> Complementos de Pago Emitidos
+                </h4>
+                <button type="button" id="btnAgregarPagoDesdeHistorial" class="rsi-btn-crud rsi-btn-crud-primary" style="padding: 6px 12px; font-size: 0.78rem;">
+                    <i class="fas fa-plus"></i> Nuevo Pago
+                </button>
+            </div>
+
+            <!-- Lista de Complementos -->
+            <div id="historialListContainer" style="max-height: 340px; overflow-y: auto;">
+                <!-- Render dinámico -->
+            </div>
+
+        </div>
+
+        <div class="rsi-modal-footer">
+            <button type="button" class="rsi-btn-crud rsi-btn-crud-outline" id="btnCloseHistorialFooter">
+                Cerrar
+            </button>
+        </div>
+
+    </div>
+</div>

@@ -242,6 +242,32 @@ export class ChecklistVehiculoModel {
             errors
         };
     }
+
+    /**
+     * Valida los requisitos para el retorno y entrega del vehículo
+     * @param {Object} params
+     * @param {number} kilometrajeSalida - Odómetro registrado al momento de la salida
+     * @returns {{ valid: boolean, errors: string[] }}
+     */
+    static validateRetorno(params, kilometrajeSalida = 0) {
+        const errors = [];
+
+        const km = parseFloat(params.kilometrajeRetorno);
+        if (isNaN(km) || km < 0) {
+            errors.push('El odómetro de retorno debe ser un número válido mayor o igual a cero.');
+        } else if (km < kilometrajeSalida) {
+            errors.push(`El odómetro de retorno (${km.toLocaleString()} km) no puede ser inferior al odómetro de salida registrado (${kilometrajeSalida.toLocaleString()} km).`);
+        }
+
+        if (!params.nivelCombustibleRetorno) {
+            errors.push('Debe registrar el nivel de combustible al momento del retorno.');
+        }
+
+        return {
+            valid: errors.length === 0,
+            errors
+        };
+    }
 }
 
 export default ChecklistVehiculoModel;

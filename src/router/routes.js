@@ -33,6 +33,7 @@ import {productoServicioViewController} from '../controllers/partner/productoSer
 import {cotizacionFormController} from '../controllers/partner/cotizacionFormController.js';
 import {facturaFormController} from '../controllers/partner/facturaFormController.js';
 import {facturasCrudController} from '../controllers/partner/facturasCrudController.js';
+import {cuentasPorCobrarController} from '../controllers/partner/cuentasPorCobrarController.js';
 import {ProfileController} from '../controllers/partner/profileController.js';
 import {ticketController} from '../controllers/partner/ticketController.js';
 import {ticketsCrudController} from '../controllers/partner/ticketsCrudController.js';
@@ -238,6 +239,11 @@ export const routes = {
         view: '/pages/partner/facturasCrud.html',
         controller: facturasCrudController,
         title: "Facturación CFDI 4.0 | RSI Enterprise"
+    },
+    "/partner/cuentasPorCobrar": {
+        view: '/pages/partner/cuentasPorCobrar.html',
+        controller: cuentasPorCobrarController,
+        title: "Cuentas por Cobrar | RSI Enterprise"
     },
     "/partner/profile": {
         view: '/pages/partner/profile.html',

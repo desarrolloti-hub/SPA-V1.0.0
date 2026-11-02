@@ -775,3 +775,85 @@ body.dark-mode .rsi-detalle-operaciones .operacion-linea .etiqueta {
 body.dark-mode .rsi-detalle-operaciones .operacion-linea .valor {
     color: var(--rsi-text-light);
 }
+
+/* ==========================================
+   GRILLA DE ACCIONES EN TABLA DE COTIZACIONES
+   ========================================== */
+@media (min-width: 769px) {
+    .rsi-table-actions.rsi-table-actions-grid {
+        display: grid !important;
+        grid-template-columns: repeat(3, 32px) !important;
+        gap: 4px !important;
+        justify-content: center !important;
+        align-items: center !important;
+        white-space: normal !important;
+        width: max-content !important;
+        margin: 0 auto !important;
+    }
+
+    .rsi-cotizaciones-section .rsi-table tbody td:last-child {
+        width: 120px !important;
+        min-width: 115px !important;
+        padding: 6px 8px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .rsi-cotizaciones-section .rsi-table tbody td:last-child {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        padding: var(--rsi-spacing-xs) 0 !important;
+    }
+
+    .rsi-table-actions.rsi-table-actions-grid {
+        display: flex !important;
+        grid-template-columns: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex-wrap: wrap !important;
+        justify-content: flex-end !important;
+        align-items: center !important;
+        margin: 0 !important;
+        gap: 6px !important;
+    }
+}
+
+/* ==========================================
+   FLECHAS PARA SUBIR Y BAJAR CANTIDADES (1 EN 1)
+   ========================================== */
+.rsi-items-table input.item-cantidad::-webkit-inner-spin-button,
+.rsi-items-table input.item-cantidad::-webkit-outer-spin-button,
+input.item-cantidad::-webkit-inner-spin-button,
+input.item-cantidad::-webkit-outer-spin-button {
+    -webkit-appearance: inner-spin-button !important;
+    opacity: 1 !important;
+    display: block !important;
+    cursor: pointer !important;
+}
+
+.rsi-items-table input.item-cantidad,
+input.item-cantidad {
+    -moz-appearance: number-input !important;
+    appearance: auto !important;
+    padding-right: 4px !important;
+}
+
+/* ==========================================
+   CONTENEDOR DE TOTALES A LA DERECHA
+   ========================================== */
+.rsi-totales-wrapper-right {
+    display: flex !important;
+    justify-content: flex-end !important;
+    width: 100% !important;
+    margin-top: var(--rsi-spacing-md);
+    margin-bottom: var(--rsi-spacing-lg);
+}
+
+.rsi-totales-wrapper-right .rsi-totales-container,
+.rsi-totales-container {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    max-width: 380px !important;
+    width: 100% !important;
+}

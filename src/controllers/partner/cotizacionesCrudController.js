@@ -1065,8 +1065,8 @@ async function loadCotizacionesTable() {
                             </small>
                         </div>
                     </td>
-                    <td data-label="Acciones">
-                        <div class="rsi-table-actions">
+                    <td data-label="Acciones" style="text-align: center;">
+                        <div class="rsi-table-actions rsi-table-actions-grid">
                             <button class="rsi-btn-icon rsi-btn-icon-view btn-view-cotizacion" data-id="${coti.id}" title="Ver detalles">
                                 <i class="fas fa-eye"></i>
                             </button>
@@ -1078,13 +1078,6 @@ async function loadCotizacionesTable() {
                             </button>
                             <button class="rsi-btn-icon rsi-btn-icon-send btn-send-cotizacion" data-id="${coti.id}" title="Enviar cotización">
                                 <i class="fas fa-paper-plane"></i>
-                            </button>
-                            <!-- ✅ BOTÓN CAMBIAR ESTATUS -->
-                            <button class="rsi-btn-icon btn-status-cotizacion" 
-                                    data-id="${coti.id}" 
-                                    data-estatus="${estatus}" 
-                                    title="Cambiar estatus de la cotización">
-                                <i class="fas fa-exchange-alt"></i>
                             </button>
                             <!-- ✅ BOTÓN VINCULAR / CREAR TICKET -->
                             <button class="rsi-btn-icon btn-ticket-cotizacion" 
@@ -1480,14 +1473,15 @@ async function handleCambiarEstatus(cotizacionId) {
     const estatusActual = (coti.estatus || coti.estado || 'en proceso').toLowerCase();
 
     const { value: formValues } = await Swal.fire({
-        title: 'Cambiar Estatus de Cotización',
+        title: '<i class="fas fa-exchange-alt" style="color: var(--rsi-primary);"></i> Cambiar Estatus',
+        width: '500px',
         html: `
-            <div style="text-align: left; margin-top: 10px;">
-                <p><strong>Cotización:</strong> ${coti.cotizacionNumero || 'S/N'}</p>
-                <p><strong>Cliente:</strong> ${coti.clienteNombre || '-'}</p>
-                <div style="margin-top: 15px;">
-                    <label style="display: block; font-weight: 600; margin-bottom: 6px;">Nuevo Estatus:</label>
-                    <select id="swalEstatusSelect" class="swal2-input" style="width: 100%; margin: 0; box-sizing: border-box;">
+            <div style="text-align: left; margin-top: 8px; font-size: 0.95rem;">
+                <p style="margin: 0 0 6px 0;"><strong>Cotización:</strong> ${coti.cotizacionNumero || 'S/N'}</p>
+                <p style="margin: 0 0 14px 0;"><strong>Cliente:</strong> ${coti.clienteNombre || '-'}</p>
+                <div style="margin-top: 12px;">
+                    <label for="swalEstatusSelect" style="display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; color: #1e293b;">Nuevo Estatus:</label>
+                    <select id="swalEstatusSelect" style="width: 100%; height: 44px; padding: 8px 12px; font-size: 0.95rem; font-weight: 500; border: 1.5px solid #cbd5e1; border-radius: 8px; background: #ffffff; color: #0f172a; box-sizing: border-box; cursor: pointer; outline: none;">
                         <option value="en proceso" ${estatusActual === 'en proceso' ? 'selected' : ''}>En Proceso (Pendiente)</option>
                         <option value="vendida" ${estatusActual === 'vendida' ? 'selected' : ''}>Vendida (Aprobada)</option>
                         <option value="rechazada" ${estatusActual === 'rechazada' ? 'selected' : ''}>Rechazada</option>
@@ -1495,9 +1489,9 @@ async function handleCambiarEstatus(cotizacionId) {
                         <option value="completada" ${estatusActual === 'completada' ? 'selected' : ''}>Completada</option>
                     </select>
                 </div>
-                <div id="swalMotivoContainer" style="margin-top: 15px; display: ${estatusActual === 'rechazada' ? 'block' : 'none'};">
-                    <label style="display: block; font-weight: 600; margin-bottom: 6px;">Motivo de Rechazo:</label>
-                    <textarea id="swalMotivoRechazo" class="swal2-textarea" style="width: 100%; margin: 0; box-sizing: border-box;" placeholder="Ingresa la razón del rechazo...">${coti.motivoRechazo || ''}</textarea>
+                <div id="swalMotivoContainer" style="margin-top: 14px; display: ${estatusActual === 'rechazada' ? 'block' : 'none'};">
+                    <label for="swalMotivoRechazo" style="display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; color: #1e293b;">Motivo de Rechazo:</label>
+                    <textarea id="swalMotivoRechazo" style="width: 100%; min-height: 80px; padding: 10px 12px; font-size: 0.9rem; border: 1.5px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; resize: vertical;" placeholder="Ingresa la razón del rechazo...">${coti.motivoRechazo || ''}</textarea>
                 </div>
             </div>
         `,

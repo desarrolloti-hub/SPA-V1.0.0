@@ -153,53 +153,51 @@ export class TicketRepository extends BaseRepository {
     }
 
     /**
+     * Limpia la caché preservando las estructuras Map y colecciones de tickets
+     */
+    clearCache() {
+        super.clearCache();
+        if (this.cache) {
+            this.cache.all = null;
+            this.cache.byId = {};
+            this.cache.byColaborador = {};
+        }
+    }
+
+    /**
      * Obtiene tickets con paginación
      */
     async getTicketsPaginated(pageSize = 20, page = 1, filters = {}) {
         try {
-            let q = query(this._getCollection(), orderBy('fechaCreacion', 'desc'));
+            let allTickets = await this.getAllTickets();
             
             // Aplicar filtros
             if (filters.tipo) {
-                q = query(q, where('tipo', '==', filters.tipo));
+                allTickets = allTickets.filter(t => t.tipo === filters.tipo);
             }
-            
             if (filters.estado) {
-                q = query(q, where('estado', '==', filters.estado));
+                allTickets = allTickets.filter(t => t.estado === filters.estado);
             }
-            
             if (filters.prioridad) {
-                q = query(q, where('prioridad', '==', filters.prioridad));
+                allTickets = allTickets.filter(t => t.prioridad === filters.prioridad);
             }
-            
             if (filters.colaboradorId) {
-                q = query(q, where('colaboradoresIds', 'array-contains', filters.colaboradorId));
+                allTickets = allTickets.filter(t => (t.colaboradoresIds || []).includes(filters.colaboradorId));
             }
 
-            // Paginación
-            const startAt = (page - 1) * pageSize;
-            q = query(q, limit(pageSize));
+            const total = allTickets.length;
+            const totalPages = Math.ceil(total / pageSize) || 1;
+            const validPage = Math.max(1, Math.min(page, totalPages));
+            const start = (validPage - 1) * pageSize;
+            const end = Math.min(start + pageSize, total);
+            const tickets = allTickets.slice(start, end);
 
-            const snapshot = await getDocs(q);
-            const tickets = [];
-            
-            snapshot.forEach(doc => {
-                tickets.push({
-                    id: doc.id,
-                    ...doc.data()
-                });
-            });
-
-            // Obtener total
-            const totalQuery = query(this._getCollection());
-            const totalSnapshot = await getDocs(totalQuery);
-            
             return {
                 tickets,
-                total: totalSnapshot.size,
-                page,
+                total,
+                page: validPage,
                 pageSize,
-                totalPages: Math.ceil(totalSnapshot.size / pageSize)
+                totalPages
             };
         } catch (error) {
             console.error('❌ Error obteniendo tickets paginados:', error);

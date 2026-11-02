@@ -172,8 +172,10 @@ export class BlogModel {
             errors.categoria = 'Selecciona una categoría válida.';
         }
 
+        const hasErrors = Object.keys(errors).length > 0;
         return {
-            valid: Object.keys(errors).length === 0,
+            valid: !hasErrors,
+            isValid: !hasErrors,
             errors
         };
     }

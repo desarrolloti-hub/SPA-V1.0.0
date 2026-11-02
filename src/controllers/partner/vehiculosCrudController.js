@@ -30,9 +30,11 @@ export class VehiculosCrudController {
             searchInput: document.getElementById('vehSearchInput'),
             clearSearchBtn: document.getElementById('clearSearchBtn'),
             filterEstado: document.getElementById('filterEstado'),
+            filterTipo: document.getElementById('filterTipo'),
             filterActivo: document.getElementById('filterActivo'),
             btnRefresh: document.getElementById('btnRefreshVehiculos'),
             btnNuevo: document.getElementById('btnNuevoVehiculo'),
+            statButtons: document.querySelectorAll('.stat-filter-btn'),
             // Stats
             statTotal: document.getElementById('statTotalVehiculos'),
             statDisponibles: document.getElementById('statDisponibles'),
@@ -63,6 +65,22 @@ export class VehiculosCrudController {
 
         if (this.dom.filterEstado) {
             this.dom.filterEstado.addEventListener('change', () => this.filtrarVehiculos());
+        }
+
+        if (this.dom.filterTipo) {
+            this.dom.filterTipo.addEventListener('change', () => this.filtrarVehiculos());
+        }
+
+        if (this.dom.statButtons) {
+            this.dom.statButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const est = btn.dataset.estado || 'todos';
+                    if (this.dom.filterEstado) {
+                        this.dom.filterEstado.value = est;
+                    }
+                    this.filtrarVehiculos();
+                });
+            });
         }
 
         if (this.dom.filterActivo) {
@@ -130,11 +148,29 @@ export class VehiculosCrudController {
     filtrarVehiculos() {
         const term = (this.dom.searchInput?.value || '').trim().toLowerCase();
         const estado = this.dom.filterEstado?.value || 'todos';
+        const tipo = this.dom.filterTipo?.value || 'todos';
+
+        // Actualizar visualmente la tarjeta de estadística activa
+        if (this.dom.statButtons) {
+            this.dom.statButtons.forEach(btn => {
+                const btnEst = btn.dataset.estado;
+                if (btnEst === estado) {
+                    btn.style.outline = '2px solid var(--rsi-primary)';
+                    btn.style.outlineOffset = '2px';
+                } else {
+                    btn.style.outline = 'none';
+                }
+            });
+        }
 
         let filtrados = [...this.vehiculos];
 
         if (estado !== 'todos') {
             filtrados = filtrados.filter(v => v.estadoOperativo === estado);
+        }
+
+        if (tipo !== 'todos') {
+            filtrados = filtrados.filter(v => (v.tipoVehiculo || 'Automóvil').toLowerCase().includes(tipo.toLowerCase()));
         }
 
         if (term) {
@@ -144,7 +180,11 @@ export class VehiculosCrudController {
                 const marca = (v.marca || '').toLowerCase();
                 const modelo = (v.modelo || '').toLowerCase();
                 const resp = (v.responsableActualNombre || '').toLowerCase();
-                return placas.includes(term) || eco.includes(term) || marca.includes(term) || modelo.includes(term) || resp.includes(term);
+                const tipoV = (v.tipoVehiculo || '').toLowerCase();
+                const color = (v.color || '').toLowerCase();
+                const vin = (v.numeroSerie || '').toLowerCase();
+                const anio = String(v.anio || '');
+                return placas.includes(term) || eco.includes(term) || marca.includes(term) || modelo.includes(term) || resp.includes(term) || tipoV.includes(term) || color.includes(term) || vin.includes(term) || anio.includes(term);
             });
         }
 
@@ -191,17 +231,17 @@ export class VehiculosCrudController {
 
                 return `
                     <tr class="${!v.activo ? 'rsi-row-inactive' : ''}">
-                        <td>
+                        <td data-label="No. Eco">
                             <strong style="color: var(--rsi-text-gold); font-family: monospace; font-size: 0.95rem;">
                                 ${v.numeroEconomico || 'S/N'}
                             </strong>
                         </td>
-                        <td>
+                        <td data-label="Placas">
                             <span class="rsi-badge rsi-badge-outline" style="font-family: monospace; font-weight: 700; letter-spacing: 0.5px;">
                                 ${v.placas || 'S/P'}
                             </span>
                         </td>
-                        <td>
+                        <td data-label="Automóvil">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 ${v.imagenUrl ? `
                                     <img src="${v.imagenUrl}" alt="${v.marca} ${v.modelo}" style="width: 44px; height: 32px; object-fit: cover; border-radius: var(--rsi-radius-sm); border: 1px solid var(--rsi-border-color); flex-shrink: 0;" />
@@ -220,32 +260,32 @@ export class VehiculosCrudController {
                                 </div>
                             </div>
                         </td>
-                        <td>
+                        <td data-label="Año / Color">
                             <span style="font-size: 0.88rem; color: var(--rsi-text-secondary);">
                                 ${v.anio || '-'} ${v.color ? `· ${v.color}` : ''}
                             </span>
                         </td>
-                        <td>
+                        <td data-label="Odómetro">
                             <span style="font-weight: 600; font-family: monospace;">
                                 ${km} km
                             </span>
                         </td>
-                        <td>
+                        <td data-label="Combustible">
                             <span class="rsi-badge rsi-badge-secondary" style="font-size: 0.75rem;">
                                 <i class="fas fa-gas-pump" style="font-size: 0.7rem; margin-right: 3px;"></i> ${v.combustibleNivel || '1/2'}
                             </span>
                         </td>
-                        <td>
+                        <td data-label="Conductor">
                             <span style="font-size: 0.88rem; color: var(--rsi-text-primary); font-weight: 500;" title="${conductor}">
                                 ${conductor}
                             </span>
                         </td>
-                        <td>
+                        <td data-label="Estado">
                             <span class="rsi-badge ${badgeCls}">
                                 ${estadoLbl}
                             </span>
                         </td>
-                        <td>
+                        <td data-label="Acciones" style="text-align: center;">
                             <div class="rsi-table-actions">
                                 <a href="/partner/vehiculoDetalle?id=${v.id}" class="rsi-btn-icon rsi-btn-icon-view" data-link title="Ver Ficha e Historial">
                                     <i class="fas fa-eye"></i>

@@ -66,6 +66,8 @@ export class VehiculoDetalleController {
             // History
             historyCounter: document.getElementById('historyCounter'),
             historyList: document.getElementById('vehiculoHistoryList'),
+            historySearchInput: document.getElementById('historySearchInput'),
+            historyFilterEstado: document.getElementById('historyFilterEstado'),
             // Modal
             modal: document.getElementById('modalChecklistDetalle'),
             modalTitle: document.getElementById('modalChecklistTitle'),
@@ -92,6 +94,18 @@ export class VehiculoDetalleController {
                     this.abrirModalChecklist(checklistId);
                 }
             });
+        }
+
+        if (this.dom.historySearchInput) {
+            let debounceTimer;
+            this.dom.historySearchInput.addEventListener('input', () => {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(() => this.filtrarHistorial(), 300);
+            });
+        }
+
+        if (this.dom.historyFilterEstado) {
+            this.dom.historyFilterEstado.addEventListener('change', () => this.filtrarHistorial());
         }
     }
 
@@ -196,18 +210,44 @@ export class VehiculoDetalleController {
         }
     }
 
-    renderHistorial() {
-        if (!this.dom.historyList) return;
+    filtrarHistorial() {
+        const term = (this.dom.historySearchInput?.value || '').trim().toLowerCase();
+        const estado = this.dom.historyFilterEstado?.value || 'todos';
 
-        if (this.dom.historyCounter) {
-            this.dom.historyCounter.textContent = `${this.historial.length} ${this.historial.length === 1 ? 'movimiento' : 'movimientos'}`;
+        let filtrados = [...this.historial];
+
+        if (estado !== 'todos') {
+            filtrados = filtrados.filter(item => item.estado === estado);
         }
 
-        if (!this.historial || this.historial.length === 0) {
+        if (term) {
+            filtrados = filtrados.filter(item => {
+                const folio = (item.folio || '').toLowerCase();
+                const insp = (item.inspectorNombre || '').toLowerCase();
+                const rec = (item.receptorNombre || '').toLowerCase();
+                const motivo = (item.motivoSalida || '').toLowerCase();
+                const destino = (item.destinoSalida || '').toLowerCase();
+                return folio.includes(term) || insp.includes(term) || rec.includes(term) || motivo.includes(term) || destino.includes(term);
+            });
+        }
+
+        this.renderHistorial(filtrados);
+    }
+
+    renderHistorial(lista = null) {
+        if (!this.dom.historyList) return;
+
+        const itemsToShow = lista !== null ? lista : this.historial;
+
+        if (this.dom.historyCounter) {
+            this.dom.historyCounter.textContent = `${itemsToShow.length} ${itemsToShow.length === 1 ? 'movimiento' : 'movimientos'}`;
+        }
+
+        if (!itemsToShow || itemsToShow.length === 0) {
             this.dom.historyList.innerHTML = `
                 <div style="text-align: center; padding: var(--rsi-spacing-xl); color: var(--rsi-text-muted);">
                     <i class="fas fa-clipboard-list" style="font-size: 2.5rem; margin-bottom: 12px; color: var(--rsi-border-color);"></i>
-                    <p style="font-size: 1rem; font-weight: 500; margin: 0;">Este automóvil no cuenta con salidas ni checklists registrados aún.</p>
+                    <p style="font-size: 1rem; font-weight: 500; margin: 0;">${this.historial.length === 0 ? 'Este automóvil no cuenta con salidas ni checklists registrados aún.' : 'No se encontraron salidas para este vehículo con los filtros seleccionados.'}</p>
                 </div>
             `;
             return;
@@ -220,7 +260,7 @@ export class VehiculoDetalleController {
             cancelada: { label: 'Cancelada', cls: 'rsi-badge-secondary' }
         };
 
-        this.dom.historyList.innerHTML = this.historial.map(item => {
+        this.dom.historyList.innerHTML = itemsToShow.map(item => {
             const st = estadoBadges[item.estado] || { label: item.estado, cls: 'rsi-badge-secondary' };
             const fechaStr = item.createdAt ? new Date(item.createdAt).toLocaleString('es-MX', {
                 dateStyle: 'medium',
@@ -229,6 +269,7 @@ export class VehiculoDetalleController {
             const km = (item.kilometrajeSalida || 0).toLocaleString();
             const fotosCount = Array.isArray(item.evidencias) ? item.evidencias.length : 0;
             const firmada = item.aceptacion && item.aceptacion.firmado;
+            const tieneRetorno = item.retorno && item.retorno.completado;
 
             return `
                 <div class="rsi-timeline-item ${firmada ? 'creacion' : 'modificacion'}">
@@ -261,6 +302,17 @@ export class VehiculoDetalleController {
                                 <span><i class="fas fa-camera"></i> ${fotosCount} fotos · ${firmada ? '<span style="color: var(--rsi-success); font-weight: 600;"><i class="fas fa-check"></i> Firmada</span>' : '<span style="color: var(--rsi-warning); font-weight: 600;"><i class="fas fa-clock"></i> Pendiente</span>'}</span>
                             </div>
                         </div>
+
+                        ${tieneRetorno ? `
+                            <div style="background: rgba(34, 197, 94, 0.08); border-left: 3px solid var(--rsi-success); padding: 8px 12px; border-radius: var(--rsi-radius-sm); font-size: 0.85rem; margin-bottom: 10px;">
+                                <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                                    <span><i class="fas fa-undo" style="color: var(--rsi-success);"></i> <strong>Retorno Registrado:</strong> ${item.retorno.fechaHoraRetorno ? new Date(item.retorno.fechaHoraRetorno).toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' }) : '-'}</span>
+                                    <span>Odómetro Llegada: <strong>${(item.retorno.kilometrajeRetorno || 0).toLocaleString()} km</strong> <small style="color: var(--rsi-text-secondary);">(+${Math.max(0, (item.retorno.kilometrajeRetorno || 0) - (item.kilometrajeSalida || 0)).toLocaleString()} km)</small></span>
+                                    <span>Combustible: <strong>${item.retorno.nivelCombustibleRetorno || '-'}</strong></span>
+                                </div>
+                                ${item.retorno.observacionesRetorno ? `<div style="margin-top: 4px; color: var(--rsi-text-secondary); font-style: italic;">"${item.retorno.observacionesRetorno}"</div>` : ''}
+                            </div>
+                        ` : ''}
 
                         ${item.motivoSalida ? `
                             <p style="margin: 0 0 10px 0; font-size: 0.85rem; color: var(--rsi-text-secondary); background: var(--rsi-bg-secondary); padding: 6px 10px; border-radius: var(--rsi-radius-sm);">
@@ -394,6 +446,41 @@ export class VehiculoDetalleController {
                     </div>
                 `}
             </div>
+
+            <!-- Retorno y Devolución del Vehículo (si concluida) -->
+            ${item.retorno && item.retorno.completado ? `
+                <div style="margin-top: var(--rsi-spacing-lg);">
+                    <h4 style="font-size: 1rem; font-weight: 700; color: var(--rsi-text-primary); margin-bottom: var(--rsi-spacing-sm); display: flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-check-circle" style="color: var(--rsi-success);"></i> Devolución y Retorno del Vehículo
+                    </h4>
+                    <div style="background: rgba(34, 197, 94, 0.08); border: 1.5px solid rgba(34, 197, 94, 0.3); border-radius: var(--rsi-radius-lg); padding: var(--rsi-spacing-md);">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; font-size: 0.88rem;">
+                            <div>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--rsi-text-muted); display: block;">Fecha y Hora Retorno:</span>
+                                <strong>${item.retorno.fechaHoraRetorno ? new Date(item.retorno.fechaHoraRetorno).toLocaleString('es-MX') : '-'}</strong>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--rsi-text-muted); display: block;">Odómetro Llegada:</span>
+                                <strong style="font-family: monospace; color: var(--rsi-text-gold); font-size: 0.95rem;">${(item.retorno.kilometrajeRetorno || 0).toLocaleString()} km</strong>
+                                <small style="display: block; color: var(--rsi-text-secondary);">(Recorrido: +${Math.max(0, (item.retorno.kilometrajeRetorno || 0) - (item.kilometrajeSalida || 0)).toLocaleString()} km)</small>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--rsi-text-muted); display: block;">Combustible Llegada:</span>
+                                <strong>${item.retorno.nivelCombustibleRetorno || '-'}</strong>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--rsi-text-muted); display: block;">Regresado por:</span>
+                                <strong>${item.retorno.retornadoPorNombre || item.receptorNombre || '-'}</strong>
+                            </div>
+                        </div>
+                        ${item.retorno.observacionesRetorno ? `
+                            <div style="margin-top: 10px; font-size: 0.85rem; border-top: 1px dashed rgba(34, 197, 94, 0.3); padding-top: 8px;">
+                                <strong>Observaciones al entregar:</strong> ${item.retorno.observacionesRetorno}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            ` : ''}
         `;
 
         this.dom.modal.style.display = 'flex';

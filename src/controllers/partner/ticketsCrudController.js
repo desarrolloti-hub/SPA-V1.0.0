@@ -33,6 +33,9 @@ export async function ticketsCrudController() {
     
     service = new TicketService();
     authService = new AuthService();
+    currentPage = 1;
+    searchTerm = '';
+    ticketsData = [];
     
     // Exponer funciones globalmente
     window.cancelarTicket = cancelarTicket;
@@ -185,6 +188,10 @@ function initPagination() {
             if (currentPage > 1) {
                 currentPage--;
                 loadTickets();
+                const tableWrapper = document.querySelector('.rsi-table-wrapper');
+                if (tableWrapper) {
+                    tableWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             }
         };
         prevBtn.addEventListener('click', handler);
@@ -196,6 +203,10 @@ function initPagination() {
             if (currentPage < totalPages) {
                 currentPage++;
                 loadTickets();
+                const tableWrapper = document.querySelector('.rsi-table-wrapper');
+                if (tableWrapper) {
+                    tableWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
             }
         };
         nextBtn.addEventListener('click', handler);
@@ -225,11 +236,13 @@ async function loadTickets(forceRefresh = false) {
         if (tableWrapper) tableWrapper.style.display = 'none';
         if (pagination) pagination.style.display = 'none';
         
-        // Todos los usuarios autenticados (admin y partner) tienen visibilidad total de todos los tickets
+        // Obtener todos los tickets (aprovecha la caché con TTL del repositorio)
+        const allTickets = await service.getAllTickets(forceRefresh);
+        
+        let filteredTickets = allTickets || [];
         if (searchTerm) {
-            const allTickets = await service.getAllTickets(forceRefresh);
             const termLower = searchTerm.toLowerCase();
-            ticketsData = allTickets.filter(t => {
+            filteredTickets = filteredTickets.filter(t => {
                 const id = (t.idTicket || '').toLowerCase();
                 const titulo = (t.titulo || '').toLowerCase();
                 const cliente = (t.clienteNombre || '').toLowerCase();
@@ -243,33 +256,26 @@ async function loadTickets(forceRefresh = false) {
                        area.includes(termLower) ||
                        resp.includes(termLower);
             });
-            
-            totalItems = ticketsData.length;
-            totalPages = Math.ceil(totalItems / pageSize) || 1;
-            
-            const start = (currentPage - 1) * pageSize;
-            const end = Math.min(start + pageSize, totalItems);
-            const pageData = ticketsData.slice(start, end);
-            
-            renderTickets(pageData);
-            updateStats(ticketsData);
-        } else {
-            // Paginación estándar de todos los tickets para todos los usuarios
-            const response = await service.getTicketsPaginated(pageSize, currentPage);
-            ticketsData = response.tickets || [];
-            totalItems = response.total || 0;
-            totalPages = response.totalPages || 1;
-            
-            renderTickets(ticketsData);
-
-            // Cargar estadísticas globales reales de todos los tickets
-            try {
-                const stats = await service.getTicketStats();
-                applyGlobalStats(stats);
-            } catch (e) {
-                updateStats(ticketsData);
-            }
         }
+        
+        ticketsData = filteredTickets;
+        totalItems = filteredTickets.length;
+        totalPages = Math.ceil(totalItems / pageSize) || 1;
+        
+        // Ajustar currentPage dentro del rango válido
+        if (currentPage > totalPages) {
+            currentPage = totalPages;
+        }
+        if (currentPage < 1) {
+            currentPage = 1;
+        }
+        
+        const start = (currentPage - 1) * pageSize;
+        const end = Math.min(start + pageSize, totalItems);
+        const pageData = filteredTickets.slice(start, end);
+        
+        renderTickets(pageData);
+        updateStats(allTickets || []);
         
         const countBadge = document.getElementById('ticketCount');
         if (countBadge) {
@@ -839,7 +845,11 @@ export function destroyTicketsCrudController() {
     delete window.verReporteFotograficoTicket;
     
     service = null;
+    authService = null;
     colaboradoresMap = {};
+    ticketsData = [];
+    currentPage = 1;
+    searchTerm = '';
 }
 
 export default ticketsCrudController;
